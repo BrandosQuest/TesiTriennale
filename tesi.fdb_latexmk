@@ -1,14 +1,14 @@
 # Fdb version 4
-["biber tesi"] 1781861944.6328 "tesi.bcf" "tesi.bbl" "tesi" 1781861954.9628 0
-  "references.bib" 1781850848 207 db9ad45babbc8b6ae22da517bed1314d ""
-  "tesi.bcf" 1781861954.6649 107284 bc5d34dd268c31467d450be59ca39a07 "pdflatex"
+["biber tesi"] 1781863087.5383 "tesi.bcf" "tesi.bbl" "tesi" 1781863352.40507 0
+  "references.bib" 1781862964.74531 430 ee7174f3ca7f0482f769c558544251b2 ""
+  "tesi.bcf" 1781863352.12344 107221 005fdc6ad33a54724d8b964f64d28a0d "pdflatex"
   (generated)
   "tesi.bbl"
   "tesi.blg"
   (rewritten before read)
-["pdflatex"] 1781861950.64217 "/home/brando/Documents/Tesi_ITID_Brando_Calderara/tesi.tex" "tesi.pdf" "tesi" 1781861954.96378 0
+["pdflatex"] 1781863347.44639 "/home/brando/Documents/Tesi_ITID_Brando_Calderara/tesi.tex" "tesi.pdf" "tesi" 1781863352.406 0
   "/etc/texmf/web2c/texmf.cnf" 1758874401.06311 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/brando/Documents/Tesi_ITID_Brando_Calderara/tesi.tex" 1781861939.76303 176228 dd05f3bcdae4078443bf234a9967c8a4 ""
+  "/home/brando/Documents/Tesi_ITID_Brando_Calderara/tesi.tex" 1781863347.03842 176299 443bd77cea9417bacd08ea8cc81b1e48 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm" 1246382020 928 2dc8d444221b7a635bb58038579b861a ""
@@ -156,14 +156,14 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1781861602.36021 128028 f533b797fba58d231669ea19e894e23e ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1781861682 6802361 49559e5f302828d4d34d7034eb926c44 ""
   "logoUnibsScreennato.png" 1781850848 291868 01e8a6da43cbfa109de94cc4ea635afb ""
-  "tesi.aux" 1781861954.6539 9022 bfe6f49cb6cf8fb5d5d955dfa97a3aae "pdflatex"
-  "tesi.bbl" 1781861946.21334 1582 ac267bfdaddbc787d82349301bc5efa5 "biber tesi"
-  "tesi.lof" 1781861954.6669 461 2b3c9aafd84846f2b359ffabd77e825f "pdflatex"
-  "tesi.lot" 1781861954.6669 200 a762d6082b727fdec51af2631e5ebbda "pdflatex"
-  "tesi.out" 1781861954.6619 10078 9b7253140b7acc1d3fd9e90fa39935bf "pdflatex"
-  "tesi.run.xml" 1781861954.6669 2402 341dc8df8f2d932e939007edd940846e "pdflatex"
-  "tesi.tex" 1781861939.76303 176228 dd05f3bcdae4078443bf234a9967c8a4 ""
-  "tesi.toc" 1781861954.6669 3801 c5d5bc05ef1769903351f24ff6085764 "pdflatex"
+  "tesi.aux" 1781863352.11144 8969 f9353b588dd88d95703bbea96252c7e3 "pdflatex"
+  "tesi.bbl" 1781863089.16704 1693 c577804c64e7ba2dca0af3efecaffc20 "biber tesi"
+  "tesi.lof" 1781863352.12653 461 2b3c9aafd84846f2b359ffabd77e825f "pdflatex"
+  "tesi.lot" 1781863352.12653 200 a762d6082b727fdec51af2631e5ebbda "pdflatex"
+  "tesi.out" 1781863352.11944 10078 9b7253140b7acc1d3fd9e90fa39935bf "pdflatex"
+  "tesi.run.xml" 1781863352.12653 2402 341dc8df8f2d932e939007edd940846e "pdflatex"
+  "tesi.tex" 1781863347.03842 176299 443bd77cea9417bacd08ea8cc81b1e48 ""
+  "tesi.toc" 1781863352.12653 3801 c5d5bc05ef1769903351f24ff6085764 "pdflatex"
   (generated)
   "tesi.aux"
   "tesi.bcf"

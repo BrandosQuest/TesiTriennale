@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.19)  19 JUN 2026 11:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.19)  19 JUN 2026 12:02
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -643,26 +643,26 @@ Package csquotes Info: Redefining alias 'default' -> 'italian'.
  (./tesi.aux)
 \openout1 = `tesi.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Info: Redefining \it@ocap on input line 74.
-LaTeX Info: Redefining \it@ccap on input line 74.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Info: Redefining \it@ocap on input line 76.
+LaTeX Info: Redefining \it@ccap on input line 76.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -718,7 +718,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 \c@lstlisting=\count449
-Package hyperref Info: Link coloring OFF on input line 74.
+Package hyperref Info: Link coloring OFF on input line 76.
  (./tesi.out) (./tesi.out)
 \@outlinefile=\write4
 \openout4 = `tesi.out'.
@@ -736,44 +736,44 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'tesi.bbl' found.
  (./tesi.bbl)
-Package biblatex Info: Reference section=0 on input line 74.
-Package biblatex Info: Reference segment=0 on input line 74.
+Package biblatex Info: Reference section=0 on input line 76.
+Package biblatex Info: Reference segment=0 on input line 76.
 <logoUnibsScreennato.png, id=158, 1437.11906pt x 633.86812pt>
 File: logoUnibsScreennato.png Graphic file (type png)
 <use logoUnibsScreennato.png>
-Package pdftex.def Info: logoUnibsScreennato.png  used on input line 84.
+Package pdftex.def Info: logoUnibsScreennato.png  used on input line 86.
 (pdftex.def)             Requested size: 288.79422pt x 127.37103pt.
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 105.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 107.
  (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 105.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 107.
  (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 105.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 107.
  (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 105.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 107.
  (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 105.
+(Font)              <12> on input line 107.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 105.
+(Font)              <8> on input line 107.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 105.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 105.
+(Font)              <6> on input line 107.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 107.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 105.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 107.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (11.41116pt too wide) in paragraph at lines 105--113
+Overfull \hbox (11.41116pt too wide) in paragraph at lines 107--115
  [][] 
  []
 
@@ -783,7 +783,7 @@ Overfull \hbox (11.41116pt too wide) in paragraph at lines 105--113
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.160 \clearpage
+l.162 \clearpage
                  [1
 
 
@@ -810,14 +810,14 @@ l.160 \clearpage
 
 ]
 Capitolo 1.
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 184.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 186.
 (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [6
 
 
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}] [7] [8]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 287.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 289.
  (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [9]
@@ -826,29 +826,29 @@ Capitolo 2.
 
 ]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 367.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 369.
 
-Overfull \hbox (8.14362pt too wide) in paragraph at lines 367--368
+Overfull \hbox (8.14362pt too wide) in paragraph at lines 369--370
 []\T1/lmtt/b/n/12 requests\T1/lmr/bx/n/12 : \T1/lmr/m/n/12 li-bre-ria pro-get-ta-ta per sem-pli-fi-ca-re l'e-se-cu-zio-ne di ri-chie-ste HTTP.
  []
 
 [11] [12]
-Overfull \hbox (18.64511pt too wide) in paragraph at lines 403--405
+Overfull \hbox (18.64511pt too wide) in paragraph at lines 405--407
 []\T1/lmr/m/n/12 Sono sta-ti crea-ti fi-le di con-fi-gu-ra-zio-ne de-di-ca-ti nel-la di-rec-to-ry \T1/lmtt/m/n/12 /etc/logrotate.d/
  []
 
 
-Overfull \hbox (3.76598pt too wide) in paragraph at lines 403--405
+Overfull \hbox (3.76598pt too wide) in paragraph at lines 405--407
 \T1/lmr/m/n/12 (co-me \T1/lmtt/m/n/12 hikvision_scripts \T1/lmr/m/n/12 e \T1/lmtt/m/n/12 zabbix-interacta-script\T1/lmr/m/n/12 ), ap-pli-can-do po-li-cy tem-
  []
 
 [13]
-Overfull \hbox (95.94876pt too wide) in paragraph at lines 443--444
+Overfull \hbox (95.94876pt too wide) in paragraph at lines 445--446
 []\T1/lmr/m/n/12 Il pro-ces-so di in-te-gra-zio-ne è ge-sti-to da un \T1/lmr/m/it/12 Cu-stom AlertS-cript \T1/lmr/m/n/12 (\T1/lmtt/m/n/12 interactaCreateOrSolveTicket\T1/lmr/m/n/12 )
  []
 
 
-Overfull \hbox (93.10487pt too wide) in paragraph at lines 443--444
+Overfull \hbox (93.10487pt too wide) in paragraph at lines 445--446
 \T1/lmr/m/n/12 500 la-to ser-ver) ven-go-no trac-cia-ti nel fi-le di log de-di-ca-to \T1/lmtt/m/n/12 interactaCreateOrSolveTicket_log.log\T1/lmr/m/n/12 ,
  []
 
@@ -859,14 +859,14 @@ Capitolo 3.
 ] [16] [17] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 535.
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 537.
  [18]
-Overfull \hbox (1.86523pt too wide) in paragraph at lines 577--577
+Overfull \hbox (1.86523pt too wide) in paragraph at lines 579--579
 []\T1/lmr/bx/n/17.28 Integrazione GIS: Estra-zio-ne coor-di-na-te tra-
  []
 
 [19] [20{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}] [21]
-Overfull \hbox (29.85295pt too wide) in paragraph at lines 653--654
+Overfull \hbox (29.85295pt too wide) in paragraph at lines 655--656
 \T1/lmr/m/n/12 grup-po di de-sti-na-zio-ne, as-sem-blan-do-la di-na-mi-ca-men-te (es. \T1/lmtt/m/n/12 SmartCity/TVCC/Vestone\T1/lmr/m/n/12 ).
  []
 
@@ -875,7 +875,7 @@ Capitolo 4.
 [24
 
 ] [25]
-Overfull \hbox (29.9654pt too wide) in paragraph at lines 735--735
+Overfull \hbox (29.9654pt too wide) in paragraph at lines 737--737
 []\T1/lmr/bx/n/17.28 Sviluppo del Midd-leware e Ascol-to de-gli Stream
  []
 
@@ -884,17 +884,17 @@ File: lstlang1.sty 2023/02/27 1.9 listings language file
 ) (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
 )
-Overfull \hbox (61.44452pt too wide) in paragraph at lines 773--774
+Overfull \hbox (61.44452pt too wide) in paragraph at lines 775--776
 \T1/lmr/m/n/12 HTTP per-si-sten-te in strea-ming ver-so l'end-point \T1/lmtt/m/n/12 /ISAPI/Event/notification/alertStream\T1/lmr/m/n/12 .
  []
 
 [27]
-Overfull \hbox (46.51129pt too wide) in paragraph at lines 828--829
+Overfull \hbox (46.51129pt too wide) in paragraph at lines 830--831
 \T1/lmr/m/n/12 svol-ta pre-sta-zio-na-le. La scel-ta di uti-liz-za-re \T1/lmtt/m/n/12 subprocess.Popen \T1/lmr/m/n/12 al po-sto di \T1/lmtt/m/n/12 subprocess.run
  []
 
 [28] [29]
-Overfull \hbox (53.97076pt too wide) in paragraph at lines 889--890
+Overfull \hbox (53.97076pt too wide) in paragraph at lines 891--892
 \T1/lmr/m/n/12 Com-mand", pun-tan-do al \T1/lmr/m/it/12 Cu-stom AlertS-cript \T1/lmr/m/n/12 de-no-mi-na-to \T1/lmtt/m/n/12 interactaCreateOrSolveTicket\T1/lmr/m/n/12 . 
  []
 
@@ -903,12 +903,12 @@ Capitolo 5.
 [32
 
 ] [33] [34] [35]
-Overfull \hbox (76.514pt too wide) in paragraph at lines 1029--1030
+Overfull \hbox (76.514pt too wide) in paragraph at lines 1031--1032
 []\T1/lmr/m/n/12 Per que-sto pro-get-to è sta-to svi-lup-pa-to lo script Py-thon \T1/lmtt/m/n/12 interactaCreateOrSolveTicket.py\T1/lmr/m/n/12 .
  []
 
 [36]
-Overfull \hbox (60.40114pt too wide) in paragraph at lines 1080--1081
+Overfull \hbox (60.40114pt too wide) in paragraph at lines 1082--1083
 \T1/lmr/m/n/12 ec-ce-zio-ni, ven-go-no scrit-te in ap-pend nel fi-le \T1/lmtt/m/n/12 interactaCreateOrSolveTicket_log.log\T1/lmr/m/n/12 . 
  []
 
@@ -917,7 +917,7 @@ Capitolo 6.
 [39
 
 ]
-Overfull \hbox (4.3388pt too wide) in paragraph at lines 1108--1109
+Overfull \hbox (4.3388pt too wide) in paragraph at lines 1110--1111
 \T1/lmr/m/n/12 re una mail, Zab-bix ese-gue lo script Bash \T1/lmtt/m/n/12 ScriptCustomExportProblemsToCSV.sh
  []
 
@@ -926,12 +926,12 @@ File: lstlang1.sty 2023/02/27 1.9 listings language file
 ) (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 ) [40] [41] [42] [43] [44]
-Overfull \hbox (5.66919pt too wide) in paragraph at lines 1261--1262
+Overfull \hbox (5.66919pt too wide) in paragraph at lines 1263--1264
 \T1/lmtt/m/n/12 /usr/lib/zabbix/alertscripts/interactaCreateOrSolveTicket_log.log\T1/lmr/m/n/12 . A
  []
 
 
-Overfull \hbox (163.19473pt too wide) in paragraph at lines 1274--1275
+Overfull \hbox (163.19473pt too wide) in paragraph at lines 1276--1277
 []\T1/lmr/m/n/12 È sta-to crea-to un fi-le di con-fi-gu-ra-zio-ne spe-ci-fi-co de-po-si-ta-to in \T1/lmtt/m/n/12 /etc/logrotate.d/zabbix-interacta-script\T1/lmr/m/n/12 .
  []
 
@@ -940,12 +940,12 @@ Capitolo 7.
 [47
 
 ] [48] [49] [50]
-Overfull \hbox (7.81126pt too wide) in paragraph at lines 1436--1439
+Overfull \hbox (7.81126pt too wide) in paragraph at lines 1438--1441
 []\T1/lmr/m/n/12 variabili in-te-gra-te in Zab-bix (scrit-te tra pa-ren-te-si graf-fe, es. \T1/lmtt/m/n/12 {HOST.NAME}\T1/lmr/m/n/12 )
  []
 
 
-Overfull \hbox (14.3218pt too wide) in paragraph at lines 1445--1447
+Overfull \hbox (14.3218pt too wide) in paragraph at lines 1447--1449
 []\T1/lmr/m/n/12 il lin-guag-gio stan-dard uni-
  []
 
@@ -953,42 +953,42 @@ Overfull \hbox (14.3218pt too wide) in paragraph at lines 1445--1447
 
 
 ]
-Overfull \hbox (10.78592pt too wide) in paragraph at lines 1460--1466
+Overfull \hbox (10.78592pt too wide) in paragraph at lines 1462--1468
 []\T1/lmr/m/n/12 sistemi in-for-ma-ti-ci (co-me QGIS) pro-
  []
 
 
-Overfull \hbox (21.15451pt too wide) in paragraph at lines 1486--1487
+Overfull \hbox (21.15451pt too wide) in paragraph at lines 1488--1489
 []\T1/lmr/m/n/12 Database uti-liz-za-to da un'or-
  []
 
 [52] [53] [54]
-Overfull \hbox (0.74924pt too wide) in paragraph at lines 1541--1542
+Overfull \hbox (0.74924pt too wide) in paragraph at lines 1543--1544
 []\T1/lmr/m/n/12 Strumento na-ti-vo di Py-thon uti-liz-za-to per crea-
  []
 
 [55] [56] [57]
-Overfull \hbox (20.00641pt too wide) in paragraph at lines 1601--1602
+Overfull \hbox (20.00641pt too wide) in paragraph at lines 1603--1604
 []\T1/lmr/m/n/12 Insieme di be-st prac-
  []
 
 
-Overfull \hbox (4.55438pt too wide) in paragraph at lines 1605--1606
+Overfull \hbox (4.55438pt too wide) in paragraph at lines 1607--1608
 []\T1/lmr/m/n/12 Standard in-ter-net (RFC
  []
 
 
-Overfull \hbox (18.79832pt too wide) in paragraph at lines 1615--1616
+Overfull \hbox (18.79832pt too wide) in paragraph at lines 1617--1618
 []\T1/lmr/m/n/12 Protocollo stan-dard di In-ter-net (RFC
  []
 
 [58] [59]
-Underfull \hbox (badness 10000) in paragraph at lines 1649--1650
+Underfull \hbox (badness 10000) in paragraph at lines 1651--1652
 []\T1/lmr/m/n/12 Zabbix LLC, \T1/lmr/m/it/12 Zab-bix 7.0 Ma-nual\T1/lmr/m/n/12 . [On-li-ne]. Di-spo-ni-bi-le su:
  []
 
 
-Underfull \hbox (badness 1242) in paragraph at lines 1651--1652
+Underfull \hbox (badness 1242) in paragraph at lines 1653--1654
 []\T1/lmr/m/n/12 Python Soft-ware Foun-da-tion, \T1/lmr/m/it/12 Py-thon Pro-gram-ming Lan-gua-ge\T1/lmr/m/n/12 . [On-li-ne].
  []
 
@@ -1012,18 +1012,18 @@ Package logreq Info: Writing requests to 'tesi.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 22848 strings out of 476171
- 381733 string characters out of 5795119
+ 22849 strings out of 476171
+ 381770 string characters out of 5795119
  2355975 words of memory out of 5000000
- 44132 multiletter control sequences out of 15000+600000
+ 44133 multiletter control sequences out of 15000+600000
  615274 words of font info for 71 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  75i,13n,81p,1133b,2246s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr6.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmro17.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb>
-Output written on tesi.pdf (63 pages, 767798 bytes).
+Output written on tesi.pdf (63 pages, 768189 bytes).
 PDF statistics:
- 973 PDF objects out of 1000 (max. 8388607)
- 871 compressed objects within 9 object streams
+ 975 PDF objects out of 1000 (max. 8388607)
+ 873 compressed objects within 9 object streams
  430 named destinations out of 1000 (max. 500000)
  318 words of extra memory for PDF output out of 10000 (max. 10000000)
 
