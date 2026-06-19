@@ -1,0 +1,237 @@
+\documentclass[12pt, a4paper]{report}
+
+% --- Pacchetti Fondamentali ---
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{a4paper, top=30mm, bottom=30mm, left=35mm, right=30mm}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+
+% --- Configurazione Tracciamento Codice (Listings) ---
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{codeStyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=codeStyle}
+
+% --- Configurazione Layout ---
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small\leftmark}
+\lfoot{\small Bozza Tesi Triennale --- Brando Calderara}
+\rfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\begin{document}
+
+% ====================================================================
+% FRONTESPIZIO
+% ====================================================================
+\begin{titlepage}
+    \begin{center}
+        \LARGE{\textbf{UNIVERSIT\`A DEGLI STUDI DI BRESCIA}}\\
+        \vspace{5mm}
+        \Large{Dipartimento di Ingegneria dell'Informazione}\\
+        \vspace{3mm}
+        \normalsize{Corso di Laurea in Ingegneria delle Tecnologie per l'Impresa Digitale (ITID)}\\
+        
+        \vspace{25mm}
+        \textsl{\Large{Tesi di Laurea Triennale}}\\
+        \vspace{10mm}
+        \Huge{\textbf{Automazione e Centralizzazione del Monitoraggio di Infrastrutture Smart City via Zabbix API e Integrazioni Crittografiche}}\\
+        \vspace{5mm}
+        \Large{\textit{Caso di studio operativo presso Secoval S.r.l.}}
+        
+        \vspace{35mm}
+        \begin{table}[h]
+            \centering
+            \normalsize
+            \begin{tabular}{l p{3cm} l}
+                \textbf{Relatore:} & & \textbf{Candidato:} \\
+                Prof. Francesco Gringoli & & Brando Calderara \\
+                & & Matr. [Inserire Matricola] \\
+                \vspace{5mm}\\
+                \textbf{Correlatore Aziendale:} & & \\
+                [Nome Correlatore Secoval] & & 
+            \end{tabular}
+        \end{table}
+        
+        \vfill
+        \begin{center}
+            \line(1,0){350}\\
+            \vspace{3mm}
+            \normalsize{Anno Accademico 2025/2026}
+        \end{center}
+    \end{center}
+\end{titlepage}
+
+\clearpage
+
+% ====================================================================
+% INDICE
+% ====================================================================
+\tableofcontents
+\clearpage
+
+% ====================================================================
+% INTRODUZIONE
+% ====================================================================
+\chapter*{Introduzione}
+\addcontentsline{toc}{chapter}{Introduzione}
+Il rapido sviluppo del paradigma delle \textbf{Smart City} ha portato le pubbliche amministrazioni locali a dotarsi di infrastrutture tecnologiche capillari e complesse. Reti di videosorveglianza urbana (TVCC), access point per il Wi-Fi pubblico, switch industriali di distribuzione e gateway LTE costituiscono oggi la spina dorsale dei servizi al cittadino. Gestire l'elevata eterogeneit\`a e la dislocazione geografica di tali dispositivi rappresenta una sfida cruciale per i provider di servizi tecnologici territoriali.
+
+L'obiettivo di questo lavoro di tesi, svolto in collaborazione con l'azienda \textbf{Secoval S.r.l.}, \`e la progettazione e l'implementazione di un sistema di monitoraggio centralizzato, proattivo e automatizzato basato sulla piattaforma open-source \textbf{Zabbix 7.0}. 
+
+Tradizionalmente, il monitoraggio di tali reti si \`e basato su controlli statici o su piattaforme commerciali limitate (come PRTG), che richiedevano un pesante overhead di gestione manuale per l'inserimento e la manutenzione dei dispositivi. Il nucleo innovativo di questo progetto risiede nell'estrazione automatica delle informazioni da sorgenti documentali aziendali (\textit{Configuration Management Database}), nel provisioning dinamico degli apparati tramite Zabbix API, nell'intercettazione in tempo reale di eventi di sicurezza sulle telecamere tramite protocolli nativi e nell'integrazione sicura (tramite crittografia asimmetrica e token JWT) con la piattaforma cloud di ticketing aziendale per la gestione dei guasti sul campo.
+
+L'elaborato \`e strutturato come segue: il Capitolo 1 inquadra l'infrastruttura di rete di Secoval e le motivazioni tecnologiche della scelta di Zabbix 7.0. Il Capitolo 2 approfondisce le logiche di automazione dell'inventario tramite script Python e Zabbix API. Il Capitolo 3 tratta la configurazione dei controlli attivi e la gestione degli eventi TVCC. Il Capitolo 4 descrive l'architettura crittografica di interfacciamento con il sistema di ticketing, mentre il Capitolo 5 espone i meccanismi di reportistica KPI e manutenzione del sistema operati in ambiente Linux.
+
+\clearpage
+
+% ====================================================================
+% CAPITOLO 1
+% ====================================================================
+\chapter{Il Contesto Operativo e Tecnologico}
+\section{La gestione infrastrutturale in Secoval S.r.l.}
+Secoval S.r.l. si occupa della gestione dei servizi tecnologici e informatici per conto di numerosi enti locali e comunit\`a montane. La sua infrastruttura di rete si estende su molteplici comuni, integrando dispositivi dedicati alla sicurezza stradale, alla connettivit\`a pubblica e al controllo del territorio.
+
+\section{Eterogeneit\`a degli apparati monitorati}
+La complessit\`a della rete Smart City monitorata deriva dalla convivenza di diverse tipologie di nodi critici:
+\begin{itemize}
+    \item \textbf{Telecamere di Videosorveglianza Urbana (TVCC):} Dispositivi IP (prevalentemente Hikvision) che richiedono monitoraggio sia di raggiungibilit\`a di rete che di integrit\`a del flusso video.
+    \item \textbf{Access Point (AP):} Dispositivi per l'erogazione di connettivit\`a Wi-Fi pubblica nei centri urbani.
+    \item \textbf{Switch di Rete:} Apparati industriali (L2/L3) che aggregano i flussi provenienti dalle periferiche urbane.
+    \item \textbf{Dispositivi LTE/5G:} Router e gateway utilizzati per l'uplink in zone non raggiunte dalla fibra ottica, caratterizzati da indirizzamenti IP dinamici o connettivit\`a soggetta a fluttuazioni.
+\end{itemize}
+
+\section{Evoluzione dei Sistemi di Network Monitoring: da PRTG a Zabbix 7.0}
+I limiti delle soluzioni precedentemente adottate includevano vincoli di licenziamento sul numero di sensori, scarsa attitudine all'automazione tramite script esterni e difficolt\`a nel gestire variazioni dinamiche degli host. La migrazione a \textbf{Zabbix 7.0 LTS} \`e stata dettata dalla sua architettura modulare, dal supporto nativo alle espressioni regolari per il log parsing, dalla presenza di una robusta interfaccia JSON-RPC (API) e dall'efficienza del demone \textit{Zabbix Proxy} per la raccolta dati distribuita sul territorio.
+
+\clearpage
+
+% ====================================================================
+% CAPITOLO 2
+% ====================================================================
+\chapter{Automazione dell'Inventario e Configuration Management}
+\section{Il foglio Excel aziendale come Source of Truth}
+Per superare i limiti dei tradizionali meccanismi di \textit{Network Discovery} basati puramente su scansioni ICMP periodiche --- che rilevano gli host ma non sono in grado di assegnarvi metadati aziendali significativi --- \`e stato stabilito che il foglio Excel di gestione (CMDB aziendale) fungesse da unica sorgente di verit\`a. Ogni foglio di calcolo corrisponde a un comune e mappa in modo preciso campi quali: \texttt{ID Host}, \texttt{Indirizzo IP}, \texttt{ID Palo} (identificativo del posizionamento fisico) e le coordinate geografiche.
+
+\section{Sviluppo del modulo di provisioning via Zabbix API}
+\`E stato sviluppato un motore di automazione in \textbf{Python} che si interfaccia con l'endpoint JSON-RPC di Zabbix. Utilizzando la libreria \texttt{pandas} per il parsing dei fogli Excel, lo script esegue ciclicamente le seguenti operazioni:
+\begin{enumerate}
+    \item Autenticazione sul server Zabbix e generazione dell'authtoken.
+    \item Controllo di esistenza dell'host tramite l'interrogazione \texttt{host.get}.
+    \item Se l'host non esiste, invocazione del metodo \texttt{host.create} per inserire l'apparato mappando l'\texttt{ID Host} come nome visibile univoco, associandolo agli Host Groups di competenza territoriale e applicando i template tecnologici corretti.
+    \item Valorizzazione dell'\textit{Host Inventory} con i metadati aziendali (es. \texttt{ID Palo}).
+\end{enumerate}
+
+\section{Estrazione dati GIS da PDF e georeferenziazione}
+Alcune informazioni relative al posizionamento geografico degli apparati risiedevano esclusivamente in relazioni tecniche in formato PDF. Tramite l'utilizzo della libreria Python \texttt{pdfplumber} e l'applicazione di espressioni regolari specifiche (\textit{regex}), \`e stato implementato un sotto-modulo capace di raschiare in automatico i file PDF, estrarre le coordinate GPS (Latitudine e Longitudine) e caricarle nei campi d'inventario di Zabbix, consentendo cos\`i il popolamento in tempo reale delle mappe geografiche (\textit{Geomap}) presenti sulla dashboard di monitoraggio.
+
+\clearpage
+
+% ====================================================================
+% CAPITOLO 3
+% ====================================================================
+\chapter{Monitoraggio Attivo e Gestione degli Eventi TVCC}
+\section{Strutturazione gerarchica degli Host Groups}
+Per garantire una gestione multi-tenant e una separazione logica dei permessi e delle viste all'interno del frontend di Zabbix, \`e stata implementata una gerarchia di Host Groups organizzata ad albero, sfruttando i separatori nativi (es. \texttt{SmartCity/Comune\_A/TVCC}, \texttt{SmartCity/Comune\_A/Network}).
+
+\section{Middleware per l'integrazione di eventi Hikvision ISAPI}
+Il semplice controllo di presenza in rete (Ping) non copre scenari di guasto in cui la telecamera \`e raggiungibile ma il flusso video \`e compromesso (es. obiettivo oscurato o manomesso). Sfruttando le API \textbf{ISAPI} delle telecamere Hikvision, \`e stato sviluppato uno script in Python operante come servizio continuo, il quale si sottoscrive allo stream di eventi HTTP generato dall'apparato all'indirizzo:
+\begin{center}
+    \texttt{/ISAPI/Event/notification/alertStream}
+\end{center}
+Il middleware intercetta i messaggi in formato XML/JSON relativi a eventi quali \textit{Video Tampering} (manomissione video) e \textit{Motion Detection} (rilevamento movimento).
+
+\section{Meccanismo di inoltro asincrono con Zabbix Sender}
+Non appena il middleware rileva una notifica ISAPI critica, provvede a inoltrare immediatamente l'evento al server Zabbix in modo asincrono, senza attendere il ciclo di polling standard del server. Questa comunicazione avviene tramite l'utility \textbf{Zabbix Sender}, inviando una stringa formattata contenente l'ID dell'host, la chiave dell'item di tipo \textit{Zabbix Trapper} e il valore associato allo stato di allarme.
+
+\section{Configurazione di Trigger e Discovery Actions}
+A fronte della ricezione del dato via trapper, specifici \textit{Trigger} valutano le espressioni logiche per determinare lo stato di severit\`a dell'evento. Sono state inoltre configurate delle \textit{Discovery Actions} automatizzate che, in base al tipo di evento ricevuto e all'Host Group di appartenenza, scatenano l'invio immediato di notifiche mail ai tecnici reperibili o avviano script di remediation automatica.
+
+\clearpage
+
+% ====================================================================
+% CAPITOLO 4
+% ====================================================================
+\chapter{Integrazione Crittografica con il Sistema di Ticketing}
+\section{Interfacciamento orientato ai servizi: la piattaforma Interacta}
+Al fine di standardizzare i flussi di manutenzione sul campo, gli allarmi generati da Zabbix devono essere storicizzati all'interno del sistema di ticketing aziendale basato sulla piattaforma cloud \textbf{Interacta}. L'integrazione richiede che Zabbix sia in grado di aprire un ticket al manifestarsi di un disservizio e di risolverlo automaticamente quando l'apparato torna online.
+
+\section{Autenticazione sicura tramite JSON Web Token (JWT)}
+L'interfacciamento con le API REST di Interacta esige un livello elevato di sicurezza basato su autenticazione \textit{Server-to-Server}. Il protocollo prevede lo scambio di un token \textbf{JWT} firmato digitalmente. Il processo si articola nelle seguenti fasi crittografiche:
+\begin{enumerate}
+    \item Generazione di una coppia di chiavi asimmetriche \textbf{RSA} a 2048 bit.
+    \item Configurazione della chiave pubblica sul portale Interacta.
+    \item Sviluppo di una funzione Python integrata all'interno degli alert script di Zabbix che compila il payload del JWT (comprensivo dei claim obbligatori come \texttt{iss}, \texttt{sub}, \texttt{iat}, \texttt{exp}).
+    \item Firma del token utilizzando la chiave privata custodita a bordo del server Zabbix tramite l'algoritmo asimmetrico \textbf{RS512} (SHA-512 con RSA).
+\end{enumerate}
+
+\section{Sviluppo di un Custom AlertScript (Bash/Python)}
+L'orchestrazione della chiamata verso Interacta \`e stata implementata tramite un \textbf{Custom AlertScript} depositato nella directory di sistema di Zabbix. Lo script riceve in ingresso i parametri dell'evento nativi di Zabbix (tramite Macro come \texttt{\{EVENT.ID\}}, \texttt{\{HOST.NAME\}}, \texttt{\{TRIGGER.STATUS\}}) ed esegue la richiesta HTTP POST inviando il payload JSON necessario per l'apertura o la chiusura del ticket di intervento.
+
+\clearpage
+
+% ====================================================================
+% CAPITOLO 5
+% ====================================================================
+\chapter{Analisi dei Dati, KPI e Manutenzione del Sistema}
+\section{Esportazione continua dei log e superamento dei limiti di retention}
+Per permettere analisi storiche a lungo termine senza sovraccaricare il database relazionale di produzione di Zabbix, \`e stato implementato un meccanismo di esportazione continua degli eventi di trigger in file testuali strutturati in formato \textbf{CSV}. 
+
+\section{Algoritmi Python per il calcolo dei KPI operativi}
+\`E stato sviluppato un motore di analisi autonomo in Python che elabora periodicamente i file CSV per estrarre metriche prestazionali fondamentali per l'efficienza aziendale:
+\begin{itemize}
+    \item \textbf{Mean Time To Resolution (MTTR):} Calcolato misurando la differenza temporale tra il timestamp di attivazione del trigger (\texttt{\{EVENT.DATE\} \{EVENT.TIME\}}) e il timestamp di ripristino (\texttt{\{EVENT.RECOVERY.DATE\} \{EVENT.RECOVERY.TIME\}}).
+    \item \textbf{Analisi del Flapping:} Algoritmo statistico volto a individuare host instabili che generano frequenti transizioni di stato in finestre temporali ristrette, indice di problemi di alimentazione o connettivit\`a degradata.
+    \item \textbf{Distribuzione dei Fault:} Aggregazione dei guasti per area geografica o per tipologia di dispositivo per evidenziare vulnerabilit\`a infrastrutturali ricorrenti.
+\end{itemize}
+
+\section{Automazione dei flussi: Crontab e Mail Server Interno}
+L'esecuzione del motore di analisi KPI \`e schedulata a livello di sistema operativo Linux tramite il demone \textbf{Cron}. I report generati vengono impacchettati e spediti automaticamente ai responsabili di rete su base giornaliera/settimanale utilizzando uno script Python che sfrutta il protocollo \textbf{SMTP} connesso al mail server interno aziendale.
+
+\section{Politiche di conservazione e manutenzione dei file di log (Logrotate)}
+Dato l'elevato volume di log generato sia dagli script di interfacciamento con Interacta che dalle procedure di esportazione KPI, \`e stata configurata una direttiva dedicata all'interno dell'utility di sistema \textbf{Logrotate} (\texttt{/etc/logrotate.d/zabbix-interacta-script}) per prevenire la saturazione del disco, applicando regole di rotazione settimanale, compressione dei file storici e mantenimento di un massimo di 12 istanze.
+
+\clearpage
+
+% ====================================================================
+% CONCLUSIONI
+% ====================================================================
+\chapter*{Conclusioni e Sviluppi Futuri}
+\addcontentsline{toc}{chapter}{Conclusioni e Sviluppi Futuri}
+Il sistema di monitoraggio centralizzato sviluppato in questa tesi ha risposto con successo alle esigenze operative di Secoval S.r.l., riducendo drasticamente i tempi di configurazione manuale dei nuovi dispositivi e azzerando i tempi di latenza tra il rilevamento di un disservizio sul territorio e la notifica/apertura del ticket nel sistema aziendale Interacta.
+
+L'approccio basato sull'automazione tramite Zabbix API e sullo sviluppo di codice Python integrato ha dimostrato come la figura dell'ingegnere informatico/digitale possa ottimizzare i processi aziendali combinando competenze di networking, sviluppo software e sicurezza dei dati.
+
+Come sviluppi futuri, si prevede l'estensione del sistema attraverso l'implementazione di algoritmi di manutenzione predittiva basati sull'analisi storica delle serie temporali dei dati raccolti, nonch\`e l'integrazione di sensori IoT di tipo ambientale per ampliare il raggio d'azione del monitoraggio Smart City.
+
+\end{document}

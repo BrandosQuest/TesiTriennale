@@ -1,0 +1,1578 @@
+\documentclass[12pt, a4paper]{report}
+
+% ==========================================
+% PACKAGES
+% ==========================================
+\usepackage[utf8]{inputenc} % Encoding
+\usepackage[T1]{fontenc}    % Font encoding
+\usepackage[italian]{babel} % Italian language support for chapters, TOC, etc.
+\usepackage{geometry}       % Margin configuration
+\geometry{a4paper, top=3cm, bottom=3cm, left=3cm, right=3cm} % Thesis-style margins
+\usepackage{hyperref}       % Clickable links in the Table of Contents
+\usepackage{graphicx}       % For inserting images and diagrams
+\graphicspath{{images/}}    % configuring the graphicx package & images folder
+\usepackage{xcolor}         % For custom colors in code blocksghdg
+\usepackage{listings}       % The best package for source code formatting
+\usepackage{textcomp}       % For common symbols not in utf8
+\usepackage[utf8]{inputenc}
+\usepackage{pmboxdraw}
+
+% ==========================================
+% CODE BLOCK CONFIGURATION (listings)
+% ==========================================
+% Define some custom colors for code syntax highlighting
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% #region foldable
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+% #endregion
+
+% Define the symbols aliases 
+\lstset{style=mystyle,
+    literate={°}{{\textdegree}}1
+             {à}{{\`a}}1
+             {è}{{\`e}}1
+             {é}{{\'e}}1
+             {ì}{{\`i}}1
+             {ò}{{\`o}}1
+             {ù}{{\`u}}1
+}
+%configure the links pakage
+\hypersetup{
+    %colorlinks=true,
+    %linkcolor=blue, % Sets color of internal links
+    %filecolor=magenta,      
+    %urlcolor=cyan,
+    %pdfborder={0 0 0} % remove color around links
+}
+\newcommand{\inlinecode}[1]{\colorbox{backcolour}{\texttt{\detokenize{#1}}}}%inlineCode formatting
+
+
+% ==========================================
+% DOCUMENT META-DATA
+% ==========================================
+\title{\textbf{Integrazione Zabbix e Hikvision}\\ \large Documentazione Tecnica e Architetturale}
+\author{Brando Calderara\thanks{UNIBS, corso ITID, tirocinio in Secoval}}
+\date{\today}
+
+% ==========================================
+% BEGIN DOCUMENT
+% ==========================================
+\begin{document}
+
+% Creates the title page
+\maketitle
+
+% Creates the Table of Contents automatically
+\tableofcontents
+\newpage
+
+\chapter{Introduzione}
+
+Il presente documento illustra il lavoro di progettazione, 
+sviluppo e messa in produzione di un nuovo sistema di monitoraggio, 
+realizzato durante il periodo di tirocinio di Brando Calderara, per una rete distribuita sul territorio della
+Comunità Montana e non solo (29 Comuni). 
+Questo sistema si aggancia all'esistente progetto "\emph{SmartCity - Edison}".
+
+Il progetto ha avuto come obiettivo iniziale la migrazione da un precedente sistema di 
+monitoraggio (PRTG) 
+verso una piattaforma centralizzata, scalabile e \textit{open-source} 
+basata su \textbf{Zabbix 7.0 LTS} (Long Term Support). 
+Su questa piattaforma si sono poi sviluppate anche altre funzionalità, tra cui: catalogazione,
+rilevamento di problemi, acquisizione di dati e invio di messaggi verso altri sistemi.
+
+L'infrastruttura gestita è eterogenea e comprende oltre 1000 dispositivi attivi, 
+tra cui telecamere di videosorveglianza (Hikvision, Vigilate), apparati di rete \textit{core} ed 
+\textit{edge} (Switch, Access Point Wi-Fi pubblici) e router LTE per raggiungere zone più isolate.
+
+Questa documentazione funge sia da relazione sulle scelte implementative 
+(illustrando le scelte architetturali e snippet di codice sorgente) 
+sia da manuale, con lo scopo di garantire la totale manutenibilità del sistema 
+da parte degli amministratori di rete futuri.
+
+\textbf{Warning: le password e i token dovrebbero essere gestiti tramite variabili d'ambiente (file .env)
+ o vault sicuri, e non "hardcodati" negli script o passati in chiaro nei log. Per ora sono hardcodati}
+
+\section{Terminologia}
+Per facilitare la lettura e la comprensione del presente manuale anche a personale non strettamente sistemistico, di seguito vengono definiti i termini tecnici principali, i protocolli e i concetti architetturali utilizzati nel progetto.
+
+\subsection{Concetti base di Zabbix}
+{\small%makes the text smaller
+% Unlike itemize (bullets) or enumerate (numbers), 
+%the description environment allows for custom, text-based labels for each 
+\begin{description} 
+    \item[Zabbix:] è una piattaforma software open-source per il monitoraggio proattivo
+     di infrastrutture IT, reti, server, macchine virtuali e servizi cloud. 
+     Consente di raccogliere, visualizzare e analizzare metriche in tempo reale 
+     (come utilizzo CPU, RAM, rete e spazio disco), inviando avvisi immediati in caso di anomalie.
+    \item[Host:] qualsiasi dispositivo fisico o virtuale monitorato dal sistema. 
+    Nel nostro caso, una telecamera, uno switch, un Access Point o un router.
+    \item[Item:] la singola metrica o il singolo dato raccolto da un Host. 
+    Esempi di item sono: la risposta di un comando ping a un host o il tempo di risposta, 
+    la risposta ricevuta da un comando, il valore di un sensore fisico o virtuale.
+    \item[Trigger:] una regola logica associata a un Item. 
+    Es. la telecamera non risponde al ping per 3 minuti, il Trigger "scatta" e genera un allarme (Problem).
+    \item[Action:] l'azione automatica che il sistema intraprende quando qualche evento soddisfa alcune condizioni.
+    Può essere relativa ai trigger o alla scoperta di un nuovo host.
+    \item[Template:] un modello preconfigurato che contiene un insieme logico di 
+    Item, Trigger e regole. Viene applicato a più dispositivi per evitare di configurarli manualmente.
+    \item[Macro:] variabili integrate in Zabbix (scritte tra parentesi graffe,
+    es. \texttt{\{HOST.NAME\}}) che permettono di inserire dinamicamente il nome, 
+    l'IP o altri dati all'interno di svariati campi, per esempio le mail di allarme.
+
+\end{description}
+
+\subsection{Reti, protocolli e architettura}
+\begin{description}
+    %\item[CMDB (Configuration Management Database):] Il database che contiene le informazioni autoritative sui componenti informatici di un'organizzazione. Nel nostro progetto, il ruolo di CMDB è ricoperto dai file Excel comunali.
+    %\item[Source of Truth (Sorgente della Verità):] Un concetto architetturale per cui esiste un unico punto di riferimento (il CMDB) considerato come il dato ufficiale e corretto, a cui tutti gli altri sistemi (incluso Zabbix) devono allinearsi.
+    \item[SNMP (Simple Network Management Protocol):] 
+    il linguaggio standard universale utilizzato dai dispositivi di rete per comunicare
+    il proprio stato di salute e la propria configurazione a un server di monitoraggio centrale.
+    \item[MIB e OID:] Il \textbf{MIB} (Management Information Base) è un dizionario o "mappa" 
+    che descrive la struttura dei dati di un dispositivo. 
+    L'\textbf{OID} (Object Identifier) è l'indirizzo numerico specifico all'interno di quella mappa
+    (es. \texttt{1.3.6.1.4.1.39165.1.1.0}) che identifica un singolo valore, come il numero seriale.
+    \item[API (Application Programming Interface):] un'interfaccia o "ponte" software che \\
+    permette a due sistemi o applicazioni diverse (es. il nostro script Python e Zabbix) 
+    di parlarsi, passarsi comandi e scambiarsi dati in modo sicuro e automatizzato.
+    \item[ISAPI:] un set di API specifico e proprietario sviluppato da Hikvision.
+    Permette di interrogare e comandare le telecamere tramite protocollo HTTP
+    e di ricevere flussi continui di avvisi di sicurezza.
+    % \item[Script / Middleware:] un programma (in questo progetto scritto in linguaggio Python)
+    %  che funge da intermediario. Si occupa di tradurre, filtrare o trasportare dati da un punto A
+    %   (es. file Excel o telecamera) a un punto B (Zabbix).
+    \item[GIS (Geographic Information System):] sistemi informatici (come QGIS) 
+    progettati per acquisire, memorizzare, analizzare e gestire dati georeferenziati.
+    Nel caso di Zabbix permettono di visualizzare gli apparati guasti direttamente su una mappa cartografica.
+    % \item[Payload:] in informatica, è il "carico utile" di un pacchetto di dati. 
+    % Quando lo script aggiorna Zabbix, il payload è il blocco di testo (solitamente in formato JSON)
+    %  che contiene le vere e proprie informazioni da modificare (es. nome e coordinate dell'host).
+\end{description}
+}
+
+\chapter{L'Infrastruttura e il  monitoraggio della Smart City}
+
+\section{Architettura generale dell'infrastruttura}
+L'infrastruttura che necessita di monitoraggio nel progetto \emph{Smart City - Edison} 
+è costituita da una serie di sottoreti virtuali \emph{VLAN} che si sviluppano sul territorio, 
+comprendente circa 30 Comuni. In esse sono collegati diversi host, di natura eterogenea,
+per oltre 1000 dispositivi attivi. 
+Il sistema \textbf{Zabbix 7.0 LTS} è
+ospitato su un ambiente server Linux (Ubuntu 24.04).
+
+In precedenza, il monitoraggio delle sottoreti era affidato a Paessler PRTG Network Monitor.
+La migrazione a Zabbix è stata una scelta dettata da fattori di costo dovuti alle licenze a numero limitato 
+di host monitorabili di PRTG e da fattori di automatizzazione, le API di Zabbix sono 
+più facilmente utilizzabili e meglio documentate, per la loro natura open-source.
+
+Per ogni comune posso avere 4 sottoreti, per esempio nel comune di \lstinline|Lavenone|:
+\begin{description}
+    \item [TVCC-LAVE:] contiene host che sono telecamere e un gateway e un possibile server.
+    \item [SW-LAVE: ]contiene host che sono switch e un gateway e un possibile server.
+    \item [AP-LAVE: ]contiene host che sono access point e un gateway.
+    \item [LTE-LAVE:] sottorete facoltativa che contiene host di ogni tipo che si basano su 
+    tecnologia LTE o satellitare per comunicare.
+\end{description}
+
+La \textbf{funzionalità principale del sistema} consiste nell'applicare il template \emph{ICMP ping}
+per ogni host presente nelle VLAN del progetto.
+Questo template permette di applicare a tutti gli host un comando \emph{ping}, ogni minuto, e misurare,
+tra 3 diversi item, l'accessibilità dell'host sulla rete. In caso di comunicazione interrotta 
+il relativo trigger lancia un problem con \lstinline|Severity: high|.
+
+\textbf{Warning: sarebbe bello inserire un diagramma di rete visivo.  
+Un'immagine aiuterebbe a comprendere come Zabbix comunica con gli edge router e le telecamere.}
+
+\subsection{VM Zabbix}
+L'applicativo Zabbix viene eseguito su una virtual machine gestita da Nutanix, sui server Secoval, chiamata 
+"SECZABBIX-TLC". Il sistema operativo utilizzato è Ubuntu Server (Ubuntu 24.04). Utente: "administrator".
+Il sistema Zabbix è raggiungibile da http://192.168.100.57/zabbix con utente "Admin".
+Zabbix si appoggia su un servizio MySql con utente: "zabbix@localhost".
+
+\subsubsection{Servizi fondamentali per il funzionamento}
+Questi sono i demoni e i servizi che devono rimanere sempre \inlinecode{active (running)}, per il funzionamento del sistema.
+\begin{lstlisting}[language=bash, caption=Comandi utili per la verifica dell'operatività del sistema]
+systemctl status zabbix-server #core
+systemctl status apache2  #web server che ospita l'interfaccia grafica
+systemctl status mysql #database dove viene salvato tutto
+systemctl status hikvision-monitor #demone per la ricezione in tempo reale degli allarmi dalle telecamere
+\end{lstlisting}
+
+\subsubsection{Ambiente Python venv}
+Ogni script python viene eseguito nell'ambiente virtualizzato e isolato \emph{venv}. 
+In questo modo si mantiene un ambiente isolato e protetto. 
+Qui sotto i comandi utili per interagire con venv e python:
+\begin{lstlisting}[language=bash, caption=Comandi utili per venv e  l'ambiente python]
+source venv/bin/activate #enter venv
+deactivate #exit venv
+
+#in venv:
+pip list # lists all installed packages in the venv and their versions
+pip install <package-name> # installs the package
+pip install --upgrade <package-name> # upgrades the package to the latest available version
+pip uninstall <package-name> # removes a package and its dependencies
+python --version # shows which python version is currently active
+\end{lstlisting}
+
+\subsubsection{Stato dello storage}
+Questo è lo stato del disco alla data 06/05/2026. Questa informazione può essere utile per valutare la crescita del sistema nel tempo.
+\begin{lstlisting}[language=bash, caption=df\, disk free\, command: total\, used\, and available space for all mounted  filesystems]
+administrator@seczabbix-tlc:~$ df -h
+Filesystem                         Size  Used Avail Use% Mounted on
+tmpfs                              1.6G  1.2M  1.6G   1% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv  193G   55G  129G  30% /
+tmpfs                              7.8G     0  7.8G   0% /dev/shm
+tmpfs                              5.0M     0  5.0M   0% /run/lock
+/dev/sda2                          2.0G  200M  1.6G  11% /boot
+tmpfs                              1.6G   16K  1.6G   1% /run/user/1000
+\end{lstlisting}
+
+\section{Le modalità del passaggio da PRTG a Zabbix}
+Essendo le sottoreti da monitorare già presenti in PRTG, con il nome desiderato, è stato esportato 
+un file \emph{json} contenente un array di oggetti così strutturati:
+\begin{lstlisting}[language=c, caption=Struttura della sottorete estratta da PRTG]
+    {
+        "PRTG_ID":  4591,
+        "Full_Path":  "smartCity/LAVENONE/TVCC-LAVE",
+        "GroupName":  "TVCC-LAVE",
+        "IPv4_Subnet":  "10.82.241.0/25"
+    },
+\end{lstlisting}
+Questo file è stato utilizzato per inizializzare in Zabbix le stesse sottoreti, 
+attraverso uno script python collegato tramite API: \lstinline|/home/administrator/usefulFilesForZabbix/import_zabbix.py|.
+
+In Zabbix gli host possono essere catalogati in \emph{host groups}, 
+a cui vengono assegnati da delle \emph{actions} chiamate \emph{discovery actions} 
+dopo essere stati scoperti da delle \emph{discovery rules}: sistemi automatici 
+che trovano gli host presenti in una determinata sottorete.
+
+I compiti svolti da questo script sono stati:
+\begin{itemize}
+    \item Creazione di un nuovo \emph{host group} per ogni \lstinline|"Full_Path"|
+    \item Creazione di una nuova \emph{discovery rule} per ogni \lstinline|"Full_Path"| 
+    contenente la sottorete IPv4 e la modalità con cui può scoprire nuovi host, 
+    in questo caso \lstinline|ICMP ping|
+    \item Creazione di un nuovo \emph{discovery action} per ogni \lstinline|"Full_Path"| che assegni
+    l'host appena scoperto dalla discovery rule al suo host group 
+    e allo specifico template relativo alla tipologia di sottorete a cui appartiene
+    (templateSC-TVCC, templateSC-SW, templateSC-AP, templateSC-LTE).
+\end{itemize}
+
+\section{Il funzionamento dei template ottenuti da "ICMP ping" sui gruppi di host}%da rivedere e completare
+I template appena citati (templateSC-TVCC, templateSC-SW, templateSC-AP, \\templateSC-LTE) 
+sono stati ottenuti clonando il template predefinito \emph{ICMP ping} e modificandolo.
+In particolare l'unico item e relativo trigger mantenuti \emph{Enabled} nei template è \emph{ICMP ping}, 
+la cui descrizione è: \\\emph{The host accessibility by ICMP ping.\\
+0 - ICMP ping fails;\\
+1 - ICMP ping successful.}
+
+Il trigger relativo è descritto successivamente.
+
+\chapter{Automazione dell'assegnazione dei metadati degli host - Inventory}
+
+\section{Il problema}
+Una volta scoperti gli host e memorizzati nel database di Zabbix essi sono quasi inutili, 
+perché non contengono alcuna informazione che li riguarda. 
+Molte delle loro caratteristiche, come nome e l'ID del palo a cui sono montati, 
+sono presenti in fogli Excel di configurazione con molte altre informazioni.
+
+Per collegare queste informazioni all'infrastruttura di monitoraggio,
+abbiamo sviluppato una serie di script Python che sfruttano la libreria \texttt{pandas} 
+per l'elaborazione massiva dei dati tabellari e la libreria \texttt{pyzabbix} 
+per l'interazione asincrona e sicura con le API di Zabbix. 
+L'autenticazione verso Zabbix avviene esclusivamente tramite API Token associato a un utente di
+servizio con permessi ben definiti:
+
+\begin{lstlisting}[language=Python, caption=Autenticazione tramite API Token]
+from pyzabbix import ZabbixAPI
+
+# Inizializzazione connessione API
+zapi = ZabbixAPI("http://192.168.100.57/zabbix")
+# Autenticazione con token 
+zapi.login(api_token='API_TOKEN_SEGRETO_GENERATO_DA_ZABBIX')
+\end{lstlisting}
+
+\section{Implementazione dell'aggiornamento degli host}
+
+Ogni host in Zabbix viene identificato con un attributo "name" che contiene l'IP con cui è stato scoperto. 
+Inoltre possiede anche un attributo "visible name" che lo rappresenta nel sistema. L'obiettivo è andare a estrarre 
+dal file Excel di configurazione l'informazione del loro nome, da inserire nell'attributo "visible name" 
+e l'informazione sull'id del palo su cui sono montati, da inserire le campo "location" del loro attributo
+"inventory" (ogni host possiede un ampio elenco di campi da compilare nell'attributo "inventory").
+
+In un file separato viene associata all'IDpalo anche la coordinata geografica. 
+Quindi per ogni host con uno specifico IDpalo gli si deve associare anche le coordinate geografiche.
+
+Siccome la quasi totalità delle sottoreti al momento della scrittura di questa relazione 
+presenta numerosi host con svariati problemi, che impediscono al sistema di scoprirli tramite
+ping, risulta impossibile assegnare i loro metadati in una sola volta.
+Quindi, mano a mano che essi andranno online, verranno scoperti dal sistema che dovrà associare 
+a essi le informazioni contenute nei file Excel. Proprio come per gli host scoperti inizialmente.
+Questo implica che l'assegnazione di questi dati deve essere fatta periodicamente, 
+con un periodo congruo. Per questo ho scelto di utilizzare script python, eseguiti periodicamente 
+dal servizio \texttt{crontab} presente nativamente in Ubuntu.
+
+Nella pratica vengono utilizzati degli script python eseguiti nella macchina virtuale che 
+ospita Zabbix. Tutti gli script ausiliari vengono salvati nella directory  
+\texttt{/home/administrator/zabbixHostsScripts} (con alcune eccezioni) e tutte le esecuzioni sono svolte nell'ambiente
+virtualizzato \texttt{venv} della stessa directory.
+
+\subsection{Associazione host name e IDpalo}
+%aggiungere comune e progetto edison
+Per associare l'hostname e l'IDpalo allo specifico host, identificato dall'IP, viene utilizzato lo script:
+\lstinline|zabbix_HostName_IDpalo_updater.py|.
+Questo script utilizza \texttt{pandas} per la gestione del file .xlsx chiamato \lstinline|HostInfosUbuntu.xlsx|, che 
+contiene il nome dell'host da inserire in "visible Name" e il nome del palo, "IDpalo", da inserire in 
+"inventory>location".
+Viene creato un dizionario degli host in Zabbix, comparati tramite IP con le informazioni presenti 
+in Excel e l'host viene aggiornato solo se c'è incongruenza. 
+Gli IP vengono normalizzati (si sistema il formato, ecc, ecc...) in una funzione separata(non è al 100\% perfetta,
+in alcuni casi limite ci può essere ambiguità).
+
+Questo script viene eseguito periodicamente tramite questo comando crontab, accessibile con il comando \inlinecode{crontab -e}: %inlineCode formatting
+\begin{lstlisting}[language=Python, caption=setup of periodic execution in Crontab]
+0 * * * * /home/administrator/zabbixHostsScripts/venv/bin/python3 /home/administrator/zabbixHostsScripts/zabbix_HostName_IDpalo_updater.py >> /home/administrator/zabbixHostsScripts/cron_log.log 2>&1
+\end{lstlisting}
+
+\subsection{Associazione coordinate, indirizzo e tecnologia}
+
+Per associare le coordinate, l'indirizzo e la tecnologia a ogni host identificato dall'IDpalo
+viene utilizzato lo script:
+\inlinecode{zabbix_palo_location_and_info_updater.py}. 
+Questo script utilizza \texttt{pandas} per la gestione del file .xlsx chiamato \\
+\texttt{\detokenize{info_e_location_pali_ubuntu.xlsx}}, che 
+contiene il nome del palo, "IDpalo", associato alle colonne 
+"Tecnologia", "Indirizzo", "Dec. Latitudine" e "Dec. Longitudine" da inserire per ogni host in 
+inventory>location nei vari campi: HW architecture, Site address A, Location latitude,
+Location longitude. Le informazioni di "Dec. Latitudine" e "Dec. Longitudine" devono essere aggiornate 
+ogni volta che si inseriscono nuovi possibili pali nel sistema monitorato.
+Nello script viene creato un dizionario degli host in Zabbix, comparati tramite IDpalo con le informazioni presenti 
+in Excel e l'host viene aggiornato solo se c'è incongruenza. 
+
+Questo script viene eseguito periodicamente tramite questo comando crontab, accessibile con \inlinecode{crontab -e}:
+\begin{lstlisting}[language=Python, caption=ciao]
+19 * * * * /home/administrator/zabbixHostsScripts/venv/bin/python3 /home/administrator/zabbixHostsScripts/zabbix_palo_location_and_info_updater.py >> /home/administrator/zabbixHostsScripts/cron_log.log 2>&1
+\end{lstlisting}
+
+\subsection{Memorizzazione dei messaggi di log}
+Gli script python visti fino a ora generano degli output testuali, che andrebbero nello standard output,
+ma vengono reindirizzati dai job crontab in uno specifico file di log: 
+\lstinline|cron_log.log|, ogni scrittura nel file è preceduta dal timestamp e dallo script che la genera.
+
+Per evitare di memorizzare questi dati all'infinito e generare un file di testo gigantesco, 
+ho utilizzato il sistema \textbf{Logrotate}, una utility Linux il cui scopo è la rotazione, 
+compressione e rimozione di file di log automatici.
+
+In questo caso il file contenente le configurazioni per il job logrotate del file \lstinline|cron_log.log| è accessibile tramite: \inlinecode{nano /etc/logrotate.d/zabbix_scripts}.
+Al suo interno troviamo: 
+\begin{lstlisting}[language=python, caption=Configurazione logrotate per \lstinline|cron_log.log|]
+#path of logfile to manage
+/home/administrator/zabbixHostsScripts/cron_log.log {
+    #user privileges
+    su administrator administrator
+    #time period of rotation
+    weekly
+    #how many rotated and compressed files to keep
+    rotate 12
+    #add date to filename
+    dateext
+    dateformat -%Y-%m-%d
+    #where to archive rotated logs
+    olddir /home/administrator/zabbixHostsScripts/storico_log
+    #compress the files but wait one cycle
+    compress
+    delaycompress
+    #ignore errors if logfile is missing
+    missingok
+    #don't rotate if logfile is 0 bytes
+    notifempty
+    #create - permission - user ownership 
+    create 0644 administrator administrator
+}
+\end{lstlisting}
+
+\chapter{Estrazione Dati Host tramite Template Zabbix}
+
+\section{Acquisizione informazioni sugli host}
+Oltre alle informazioni riguardanti la posizione fisica dell'host 
+è necessario associare ai singoli host informazioni sulla loro natura hardware e software.
+Le modalità per acquisire queste informazioni sono varie e differenziate tra tipologia di host.
+Questo è un limite; per ora solo la maggior parte degli host appartiene a una categoria abbastanza 
+numerosa da giustificare un sistema automatico per acquisire queste informazioni.
+
+I metodi utilizzati sono:
+\begin{itemize}
+    \item  \textbf{template con chiamata HTTP} per le telecamere di marca Hikvision.
+    \item  \textbf{template con richiesta SNMP} per gli AP e gli SW.
+\end{itemize}
+Per ogni categoria: 
+\begin{itemize}
+    \item Creazione di un nuova \emph{discovery rule} per ogni sottorete coinvolta 
+    (che possa contenere host da cui estrarre dati). Con determinati \emph{Checks} per filtrare preventivamente
+    gli host.
+    \item Creazione di un nuovo \emph{template} che possa comunicare e leggere dagli host le informazioni che espongono.
+    \item Creazione di un nuova \emph{discovery action} per ogni categoria di acquisizione dati,
+    che assegni l'host appena scoperto dalla discovery rule allo specifico template 
+    relativo alla categoria di host per l'acquisizione dati a cui appartiene.
+\end{itemize}
+
+\section{Configurazione dell'host Inventory}
+Siccome le informazioni estratte dai template devono essere memorizzate sugli host, 
+in modo automatico, l'inventory degli host deve essere impostato sull'\texttt{Inventory mode} \textbf{Automatic}. 
+Questo viene specificato nelle \emph{discovery action} nel menu \emph{operations} creando una operazione: \texttt{Set host inventory mode: Automatic}.
+
+All'interno dei Template preconfigurati che sono stati adattati allo scopo, alcuni item
+sono configurati per riversare il dato raccolto in uno specifico
+campo dell'inventory tramite l'opzione \emph{Populates host inventory field},
+mappando il valore su campi come \texttt{Model}, \texttt{Software} o \texttt{Serial number A}. 
+I meccanismi esatti di estrazione variano in base alla tipologia e al brand dell'apparato.
+
+\section{Template telecamere Hikvision}
+Per gli host che sono telecamere hikvision (tutte modello: DS-2CD3666G2-IZS)
+sono state create automaticamente le discovery rules (con script \texttt{/home/administrator\\/usefulFilesForZabbix/DiscoveryRuleCreationForHikvison\\/createDiscoveryRulesForHikvisions.py})\\
+seguendo questa schema per il nome delle discovery rules, ad esempio: \\\lstinline|Discovery - smartCity_HikvisionCameras_AGNOSINE_LTE-AGNO|.
+
+Esse implementano sulle sottoreti \textbf{TVCC} e \textbf{LTE}, identificate da subnet/subnetmask, 2 checks: 
+collegamento HTTP port 80 e collegamento TCP port range 8443 (che solo queste telecamere espongono). 
+In questo modo vengono filtrati gli host di altro tipo, 
+come switch e server che risiedono sulle stesse sottoreti.
+
+Queste discovery rules vengono eseguite ogni ora e le loro risposte vengono elaborate dalla discovery action 
+\lstinline|smartCity_Auto-Configurazione_Hikvision| che applica il template e setta l'inventory mode su automatic.
+
+Per ottenere il template ne è stato modificato uno dedicato (\lstinline|Hikvision camera by HTTP|)
+ottenendo \lstinline|templateSC_configurazione_hikvision|, che interroga tramite API HTTP con autenticazione le telecamere,
+e si occupa di leggere le informazioni e inserirle negli appropriati campi dell'inventory.
+Lo username e password sono standard per tutte le telecamere, e sono contenuti in delle macro all'interno del template: {\$PASSWORD} e {\$USER}.
+
+\section{Apparati standard (switch, access point, LTE)}
+Per gli apparati che supportano facilmente l'utilizzo di SNMP come Switch e Access Point si è scelta
+quella tecnologia, anche se non è possibile estrarre un set molto ampio di informazioni.
+
+Per questi host sono state create automaticamente le discovery rules (con script \texttt{/home/administrator\\/usefulFilesForZabbix/DiscoveryRuleCreationForHikvison\\/apCreateDiscoveryRules.py e /swCreateDiscoveryRules.py})\\
+seguendo questa schema per il nome delle relative discovery rules, ad esempio: \\\lstinline|Discovery - smartCity_APcambium_CAPOVALLE_AP-CAPO| 
+e \lstinline|Discovery - smartCity_SWsenzaMarca_MAZZANO_SW-MAZZ|.
+
+Esse implementano sulle sottoreti \textbf{SW} e \textbf{AP} un Check per filtrare gli host di altro tipo: 
+collegamento SNMPv2 agent port 161 con SNMP community public e SNMP OID 1.3.6.1.2.1.1.1.0 (OID System Description, all'interno del MIB-II standard).
+
+Queste discovery rules vengono eseguite ogni ora e le loro risposte vengono elaborate dalle discovery action 
+\lstinline|smartCity_Auto-smartCity_Auto-Configurazione_APcambium| e \lstinline|smartCity_Auto-Configurazione_SWsenzaMarca| 
+che applicano il template adatto e settano l'inventory mode su automatic.
+
+Per ottenere i template ne è stato modificato uno dedicato (\lstinline|Generic by SNMP|) ottenendo
+\lstinline|templateSC_Generic by SNMP_AP| per gli AP e \lstinline|templateSC_Generic by SNMP_SW| per gli SW. 
+Essi interrogano tramite SNMP gli host, leggono le informazioni e le inseriscono negli appropriati campi dell'inventory.
+
+Per l'esplorazione dei campi raggiungibili in SNMP ho usato questo strumento CLI:
+
+\begin{lstlisting}[language=bash, caption=Esempio di discovery manuale dei MIB via CLI]
+snmpwalk -v2c -c public 10.0.50.5 
+\end{lstlisting}
+%corretto fino a qui
+
+\chapter{Sicurezza e rilevamento manomissioni (ISAPI)}
+
+Essendo questo un progetto di gestione di telecamere di sicurezza abbastanza moderne è stato valutato come utile l'utilizzo dei sistemi di 
+intelligenza artificiale implementati a bordo per rilevare diversi tipi di eventi che accadono alla singola telecamera.
+Tra questi troviamo la possibilità di rilevare l'oscuramento dell'obiettivo della telecamera. 
+Per sfruttare questa funzionalità è stato creato un sistema di raccoglimento e invio automatico di avvisi, integrandolo con Zabbix.
+
+\section{Descrizione dell'implementazione}
+Il sistema gestisce 2 eventi provenienti dalle telecamere: il  tamperdetection o l'oscuramento dell'obiettivo e il motiondetection o il rilevamento di movimento. 
+Il secondo è stato implementato solo per motivi di debug, dato che condivide gli stessi canali dell'oscuramento ma è molto più facilmente riproducibile.
+
+Il workflow che viene eseguito per garantire la corretta gestione di queste informazioni si divide in questi step:
+\begin{itemize}
+    \item Estrazione degli IP delle telecamere Hikvision presenti in Zabbix con uno script python. 
+    \item Ogni IP estratto è utilizzato per lanciare verso la telecamera le configurazioni dei loro servizi tamperdetection e motiondetection tramite configurazioni in formato XML.
+    \item Si apre una connessione http con ogni telecamera mantenuta perpetuamente aperta in modo asincrono, attraverso uno script python. Su queste connessioni le telecamere comunicano i loro avvisi
+    ed essi vengono comunicati a Zabbix sugli appositi Item dei trigger tramite un API CLI di Zabbix.
+    \item All'interno del template relativo alle telecamere Hikvision abbiamo 2 trigger per motiondetection e oscuramento con le loro impostazioni.
+    \item I log di questi script vengono gestiti da logrotate salvandoli fino a 3 mesi.
+\end{itemize}
+\textbf{Bottleneck}: se molti allarmi si attivano contemporaneamente, 
+lo script python lancia altrettanti script bash e ciò sovraccaricherebbe la CPU. 
+Se l'utilizzo rimane per il tamperdetection e solo saltuariamente per motiondetection non è un problema. 
+
+\section{Estrazione degli IP delle telecamere Hikvision}
+
+È stato creato uno script python in \\\inlinecode{/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts}\\\inlinecode{/estraiIPtelecamereHikvision.py}
+che si collega tramite API token a Zabbix, estrae tutti gli host, con il relativo campo "contact" dell'inventory, per filtrarli, e salva l'indirizzo IP solo
+se nel "contact" abbiamo una stringa corrispondente a "Hikvision.China": \\
+\inlinecode{if inventario.get("contact") == "Hikvision.China":}
+Gli IP sono salvati nel file \inlinecode{ip_hikvision.txt} nella stessa directory, sovrascrivendone il contenuto per aggiornare la lista. 
+
+Questo script viene eseguito periodicamente ogni ora dal servizio crontab con un \textit{cronjob} 
+sotto l'utente \texttt{administrator} e salva lo standard output in un file di log: 
+\\\inlinecode{/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts}\\\inlinecode{/ipHik_log.log}
+
+\begin{lstlisting}[language=bash, caption=Automazione crontab estrazione degli IP delle telecamere Hikvision]
+#Esecuzione oraria al minuto 35
+35 * * * * /home/administrator/zabbixHostsScripts/venv/bin/python3 /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/estraiIPtelecamereHikvision.py >> /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/ipHik_log.log 2>&1
+\end{lstlisting}
+
+\section{Configurazioni tamperdetection e motiondetection hikvision tramite XML}
+
+Le telecamere Hikvision espongono una API HTTP che permette di modificare le configurazioni e
+le impostazioni della telecamera tramite l'upload di file semi strutturati XML. 
+Essi riguardano il setup delle impostazioni e della modalità di comunicazione per 2 eventi: tamperdetection e motiondetection 
+(mai utilizzati automaticamente, sono commentati). 
+
+Questi file si trovano in 
+\\\inlinecode{/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/XMLs}\\ e quelli riguardanti il tamperdetection/oscuramento sono:
+\inlinecode{oscuramento_setup.xml} e \inlinecode{triggers_oscuramento_setup.xml}. I quali rispettivamente gestiscono l'attivazione e l'impostazione dell'area dell'immagine in cui la telecamera è 
+sensibile all'oscuramento e la comunicazione dell'evento triggerato all'\texttt{EventTriggerNotification center} (lancia la comunicazione http).
+
+\subsection{Implementazione del sistema per ogni telecamera}
+Per ogni IP individuato dallo script visto in precedenza, chiamiamo 2 API, tramite uno script bash: \\
+\inlinecode{/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/}\\
+\inlinecode{configura_telecamere.sh}.
+Questo script utilizza la utility, per CLI, \emph{curl} (Client URL) con metodo HTTP PUT
+per caricare sulla telecamera con autenticazione le configurazioni XML viste prima.
+
+\begin{lstlisting}[language=bash, caption=Chiamata API hikvision per configurare il tamperdetection configura\_telecamere.sh]
+  # --- 1. Attivazione sensore Tampering ---
+  #CURL FLAGS
+  #-s	--silent        no graphical output
+  #--digest             digest auth, hashed password
+  #-u	--user          credentials
+  #-X PUT	--request   HTTP method
+  #-d	--data          data to be sent 
+  #-H	--header        header, XML content
+  RESPONSE=$(curl -s --digest -u "$USER:$PASS" -X PUT -d "@XMLs/oscuramento_setup.xml" "http://$ip/ISAPI/System/Video/inputs/channels/1/tamperDetection" -H "Content-Type: application/xml")
+  #grep flag -q is for quite, no output, only 1 for found 0 for not found
+  if echo "$RESPONSE" | grep -q "<statusCode>1</statusCode>"; then
+    echo " [-] Setup Tampering: OK"
+  else
+    echo " [X] Setup Tampering: ERRORE"
+    host_has_errors=1
+  fi
+
+  # --- 2. Trigger Tampering al Centro ---
+  RESPONSE=$(curl -s --digest -u "$USER:$PASS" -X PUT -d "@XMLs/triggers_oscuramento_setup.xml" "http://$ip/ISAPI/Event/triggers/tamper-1" -H "Content-Type: application/xml")
+  if echo "$RESPONSE" | grep -q "<statusCode>1</statusCode>"; then
+    echo " [-] Trigger Tampering: OK"
+  else
+    echo " [X] Trigger Tampering: ERRORE"
+    host_has_errors=1
+  fi
+\end{lstlisting}
+
+Infine, dopo l'esecuzione viene stampato un riepilogo: 
+
+\begin{lstlisting}[language=bash, caption=Riepilogo configura\_telecamere.sh]
+
+echo "================================================================="
+echo "RIEPILOGO ESECUZIONE"
+echo "================================================================="
+echo "Terminato il: $(date '+%Y-%m-%d %H:%M:%S')"
+echo "Totale telecamere processate: $TOTAL_HOSTS"
+echo ""
+echo "=> Configurate con successo (tutto OK): $SUCCESS_HOSTS su $TOTAL_HOSTS"
+echo "=> Fallite (almeno un errore): $ERROR_HOSTS su $TOTAL_HOSTS"
+echo "================================================================="
+\end{lstlisting}
+
+\subsection{Cronjob e log}
+Questo script viene eseguito periodicamente ogni ora dal servizio crontab con un \textit{cronjob} 
+sotto l'utente \texttt{administrator} e salva lo standard output in un file di log: 
+\\\inlinecode{/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts}\\\inlinecode{/config_telecamere_log.log}
+
+\begin{lstlisting}[language=bash, caption=Automazione crontab configurazione dell'oscuramento delle telecamere Hikvision]
+#Esecuzione oraria al minuto 2
+2 * * * * /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/configura_telecamere.sh >> /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/config_telecamere_log.log 2>&1
+\end{lstlisting}
+
+\section{Ricezione degli eventi e invio a Zabbix}
+È stato creato uno script python in \\\inlinecode{/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts}\\\inlinecode{/hikvision_listener_multiplehosts.py}
+che si comporta come middleware. Il suo scopo principale è fare da ponte tra le telecamere di videosorveglianza Hikvision e il server di monitoraggio Zabbix, 
+intercettando gli allarmi in tempo reale e convertendoli valori di item nel sistema Zabbix.
+ 
+Invece di interrogare continuamente le telecamere (polling),
+lo script si mette in "ascolto" continuo sui loro flussi di eventi (streaming), 
+catturando istantaneamente anomalie come il rilevamento del movimento (VMD) 
+o l'oscuramento della telecamera (Tampering/Shelter alarm).
+
+\subsection{Implementazione del listener}
+Lo script si collega tramite API token a Zabbix, utilizzando la libreria pyzabbix, 
+estrae tutti gli host, con il relativo campo "contact" dell'inventory, per filtrarli, e salva l'indirizzo IP solo
+se nel "contact" abbiamo una stringa corrispondente a "Hikvision.China".
+Questo rende il sistema altamente scalabile: se aggiungi una nuova telecamera su Zabbix, 
+il riavvio successivo dello script la includerà automaticamente.
+
+Per ogni telecamera trovata, viene avviato un "task" indipendente grazie alla libreria asyncio(Funzione ascolta\_telecamera). 
+Questo permette di gestire decine di telecamere contemporaneamente usando un solo processo leggero, 
+senza che l'attesa di dati da una telecamera blocchi le altre.
+Lo script utilizza http per aprire una connessione HTTP persistente (Stream) verso l'endpoint ISAPI delle telecamere (/ISAPI/Event/notification/alertStream).
+In questo flusso continuo, la telecamera invia frammenti in formato XML ogni volta che accade qualcosa.
+Lo script legge il flusso riga per riga, isola i blocchi XML (<EventNotificationAlert>) e li analizza in tempo reale.
+Estrae il tipo di evento (eventType) e il suo stato (eventState, se attivo o rientrato).
+Quando viene rilevato un evento valido (es. movimento o telecamera coperta), lo script deve avvisare Zabbix.
+Per farlo lo script esegue un comando di sistema: zabbix\_sender. 
+Questo è uno strumento a riga di comando nativo di Zabbix, 
+progettato specificamente per inviare dati ad alte prestazioni a Zabbix.
+Il comando comunica l'hostname esatto della telecamera, la chiave dell'allarme 
+(es. hikvision.motionDetection) e il valore (1 per allarme attivo, 0 per allarme rientrato).
+
+\subsubsection{Items in Zabbix}
+Nel template \texttt{templateSC\_configurazione\_hikvision} sono stati creati 2 nuovi Item di tipo \emph{Zabbix trapper}: 
+AllarmeItemOscuramentoProva(key: hikvision.oscuration) e AllarmeItemMotionDetectionProva(hikvision.motionDetection). %valutare se togliere prova
+Essi sono aggiornati solo da zabbix\_sender. 
+
+\subsection{Esecuzione continuativa e log}
+
+Lo script viene configurato come servizio systemd, garantendo che si avvii automaticamente all'accensione del server.
+Il file con le configurazioni è \\\inlinecode{/etc/systemd/system/hikvision-monitor.service}.
+Se lo script dovesse bloccarsi per un errore critico, il sistema operativo lo riavvierà automaticamente entro 10 secondi.
+È stata inserita una regola che "uccide" e riavvia il servizio ogni 24 ore in modo controllato. 
+Questo è un ottimo accorgimento tecnico per evitare accumuli di memoria 
+dovuti alle connessioni in streaming prolungate e per forzare il sistema a riscaricare la lista aggiornata delle telecamere da Zabbix ogni giorno.
+Tutto l'output standard viene reindirizzato in un file di log \inlinecode{hikvision_listener_log.log} su disco per permettere il monitoraggio del corretto funzionamento.
+
+
+\begin{lstlisting}[language=bash, caption=Configurazione Systemd per hikvision\_listener\_multiplehosts.py]
+[Unit]
+Description=Monitoraggio Eventi Hikvision (Tampering e VMD) verso Zabbix
+After=network.target
+
+[Service]
+# Esegue Python in modalità "unbuffered" (-u) per scrivere subito i print nel log
+ExecStart=/home/administrator/zabbixHostsScripts/venv/bin/python3 -u /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/hikvision_listener_multiplehosts.py
+WorkingDirectory=/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts
+
+# Politiche di riavvio in caso di crash
+Restart=always
+RestartSec=10
+
+# metodo per l'aggiornamento quotidiano:
+# Forza il riavvio del servizio ogni 86400 secondi (24 ore)
+RuntimeMaxSec=86400
+
+# Gestione dei Log
+StandardOutput=append:/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/hikvision_listener_log.log
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target
+
+#Per controllare se lo script sta girando correttamente, chiedere lo stato a systemd:
+#sudo systemctl status hikvision-monitor.service
+
+#E per vedere l'output in tempo reale, usare il comando tail:
+#tail -f /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/hikvision_listener_log.log
+\end{lstlisting}
+
+\section{Gestione dei log relativi al rilevamento manomissioni}
+Gli script visti fino a ora generano degli output testuali, che andrebbero
+nello standard output, ma vengono reindirizzati dai job crontab e systemd in specifici file di log: 
+ipHik\_log.log, config\_telecamere\_log.log e hikvision\_listener\_log.log. 
+Ogni scrittura nei file è preceduta dal timestamp.
+Come visto in precedenza per evitare di memorizzare questi dati all'infinito e generare un file di testo
+gigantesco, ho utilizzato il sistema Logrotate, una utility linux il cui scopo è la
+rotazione, compressione e rimozione di file di log automatici.
+In questo caso il file contenente le configurazioni per il job logrotate 
+é accessibile tramite: \inlinecode{nano /etc/logrotate.d/hikvision_scripts}. Al
+suo interno troviamo:
+
+\begin{lstlisting}[language=bash, caption=Cronjob log relativi al rilevamento manomissioni]
+# Blocco 1: Per gli script periodici (crontab)
+/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/config_telecamere_log.log
+/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/ipHik_log.log {
+    su administrator administrator
+    weekly
+    maxsize 30M
+    rotate 12
+    dateext
+    dateformat -%Y-%m-%d
+    olddir /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/storico_log
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 0644 administrator administrator
+}
+
+# Blocco 2: Per lo script Python in ascolto continuo (systemd)
+/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/hikvision_listener_log.log {
+    su administrator administrator
+    weekly
+    maxsize 15M
+    rotate 12
+    dateext
+    dateformat -%Y-%m-%d
+    olddir /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/storico_log
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+}
+\end{lstlisting}
+
+\chapter{Trigger e Report Giornalieri}
+
+Fino a ora si è parlato di come il sistema comunica le informazioni agli \emph{item} di Zabbix, ossia i sensori.
+Adesso verranno descritti i \emph{trigger}, ossia le soglie, le regole logiche, che vengono eseguite sui dati forniti dagli item. 
+Zabbix e i suoi template ne implementano molti, spesso con poco rilevanti per le informazioni che vogliamo estrarre dalla rete, 
+quindi verranno descritti solo i \emph{trigger} che sono stati lasciati attivi, \emph{Enabled}, non quelli disattivati. 
+
+Questi trigger sollevano \emph{problems}, relativi alla problematica che rilevano, e spesso, lanciano delle allerte tramite e-mail.
+Oltre all'invio di queste notifiche per le criticità,
+è emersa la necessità di fornire alla direzione e al team tecnico un riepilogo giornaliero. 
+Poiché Zabbix non supporta nativamente l'invio programmato di file arbitrari o
+analisi testuali complesse via email, è stata progettata un'architettura in tre fasi: 
+esportazione locale in formato CSV dei \emph{problems} tramite \textit{Custom AlertScript}, elaborazione analitica tramite Python e invio automatizzato via \textit{Crontab}.
+
+\section{Tutti i template e i relativi trigger}
+\begin{enumerate} 
+    \item \textbf{templateSC-AP} clonato da \emph{ICMP ping}
+        \begin{itemize}
+            %\item \textbf{ICMP ping} The host accessibility by ICMP ping
+            \item \textbf{ICMP Ping: Unavailable by ICMP ping} \\
+            \inlinecode{max(/templateSC-SW/icmpping, 1h)=0} \\
+            Nell'ultima ora i valori dell'item "icmpping" sono tutti 0, ping fallito.
+        \end{itemize}
+    \item \textbf{templateSC-LTE} clonato da \emph{ICMP ping}
+        \begin{itemize}
+            \item \textbf{ICMP Ping: Unavailable by ICMP ping} \\
+            \inlinecode{max(/templateSC-SW/icmpping, 1h)=0} \\
+            Nell'ultima ora i valori dell'item "icmpping" sono tutti 0, ping fallito.
+        \end{itemize}
+    \item \textbf{templateSC-SW} clonato da \emph{ICMP ping}
+        \begin{itemize}
+            \item \textbf{ICMP Ping: Unavailable by ICMP ping} \\
+            \inlinecode{max(/templateSC-SW/icmpping, 1h)=0} \\
+            Nell'ultima ora i valori dell'item "icmpping" sono tutti 0, ping fallito.
+        \end{itemize}
+    \item \textbf{templateSC-TVCC} clonato da \emph{ICMP ping}
+        \begin{itemize}
+            \item \textbf{ICMP Ping: Unavailable by ICMP ping} \\
+            \inlinecode{max(/templateSC-SW/icmpping, 1h)=0} \\
+            Nell'ultima ora i valori dell'item "icmpping" sono tutti 0, ping fallito.
+        \end{itemize}
+    \item \textbf{templateSC\_configurazione\_hikvision} clonato da \emph{Hikvision camera by HTTP}
+        \begin{itemize}
+            \item \textbf{AllarmeMotionDetectionTrigger} \\
+            \inlinecode{last(/templateSC_configurazione_hikvision/hikvision.motionDetection)=1 and nodata(/templateSC_configurazione_hikvision/hikvision.motionDetection,20s)=0} \\
+            L'ultimo valore ricevuto dall'item "hikvision.motionDetection" è 1, ossia movimento percepito, e l'item ha ricevuto valori negli ultimi 20 secondi. 
+            Questo trigger è Disabled, ma è presente per motivi di debug.
+            \item \textbf{AllarmeOscurationTrigger} \\
+            \inlinecode{count(/templateSC_configurazione_hikvision/hikvision.oscuration, 30m, "eq", "1") >= 3} \\
+            Si attiva solo se negli ultimi 30 min sono stati registrati almeno 3 valori di "hikvision.oscuration" a 1.
+        \end{itemize}
+    \item \textbf{templateSC\_Generic by SNMP\_AP} clonato da \emph{Generic by SNMP}
+        \begin{itemize}
+            \item Nessun trigger Enabled, solo gli item per l'estrazione di dati tramite SNMP.
+        \end{itemize}
+    \item \textbf{templateSC\_Generic by SNMP\_SW} clonato da \emph{Generic by SNMP}
+        \begin{itemize}
+            \item Nessun trigger Enabled, solo gli item per l'estrazione di dati tramite SNMP.
+        \end{itemize}
+    \item \textbf{templateFuoriProgettoEdison\_Barghe\_ICMP Ping} clonato da \emph{ICMP ping}
+        \begin{itemize}
+            \item \textbf{ICMP Ping: Unavailable by ICMP ping} \\
+            \inlinecode{max(/templateSC-SW/icmpping, 1h)=0} \\
+            Nell'ultima ora i valori dell'item "icmpping" sono tutti 0, ping fallito.
+        \end{itemize}
+\end{enumerate}
+
+\section{Georeferenziazione  e integrazione GIS integrato in Zabbix}
+I metadati raccolti in Zabbix, come longitudine e latitudine, vengono utilizzati nativamente dal software GIS integrato (geographic information system).
+Le coordinate geografiche degli apparati vengono estratte dai campi \texttt{location\_lat} (Latitudine) e \texttt{location\_lon} (Longitudine) dell'inventory degli host.
+All'interno della dashboard \emph{Mappa}, si possono visualizzare gli host su di una cartina, codificati tramite colore per la gravità dei problemi che eventualmente riscontrano.
+
+\section{Alerting tramite email}
+I trigger visti fino ad ora lanciano dei \emph{Problem}, spesso di \emph{Severity: High}.
+Essi sono memorizzati e gestiti da Zabbix internamente, ma è utile, per Secoval, avere degli alert via mail che contengano i dettagli dei problemi.
+
+\subsection{Setup delle email}
+\begin{itemize}
+    \item Rendere \emph{Enabled} il media type \textbf{Email} e inserire le informazioni del server di posta elettronica a cui si aggancia. \\
+        Alerts>Media types>Email;
+    \item Set up dello user group \emph{EmailAlerts}
+    \item Set up degli user, nome e pw, media(type: email, indirizzo dell'utente a cui si vuole che la mail arrivi)
+\end{itemize}
+
+\subsection{Setup delle trigger actions}
+\begin{tabular}{|p{3cm}|p{5.25cm}|p{5.25cm}|}
+\hline
+\textbf{Name} & \textbf{Conditions} & \textbf{Operations} \\
+\hline
+% Row 1
+oscuramento & 
+Trigger equals templateSC\_configurazio\-ne\_hikvision: AllarmeOscurationTrigger & 
+Send message to users: Brando Calderara, CED\_secoval via Email 
+\newline
+Send message to users: Admin (Zabbix Administrator) via CustomExportProblemsToCSV \\
+\hline
+% Row 2
+motionDetection & 
+Trigger equals templateSC\_configurazio\-ne\_hikvision: AllarmeMotionDetectionTrigger & 
+Send message to users: Brando Calderara via Email 
+\newline 
+Send message to users: Admin (Zabbix Administrator) via CustomExportProblemsToCSV \\
+\hline
+% Row 3
+Allarme Ping Down Unavailable - Progetto Edison SmartCity & 
+Trigger equals templateSC-TVCC: ICMP Ping: Unavailable by ICMP ping\newline
+Trigger equals templateSC-SW: ICMP Ping: Unavailable by ICMP ping\newline
+Trigger equals templateSC-AP: ICMP Ping: Unavailable by ICMP ping\newline
+Trigger equals templateSC-LTE: ICMP Ping: Unavailable by ICMP ping & 
+Send message to users: Brando Calderara via Email 
+\newline 
+Send message to users: Brando Calderara, CED\_secoval via Email\newline
+Send message to users: Admin (Zabbix Administrator) via CustomExportProblemsToCSV \\
+\hline
+% Row 4
+Allarme Ping Down Unavailable - FuoriProgettoEdison/Barghe & 
+Trigger equals templateFuoriProgettoEdison\_Barghe\_ICMP Ping: ICMP Ping: Unavailable by ICMP ping\newline
+Host group equals FuoriProgettoEdison/Barghe & 
+Send message to users: Brando Calderara via Email 
+\newline 
+Send message to users: Brando Calderara, Catalin Surdu, CED\_secoval, Sergio Scotuzzi via Email\newline
+Send message to users: Admin (Zabbix Administrator) via CustomExportProblemsToCSV \\
+\hline
+\end{tabular}
+
+Al loro interno, nelle trigger actions, in \emph{operations}, si aggiunge una operazione, di tipo Email, agli user interessati.
+Sotto \emph{Custom Message} possiamo personalizzare l'email inviata, aggiungendo con le macro le informazioni utili sull'host e il problema. 
+Stessa cosa in \emph{Recovery operations}.
+
+\emph{Send message to users: Admin (Zabbix Administrator) via CustomExportProblemsToCSV} questa operazione verrà approfondita successivamente.
+
+\section{Esportazione dati tramite custom AlertScript}
+Per tracciare l'intero ciclo di vita di un problema (dalla sua apertura alla sua risoluzione), 
+è stato creato un nuovo \textit{Media Type} di tipo \texttt{Script} in Zabbix. 
+Ogni volta che un trigger si attiva o si ripristina, l'Action associata "invia" le 
+informazioni a uno script Bash locale sul server Linux, anziché spedire una email.
+
+Lo script Bash si occupa di formattare le Macro native di Zabbix e accodarle in un file 
+\texttt{/var/log/zabbix/ExportedProblemsToCSV.csv}.
+
+\begin{lstlisting}[language=bash, caption=Custom AlertScript per l'esportazione in CSV (/usr/lib/zabbix/alertscripts/ScriptCustomExportProblemsToCSV.sh)]
+#!/bin/bash
+
+# Define where to save the CSV file
+LOGFILE="/var/log/zabbix/ExportedProblemsToCSV.csv"
+#LOGFILE="/home/administrator/zabbixHostsScripts/dailyRecordsScripts/ExportedProblemsToCSV.csv"
+
+# If the file doesn't exist yet, create it and write the Header row
+if [ ! -f "$LOGFILE" ]; then
+    echo "Status,EventID,Date,Time,Host,IP,Severity,EventName,TriggerName,RecoveryDate,RecoveryTime,Duration" > "$LOGFILE"
+    # Make sure Zabbix has permission to write to it
+    #chown zabbix:zabbix "$LOGFILE"
+fi
+
+# Append the incoming Zabbix data as a new row in the CSV
+# Notice the curly braces for variables 10, 11, and 12!
+echo "\"$1\",\"$2\",\"$3\",\"$4\",\"$5\",\"$6\",\"$7\",\"$8\",\"$9\",\"${10}\",\"${11}\",\"${12}\"" >> "$LOGFILE""
+\end{lstlisting}
+
+I parametri passati allo script dall'interfaccia web di Zabbix corrispondono a specifiche Macro, 
+tra cui \texttt{{EVENT.STATUS}} (per distinguere \texttt{PROBLEM} da \texttt{RESOLVED}), \texttt{{EVENT.ID}}, e \texttt{{EVENT.RECOVERY.TIME}}. 
+
+\section{Elaborazione analitica tramite Python}
+Per dare significato ai dati grezzi estratti nel CSV, sono stati sviluppati degli script Python 
+(\texttt{emailAndClearCsvProblemFile.py}, monthlyReport.py) che fungono da motore di analisi. 
+Sfruttando la libreria nativa \texttt{csv}, nel primo caso, 
+lo script legge tutte le righe registrate nelle 24 ore precedenti e le categorizza applicando specifiche logiche. 
+Nel secondo caso si genera un report, che contiene diversi KPI.
+
+\subsection{Categorizzazione degli eventi: emailAndClearCsvProblemFile.py}
+Lo script Python elabora il file e divide le informazioni in quattro sezioni principali, che andranno a comporre il corpo dell'email:
+\begin{itemize}
+\item \textbf{Riepilogo:} Conteggio totale dei problemi rilevati e di quelli risolti automaticamente
+ (riconciliando le righe tramite la combinazione di \texttt{Host} ed \texttt{EventID}).
+\item \textbf{Problemi Non Risolti:} Una lista degli host che hanno registrato uno stato 
+\texttt{PROBLEM} senza un corrispondente \texttt{RESOLVED} nello stesso intervallo di tempo.
+\item \textbf{Infrastruttura Instabile (Oscillazione/Flapping):} Il programma conta quante volte un singolo apparato 
+ha attivato l'allarme \textit{ICMP Ping: Unavailable}. 
+Se il conteggio supera una soglia definita (es. 2 disconnessioni in un giorno), 
+l'host viene flaggato come "instabile", suggerendo problemi di alimentazione o di segnale LTE anziché un semplice riavvio.
+\item \textbf{Allarmi di Sicurezza Critici (Oscuramento):} Lo script filtra il CSV alla ricerca di eventi con 
+\texttt{TriggerName} pari a \textit{AllarmeOscurationTrigger}. 
+Se presenti, vengono messi in risalto per richiedere un'ispezione fisica immediata.
+\end{itemize}
+
+\begin{lstlisting}[language=Python, caption=Estratto del motore di analisi Python per la rilevazione delle oscillazioni]
+Logica di scansione CSV e aggregazione
+
+for row in reader:
+status = row.get('Status', '')
+host = row.get('Host', '')
+trigger = row.get('TriggerName', '')
+
+unique_key = f"{host}_{trigger}"
+
+if status == "PROBLEM":
+    total_problems += 1
+    unsolved_dict[unique_key] = row
+    
+    # Conteggio cadute ICMP per rilevamento Flapping
+    if "ICMP Ping" in trigger:
+        icmp_counts[host] += 1
+        
+elif status == "RESOLVED":
+    total_resolved += 1
+    # Rimuove il problema dalla lista dei non risolti
+    if unique_key in unsolved_dict:
+        del unsolved_dict[unique_key]
+
+Identifica host instabili (3 o piu cadute)
+
+flapping_hosts = {host: count for host, count in icmp_counts.items() if count >= 3}
+\end{lstlisting}
+
+\section{Funzionamento: monthlyReport.py}
+% \section{Automazione della Reportistica Mensile e Calcolo dei KPI}
+% \label{sec:report_mensile}
+
+Per garantire una visione d'insieme sullo stato di salute dell'infrastruttura, 
+è stato sviluppato uno script Python dedicato alla generazione e all'invio di un report mensile. 
+Questo strumento elabora eventi registrati da Zabbix, estrapolando metriche chiave (KPI).
+
+\subsection{Logica di funzionamento}
+Lo script agisce elaborando un archivio di file CSV generati quotidianamente, 
+i quali contengono lo storico degli eventi (trigger) catturati da Zabbix. 
+Attraverso la libreria \texttt{datetime}, il sistema itera sulle righe dei log filtrando e isolando 
+esclusivamente gli eventi verificatisi nel mese solare precedente a quello di esecuzione. 
+Questo approccio algoritmico garantisce che il report prodotto contenga dati consolidati e definitivi del mese appena trascorso. 
+
+Inoltre, per contestualizzare i dati rispetto alle dimensioni attuali della rete, 
+lo script interroga in tempo reale le API JSON-RPC di Zabbix tramite il metodo \texttt{host.get}. 
+Questa chiamata, ottimizzata tramite il parametro \texttt{countOutput}, restituisce istantaneamente il numero esatto di host attivi 
+e monitorati nel momento della generazione del report.
+
+\subsection{Metriche e KPI calcolati}
+L'analisi aggregata dei log permette di estrapolare diversi (KPI) per valutare la stabilità dell'infrastruttura Smart City:
+\begin{itemize}
+    \item \textbf{Volume degli eventi:} conteggio totale dei trigger entrati in stato \texttt{PROBLEM} 
+    e di quelli risolti (\texttt{RESOLVED}) durante l'intero mese.
+    \item \textbf{Analisi delle sottoreti:} suddivisione percentuale e numerica degli eventi problematici per tipologia di apparato,
+     calcolata analizzando il terzo e quarto ottetto degli indirizzi IP (es. TVCC, Switch, Access Point, connettività LTE).
+    \item \textbf{Classifica host critici:} identificazione dei 10 dispositivi (\textit{Top 10}) 
+    che hanno generato il maggior numero di anomalie, permettendo di isolare i colli di bottiglia hardware o di rete.
+    \item \textbf{Distribuzione temporale:} mappatura degli eventi per fascia oraria e distribuzione settimanale. 
+    Questa metrica è cruciale per identificare pattern di disservizio legati a momenti specifici della giornata.
+\end{itemize}
+
+\subsection{Esecuzione pianificata e salvataggio dei log}
+L'esecuzione dello script è completamente automatizzata e slegata dall'intervento umano grazie al demone \texttt{cron} di Ubuntu Server. 
+È stato configurato un \textit{cron job} specifico per l'avvio alle ore 01:00 del primo giorno di ogni mese solare. 
+
+Per garantire la tracciabilità delle esecuzioni e facilitare le operazioni di \textit{troubleshooting}, 
+l'output standard e gli eventuali log di errore generati da Python vengono reindirizzati e accodati in un file di log locale 
+(\texttt{cron\_report.log}) utilizzando la sintassi di ridirezione della shell (\texttt{>> \dots 2>\&1}).
+
+\subsection{Notifica automatica via email}
+Al termine della computazione, il report testuale formattato viene inviato in automatico ai referenti tecnici del CED aziendale.
+Questo modulo sfrutta la libreria \texttt{smtplib} e \texttt{email.message} di Python per interfacciarsi con il server SMTP interno (\texttt{pmg.secoval.it}). 
+
+% Sfruttando la configurazione di \textit{anonymous relay} intrinseca alle reti locali protette, 
+% lo script stabilisce una connessione TCP sulla porta 25 (originata dall'indirizzo IP fidato del server Zabbix) e 
+% provvede all'inoltro del messaggio senza la necessità di trasmettere credenziali di autenticazione in chiaro, 
+% minimizzando la superficie di attacco e la complessità di gestione dei segreti.
+
+\section{Automazione e gestione del ciclo di vita: emailAndClearCsvProblemFile.py}
+L'ultimo tassello dell'architettura riguarda l'automazione dell'invio e la manutenzione dello spazio disco. 
+Lo script Python utilizza la libreria \texttt{smtplib} per compilare il testo analizzato, 
+allegare il file CSV per completezza di archiviazione, e instradare l'email attraverso il server SMTP interno 
+(\texttt{pmg.secoval.it} sulla porta 25, senza necessità di autenticazione TLS grazie alle regole di relay interne).
+
+Per garantire che l'esecuzione avvenga puntualmente ogni mattina,
+e soprattutto per permettere allo script di avere i privilegi necessari per eliminare il file CSV 
+(creato dall'utente di sistema \texttt{zabbix}), è stato configurato un \textit{cronjob} sotto l'utente \texttt{root}.
+
+\begin{lstlisting}[language=bash, caption=Automazione crontab (eseguito come root)]
+#Esecuzione giornaliera alle 06:10 del mattino
+
+10 6 * * * /home/administrator/zabbixHostsScripts/venv/bin/python3 /home/administrator/zabbixHostsScripts/dailyRecordsScripts/emailAndClearCsvProblemFile.py >> /var/log/zabbix\_csv\_mailer.log 2>&1
+\end{lstlisting}
+
+Al termine dell'invio con esito positivo, lo script invoca \\\inlinecode{shutil.move(CSV_FILE, percorso_destinazione)}
+posizionando il file nella directory di archivio. Questo approccio previene l'accumulo di vecchi alert,
+garantendo che al verificarsi del primo errore della giornata successiva, 
+l'AlertScript Bash rigeneri un file CSV "pulito", comprensivo di riga di intestazione.
+
+\begin{lstlisting}[language=python, caption=Gestione dei dati in exportedProblemsToCSV.csv raccolti da Zabbix]
+# ==========================================
+# 5. GESTIONE FILE (ARCHIVIAZIONE)
+# ==========================================
+try:
+    # Spostiamo il file originale nella cartella archivio rinominandolo con il timestamp
+    nome_archivio = f"Export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+    percorso_destinazione = os.path.join(ARCHIVE_DIR, nome_archivio)
+
+    shutil.move(CSV_FILE, percorso_destinazione)
+    print(f"[{datetime.now()}] File originale archiviato con successo in: {percorso_destinazione}")
+
+except Exception as e:
+    print(f"[{datetime.now()}] ATTENZIONE: Mail inviata, ma archiviazione del file fallita. Errore: {e}")
+\end{lstlisting}
+
+
+
+
+%TO CHECK THE CONTENT
+
+\chapter{Monitoraggio host non raggiungibili e mai raggiunti smartCity Edison}
+
+Per garantire l'integrità del sistema di monitoraggio e per motivi di manutenzione,
+è fondamentale non solo rilevare quando un dispositivo smette di rispondere, 
+ma anche identificare eventuali discrepanze tra l'inventario .xlsx (apparati installati) e l'inventario logico presente su Zabbix. 
+A tale scopo è stato implementato un sistema di analisi incrociata 
+che confronta i dati estratti in tempo reale dalle API di Zabbix con un database censito in formato Excel.
+
+\section{Descrizione dell'architettura}
+Il sistema si pone l'obiettivo di generare un report su due categorie di criticità:
+\begin{itemize}
+    \item \textbf{Host non raggiungibili}: dispositivi presenti su Zabbix che hanno trigger attivi per il mancato ICMP ping.
+    \item \textbf{Host mai raggiunti}: dispositivi presenti nel file di inventario Excel ma mai registrati nel monitoraggio Zabbix.
+\end{itemize}
+
+Il workflow è suddiviso in tre componenti principali operanti nell ambiente virtuale Python (venv):
+\begin{enumerate}
+    \item \textbf{Script di estrazione (\texttt{Python})}: analizza Zabbix e incrocia i dati con l'Excel.
+    \item \textbf{Manager operativo (\texttt{Python})}: gestisce l'interazione con l'utente e l'invio delle email.
+    \item \textbf{Wrapper di avvio (\texttt{Bash})}: semplifica l'esecuzione per utenti non tecnici garantendo il corretto caricamento dell'ambiente.
+\end{enumerate}
+
+\section{Script di estrazione e analisi}
+Il cuore logico del sistema risiede nel file: \\
+\inlinecode{/home/administrator/zabbixHostsScripts/notReachableHostsScript/}\\
+\inlinecode{estraiHostNonRaggiungibili_e_maiRaggiunti.py}.
+
+Lo script esegue le seguenti operazioni:
+\begin{itemize}
+    \item Si connette alle API di Zabbix tramite Token e recupera gli host appartenenti al gruppo principale \texttt{smartCity} e relativi sottogruppi.
+    \item Carica il file di inventario situato nella directory superiore: \\ \inlinecode{/home/administrator/zabbixHostsScripts/HostInfosUbuntu.xlsx}.
+    \item Esegue una funzione di normalizzazione degli indirizzi IP (\texttt{correggi\_ip\_excel}) per gestire formattazioni errate provenienti dall'Excel.
+    \item Filtra i problemi attivi cercando specificamente la stringa: \\ \texttt{ICMP Ping: Unavailable by ICMP ping}.
+    \item Genera un file CSV nella cartella \texttt{reports/} nominato con timestamp (es. \texttt{20240522\_103000\_report\_host\_non\_raggiungibili.csv}).
+\end{itemize}
+
+\section{Gestione operativa: run\_manager.py}
+Per rendere il sistema interattivo, è stato implementato un middleware di gestione: \\
+\inlinecode{/home/administrator/zabbixHostsScripts/notReachableHostsScript/run_manager.py}.
+
+Questo script funge da interfaccia utente e permette di:
+\begin{itemize}
+    \item \textbf{Esclusione Dinamica}: Chiedere all'operatore quali comuni escludere dall'analisi (es. "MUSC", "BORG").
+    \item \textbf{Identificazione Report}: Individuare automaticamente l'ultimo file CSV generato nella cartella \texttt{reports/}.
+    \item \textbf{Distribuzione}: Chiedere gli indirizzi email a cui inviare il report finale.
+\end{itemize}
+
+\subsection{Configurazione e invio email}
+L'invio avviene tramite un servizio python interno che non richiede autenticazione, configurato per comunicare sulla porta 25.
+
+\begin{lstlisting}[language=python, caption=Configurazione mail in run\_manager.py]
+# Configurazione per invio tramite server interno
+SMTP_SERVER = "pmg.secoval.it"
+SMTP_PORT = 25
+MITTENTE_EMAIL = "zabbix@secoval.it"
+\end{lstlisting}
+
+\section{Automazione e accessibilità (bash wrapper)}
+Per facilitare l'esecuzione da parte di personale amministrativo senza competenze tecniche di terminale è stato creato uno script Bash: \\
+\inlinecode{/home/administrator/zabbixHostsScripts}\\
+\inlinecode{/notReachableHostsScript/export_dei_punti_che_non_funzionano.sh}.
+
+Questo script automatizza il cambio di directory e l'attivazione silenziosa del Virtual Environment, garantendo che i percorsi relativi (Excel e Reports) siano sempre risolti correttamente.
+
+\begin{lstlisting}[language=bash, caption=Contenuto del wrapper avvia\_report.sh]
+#!/bin/bash
+
+# 1. Ci spostiamo nella cartella di lavoro corretta.
+# Questo è vitale affinché lo script Python trovi l'Excel e la cartella reports.
+cd /home/administrator/zabbixHostsScripts/notReachableHostsScript/ || {
+    echo "Errore: Impossibile trovare la cartella dello script."
+    exit 1
+}
+
+# 2. Avviamo il manager usando il Python del Virtual Environment
+/home/administrator/zabbixHostsScripts/venv/bin/python3 run_manager.py
+\end{lstlisting}
+
+\subsection{Esecuzione globale}
+Lo script è stato reso eseguibile tramite il comando \texttt{chmod +x} ed entrando in SSH nella VM ubuntu esso 
+può essere richiamato da qualsiasi posizione nel sistema utilizzando il percorso assoluto:
+\begin{lstlisting}[language=bash]
+/home/administrator/zabbixHostsScripts/notReachableHostsScript/export_dei_punti_che_non_funzionano.sh
+\end{lstlisting}
+
+\section{Struttura delle directory}
+La gerarchia dei file è organizzata come segue:
+
+\begin{verbatim}
+/home/administrator/zabbixHostsScripts/
+├── cron_log.log
+├── dailyRecordsScripts
+│    ├── emailAndClearCsvProblemFile_mailer_log.log
+│    ├── emailAndClearCsvProblemFile.py
+│    └── zabbixTriggeredEventsArchive
+│        ├── Export_20260429_150735.csv
+│        ├── Export_20260430_083001.csv
+│        ├── ...
+├── hikvisionOscuramentoScripts
+│    ├── config_telecamere_log.log
+│    ├── configura_telecamere.sh
+│    ├── estraiIPtelecamereHikvision.py
+│    ├── hikvision_listener_log.log
+│    ├── hikvision_listener_multiplehosts.py
+│    ├── ipHik_log.log
+│    ├── ip_hikvision.txt
+│    ├── storico_log
+│    │   ├── config_telecamere_log.log-2026-04-09.gz
+│    │   ├── ...
+│    │   ├── hikvision_listener_log.log-2026-04-09.gz
+│    │   ├── ...
+│    │   ├── ipHik_log.log-2026-04-09.gz
+│    │   ├── ...
+│    ├── test_ip_hikvision.txt
+│    └── XMLs
+│        ├── oscuramento_setup.xml
+│        ├── triggers_oscuramento_setup.xml
+│        ├── triggers_VideoMotionDetection_setup.xml
+│        └── VideoMotionDetection_setup.xml
+├── HostInfosUbuntu.xlsx
+├── info_e_location_pali_ubuntu.xlsx
+├── notReachableHostsScript
+│    ├── estraiHostNonRaggiungibili_e_maiRaggiunti.py
+│    ├── export_dei_punti_che_non_funzionano.sh
+│    ├── reports
+│    │   ├── 20260422_145058_report_host_non_raggiungibili.csv
+│    │   ├── 20260422_150946_report_host_non_raggiungibili.csv
+│    │   ├── ...
+│    └── run_manager.py
+├── storico_log
+│    ├── cron_log.log-2026-03-09.gz
+│    ├── cron_log.log-2026-03-15.gz
+│    ├── ...
+│    └── deprecated_cron_pali_info.log
+├── venv
+│    ├─ ...
+├── zabbix_HostName_IDpalo_updater.py
+└── zabbix_palo_location_and_info_updater.py
+\end{verbatim}
+
+\chapter{Analisi e calcolo dei KPI}
+
+\section{Scopo dell'analisi storica}
+Come illustrato nei capitoli precedenti, 
+il sistema esporta quotidianamente i dati relativi al ciclo di vita dei \emph{Problem} 
+generati da Zabbix all'interno di file CSV archiviati nella directory:
+\inlinecode{/home/administrator/zabbixHostsScripts/dailyRecordsScripts}\\\inlinecode{/zabbixTriggeredEventsArchive}.
+
+Sebbene i report via email offrano una fotografia giornaliera, 
+è emersa la necessità di estrarre \textbf{Key Performance Indicators (KPI)} su scala mensile e annuale. 
+L'obiettivo è fornire alla direzione tecnica metriche di alto livello, 
+quali il tempo medio di risoluzione dei guasti (MTTR), 
+la percentuale di host attualmente non funzionanti rispetto al totale installato e la distribuzione settimanale e oraria delle criticità.
+
+Per soddisfare questa esigenza sono stati sviluppati due script Python, 
+eseguiti in modo isolato tramite l'ambiente virtuale (\texttt{venv}).
+Essi aggregano l'intero storico dei CSV e calcolano statistiche globali o filtrate per specifiche sottoreti.
+
+\section{Script globale: analizeProblemsAndGetKPIs.py}
+Il primo strumento è lo script globale \inlinecode{analizeProblemsAndGetKPIs.py}. Il suo compito è analizzare trasversalmente tutti i dispositivi dell'infrastruttura (TVCC, SW, AP, LTE).
+
+\subsection{Logica di funzionamento}
+Lo script utilizza la libreria \texttt{glob} per individuare tutti i file CSV presenti nell'archivio. Successivamente, elabora le righe estraendo informazioni vitali per i KPI:
+\begin{itemize}
+    \item \textbf{Tracciamento EventID:} Attraverso l'uso di insiemi (\texttt{set()}), lo script memorizza gli \texttt{EventID} con stato \texttt{PROBLEM} in un set di eventi aperti, e quelli con stato \texttt{RESOLVED} in un set di eventi chiusi. La differenza tra i due set (\inlinecode{eventi_aperti - eventi_chiusi}) restituisce matematicamente il numero esatto di dispositivi attualmente guasti.
+    \item \textbf{Calcolo MTTR (Mean Time To Resolution):} Invece di eseguire complesse sottrazioni tra date, lo script sfrutta l'intelligenza di Zabbix leggendo direttamente la colonna \texttt{Duration}. Tramite un'espressione regolare (\texttt{re.finditer}), la stringa di durata (es. \texttt{4d 21h 54m 2s}) viene scomposta e convertita in secondi totali per permetterne la media aritmetica.
+    \item \textbf{Categorizzazione delle Reti:} La funzione \texttt{categorizza\_rete(ip\_string)} divide statisticamente i problemi basandosi sul terzo e quarto ottetto dell'IP (es. \texttt{x.x.241.x} con quarto ottetto \texttt{0-127} viene classificato come TVCC).
+\end{itemize}
+
+\begin{lstlisting}[language=Python, caption=Estrazione dei secondi dalla colonna Duration tramite Regex]
+def parse_duration_to_seconds(duration_str):
+    if not duration_str:
+        return 0
+    secondi_totali = 0
+    # Trova tutti i numeri seguiti da d, h, m, o s
+    matches = re.finditer(r'(\d+)\s*([dhms])', duration_str.lower())
+    
+    for match in matches:
+        valore = int(match.group(1))
+        unita = match.group(2)
+        if unita == 'd': secondi_totali += valore * 86400
+        elif unita == 'h': secondi_totali += valore * 3600
+        elif unita == 'm': secondi_totali += valore * 60
+        elif unita == 's': secondi_totali += valore
+            
+    return secondi_totali
+\end{lstlisting}
+
+\subsection{Modalità di esecuzione}
+Per garantire il corretto funzionamento delle librerie standard di Python e per non intaccare l'OS host, lo script deve essere eseguito utilizzando l'eseguibile Python situato nel \texttt{venv} di progetto.
+Da riga di comando:
+
+\begin{lstlisting}[language=bash, caption=Esecuzione dello script di analisi globale]
+/home/administrator/zabbixHostsScripts/venv/bin/python3 /home/administrator/zabbixHostsScripts/dailyRecordsScripts/analizeProblemsAndGetKPIs.py
+\end{lstlisting}
+
+\section{Script Specifico: TVCCanalizeProblemsAndGetKPIs.py}
+Per ottenere report più granulari, utili soprattutto a chi si occupa unicamente della videosorveglianza, è stato derivato un secondo script: \inlinecode{TVCCanalizeProblemsAndGetKPIs.py}.
+
+\subsection{Differenze e Filtraggio}
+La struttura dello script è pressoché identica al globale, con due differenze architetturali fondamentali:
+\begin{enumerate}
+    \item \textbf{Il "Grandissimo IF" (Filtro IP):} Durante il ciclo di lettura del CSV, l'IP viene immediatamente categorizzato. Se il risultato è diverso da \texttt{TVCC}, lo script esegue un \texttt{continue}, saltando l'elaborazione della riga. Questo garantisce che ogni singola metrica (MTTR, fasce orarie, top host) sia inquinata \textbf{esclusivamente} da telecamere.
+    \item \textbf{Costante Hardcoded Mirata:} La variabile \inlinecode{NUMERO_HOST_TVCC_ZABBIX = 607} sostituisce il totale globale. In questo modo, l'incidenza percentuale dei problemi (es. il 3.4\% della rete è guasto) viene calcolata solo in base al numero reale di telecamere installate e non sull'intero parco macchine.
+\end{enumerate}
+
+\begin{lstlisting}[language=Python, caption=Il blocco logico di filtraggio della sottorete TVCC]
+for row in reader:
+    ip = row.get('IP', '').strip()
+
+    # Se l'IP non appartiene alla rete TVCC, salta la riga
+    if categorizza_rete(ip) != "TVCC":
+        continue
+
+    # Da qui in poi, lo script elabora SOLO dati TVCC
+    subnet_counter["TVCC"] += 1
+    # ... segue estrazione di EventID e Status ...
+\end{lstlisting}
+
+\subsection{Modalità di esecuzione}
+Analogamente allo script globale, l'esecuzione avviene tramite l'ambiente virtualizzato:
+
+\begin{lstlisting}[language=bash, caption=Esecuzione dello script di analisi specifica TVCC]
+/home/administrator/zabbixHostsScripts/venv/bin/python3 /home/administrator/zabbixHostsScripts/dailyRecordsScripts/TVCCanalizeProblemsAndGetKPIs.py
+\end{lstlisting}
+
+\section{Descrizione dell'Output}
+Entrambi gli script, una volta eseguiti, generano uno \textit{standard output} formattato in puro testo ASCII (ideale per la lettura rapida su terminale), diviso nelle seguenti sezioni analitiche:
+
+\begin{description}
+    \item[Metriche Chiave (KPI):] Mostra il numero assoluto di problemi "aperti" e la loro incidenza percentuale rispetto alla costante \texttt{NUMERO\_HOST\_ZABBIX}. Mostra inoltre l'MTTR convertito in giorni, ore, minuti e secondi.
+    \item[Analisi delle Sottoreti:] Conferma la distribuzione degli eventi sulle varie VLAN (o conferma il 100\% su TVCC nel caso dello script specifico).
+    \item[Classifica TOP Host:] Genera una \textit{top ten} degli apparati più problematici (utile per individuare dispositivi in \textit{flapping} costante).
+    \item[Analisi Temporale:] Due blocchi separati per individuare i \textit{pattern} temporali: un istogramma ASCII diviso in fasce orarie e un conteggio organizzato per singola settimana (ISO week).
+\end{description}
+
+\chapter{Integrazione ticketing Interacta}
+
+\section{Scopo e architettura dell'integrazione}
+Per garantire l'integrazione con il sistema già presente e il tracciamento della gestione e degli interventi fisici 
+sugli apparati della Smart City, 
+si è resa necessaria un'integrazione tra il sistema di monitoraggio Zabbix 
+e il portale (ITSM, IT Service Management) \textbf{Interacta}.
+
+L'obiettivo dell'integrazione è automatizzare l'apertura di un ticket di assistenza
+(con tutti i dettagli dell'host, le coordinate e il tipo di guasto) 
+nel momento in cui un trigger di Zabbix entra in stato \texttt{PROBLEM}, 
+e chiuderlo in automatico quando lo stato torna a \texttt{RESOLVED}.
+
+L'architettura si basa su tre pilastri:
+\begin{itemize}
+    \item Un'autenticazione \textit{Server-to-Server} verso le API di Interacta tramite Service Account 
+    (Service Account Authentication è un metodo che consente ad applicazioni, script o macchine virtuali
+    di verificare in modo sicuro la propria identità e interagire con API o servizi cloud senza intervento umano) e
+    firma crittografica asimmetrica (RSA).
+    \item Uno script Python (\texttt{interactaCreateTicket.py}) operante in 
+    \\\texttt{/usr/lib/zabbix/alertscripts/}, incaricato di elaborare i dati e comunicare con le API.
+    \item Un Media Type di tipo "Script" configurato su Zabbix per inoltrare i parametri 
+    formattati allo script in tempo reale.
+\end{itemize}
+
+\section{L'Autenticazione Server-to-Server (Il JWT manuale)}
+L'aspetto tecnicamente più complesso dell'integrazione ha riguardato l'ottenimento 
+del \textit{Bearer Token} per interrogare le API di Interacta.
+
+La documentazione fornita per il Service Account richiedeva la generazione di una \textit{JWT Assertion}(Json Web Token) 
+firmata con algoritmo \textbf{RS512} utilizzando una chiave privata fornita in formato JSON (\texttt{service-account-16-prod.json}). 
+Tuttavia, è emersa un'incongruenza critica tra lo standard mondiale dell'ingegneria dei JWT (RFC 7519) 
+e l'implementazione del backend di Interacta: il backend richiede esplicitamente che il campo
+\texttt{kid} (Key ID) nell'Header del token sia un \textbf{numero intero} 
+(es. \texttt{16}), mentre lo standard (e le librerie Python rigorose come \texttt{PyJWT}) esigono che sia una \textbf{stringa}.
+
+Per evitare errori dovuti al rifiuto di \texttt{PyJWT} di inserire un intero nell'Header, 
+si è optato per la \textbf{costruzione e firma manuale del JWT} 
+utilizzando direttamente la libreria di basso livello \texttt{cryptography}.
+
+\begin{lstlisting}[language=Python, caption={Costruzione manuale del JWT per forzare il campo 'kid' come intero}]
+header = {
+    "kid": key_id, # MANTENUTO COME NUMERO INTERO PER IL BACKEND INTERACTA
+    "alg": "RS512"
+}
+payload = {
+    "jti": str(uuid.uuid4()),
+    "aud": "injenia/portal-authenticator",
+    "iss": str(client_id),
+    "iat": now - 60, # Offset per prevenire errori di time-drift
+    "exp": now + 600 # Scadenza rigida (massimo 10 minuti)
+}
+
+# Codifica in Base64 URL-safe ed esecuzione manuale della firma RSA512
+b64_header = b64url_encode(json.dumps(header).encode('utf-8'))
+b64_payload = b64url_encode(json.dumps(payload).encode('utf-8'))
+signing_input = f"{b64_header}.{b64_payload}".encode('utf-8')
+
+private_key_obj = load_pem_private_key(private_key_pem.encode('utf-8'), password=None)
+signature = private_key_obj.sign(signing_input, padding.PKCS1v15(), hashes.SHA512())
+
+signed_jwt = f"{b64_header}.{b64_payload}.{b64url_encode(signature)}"
+\end{lstlisting}
+
+\section{Creazione del ticket e formattazione della payload}
+Una volta ottenuto l'access token, lo script formatta i dati passati da Zabbix per inviarli all'endpoint specifico 
+\\(\texttt{/extensions/SmartCity/richiesta}).
+
+Durante lo sviluppo, è stato cruciale rispettare rigorosamente i tipi di dato richiesti dal database
+di Interacta per evitare errori \texttt{500 Internal Server Error}:
+\begin{itemize}
+    \item \textbf{Coordinate}: devono essere passate come stringa es. \texttt{"45.0703 7.6869"}.
+    \item \textbf{Comune}: il backend si aspetta obbligatoriamente un Array di numeri interi, normalmente di dim=1, 
+    non una stringa testuale (es. \texttt{[1]}). 
+    Sono definiti da una specifica funzione in base al loro host\_name che contiene il codice a 4 
+    caratteri per l'identificazione del comune 
+    (tranne Castenedolo a cui è associato un codice a5 caratteri: "CASTE").
+    \item \textbf{PROBLEM ID}: l'\texttt{\{EVENT.ID\}} di Zabbix deve essere castato in formato intero.
+\end{itemize}
+
+\begin{lstlisting}[language=Python, caption={Costruzione del payload per l'apertura del ticket}]
+payload = {
+    "fields": {
+        "progetto": ticket_data["progetto"],
+        "nome_host": ticket_data["nome_host"],
+        "IP": ticket_data["IP"],
+        "IDpalo": ticket_data["ID_palo"],
+        "tipo_problema": ticket_data["tipo_problema"],
+        "coordinate": f"{ticket_data["coordinate_lat"]} {ticket_data["coordinate_lon"]}",
+        "via": ticket_data["via"],
+        "PROBLEM ID": int(ticket_data["problem_ID"]),
+        "comune": findComuneID(ticket_data["nome_host"])
+    }
+}
+\end{lstlisting}
+
+\textit{Nota importante}: la funzione \textbf{findComuneID} prende come input il nome\_host e restituisce un identificativo del comune,
+attraverso il riferimento esterno di un post nella community Enti di Interacta.
+Essa crea un dizionario a partire da un file CSV \inlinecode{/usr/lib/zabbix/alertscripts/post_export-202605131241_anagrafiche_enti.csv}.
+Da qui viene estratta la colonna con gli "ID" e "Sigla Zabbix".
+Vengono estratti i primi caratteri dall'host\_name prima del "-" e estratto l'ID relativo a quel codice.
+Per ogni host\_name che non è riconosciuto dalla funzione il programma si interrompe loggando l'accaduto.
+Questo permette di escudere tutti gli host come firewall e gateway.
+\textbf{Ogni nuovo host fuori da progetto Edison necessita di essere inserito in zabbix
+con il codice del comune come prefisso seguito da "-" (es.TBRE-TVCC-08 ) e per ogni nuovo comune/ente 
+deve essere aggiornato il file csv; per il corretto funzionamento di questa feature}. 
+
+
+\section{Risoluzione del ticket e formattazione della payload}
+L'operazione di chiusura (tramite la verifica del flag \texttt{status == "RESOLVED"}) 
+è predisposta nello script, in base agli argomenti ricevuti in input ed è una chiamata più semplice rispetto all'apertura.
+
+\begin{lstlisting}[language=Python, caption={Costruzione del payload per la chiusura del ticket}]
+    elif status == "RESOLVED":
+        url = f"{API_BASE}/extensions/SmartCity/richiesta/chiusura" # UPDATE LATER: Final Create API endpoint
+        payload = {
+            "clientUid": int(ticket_data["problem_ID"])
+        }
+        with open(DEBUG_AND_LOG_FILE, "a") as f:
+            f.write(f"ticket chiusura PAYLOAD created\n")
+
+        r = requests.post(url, headers=headers, json=payload, allow_redirects=True)
+        if r.status_code == 500:
+            raise HTTPError("Returned status code: 500. Probably tried to close an already closed ticket", response=r)
+        r.raise_for_status()
+}
+\end{lstlisting}
+
+\section{Configurazione lato Zabbix}
+Affinché Zabbix possa lanciare lo script al momento giusto, 
+sono stati configurati diversi elementi sulla piattaforma. 
+Se in futuro l'integrazione dovesse smettere di funzionare, questa è la \textit{checklist} primaria da verificare.
+
+\subsection{Media type (Interacta ticket script)}
+In \textbf{Alerts $\rightarrow$ Media types} è stato creato un Media di tipo \textit{Script} 
+puntato al file \texttt{/usr/lib/zabbix/alertscripts/interactaCreateTicket.py}.
+Nella sezione \textit{Script parameters} sono mappate in modo rigido le macro di Zabbix in flag
+utilizzabili dalla libreria \texttt{argparse} di Python:
+\begin{itemize}
+    \item \texttt{--status} $\rightarrow$ \texttt{\{EVENT.STATUS\}}
+    \item \texttt{--progetto} $\rightarrow$ \texttt{\{TRIGGER.HOSTGROUP.NAME\}}
+    \item \texttt{--nome\_host} $\rightarrow$ \texttt{\{HOST.NAME\}}
+    \item \texttt{--IP} $\rightarrow$ \texttt{\{HOST.IP\}}
+    \item \texttt{--ID\_palo} $\rightarrow$ \texttt{\{INVENTORY.LOCATION\}} (o campo equivalente)
+    \item \texttt{--tipo\_problema} $\rightarrow$ \texttt{\{EVENT.NAME\}}
+    \item \texttt{--coordinate\_lat} $\rightarrow$ \texttt{\{INVENTORY.LOCATION.LAT\}}
+    \item \texttt{--coordinate\_lon} $\rightarrow$ \texttt{\{INVENTORY.LOCATION.LON\}}
+    \item \texttt{--via} $\rightarrow$ \texttt{\{INVENTORY.SITE.ADDRESS.A\}}
+    \item \texttt{--problem\_ID} $\rightarrow$ \texttt{\{EVENT.ID\}}
+\end{itemize}
+
+% \textbf{Attenzione - Il vincolo dei Message Templates:} Zabbix si rifiuta di eseguire Media Type personalizzati (restituendo l'errore \textit{"No message defined for media type"}) 
+% se non vengono definiti dei template testuali fittizi. 
+% È stato quindi necessario configurare nella tab \textit{Message templates} dei template generici per \texttt{Problem} e \texttt{Problem recovery}, anche se lo script Python li ignora completamente.
+
+\subsection{Trigger actions e permessi utente}
+L'esecuzione dello script è agganciata a diversi \textbf{Trigger} già
+presenti nel sistema per lanciare alarmi riguardo il ping e l'oscuramento.
+
+% \textbf{Nota sui permessi:} se l'invio è assegnato a un utente non-SuperAdmin (es. un utente di servizio \texttt{api\_interacta}), è \textit{tassativo} 
+% che il gruppo a cui appartiene l'utente abbia i privilegi di \textbf{Lettura (Read)} 
+% sugli Host Group monitorati (in \textit{Users $\rightarrow$ User groups $\rightarrow$ Host permissions}). In caso contrario, l'azione fallirà silenziosamente poiché l'utente non "vede" l'host guasto.
+
+\section{Gestione dei log e manutenzione (Logrotate)}
+Lo script genera output di debug essenziali nel file 
+\\\texttt{/usr/lib/zabbix/alertscripts/interactaCreateOrSolveTicket\_log.log}. 
+A causa del contesto di esecuzione in background di Zabbix, 
+lo script Python utilizza \textbf{percorsi assoluti} 
+(es. \texttt{/usr/lib/zabbix/alertscripts/...}) per evitare errori di \texttt{PermissionDenied} sulla radice del filesystem.
+
+Per evitare l'esaurimento dello spazio su disco, 
+è stata implementata una configurazione di \textbf{Logrotate} dedicata, situata in \texttt{/etc/logrotate.d/zabbix-interacta-script}:
+
+\begin{lstlisting}[language=bash, caption={Configurazione logrotate per i file di log dell'integrazione}]
+/usr/lib/zabbix/alertscripts/interactaCreateOrSolveTicket_log.log {
+    su zabbix zabbix
+    weekly
+    maxsize 30M
+    rotate 12
+    dateext
+    dateformat -%Y-%m-%d
+    olddir /usr/lib/zabbix/alertscripts/storico_log
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 0600 zabbix zabbix
+}
+\end{lstlisting}
+\textit{Nota architetturale:} Affinché la direttiva \texttt{su zabbix zabbix} 
+potesse spostare i file ruotati all'interno della \texttt{olddir}, 
+è stato assegnato il gruppo \texttt{zabbix} alla cartella padre \texttt{alertscripts} 
+e sono stati concessi i permessi di scrittura al gruppo (\texttt{chmod g+w}).
+
+\chapter{Quick reference: funzionalità e sistemi}
+Il presente capitolo è un riassunto strutturato delle funzionalità attive, dei sistemi, degli script e dei relativi log.
+
+\section{Automazione dell'inventario (metadati)}
+Per arricchire i dispositivi monitorati con informazioni geografiche e tecniche, sono stati sviluppati script per l'aggiornamento automatico dei campi di inventory.
+\begin{itemize}
+    \item \textbf{Funzionalità}: estrazione dei dati da fogli Excel (nome host, ID del palo, coordinate geografiche, indirizzo e tecnologia)
+     per arricchire automaticamente i campi di inventario in Zabbix mano a mano che i dispositivi vengono scoperti.
+    \item \textbf{Script coinvolti}:
+    \begin{itemize}
+        \item \texttt{zabbix\_HostName\_IDpalo\_updater.py}.
+        \item \texttt{zabbix\_palo\_location\_and\_info\_updater.py}.
+    \end{itemize}
+    \item \textbf{Sorgenti}: \texttt{Host\_InfosUbuntu.xlsx} e \\\texttt{info\_e\_location\_pali\_ubuntu.xlsx}.
+    \item \textbf{Log}: \texttt{/home/administrator/zabbixHostsScripts/cron\_log.log} \\(sottoposto a rotazione tramite logrotate configurato in \\\texttt{/etc/logrotate.d/zabbix\_scripts}).
+\end{itemize}
+
+\section{Acquisizione dati hardware tramite template}
+Riconoscimento automatico e acquisizione di informazioni diagnostiche e di modello interrogando i dispositivi in base al loro brand o tipologia.
+\begin{itemize}
+    \item \textbf{Hikvision}: utilizzo di chiamate HTTP ISAPI per estrarre modello e firmware.
+    \item \textbf{Standard SNMP}: query SNMP per apparati di rete come Switch e Access Point.
+    \item \textbf{Script coinvolti}: \texttt{createDiscoveryRulesForHikvisions.py}, \\\texttt{apCreateDiscoveryRules.py} e \texttt{swCreateDiscoveryRules.py}.
+\end{itemize}
+
+\section{Sicurezza e rilevamento manomissioni}
+È stato implementato un sistema per rilevare eventi di \textit{tamper detection} (oscuramento obiettivo) e \textit{motion detection}.
+\begin{itemize}
+    \item \textbf{Configurazione XML}: setup remoto delle telecamere tramite file XML via HTTP PUT.
+    \item \textbf{Listener Asincrono}: middleware che ascolta lo streaming degli eventi dalle telecamere e invia i dati a Zabbix tramite \texttt{zabbix\_sender}.
+    \item \textbf{Script coinvolti}:
+    \begin{itemize}
+        \item \texttt{estraiIPtelecamereHikvision.py} (estrae da Zabbix gli IP delle telecamere)
+        \item \texttt{configura\_telecamere.sh} (carica i file XML di configurazione tramite chiamata PUT asincrona)
+        \item \texttt{hikvision\_listener\_multiplehosts.py} (middleware avviato come servizio demone che ascolta il flusso dati e invia gli eventi usando zabbix\_sender)
+    \end{itemize}
+    \item \textbf{Log}: \texttt{ipHik\_log.log}, \texttt{config\_telecamere\_log.log} \\e \texttt{hikvision\_listener\_log.log}.
+\end{itemize}
+
+\section{Reporting e analisi giornaliera}
+Intercettazione degli allarmi attivi/risolti, esportazione del ciclo di vita del problema su un CSV locale e produzione di report giornalieri.
+\begin{itemize}
+    \item \textbf{Esportazione CSV}: gli eventi vengono salvati in locale tramite un Custom AlertScript.
+    \item \textbf{Analisi Python}: elaborazione dei dati per identificare host instabili (\textit{flapping}) o allarmi di sicurezza critici.
+    \item \textbf{Report mensili}: invio di report mensili con KPIs.
+    \item \textbf{Script coinvolti}:
+    \begin{itemize}
+        \item \texttt{ScriptCustomExportProblemsToCSV.sh}.
+        \item \texttt{emailAndClearCsvProblemFile.py}.
+        \item \texttt{monthlyReport.py}
+    \end{itemize}
+    \item \textbf{Log}: \texttt{zabbix\_csv\_mailer.log}.
+\end{itemize}
+
+\section{Monitoraggio degli host "non raggiungibili" o "mai raggiunti"}
+Il sistema confronta l'inventario fisico su Excel con quello logico su Zabbix per identificare host non raggiungibili o mai registrati.
+\begin{itemize}
+    \item \textbf{Analisi Incrociata}: tra gli apparati fisicamente installati (segnati su Excel) e lo stato del monitoraggio logico in Zabbix,
+     generando un report sulle discrepanze e sui dispositivi offline.
+    \item \textbf{Script coinvolti}:
+    \begin{itemize}
+        \item \texttt{estraiHostNonRaggiungibili\_e\_maiRaggiunti.py}.
+        \item \texttt{run\_manager.py} (interfaccia utente interattiva).
+        \item \texttt{export\_dei\_punti\_che\_non\_funzionano.sh} \\(wrapper per l'esecuzione).
+    \end{itemize}
+\end{itemize}
+
+\section{Analisi e calcolo dei KPI}
+Elaborazione dello storico degli eventi Zabbix per estrarre metriche di alto livello, su scala mensile e annuale.
+\begin{itemize}
+    \item \textbf{Funzionalità}: aggregazione dei dati esportati nei CSV per il tracciamento dei dispositivi attualmente guasti, 
+    calcolo del \textit{Mean Time To Resolution} 
+    (tramite regex sulla colonna \texttt{Duration}) e categorizzazione temporale e per sottorete.
+    \item \textbf{Script coinvolti}:
+    \begin{itemize}
+        \item \texttt{analizeProblemsAndGetKPIs.py} (analisi globale di tutti gli apparati dell'infrastruttura).
+        \item \texttt{TVCCanalizeProblemsAndGetKPIs.py} (analisi filtrata esclusivamente per le telecamere,
+         con costanti hardware).
+    \end{itemize}
+    \item \textbf{Sorgenti}: archivio dei file CSV situato in 
+    \\\texttt{/home/administrator/zabbixHostsScripts/dailyRecordsScripts/}\\\texttt{zabbixTriggeredEventsArchive}.
+    \item \textbf{Esecuzione}: script eseguiti isolati tramite ambiente virtuale Python (\texttt{venv}).
+    \item \textbf{Output}: report testuale ASCII generato in \textit{standard output} 
+    (mostra metriche chiave, classifica TOP host e pattern temporali).
+\end{itemize}
+
+\section{Integrazione ticketing interacta}
+Automazione dell'apertura e chiusura dei ticket di assistenza sul portale Interacta 
+in sincronia con lo stato (\texttt{PROBLEM} o \texttt{RESOLVED}) dei trigger di Zabbix.
+\begin{itemize}
+    \item \textbf{Funzionalità}: autenticazione Server-to-Server tramite costruzione e firma manuale di un token JWT 
+    (per requisiti specifici del backend Interacta). Lo script intercetta le macro Zabbix 
+    (coordinate, comune, ID palo) e invia il payload formattato alle API del portale.
+    \item \textbf{Script coinvolti}:
+    \begin{itemize}
+        \item \texttt{interactaCreateTicket.py} (posizionato e operante nella directory \\\texttt{/usr/lib/zabbix/alertscripts/}).
+    \end{itemize}
+    \item \textbf{Configurazione Zabbix}: l'integrazione sfrutta un \textit{Media type} tipo "Script" 
+    che mappa le macro di Zabbix sugli argomenti dello script, richiamato da apposite \textit{Trigger actions}.
+    \item \textbf{Credenziali}: chiave privata \texttt{service-account-16-prod.json} usata per la firma RSA512.
+    \item \textbf{Log}: \texttt{/usr/lib/zabbix/alertscripts/interactaCreateOrSolveTicket}\\\texttt{\_log.log} 
+    (sottoposto a rotazione tramite logrotate dedicato, configurato in \\\texttt{/etc/logrotate.d/zabbix-interacta-script}).
+\end{itemize}
+
+\end{document}
+
+
+
