@@ -59,12 +59,18 @@
 \usepackage[utf8]{inputenc}
 \usepackage[italian]{babel} % Traduce i comandi automatici in italiano
 
-% 2. Configurazione della bibliografia (Stile IEEE)
-\usepackage[
-    backend=biber,     % Il motore di compilazione moderno usato da Overleaf
-    style=ieee,        % Applica lo stile IEEE (numeri tra parentesi quadre)
-    language=italian,  % Dice a biblatex di tradurre "and" in "e" nelle citazioni
-    sorting=none       % Ordina la bibliografia finale secondo l'ordine di apparizione nel testo
+% 2. Configurazione della bibliografia (Stile DA DECIDEREEEEEEEEEEEE)
+% \usepackage[
+%     backend=biber,     % Il motore di compilazione moderno usato da Overleaf
+%     style=ieee,        % Applica lo stile IEEE (numeri tra parentesi quadre)
+%     language=italian,  % Dice a biblatex di tradurre "and" in "e" nelle citazioni
+%     sorting=none       % Ordina la bibliografia finale secondo l'ordine di apparizione nel testo
+% ]{biblatex}
+\usepackage[ %Author-Year format (like Harvard/APA)
+    backend=biber,     
+    style=apa,  % Changed from ieee to authoryear or apa with parentesis
+    language=italian,  
+    sorting=nyt        % Changed to Name-Year-Title sorting (Standard for APA/Harvard)
 ]{biblatex}
 
 % 2. Gestione avanzata delle virgolette (Risolve il warning di biblatex)
@@ -179,7 +185,7 @@ frontend
 \section{L'Azienda: Secoval S.r.l.}
 %\textit{[Descrizione dell'azienda, del suo ruolo nella gestione tecnologica per enti locali e comunità  montane]. da ~\textcite{einstein1905}}
 
-Secoval srl è una società a capitale interamente pubblico, partecipata dalla Comunità Montana di Valle Sabbia e da oltre 40 enti locali. Opera come supporto tecnologico e operativo per le Pubbliche Amministrazioni del nord-est bresciano, con sede a Vestone. Il suo ruolo è supportare la trasformazione digitale dei Comuni, compresi quelli più periferici, fornendo servizi amministrativi, informatici e gestionali. \cite{secoval_chisiamo}
+Secoval srl è una società a capitale interamente pubblico, partecipata dalla Comunità Montana di Valle Sabbia e da oltre 40 enti locali. Opera come supporto tecnologico e operativo per le Pubbliche Amministrazioni del nord-est bresciano, con sede a Vestone. Il suo ruolo è supportare la trasformazione digitale dei Comuni, compresi quelli più periferici, fornendo servizi amministrativi, informatici e gestionali. \parencite{secoval_chisiamo}
 
 Le principali aree di operatività dell'azienda includono:
 \begin{itemize}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.19)  19 JUN 2026 12:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.19)  19 JUN 2026 12:22
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -442,7 +442,10 @@ Package biblatex Info: ... file 'blx-dm.def' found.
 File: blx-dm.def 2023/03/05 v3.19 biblatex localization (PK/MW)
 )
 Package biblatex Info: Trying to load biblatex style data model...
-Package biblatex Info: ... file 'ieee.dbx' not found.
+Package biblatex Info: ... file 'apa.dbx' found.
+ (/usr/share/texlive/texmf-dist/tex/latex/biblatex-apa/apa.dbx
+File: apa.dbx 2023/03/20 v9.17 APA biblatex style data model
+)
 Package biblatex Info: Trying to load biblatex custom data model...
 Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
 \c@afterword=\count353
@@ -481,38 +484,48 @@ Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
 \c@savedshortauthor=\count386
 \c@shorteditor=\count387
 \c@savedshorteditor=\count388
-\c@labelname=\count389
-\c@savedlabelname=\count390
-\c@institution=\count391
-\c@savedinstitution=\count392
-\c@lista=\count393
-\c@savedlista=\count394
-\c@listb=\count395
-\c@savedlistb=\count396
-\c@listc=\count397
-\c@savedlistc=\count398
-\c@listd=\count399
-\c@savedlistd=\count400
-\c@liste=\count401
-\c@savedliste=\count402
-\c@listf=\count403
-\c@savedlistf=\count404
-\c@location=\count405
-\c@savedlocation=\count406
-\c@organization=\count407
-\c@savedorganization=\count408
-\c@origlocation=\count409
-\c@savedoriglocation=\count410
-\c@origpublisher=\count411
-\c@savedorigpublisher=\count412
-\c@publisher=\count413
-\c@savedpublisher=\count414
-\c@language=\count415
-\c@savedlanguage=\count416
-\c@origlanguage=\count417
-\c@savedoriglanguage=\count418
-\c@pageref=\count419
-\c@savedpageref=\count420
+\c@narrator=\count389
+\c@savednarrator=\count390
+\c@execproducer=\count391
+\c@savedexecproducer=\count392
+\c@execdirector=\count393
+\c@savedexecdirector=\count394
+\c@with=\count395
+\c@savedwith=\count396
+\c@labelname=\count397
+\c@savedlabelname=\count398
+\c@institution=\count399
+\c@savedinstitution=\count400
+\c@lista=\count401
+\c@savedlista=\count402
+\c@listb=\count403
+\c@savedlistb=\count404
+\c@listc=\count405
+\c@savedlistc=\count406
+\c@listd=\count407
+\c@savedlistd=\count408
+\c@liste=\count409
+\c@savedliste=\count410
+\c@listf=\count411
+\c@savedlistf=\count412
+\c@location=\count413
+\c@savedlocation=\count414
+\c@organization=\count415
+\c@savedorganization=\count416
+\c@origlocation=\count417
+\c@savedoriglocation=\count418
+\c@origpublisher=\count419
+\c@savedorigpublisher=\count420
+\c@publisher=\count421
+\c@savedpublisher=\count422
+\c@language=\count423
+\c@savedlanguage=\count424
+\c@origlanguage=\count425
+\c@savedoriglanguage=\count426
+\c@citation=\count427
+\c@savedcitation=\count428
+\c@pageref=\count429
+\c@savedpageref=\count430
 \shorthandwidth=\skip71
 \shortjournalwidth=\skip72
 \shortserieswidth=\skip73
@@ -536,66 +549,57 @@ Package biblatex Info: Trying to load generic definitions...
 Package biblatex Info: ... file 'biblatex.def' found.
  (/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.def
 File: biblatex.def 2023/03/05 v3.19 biblatex compatibility (PK/MW)
-\c@textcitecount=\count421
-\c@textcitetotal=\count422
-\c@textcitemaxnames=\count423
-\c@biburlbigbreakpenalty=\count424
-\c@biburlbreakpenalty=\count425
-\c@biburlnumpenalty=\count426
-\c@biburlucpenalty=\count427
-\c@biburllcpenalty=\count428
+\c@textcitecount=\count431
+\c@textcitetotal=\count432
+\c@textcitemaxnames=\count433
+\c@biburlbigbreakpenalty=\count434
+\c@biburlbreakpenalty=\count435
+\c@biburlnumpenalty=\count436
+\c@biburlucpenalty=\count437
+\c@biburllcpenalty=\count438
 \biburlbigskip=\muskip18
 \biburlnumskip=\muskip19
 \biburlucskip=\muskip20
 \biburllcskip=\muskip21
-\c@smartand=\count429
+\c@smartand=\count439
 )
-Package biblatex Info: Trying to load bibliography style 'ieee'...
-Package biblatex Info: ... file 'ieee.bbx' found.
- (/usr/share/texlive/texmf-dist/tex/latex/biblatex-ieee/ieee.bbx
-File: ieee.bbx 2021/12/06 v1.3f biblatex bibliography style
-Package biblatex Info: Trying to load bibliography style 'numeric-comp'...
-Package biblatex Info: ... file 'numeric-comp.bbx' found.
- (/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/numeric-comp.bbx
-File: numeric-comp.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
-Package biblatex Info: Trying to load bibliography style 'numeric'...
-Package biblatex Info: ... file 'numeric.bbx' found.
- (/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
-File: numeric.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
+Package biblatex Info: Trying to load bibliography style 'apa'...
+Package biblatex Info: ... file 'apa.bbx' found.
+ (/usr/share/texlive/texmf-dist/tex/latex/biblatex-apa/apa.bbx
+File: apa.bbx 2023/03/20 v9.17 APA biblatex references style
 Package biblatex Info: Trying to load bibliography style 'standard'...
 Package biblatex Info: ... file 'standard.bbx' found.
  (/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
 File: standard.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
-\c@bbx:relatedcount=\count430
-\c@bbx:relatedtotal=\count431
-))))
-Package biblatex Info: Trying to load citation style 'ieee'...
-Package biblatex Info: ... file 'ieee.cbx' found.
- (/usr/share/texlive/texmf-dist/tex/latex/biblatex-ieee/ieee.cbx
-File: ieee.cbx 2021/12/06 v1.3f biblatex citation style
-Package biblatex Info: Trying to load citation style 'numeric-comp'...
-Package biblatex Info: ... file 'numeric-comp.cbx' found.
- (/usr/share/texlive/texmf-dist/tex/latex/biblatex/cbx/numeric-comp.cbx
-File: numeric-comp.cbx 2023/03/05 v3.19 biblatex citation style (PK/MW)
-\c@cbx@tempcnta=\count432
-\c@cbx@tempcntb=\count433
-\c@cbx@tempcntc=\count434
-\c@cbx@tempcntd=\count435
+\c@bbx:relatedcount=\count440
+\c@bbx:relatedtotal=\count441
+)
+Package biblatex Info: Delimiter 'nameyeardelim' in context 'bib' already defined, overwriting.
+Package biblatex Info: Delimiter 'nameyeardelim' in context 'biblist' already defined, overwriting.
+Package biblatex Info: Delimiter 'nonameyeardelim' in context 'bib' already defined, overwriting.
+Package biblatex Info: Delimiter 'nonameyeardelim' in context 'biblist' already defined, overwriting.
+)
+Package biblatex Info: Trying to load citation style 'apa'...
+Package biblatex Info: ... file 'apa.cbx' found.
+ (/usr/share/texlive/texmf-dist/tex/latex/biblatex-apa/apa.cbx
+File: apa.cbx 2023/03/20 v9.17 APA biblatex citation style
+Package biblatex Info: Delimiter 'nameyeardelim' in context '' already defined, overwriting.
+Package biblatex Info: Delimiter 'andothersdelim' in context '' already defined, overwriting.
+Package biblatex Info: Redefining '\fullcite'.
+Package biblatex Info: Redefining '\citeauthor'.
+Package biblatex Info: Redefining '\citeyear'.
 Package biblatex Info: Redefining '\cite'.
+Package biblatex Info: Redefining '\cites'.
 Package biblatex Info: Redefining '\parencite'.
+Package biblatex Info: Redefining '\parencites'.
 Package biblatex Info: Redefining '\footcite'.
+Package biblatex Info: Redefining '\footcites'.
 Package biblatex Info: Redefining '\footcitetext'.
+Package biblatex Info: Redefining '\footcitetexts'.
 Package biblatex Info: Redefining '\smartcite'.
-Package biblatex Info: Redefining '\supercite'.
+Package biblatex Info: Redefining '\smartcites'.
 Package biblatex Info: Redefining '\textcite'.
 Package biblatex Info: Redefining '\textcites'.
-Package biblatex Info: Redefining '\cites'.
-Package biblatex Info: Redefining '\parencites'.
-Package biblatex Info: Redefining '\smartcites'.
-)
-Package biblatex Info: Redefining '\cite'.
-Package biblatex Info: Redefining '\supercite'.
-Package biblatex Info: Redefining '\cites'.
 )
 Package biblatex Info: Trying to load configuration file...
 Package biblatex Info: ... file 'biblatex.cfg' found.
@@ -608,7 +612,7 @@ Package biblatex Info: Document encoding is UTF8 ....
 Package: expl3 2024-01-22 L3 programming layer (loader) 
  (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count436
+\l__color_backend_stack_int=\count442
 \l__pdf_internal_box=\box55
 ))
 Package biblatex Info: ... and expl3
@@ -621,12 +625,12 @@ Package: xparse 2023-10-10 L3 Experimental document command parser
 Package: blx-case-expl3 2023/03/05 v3.19 expl3 case changing code for biblatex
 )) (/usr/share/texlive/texmf-dist/tex/latex/csquotes/csquotes.sty
 Package: csquotes 2022-09-14 v5.2n context-sensitive quotations (JAW)
-\csq@reset=\count437
-\csq@gtype=\count438
-\csq@glevel=\count439
-\csq@qlevel=\count440
-\csq@maxlvl=\count441
-\csq@tshold=\count442
+\csq@reset=\count443
+\csq@gtype=\count444
+\csq@glevel=\count445
+\csq@qlevel=\count446
+\csq@maxlvl=\count447
+\csq@tshold=\count448
 \csq@ltx@everypar=\toks27
  (/usr/share/texlive/texmf-dist/tex/latex/csquotes/csquotes.def
 File: csquotes.def 2022-09-14 v5.2n csquotes generic definitions (JAW)
@@ -643,26 +647,26 @@ Package csquotes Info: Redefining alias 'default' -> 'italian'.
  (./tesi.aux)
 \openout1 = `tesi.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Info: Redefining \it@ocap on input line 76.
-LaTeX Info: Redefining \it@ccap on input line 76.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 82.
+LaTeX Font Info:    ... okay on input line 82.
+LaTeX Info: Redefining \it@ocap on input line 82.
+LaTeX Info: Redefining \it@ccap on input line 82.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -700,16 +704,16 @@ LaTeX Info: Redefining \it@ccap on input line 76.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count443
+\scratchcounter=\count449
 \scratchdimen=\dimen182
 \scratchbox=\box56
-\nofMPsegments=\count444
-\nofMParguments=\count445
+\nofMPsegments=\count450
+\nofMParguments=\count451
 \everyMPshowfont=\toks28
-\MPscratchCnt=\count446
+\MPscratchCnt=\count452
 \MPscratchDim=\dimen183
-\MPnumerator=\count447
-\makeMPintoPDFobject=\count448
+\MPnumerator=\count453
+\makeMPintoPDFobject=\count454
 \everyMPtoPDFconversion=\toks29
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -717,17 +721,26 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-\c@lstlisting=\count449
-Package hyperref Info: Link coloring OFF on input line 76.
+\c@lstlisting=\count455
+Package hyperref Info: Link coloring OFF on input line 82.
  (./tesi.out) (./tesi.out)
 \@outlinefile=\write4
 \openout4 = `tesi.out'.
 
+Package biblatex Info: Trying to load language 'italian' -> 'italian-apa'...
+Package biblatex Info: ... file 'italian-apa.lbx' found.
+ (/usr/share/texlive/texmf-dist/tex/latex/biblatex-apa/italian-apa.lbx
+File: italian-apa.lbx 2023/03/20 v9.17 APA biblatex localisation
 Package biblatex Info: Trying to load language 'italian'...
 Package biblatex Info: ... file 'italian.lbx' found.
  (/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/italian.lbx
 File: italian.lbx 2023/03/05 v3.19 biblatex localization (PK/MW)
 )
+Package biblatex Info: Trying to load language 'italian'...
+Package biblatex Info: ... file 'italian.lbx' found.
+ (/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/italian.lbx
+File: italian.lbx 2023/03/05 v3.19 biblatex localization (PK/MW)
+))
 Package biblatex Info: Input encoding 'utf8' detected.
 Package biblatex Info: Automatic encoding selection.
 (biblatex)             Assuming data encoding 'utf8'.
@@ -736,44 +749,44 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'tesi.bbl' found.
  (./tesi.bbl)
-Package biblatex Info: Reference section=0 on input line 76.
-Package biblatex Info: Reference segment=0 on input line 76.
+Package biblatex Info: Reference section=0 on input line 82.
+Package biblatex Info: Reference segment=0 on input line 82.
 <logoUnibsScreennato.png, id=158, 1437.11906pt x 633.86812pt>
 File: logoUnibsScreennato.png Graphic file (type png)
 <use logoUnibsScreennato.png>
-Package pdftex.def Info: logoUnibsScreennato.png  used on input line 86.
+Package pdftex.def Info: logoUnibsScreennato.png  used on input line 92.
 (pdftex.def)             Requested size: 288.79422pt x 127.37103pt.
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 107.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 113.
  (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 107.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 113.
  (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 107.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 113.
  (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 107.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 113.
  (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 107.
+(Font)              <12> on input line 113.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 107.
+(Font)              <8> on input line 113.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 107.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 107.
+(Font)              <6> on input line 113.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 113.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 107.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 113.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (11.41116pt too wide) in paragraph at lines 107--115
+Overfull \hbox (11.41116pt too wide) in paragraph at lines 113--121
  [][] 
  []
 
@@ -783,7 +796,7 @@ Overfull \hbox (11.41116pt too wide) in paragraph at lines 107--115
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.162 \clearpage
+l.168 \clearpage
                  [1
 
 
@@ -810,14 +823,14 @@ l.162 \clearpage
 
 ]
 Capitolo 1.
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 186.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 192.
 (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [6
 
 
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}] [7] [8]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 289.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 295.
  (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [9]
@@ -826,29 +839,29 @@ Capitolo 2.
 
 ]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 369.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 375.
 
-Overfull \hbox (8.14362pt too wide) in paragraph at lines 369--370
+Overfull \hbox (8.14362pt too wide) in paragraph at lines 375--376
 []\T1/lmtt/b/n/12 requests\T1/lmr/bx/n/12 : \T1/lmr/m/n/12 li-bre-ria pro-get-ta-ta per sem-pli-fi-ca-re l'e-se-cu-zio-ne di ri-chie-ste HTTP.
  []
 
 [11] [12]
-Overfull \hbox (18.64511pt too wide) in paragraph at lines 405--407
+Overfull \hbox (18.64511pt too wide) in paragraph at lines 411--413
 []\T1/lmr/m/n/12 Sono sta-ti crea-ti fi-le di con-fi-gu-ra-zio-ne de-di-ca-ti nel-la di-rec-to-ry \T1/lmtt/m/n/12 /etc/logrotate.d/
  []
 
 
-Overfull \hbox (3.76598pt too wide) in paragraph at lines 405--407
+Overfull \hbox (3.76598pt too wide) in paragraph at lines 411--413
 \T1/lmr/m/n/12 (co-me \T1/lmtt/m/n/12 hikvision_scripts \T1/lmr/m/n/12 e \T1/lmtt/m/n/12 zabbix-interacta-script\T1/lmr/m/n/12 ), ap-pli-can-do po-li-cy tem-
  []
 
 [13]
-Overfull \hbox (95.94876pt too wide) in paragraph at lines 445--446
+Overfull \hbox (95.94876pt too wide) in paragraph at lines 451--452
 []\T1/lmr/m/n/12 Il pro-ces-so di in-te-gra-zio-ne è ge-sti-to da un \T1/lmr/m/it/12 Cu-stom AlertS-cript \T1/lmr/m/n/12 (\T1/lmtt/m/n/12 interactaCreateOrSolveTicket\T1/lmr/m/n/12 )
  []
 
 
-Overfull \hbox (93.10487pt too wide) in paragraph at lines 445--446
+Overfull \hbox (93.10487pt too wide) in paragraph at lines 451--452
 \T1/lmr/m/n/12 500 la-to ser-ver) ven-go-no trac-cia-ti nel fi-le di log de-di-ca-to \T1/lmtt/m/n/12 interactaCreateOrSolveTicket_log.log\T1/lmr/m/n/12 ,
  []
 
@@ -859,14 +872,14 @@ Capitolo 3.
 ] [16] [17] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 537.
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 543.
  [18]
-Overfull \hbox (1.86523pt too wide) in paragraph at lines 579--579
+Overfull \hbox (1.86523pt too wide) in paragraph at lines 585--585
 []\T1/lmr/bx/n/17.28 Integrazione GIS: Estra-zio-ne coor-di-na-te tra-
  []
 
 [19] [20{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}] [21]
-Overfull \hbox (29.85295pt too wide) in paragraph at lines 655--656
+Overfull \hbox (29.85295pt too wide) in paragraph at lines 661--662
 \T1/lmr/m/n/12 grup-po di de-sti-na-zio-ne, as-sem-blan-do-la di-na-mi-ca-men-te (es. \T1/lmtt/m/n/12 SmartCity/TVCC/Vestone\T1/lmr/m/n/12 ).
  []
 
@@ -875,7 +888,7 @@ Capitolo 4.
 [24
 
 ] [25]
-Overfull \hbox (29.9654pt too wide) in paragraph at lines 737--737
+Overfull \hbox (29.9654pt too wide) in paragraph at lines 743--743
 []\T1/lmr/bx/n/17.28 Sviluppo del Midd-leware e Ascol-to de-gli Stream
  []
 
@@ -884,17 +897,17 @@ File: lstlang1.sty 2023/02/27 1.9 listings language file
 ) (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
 )
-Overfull \hbox (61.44452pt too wide) in paragraph at lines 775--776
+Overfull \hbox (61.44452pt too wide) in paragraph at lines 781--782
 \T1/lmr/m/n/12 HTTP per-si-sten-te in strea-ming ver-so l'end-point \T1/lmtt/m/n/12 /ISAPI/Event/notification/alertStream\T1/lmr/m/n/12 .
  []
 
 [27]
-Overfull \hbox (46.51129pt too wide) in paragraph at lines 830--831
+Overfull \hbox (46.51129pt too wide) in paragraph at lines 836--837
 \T1/lmr/m/n/12 svol-ta pre-sta-zio-na-le. La scel-ta di uti-liz-za-re \T1/lmtt/m/n/12 subprocess.Popen \T1/lmr/m/n/12 al po-sto di \T1/lmtt/m/n/12 subprocess.run
  []
 
 [28] [29]
-Overfull \hbox (53.97076pt too wide) in paragraph at lines 891--892
+Overfull \hbox (53.97076pt too wide) in paragraph at lines 897--898
 \T1/lmr/m/n/12 Com-mand", pun-tan-do al \T1/lmr/m/it/12 Cu-stom AlertS-cript \T1/lmr/m/n/12 de-no-mi-na-to \T1/lmtt/m/n/12 interactaCreateOrSolveTicket\T1/lmr/m/n/12 . 
  []
 
@@ -903,12 +916,12 @@ Capitolo 5.
 [32
 
 ] [33] [34] [35]
-Overfull \hbox (76.514pt too wide) in paragraph at lines 1031--1032
+Overfull \hbox (76.514pt too wide) in paragraph at lines 1037--1038
 []\T1/lmr/m/n/12 Per que-sto pro-get-to è sta-to svi-lup-pa-to lo script Py-thon \T1/lmtt/m/n/12 interactaCreateOrSolveTicket.py\T1/lmr/m/n/12 .
  []
 
 [36]
-Overfull \hbox (60.40114pt too wide) in paragraph at lines 1082--1083
+Overfull \hbox (60.40114pt too wide) in paragraph at lines 1088--1089
 \T1/lmr/m/n/12 ec-ce-zio-ni, ven-go-no scrit-te in ap-pend nel fi-le \T1/lmtt/m/n/12 interactaCreateOrSolveTicket_log.log\T1/lmr/m/n/12 . 
  []
 
@@ -917,7 +930,7 @@ Capitolo 6.
 [39
 
 ]
-Overfull \hbox (4.3388pt too wide) in paragraph at lines 1110--1111
+Overfull \hbox (4.3388pt too wide) in paragraph at lines 1116--1117
 \T1/lmr/m/n/12 re una mail, Zab-bix ese-gue lo script Bash \T1/lmtt/m/n/12 ScriptCustomExportProblemsToCSV.sh
  []
 
@@ -926,12 +939,12 @@ File: lstlang1.sty 2023/02/27 1.9 listings language file
 ) (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 ) [40] [41] [42] [43] [44]
-Overfull \hbox (5.66919pt too wide) in paragraph at lines 1263--1264
+Overfull \hbox (5.66919pt too wide) in paragraph at lines 1269--1270
 \T1/lmtt/m/n/12 /usr/lib/zabbix/alertscripts/interactaCreateOrSolveTicket_log.log\T1/lmr/m/n/12 . A
  []
 
 
-Overfull \hbox (163.19473pt too wide) in paragraph at lines 1276--1277
+Overfull \hbox (163.19473pt too wide) in paragraph at lines 1282--1283
 []\T1/lmr/m/n/12 È sta-to crea-to un fi-le di con-fi-gu-ra-zio-ne spe-ci-fi-co de-po-si-ta-to in \T1/lmtt/m/n/12 /etc/logrotate.d/zabbix-interacta-script\T1/lmr/m/n/12 .
  []
 
@@ -940,12 +953,12 @@ Capitolo 7.
 [47
 
 ] [48] [49] [50]
-Overfull \hbox (7.81126pt too wide) in paragraph at lines 1438--1441
+Overfull \hbox (7.81126pt too wide) in paragraph at lines 1444--1447
 []\T1/lmr/m/n/12 variabili in-te-gra-te in Zab-bix (scrit-te tra pa-ren-te-si graf-fe, es. \T1/lmtt/m/n/12 {HOST.NAME}\T1/lmr/m/n/12 )
  []
 
 
-Overfull \hbox (14.3218pt too wide) in paragraph at lines 1447--1449
+Overfull \hbox (14.3218pt too wide) in paragraph at lines 1453--1455
 []\T1/lmr/m/n/12 il lin-guag-gio stan-dard uni-
  []
 
@@ -953,42 +966,42 @@ Overfull \hbox (14.3218pt too wide) in paragraph at lines 1447--1449
 
 
 ]
-Overfull \hbox (10.78592pt too wide) in paragraph at lines 1462--1468
+Overfull \hbox (10.78592pt too wide) in paragraph at lines 1468--1474
 []\T1/lmr/m/n/12 sistemi in-for-ma-ti-ci (co-me QGIS) pro-
  []
 
 
-Overfull \hbox (21.15451pt too wide) in paragraph at lines 1488--1489
+Overfull \hbox (21.15451pt too wide) in paragraph at lines 1494--1495
 []\T1/lmr/m/n/12 Database uti-liz-za-to da un'or-
  []
 
 [52] [53] [54]
-Overfull \hbox (0.74924pt too wide) in paragraph at lines 1543--1544
+Overfull \hbox (0.74924pt too wide) in paragraph at lines 1549--1550
 []\T1/lmr/m/n/12 Strumento na-ti-vo di Py-thon uti-liz-za-to per crea-
  []
 
 [55] [56] [57]
-Overfull \hbox (20.00641pt too wide) in paragraph at lines 1603--1604
+Overfull \hbox (20.00641pt too wide) in paragraph at lines 1609--1610
 []\T1/lmr/m/n/12 Insieme di be-st prac-
  []
 
 
-Overfull \hbox (4.55438pt too wide) in paragraph at lines 1607--1608
+Overfull \hbox (4.55438pt too wide) in paragraph at lines 1613--1614
 []\T1/lmr/m/n/12 Standard in-ter-net (RFC
  []
 
 
-Overfull \hbox (18.79832pt too wide) in paragraph at lines 1617--1618
+Overfull \hbox (18.79832pt too wide) in paragraph at lines 1623--1624
 []\T1/lmr/m/n/12 Protocollo stan-dard di In-ter-net (RFC
  []
 
 [58] [59]
-Underfull \hbox (badness 10000) in paragraph at lines 1651--1652
+Underfull \hbox (badness 10000) in paragraph at lines 1657--1658
 []\T1/lmr/m/n/12 Zabbix LLC, \T1/lmr/m/it/12 Zab-bix 7.0 Ma-nual\T1/lmr/m/n/12 . [On-li-ne]. Di-spo-ni-bi-le su:
  []
 
 
-Underfull \hbox (badness 1242) in paragraph at lines 1653--1654
+Underfull \hbox (badness 1242) in paragraph at lines 1659--1660
 []\T1/lmr/m/n/12 Python Soft-ware Foun-da-tion, \T1/lmr/m/it/12 Py-thon Pro-gram-ming Lan-gua-ge\T1/lmr/m/n/12 . [On-li-ne].
  []
 
@@ -1012,15 +1025,15 @@ Package logreq Info: Writing requests to 'tesi.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 22849 strings out of 476171
- 381770 string characters out of 5795119
- 2355975 words of memory out of 5000000
- 44133 multiletter control sequences out of 15000+600000
+ 23260 strings out of 476171
+ 390217 string characters out of 5795119
+ 2356975 words of memory out of 5000000
+ 44545 multiletter control sequences out of 15000+600000
  615274 words of font info for 71 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,13n,81p,1133b,2246s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,13n,81p,1133b,2805s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr6.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmro17.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb>
-Output written on tesi.pdf (63 pages, 768189 bytes).
+Output written on tesi.pdf (63 pages, 767452 bytes).
 PDF statistics:
  975 PDF objects out of 1000 (max. 8388607)
  873 compressed objects within 9 object streams
