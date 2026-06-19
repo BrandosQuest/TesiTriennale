@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber tesi"] 1781864524.52457 "tesi.bcf" "tesi.bbl" "tesi" 1781864535.77264 0
-  "references.bib" 1781864420.9368 455 c843c0fc8baa57f4051cdba1a23ad4b2 ""
+["biber tesi"] 1781865233.82112 "tesi.bcf" "tesi.bbl" "tesi" 1781865235.57764 0
+  "references.bib" 1781865233.47656 762 059e0ebd05de3da52943eadea87d6d65 ""
   "tesi.bcf" 1781864535.49434 132518 b50df70bd466d4023f29c5ff56df3b01 "pdflatex"
   (generated)
   "tesi.bbl"
   "tesi.blg"
   (rewritten before read)
-["pdflatex"] 1781864531.11381 "/home/brando/Documents/Tesi_ITID_Brando_Calderara/tesi.tex" "tesi.pdf" "tesi" 1781864535.77364 0
+["pdflatex"] 1781864531.11381 "/home/brando/Documents/Tesi_ITID_Brando_Calderara/tesi.tex" "tesi.pdf" "tesi" 1781865235.5778 0
   "/etc/texmf/web2c/texmf.cnf" 1758874401.06311 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/brando/Documents/Tesi_ITID_Brando_Calderara/tesi.tex" 1781864518.9579 176606 83880617b2f23a72d57c59aae4aabef5 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -155,7 +155,7 @@
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1781861682 6802361 49559e5f302828d4d34d7034eb926c44 ""
   "logoUnibsScreennato.png" 1781850848 291868 01e8a6da43cbfa109de94cc4ea635afb ""
   "tesi.aux" 1781864535.47996 9060 5f6aab9a6aff6c026aaaa02b67f6874c "pdflatex"
-  "tesi.bbl" 1781864526.37777 3246 65089ff79e18cc177c95870a8f0904be "biber tesi"
+  "tesi.bbl" 1781865235.53183 3246 65089ff79e18cc177c95870a8f0904be "biber tesi"
   "tesi.lof" 1781864535.49696 461 2b3c9aafd84846f2b359ffabd77e825f "pdflatex"
   "tesi.lot" 1781864535.49696 200 a762d6082b727fdec51af2631e5ebbda "pdflatex"
   "tesi.out" 1781864535.48996 10078 9b7253140b7acc1d3fd9e90fa39935bf "pdflatex"
