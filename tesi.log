@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.19)  19 JUN 2026 18:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.19)  21 JUN 2026 17:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/home/brando/Documents/TesiTriennale/tesi.tex
-(/home/brando/Documents/TesiTriennale/tesi.tex
+**/home/brando/Documents/Tesi_ITID_Brando_Calderara/tesi.tex
+(/home/brando/Documents/Tesi_ITID_Brando_Calderara/tesi.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
 (/usr/share/texlive/texmf-dist/tex/latex/base/report.cls
@@ -32,7 +32,7 @@ Package: inputenc 2021/02/14 v1.3d Input encoding file
 Package: babel 2024/01/07 v24.1 The Babel package
 \babel@savecnt=\count196
 \U@D=\dimen141
-\l@unhyphenated=\language89
+\l@unhyphenated=\language6
  (/usr/share/texlive/texmf-dist/tex/generic/babel/txtbabel.def)
 \bbl@readstream=\read2
 \bbl@dirlevel=\count197
@@ -432,7 +432,7 @@ Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
 \bibhang=\skip70
 \blx@bcfin=\read3
 \blx@bcfout=\write3
-\blx@langwohyphens=\language90
+\blx@langwohyphens=\language7
 \c@mincomprange=\count350
 \c@maxcomprange=\count351
 \c@mincompwidth=\count352
@@ -1025,13 +1025,13 @@ Package logreq Info: Writing requests to 'tesi.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 23258 strings out of 474222
- 390156 string characters out of 5748733
+ 23260 strings out of 476171
+ 390217 string characters out of 5795119
  2355975 words of memory out of 5000000
- 44793 multiletter control sequences out of 15000+600000
+ 44545 multiletter control sequences out of 15000+600000
  615274 words of font info for 71 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 75i,13n,81p,1120b,2805s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 14 hyphenation exceptions out of 8191
+ 75i,13n,81p,1133b,2805s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr6.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmro17.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb>
 Output written on tesi.pdf (63 pages, 767449 bytes).
 PDF statistics:
