@@ -1,14 +1,14 @@
 # Fdb version 4
-["biber tesi"] 1781885095.34545 "tesi.bcf" "tesi.bbl" "tesi" 1781885099.51799 0
+["biber tesi"] 1781885095.34545 "tesi.bcf" "tesi.bbl" "tesi" 1782038645.66633 0
   "references.bib" 1781876421.04677 762 059e0ebd05de3da52943eadea87d6d65 ""
-  "tesi.bcf" 1781885099.45367 132518 b50df70bd466d4023f29c5ff56df3b01 "pdflatex"
+  "tesi.bcf" 1782038645.59729 132518 b50df70bd466d4023f29c5ff56df3b01 "pdflatex"
   (generated)
   "tesi.bbl"
   "tesi.blg"
   (rewritten before read)
-["pdflatex"] 1781885098.29176 "/home/brando/Documents/TesiTriennale/tesi.tex" "tesi.pdf" "tesi" 1781885099.51825 0
+["pdflatex"] 1782038644.40794 "/home/brando/Documents/TesiTriennale/tesi.tex" "tesi.pdf" "tesi" 1782038645.66659 0
   "/etc/texmf/web2c/texmf.cnf" 1781877153.96915 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/brando/Documents/TesiTriennale/tesi.tex" 1781885022.9545 176659 b718b80bc6c8b2997c75ee25ff7a350d ""
+  "/home/brando/Documents/TesiTriennale/tesi.tex" 1782038644.19509 176658 39c48258f496bdad45d5022d8b2d0bb8 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm" 1246382020 928 2dc8d444221b7a635bb58038579b861a ""
@@ -154,14 +154,14 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1781877171.28181 5472669 54eaf61a88b6b7896ebd0dac973cb29c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1781877246 8212789 067713bffb547f22100fa0f5b46fe3f6 ""
   "logoUnibsScreennato.png" 1781876421.04577 291868 01e8a6da43cbfa109de94cc4ea635afb ""
-  "tesi.aux" 1781885099.44966 9060 5f6aab9a6aff6c026aaaa02b67f6874c "pdflatex"
+  "tesi.aux" 1782038645.59334 9060 5f6aab9a6aff6c026aaaa02b67f6874c "pdflatex"
   "tesi.bbl" 1781885095.82049 3246 65089ff79e18cc177c95870a8f0904be "biber tesi"
-  "tesi.lof" 1781885099.4541 461 2b3c9aafd84846f2b359ffabd77e825f "pdflatex"
-  "tesi.lot" 1781885099.4541 200 a762d6082b727fdec51af2631e5ebbda "pdflatex"
-  "tesi.out" 1781885099.45166 10078 9b7253140b7acc1d3fd9e90fa39935bf "pdflatex"
-  "tesi.run.xml" 1781885099.4541 2359 6b57f0a99c28c87d1c5c7272410e173a "pdflatex"
-  "tesi.tex" 1781885022.9545 176659 b718b80bc6c8b2997c75ee25ff7a350d ""
-  "tesi.toc" 1781885099.4541 3801 c5d5bc05ef1769903351f24ff6085764 "pdflatex"
+  "tesi.lof" 1782038645.59777 461 2b3c9aafd84846f2b359ffabd77e825f "pdflatex"
+  "tesi.lot" 1782038645.59777 200 a762d6082b727fdec51af2631e5ebbda "pdflatex"
+  "tesi.out" 1782038645.59534 10078 9b7253140b7acc1d3fd9e90fa39935bf "pdflatex"
+  "tesi.run.xml" 1782038645.59777 2359 6b57f0a99c28c87d1c5c7272410e173a "pdflatex"
+  "tesi.tex" 1782038644.19509 176658 39c48258f496bdad45d5022d8b2d0bb8 ""
+  "tesi.toc" 1782038645.59777 3801 c5d5bc05ef1769903351f24ff6085764 "pdflatex"
   (generated)
   "tesi.aux"
   "tesi.bcf"
