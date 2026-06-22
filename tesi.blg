@@ -1,19 +1,19 @@
 [0] Config.pm:307> INFO - This is Biber 2.19
 [0] Config.pm:310> INFO - Logfile is 'tesi.blg'
-[35] biber:340> INFO - === ven giu 19, 2026, 18:04:55
-[42] Biber.pm:419> INFO - Reading 'tesi.bcf'
-[77] Biber.pm:979> INFO - Found 1 citekeys in bib section 0
-[86] Biber.pm:4419> INFO - Processing section 0
-[91] Biber.pm:4610> INFO - Looking for bibtex file 'references.bib' for section 0
-[91] bibtex.pm:1713> INFO - LaTeX decoding ...
-[93] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
-[112] UCollate.pm:68> INFO - Overriding locale 'it-IT' defaults 'variable = shifted' with 'variable = non-ignorable'
-[112] UCollate.pm:68> INFO - Overriding locale 'it-IT' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[112] Biber.pm:4239> INFO - Sorting list 'nyt/apasortcite//global/global' of type 'entry' with template 'nyt' and locale 'it-IT'
-[112] Biber.pm:4245> INFO - No sort tailoring available for locale 'it-IT'
-[115] UCollate.pm:68> INFO - Overriding locale 'it-IT' defaults 'variable = shifted' with 'variable = non-ignorable'
-[115] UCollate.pm:68> INFO - Overriding locale 'it-IT' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[115] Biber.pm:4239> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'it-IT'
-[115] Biber.pm:4245> INFO - No sort tailoring available for locale 'it-IT'
-[119] bbl.pm:660> INFO - Writing 'tesi.bbl' with encoding 'UTF-8'
-[119] bbl.pm:763> INFO - Output to tesi.bbl
+[34] biber:340> INFO - === lun giu 22, 2026, 11:28:38
+[41] Biber.pm:419> INFO - Reading 'tesi.bcf'
+[75] Biber.pm:979> INFO - Found 1 citekeys in bib section 0
+[83] Biber.pm:4419> INFO - Processing section 0
+[88] Biber.pm:4610> INFO - Looking for bibtex file 'references.bib' for section 0
+[88] bibtex.pm:1713> INFO - LaTeX decoding ...
+[90] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
+[107] UCollate.pm:68> INFO - Overriding locale 'it-IT' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[107] UCollate.pm:68> INFO - Overriding locale 'it-IT' defaults 'variable = shifted' with 'variable = non-ignorable'
+[107] Biber.pm:4239> INFO - Sorting list 'nyt/apasortcite//global/global' of type 'entry' with template 'nyt' and locale 'it-IT'
+[107] Biber.pm:4245> INFO - No sort tailoring available for locale 'it-IT'
+[111] UCollate.pm:68> INFO - Overriding locale 'it-IT' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[111] UCollate.pm:68> INFO - Overriding locale 'it-IT' defaults 'variable = shifted' with 'variable = non-ignorable'
+[111] Biber.pm:4239> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'it-IT'
+[111] Biber.pm:4245> INFO - No sort tailoring available for locale 'it-IT'
+[113] bbl.pm:660> INFO - Writing 'tesi.bbl' with encoding 'UTF-8'
+[114] bbl.pm:763> INFO - Output to tesi.bbl
