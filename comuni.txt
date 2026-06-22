@@ -29,3 +29,35 @@
 "NOME_COM" = `Vestone` OR
 "NOME_COM" = `Villanuova sul Clisi` OR
 "NOME_COM" = `Vobarno`
+
+Agnosine
+Anfo
+Barghe
+Bione
+Borgosatollo
+Botticino
+Capovalle
+Castenedolo
+Casto
+Gavardo
+Idro
+Lavenone
+Mazzano
+Mura
+Muscoline
+Nuvolento
+Nuvolera
+Odolo
+Paitone
+Pertica Alta
+Pertica Bassa
+Preseglie
+Rezzato
+Roe' Volciano
+Sabbio Chiese
+Salo'
+Treviso Bresciano
+Vallio Terme
+Vestone
+Villanuova sul Clisi
+Vobarno

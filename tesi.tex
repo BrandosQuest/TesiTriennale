@@ -14,6 +14,7 @@
 \usepackage{listings}
 \usepackage[hidelinks]{hyperref} % hidelinks nasconde i riquadri rossi cliccabili
 \usepackage{fancyhdr}
+\usepackage{float}
 
 %alt+Z per fare andare a capo lelinne lunghe
 
@@ -89,7 +90,7 @@
 
         \begin{figure}[htbp] % [htbp] specifies preferred placement (here, top, bottom, page)
             \centering       % Centers the image horizontally
-            \includegraphics[width=0.7\textwidth]{logoUnibsScreennato.png}
+            \includegraphics[width=0.7\textwidth]{figures/logoUnibsScreennato.png}
             %\caption{This is a centered image.}
             %\label{fig:my_figure}
         \end{figure}
@@ -201,6 +202,34 @@ Nel contesto tecnologico delle Smart City, Secoval gestisce apparati tra cui tel
 %La vastità e la dispersione geografica di questa rete richiedono sistemi di monitoraggio solidi ereattivi. 
 Il progetto svolto durante il tirocinio si inserisce direttamente in questo scenario operativo, con l'obiettivo di superare la gestione manuale implementando un'architettura automatizzata e centralizzata basata su Zabbix, in modo che si realizzi un sistema di monitoraggio solido per la rete di apparati di Secoval, abbastanza vasta e appena installata quindi instabile.
 Il lavoro ha previsto l'automazione del discovery e dell'assegnazione dei metadati degli apparati tramite fogli Excel, l'integrazione con i flussi di allarme nativi dei dispositivi periferici (come gli eventi ISAPI Hikvision) e la comunicazione sincrona e crittografata con la piattaforma cloud di ticketing aziendale Interacta per la gestione asincrona dei guasti da parte degli operatori.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{figures/ComuniConTelecamere.png}
+    \caption{Flow \textit{FlowGetInfosProva3} in Node- RED: sottoscrizione ai topic della torre e del drone.}
+    \label{fig:ComuniConTelecamere}
+\end{figure}
+
+
+% \begin{figure}[H]
+%     \centering
+%     \begin{minipage}[t]{0.48\linewidth}
+%         \centering
+%         \includegraphics[width=\linewidth, trim={0 0 700 0}, clip]{figures/fig_missioninfos_flow.png}
+%         \caption{Flow \textit{missionInfos} in Node-RED.}
+%         \label{fig:missioninfos_flow}
+%     \end{minipage}%
+%     \hfill
+%     \begin{minipage}[t]{0.48\linewidth}
+%         \centering
+%         \includegraphics[width=\linewidth, trim={0 0 0 0}, clip]{figures/fig_missioninfos_dashboard.png}
+%         \caption{Dashboard statistiche missioni.}
+%         \label{fig:missioninfos_dashboard}
+%     \end{minipage}
+    
+%     \vspace{0.5cm}
+%     Flows \textit{missionInfos} e relativa dashboard.
+%     \label{fig:missioninfos}
+% \end{figure}
 
 % Citazioni e Bibliografia:
 
