@@ -251,9 +251,9 @@ Il lavoro ha previsto l'automazione del discovery e dell'assegnazione dei metada
 %         Organigramma aziendale semplificato, per mostrare dove si colloca il reparto IT in cui hai operato.
 
 \section{Il Progetto di Stage}
-%\textit{[Descrizione ad alto livello del progetto: l'esigenza di monitorare TVCC, AP, Switch e LTE. Integrazione con script esterni per implementare funzionalità e per fare analisi dei dati. Integrazione con Interacta].}
+\textit{[Descrizione ad alto livello del progetto: l'esigenza di monitorare TVCC, AP, Switch e LTE. Integrazione con script esterni per implementare funzionalità e per fare analisi dei dati. Integrazione con Interacta].}
 
-Il progetto di stage ha come obiettivo la progettazione e l'implementazione di un'architettura di monitoraggio centralizzata basata su Zabbix 7.0. Esso sarà destinato alla gestione di una delle infrastrutture di rete per Smart City che Secoval si trova a gestire. L'esigenza primaria è superare i limiti dei sistemi di monitoraggio precedenti, come PRTG (Paessler Router Traffic Grapher), software proprietario con un sostanziale costo per la gestione di reti di certe dimensioni (1350,00€/month per 1000 devices \parencite{PaesslerPricing}) e con da un'elevata gestione manuale nella implementazione presente al momento del tirocinio.
+Il progetto di stage ha come obiettivo la progettazione e l'implementazione di un'architettura di monitoraggio centralizzata basata su Zabbix 7.0, destinata alla gestione dell'infrastruttura di rete Smart City di Secoval. L'esigenza primaria è superare i limiti operativi dei sistemi di monitoraggio pregressi (come PRTG), caratterizzati da un'elevata gestione manuale e da una scarsa scalabilità nell'inserimento di nuovi nodi.
 
 L'infrastruttura oggetto di monitoraggio è altamente eterogenea e distribuita capillarmente sul territorio. I dispositivi principali comprendono:
 \begin{itemize}

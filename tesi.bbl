@@ -19,6 +19,42 @@
 
 \refsection{0}
   \datalist[entry]{nyt/apasortcite//global/global}
+    \entry{PaesslerPricing}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=f92a302aa92a89cd45fb933091bbe181}{%
+           family={{Paessler}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {Paessler}%
+      }
+      \strng{namehash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{fullhash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{bibnamehash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{authorbibnamehash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{authornamehash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{authorfullhash}{f92a302aa92a89cd45fb933091bbe181}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{PaesslerPricingWebPage}
+      \field{urlday}{25}
+      \field{urlmonth}{6}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.paessler.com/prtg/prtg-network-monitor#pricing
+      \endverb
+      \verb{url}
+      \verb https://www.paessler.com/prtg/prtg-network-monitor#pricing
+      \endverb
+    \endentry
     \entry{secoval_chisiamo}{online}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=580205d26105897dccf1b082532f5191}{%
@@ -97,6 +133,42 @@
     \endentry
   \enddatalist
   \datalist[entry]{nyt/global//global/global}
+    \entry{PaesslerPricing}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=f92a302aa92a89cd45fb933091bbe181}{%
+           family={{Paessler}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {Paessler}%
+      }
+      \strng{namehash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{fullhash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{bibnamehash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{authorbibnamehash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{authornamehash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{authorfullhash}{f92a302aa92a89cd45fb933091bbe181}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{PaesslerPricingWebPage}
+      \field{urlday}{25}
+      \field{urlmonth}{6}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.paessler.com/prtg/prtg-network-monitor#pricing
+      \endverb
+      \verb{url}
+      \verb https://www.paessler.com/prtg/prtg-network-monitor#pricing
+      \endverb
+    \endentry
     \entry{secoval_chisiamo}{online}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=580205d26105897dccf1b082532f5191}{%
