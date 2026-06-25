@@ -255,12 +255,12 @@ Il lavoro ha previsto l'automazione del discovery e dell'assegnazione dei metada
 
 Il progetto di stage ha come obiettivo la progettazione e l'implementazione di un'architettura di monitoraggio centralizzata basata su Zabbix 7.0. Esso sarà destinato alla gestione di una delle infrastrutture di rete per Smart City che Secoval si trova a gestire. L'esigenza primaria è superare i limiti dei sistemi di monitoraggio precedenti, come PRTG (Paessler Router Traffic Grapher), software proprietario con un sostanziale costo per la gestione di reti di certe dimensioni (1350,00€/month per 1000 devices \parencite{PaesslerPricing}) e con da un'elevata gestione manuale nella implementazione presente al momento del tirocinio.
 
-L'infrastruttura oggetto di monitoraggio è altamente eterogenea e distribuita capillarmente sul territorio. I dispositivi principali comprendono:
+L'infrastruttura monitorata è altamente eterogenea e distribuita sul territorio. I dispositivi principali comprendono:
 \begin{itemize}
-    \item \textbf{Telecamere di videosorveglianza (TVCC):} principalmente apparati Hikvision, che richiedono il controllo di raggiungibilità e dell'integrità del flusso video.
-    \item \textbf{Access Point (AP):} nodi per l'erogazione di connettività Wi-Fi pubblica nei centri urbani.
-    \item \textbf{Switch di distribuzione:} apparati industriali per l'aggregazione del traffico periferico.
-    \item \textbf{Dispositivi LTE/5G:} gateway per l'uplink in aree remote non coperte da fibra ottica.
+    \item \textbf{Telecamere di videosorveglianza (TVCC):} principalmente telecamere Hikvision, che richiedono il controllo di raggiungibilità e dell'integrità del flusso video.
+    \item \textbf{Access Point (AP):} nodi per l'erogazione di connettività Wi-Fi pubblica.
+    \item \textbf{Switch di distribuzione:} apparati industriali e non per l'aggregazione del traffico periferico.
+    \item \textbf{Dispositivi LTE:} dispositivi delle precedenti 3 tipologie che si basano sull'utilizzo di gateway per l'uplink in aree remote non coperte da fibra ottica.
 \end{itemize}
 
 Per garantire una gestione scalabile, il progetto fa largo uso di script esterni (Python e Bash) per espandere le funzionalità native del sistema. Il tradizionale processo di \textit{Network Discovery} basato su ICMP è stato sostituito da un meccanismo di provisioning dinamico via Zabbix API: uno script Python legge un CMDB aziendale in formato Excel e popola automaticamente l'inventario degli host associando l'IP a metadati specifici come l'ID Host, l'ID Palo e le coordinate geografiche. Sul fronte degli eventi, per le telecamere Hikvision è stato sviluppato un middleware Python in ascolto sugli stream ISAPI, incaricato di intercettare alert critici (es. \textit{Video Tampering}) e inoltrarli asincronamente tramite protocollo Zabbix Sender.
