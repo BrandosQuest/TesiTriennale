@@ -3,9 +3,13 @@
 % --- Pacchetti Fondamentali ---
 \usepackage[utf8]{inputenc}
 \usepackage[italian]{babel} % Obbligatorio per la lingua italiana
-\usepackage{lmodern}
+% \usepackage{lmodern}  il font originale che mi piace
+% Usa Helvetica, che è il font LaTeX più simile all'Arial (sans-serif)
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}%Di norma, LaTeX impiega un carattere con grazie (serif), noto come Computer Modern Roman. Questo comando sovrascrive tale impostazione globale nel preambolo.
 \usepackage{geometry}
-\geometry{a4paper, top=25mm, bottom=20mm, left=35mm, right=30mm}
+% \geometry{a4paper, top=25mm, bottom=20mm, left=35mm, right=30mm}
+\geometry{a4paper, top=25mm, bottom=20mm, left=20mm, right=20mm}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -96,14 +100,15 @@
         \end{figure}
         %\LARGE{\textbf{UNIVERSIT\`A DEGLI STUDI DI BRESCIA}}\\
         \vspace{5mm}
-        \Large{Dipartimento di Ingegneria dell'Informazione}\\
+        \Large{\textit{DIPARTIMENTO DI} Ingegneria dell'Informazione}\\
         \vspace{3mm}
-        \normalsize{Corso di Laurea in Ingegneria delle Tecnologie per l'Impresa Digitale (ITID)-da tenere ITID?}\\
+        \normalsize{\textit{Corso di Laurea in} Ingegneria delle Tecnologie per l'Impresa Digitale}\\
 
         \vspace{20mm}
-        \textsl{\Large{Tesi di Laurea Triennale}}\\
+        %\textsl{\Large{Tesi di Laurea Triennale}}\\
+        \Large{\textbf{Relazione Finale}}\\
         \vspace{10mm}
-        \Huge{\textbf{Monitoraggio, manutenzione e sicurezza per smart city: dalla gestione manuale ad un'architettura automatizzata basata su Zabbix}}\\
+        \Huge{\textbf{MONITORAGGIO, MANUTENZIONE E SICUREZZA PER SMART CITY: DALLA GESTIONE MANUALE AD UN'ARCHITETTURA AUTOMATIZZATA BASATA SU ZABBIX}}\\%Monitoraggio, manutenzione e sicurezza per smart city: dalla gestione manuale ad un'architettura automatizzata basata su Zabbix}}\\
         %\vspace{5mm}
         %\Large{\textit{Integrazioni Crittografiche e Caso di Studio presso Secoval srl}}
 
@@ -112,19 +117,18 @@
             \centering
             \normalsize
             \begin{tabular}{l p{3cm} l}
-                \textbf{Relatore:}              &  & \textbf{Laureando:} \\
-                Prof. Francesco Gringoli        &  & Brando Calderara    \\
-                                                &  & Matricola n. 746352 \\
-                \vspace{5mm}                                             \\
-                \textbf{Correlatore Aziendale:} &  &                     \\
-                Nome Correlatore Secoval, da inserire?
+                Relatore:                         &  &                     \\
+                Chiar.mo Prof. Francesco Gringoli &  &                     \\[5mm] % <--- IL TRUCCO È QUI
+                                                  &  & Laureando :         \\
+                                                  &  & Brando Calderara    \\
+                                                  &  & Matricola n. 746352 \\
             \end{tabular}
         \end{table}
 
-        %\vfill
+        \vfill % Meglio usare vfill per spingere l'anno accademico a 20mm dal fondo pagina in automatico
         \begin{center}
             \line(1,0){350}\\
-            \normalsize{Anno Accademico 2025/2026}
+            \normalsize{\textit{Anno Accademico 2025/2026}}
         \end{center}
     \end{center}
 \end{titlepage}
