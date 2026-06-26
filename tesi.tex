@@ -3,10 +3,10 @@
 % --- Pacchetti Fondamentali ---
 \usepackage[utf8]{inputenc}
 \usepackage[italian]{babel} % Obbligatorio per la lingua italiana
-% \usepackage{lmodern}  il font originale che mi piace
+\usepackage{lmodern}  %il font originale che mi piace
 % Usa Helvetica, che è il font LaTeX più simile all'Arial (sans-serif)
-\usepackage{helvet}
-\renewcommand{\familydefault}{\sfdefault}%Di norma, LaTeX impiega un carattere con grazie (serif), noto come Computer Modern Roman. Questo comando sovrascrive tale impostazione globale nel preambolo.
+%\usepackage{helvet}
+%\renewcommand{\familydefault}{\sfdefault}%Di norma, LaTeX impiega un carattere con grazie (serif), noto come Computer Modern Roman. Questo comando sovrascrive tale impostazione globale nel preambolo.
 \usepackage{geometry}
 % \geometry{a4paper, top=25mm, bottom=20mm, left=35mm, right=30mm}
 \geometry{a4paper, top=25mm, bottom=20mm, left=20mm, right=20mm}
@@ -89,51 +89,52 @@
 % ====================================================================
 % FRONTESPIZIO
 % ====================================================================
-\begin{titlepage}
-    \begin{center}
+\include{chapters/frontespizioBrandoCalderara}
+% \begin{titlepage}
+%     \begin{center}
 
-        \begin{figure}[htbp] % [htbp] specifies preferred placement (here, top, bottom, page)
-            \centering       % Centers the image horizontally
-            \includegraphics[width=0.7\textwidth]{figures/logoUnibsScreennato.png}
-            %\caption{This is a centered image.}
-            %\label{fig:my_figure}
-        \end{figure}
-        %\LARGE{\textbf{UNIVERSIT\`A DEGLI STUDI DI BRESCIA}}\\
-        \vspace{5mm}
-        \Large{\textit{DIPARTIMENTO DI} Ingegneria dell'Informazione}\\
-        \vspace{3mm}
-        \normalsize{\textit{Corso di Laurea in} Ingegneria delle Tecnologie per l'Impresa Digitale}\\
+%         \begin{figure}[htbp] % [htbp] specifies preferred placement (here, top, bottom, page)
+%             \centering       % Centers the image horizontally
+%             \includegraphics[width=0.7\textwidth]{figures/logoUnibsScreennato.png}
+%             %\caption{This is a centered image.}
+%             %\label{fig:my_figure}
+%         \end{figure}
+%         %\LARGE{\textbf{UNIVERSIT\`A DEGLI STUDI DI BRESCIA}}\\
+%         \vspace{5mm}
+%         \Large{\textit{DIPARTIMENTO DI} Ingegneria dell'Informazione}\\
+%         \vspace{3mm}
+%         \normalsize{\textit{Corso di Laurea in} Ingegneria delle Tecnologie per l'Impresa Digitale}\\
 
-        \vspace{20mm}
-        %\textsl{\Large{Tesi di Laurea Triennale}}\\
-        \Large{\textbf{Relazione Finale}}\\
-        \vspace{10mm}
-        \Huge{\textbf{MONITORAGGIO, MANUTENZIONE E SICUREZZA PER SMART CITY: DALLA GESTIONE MANUALE AD UN'ARCHITETTURA AUTOMATIZZATA BASATA SU ZABBIX}}\\%Monitoraggio, manutenzione e sicurezza per smart city: dalla gestione manuale ad un'architettura automatizzata basata su Zabbix}}\\
-        %\vspace{5mm}
-        %\Large{\textit{Integrazioni Crittografiche e Caso di Studio presso Secoval srl}}
+%         \vspace{20mm}
+%         %\textsl{\Large{Tesi di Laurea Triennale}}\\
+%         \Large{\textbf{Relazione Finale}}\\
+%         \vspace{10mm}
+%         \Huge{\textbf{MONITORAGGIO, MANUTENZIONE E SICUREZZA PER SMART CITY: DALLA GESTIONE MANUALE AD UN'ARCHITETTURA AUTOMATIZZATA BASATA SU ZABBIX}}\\%Monitoraggio, manutenzione e sicurezza per smart city: dalla gestione manuale ad un'architettura automatizzata basata su Zabbix}}\\
+%         %\vspace{5mm}
+%         %\Large{\textit{Integrazioni Crittografiche e Caso di Studio presso Secoval srl}}
 
-        \vspace{20mm}
-        \begin{table}[h]
-            \centering
-            \normalsize
-            \begin{tabular}{l p{3cm} l}
-                Relatore:                         &  &                     \\
-                Chiar.mo Prof. Francesco Gringoli &  &                     \\[5mm] % <--- IL TRUCCO È QUI
-                                                  &  & Laureando :         \\
-                                                  &  & Brando Calderara    \\
-                                                  &  & Matricola n. 746352 \\
-            \end{tabular}
-        \end{table}
+%         \vspace{20mm}
+%         \begin{table}[h]
+%             \centering
+%             \normalsize
+%             \begin{tabular}{l p{3cm} l}
+%                 Relatore:                         &  &                     \\
+%                 Chiar.mo Prof. Francesco Gringoli &  &                     \\[5mm] % <--- IL TRUCCO È QUI
+%                                                   &  & Laureando :         \\
+%                                                   &  & Brando Calderara    \\
+%                                                   &  & Matricola n. 746352 \\
+%             \end{tabular}
+%         \end{table}
 
-        \vfill % Meglio usare vfill per spingere l'anno accademico a 20mm dal fondo pagina in automatico
-        \begin{center}
-            \line(1,0){350}\\
-            \normalsize{\textit{Anno Accademico 2025/2026}}
-        \end{center}
-    \end{center}
-\end{titlepage}
+%         \vfill % Meglio usare vfill per spingere l'anno accademico a 20mm dal fondo pagina in automatico
+%         \begin{center}
+%             \line(1,0){350}\\
+%             \normalsize{\textit{Anno Accademico 2025/2026}}
+%         \end{center}
+%     \end{center}
+% \end{titlepage}
 
-\clearpage
+% \clearpage
 
 % ====================================================================
 % SOMMARIO E INDICI
