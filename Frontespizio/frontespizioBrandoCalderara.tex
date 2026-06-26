@@ -1,0 +1,135 @@
+\documentclass[12pt, a4paper, oneside]{report}
+\setlength{\headheight}{25.3pt}
+% --- Pacchetti Fondamentali ---
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel} % Obbligatorio per la lingua italiana
+\usepackage{lmodern}%  il font originale che mi piace
+% Usa Helvetica, che è il font LaTeX più simile all'Arial (sans-serif)
+%\usepackage{helvet}
+%\renewcommand{\familydefault}{\sfdefault}%Di norma, LaTeX impiega un carattere con grazie (serif), noto come Computer Modern Roman. Questo comando sovrascrive tale impostazione globale nel preambolo.
+\usepackage{geometry}
+% \geometry{a4paper, top=25mm, bottom=20mm, left=35mm, right=30mm}
+\geometry{a4paper, top=25mm, bottom=20mm, left=20mm, right=20mm}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[hidelinks]{hyperref} % hidelinks nasconde i riquadri rossi cliccabili
+\usepackage{fancyhdr}
+\usepackage{float}
+
+%alt+Z per fare andare a capo lelinne lunghe
+
+% --- Configurazione Tracciamento Codice (Listings) ---
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{codeStyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=codeStyle}
+
+\usepackage[T1]{fontenc}
+
+% --- Configurazione Layout ---
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small\leftmark}
+\lfoot{\small Tesi Triennale --- Brando Calderara}
+\rfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% 1. Gestione della lingua italiana e dei caratteri
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel} % Traduce i comandi automatici in italiano
+
+% 2. Configurazione della bibliografia (Stile DA DECIDEREEEEEEEEEEEE)
+% \usepackage[
+%     backend=biber,     % Il motore di compilazione moderno usato da Overleaf
+%     style=ieee,        % Applica lo stile IEEE (numeri tra parentesi quadre)
+%     language=italian,  % Dice a biblatex di tradurre "and" in "e" nelle citazioni
+%     sorting=none       % Ordina la bibliografia finale secondo l'ordine di apparizione nel testo
+% ]{biblatex}
+\usepackage[ %Author-Year format (like Harvard/APA)
+    backend=biber,     
+    style=apa,  % Changed from ieee to authoryear or apa with parentesis
+    language=italian,  
+    sorting=nyt        % Changed to Name-Year-Title sorting (Standard for APA/Harvard)
+]{biblatex}
+
+% 2. Gestione avanzata delle virgolette (Risolve il warning di biblatex)
+\usepackage{csquotes}
+
+% 3. Carica il tuo file dei database delle citazioni
+\addbibresource{references.bib} 
+
+\begin{document}
+
+% ====================================================================
+% FRONTESPIZIO
+% ====================================================================
+\begin{titlepage}
+    \begin{center}
+
+        \begin{figure}[htbp] % [htbp] specifies preferred placement (here, top, bottom, page)
+            \centering       % Centers the image horizontally
+            \includegraphics[width=0.7\textwidth]{logoUnibsScreennato.png}
+            %\caption{This is a centered image.}
+            %\label{fig:my_figure}
+        \end{figure}
+        %\LARGE{\textbf{UNIVERSIT\`A DEGLI STUDI DI BRESCIA}}\\
+        \vspace{5mm}
+        \Large{\textit{DIPARTIMENTO DI} Ingegneria dell'Informazione}\\
+        \vspace{3mm}
+        \normalsize{\textit{Corso di Laurea in} Ingegneria delle Tecnologie per l'Impresa Digitale}\\
+
+        \vspace{20mm}
+        %\textsl{\Large{Tesi di Laurea Triennale}}\\
+        \Large{\textbf{Relazione Finale}}\\
+        \vspace{10mm}
+        \Huge{\textbf{Monitoraggio, manutenzione e sicurezza per smart city: dalla gestione manuale ad un'architettura automatizzata basata su Zabbix}}\\%Monitoraggio, manutenzione e sicurezza per smart city: dalla gestione manuale ad un'architettura automatizzata basata su Zabbix}}\\
+        %\vspace{5mm}
+        %\Large{\textit{Integrazioni Crittografiche e Caso di Studio presso Secoval srl}}
+
+        \vspace{20mm}
+        \begin{table}[h]
+            \centering
+            \normalsize
+            \begin{tabular}{l p{3cm} l}
+                Relatore:                         &  &                     \\
+                Chiar.mo Prof. Francesco Gringoli &  &                     \\[5mm] % <--- IL TRUCCO È QUI
+                                                  &  & Laureando :         \\
+                                                  &  & Brando Calderara    \\
+                                                  &  & Matricola n. 746352 \\
+            \end{tabular}
+        \end{table}
+
+        \vfill % Meglio usare vfill per spingere l'anno accademico a 20mm dal fondo pagina in automatico
+        \begin{center}
+            \line(1,0){350}\\
+            \normalsize{\textit{Anno Accademico 2025/2026}}
+        \end{center}
+    \end{center}
+\end{titlepage}
+\end{document}
