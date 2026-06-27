@@ -258,21 +258,22 @@ Il lavoro ha previsto l'automazione del discovery e dell'assegnazione dei metada
 \section{Il Progetto di Stage}
 %\textit{[Descrizione ad alto livello del progetto: l'esigenza di monitorare TVCC, AP, Switch e LTE. Integrazione con script esterni per implementare funzionalità e per fare analisi dei dati. Integrazione con Interacta].}
 
-Il progetto di stage ha come obiettivo la progettazione e l'implementazione di un'architettura di monitoraggio centralizzata basata su Zabbix 7.0. Esso sarà destinato alla gestione di una delle infrastrutture di rete per Smart City che Secoval si trova a gestire. L'esigenza primaria è superare i limiti dei sistemi di monitoraggio precedenti, come PRTG (Paessler Router Traffic Grapher), software proprietario con un sostanziale costo per la gestione di reti di certe dimensioni (1350,00€/month per 1000 devices \parencite{PaesslerPricing}) e con da un'elevata gestione manuale nella implementazione presente al momento del tirocinio.
+Il progetto di stage ha come obiettivo la progettazione e l'implementazione di un'architettura di monitoraggio centralizzata basata su Zabbix 7.0. Esso sarà destinato alla gestione di una delle infrastrutture di rete per Smart City che Secoval si trova a gestire. L'esigenza primaria è migliorare e superare i limiti dei sistemi di monitoraggio precedenti, come PRTG (Paessler Router Traffic Grapher), software proprietario con un sostanziale costo per la gestione di reti di certe dimensioni (1350,00€/month per 1000 devices \parencite{PaesslerPricing}) e con da un'elevata gestione manuale nella implementazione precedente al tirocinio.
 
-L'infrastruttura monitorata è altamente eterogenea e distribuita sul territorio. I dispositivi principali comprendono:
+L'infrastruttura monitorata è eterogenea e distribuita sul territorio. I dispositivi principali comprendono e si dividono in:
 \begin{itemize}
-    \item \textbf{Telecamere di videosorveglianza (TVCC):} principalmente telecamere Hikvision, che richiedono il controllo di raggiungibilità e dell'integrità del flusso video.
-    \item \textbf{Access Point (AP):} nodi per l'erogazione di connettività Wi-Fi pubblica.
-    \item \textbf{Switch di distribuzione:} apparati industriali e non per l'aggregazione del traffico periferico.
+    \item \textbf{Telecamere di videosorveglianza (TVCC):} principalmente telecamere di marca Hikvision, che richiedono il controllo di raggiungibilità e dell'integrità del flusso video.
+    \item \textbf{Access Point (AP):} nodi per l'erogazione di connettività pubblica.
+    \item \textbf{Switch di distribuzione:} switch industriali, e non, per l'aggregazione del traffico periferico.
     \item \textbf{Dispositivi LTE:} dispositivi delle precedenti 3 tipologie che si basano sull'utilizzo di gateway per l'uplink in aree remote non coperte da fibra ottica.
 \end{itemize}
 
-Per garantire una gestione scalabile, il progetto fa largo uso di script esterni (Python e Bash) per espandere le funzionalità native del sistema. Il tradizionale processo di \textit{Network Discovery} basato su ICMP è stato sostituito da un meccanismo di provisioning dinamico via Zabbix API: uno script Python legge un CMDB aziendale in formato Excel e popola automaticamente l'inventario degli host associando l'IP a metadati specifici come l'ID Host, l'ID Palo e le coordinate geografiche. Sul fronte degli eventi, per le telecamere Hikvision è stato sviluppato un middleware Python in ascolto sugli stream ISAPI, incaricato di intercettare alert critici (es. \textit{Video Tampering}) e inoltrarli asincronamente tramite protocollo Zabbix Sender.
+%DA RIVEDERE FINO A FINE CAPITLO
+% Per garantire una gestione flessibile, il progetto fa uso di script esterni (Python e Bash) per espandere le funzionalità native del sistema. Il tradizionale processo di \textit{Network Discovery} basato su ICMP è stato sostituito da un meccanismo di provisioning dinamico via Zabbix API: uno script Python legge un CMDB aziendale in formato Excel e popola automaticamente l'inventario degli host associando l'IP a metadati specifici come l'ID Host, l'ID Palo e le coordinate geografiche. Sul fronte degli eventi, per le telecamere Hikvision è stato sviluppato un middleware Python in ascolto sugli stream ISAPI, incaricato di intercettare alert critici (es. \textit{Video Tampering}) e inoltrarli asincronamente tramite protocollo Zabbix Sender.
 
-Un requisito fondamentale del progetto è l'integrazione architetturale con \textbf{Interacta}, la piattaforma cloud aziendale per il ticketing. La comunicazione bidirezionale è gestita da un Custom AlertScript eseguito localmente sul server Zabbix, il quale apre e risolve automaticamente i ticket di intervento al variare dello stato dei trigger. La sicurezza di questa comunicazione Server-to-Server è garantita dall'utilizzo di JSON Web Token (JWT) generati e firmati crittograficamente con algoritmo asimmetrico RSA (RS512) tramite librerie Python dedicate.
+% Un requisito fondamentale del progetto è l'integrazione architetturale con \textbf{Interacta}, la piattaforma cloud aziendale per il ticketing. La comunicazione bidirezionale è gestita da un Custom AlertScript eseguito localmente sul server Zabbix, il quale apre e risolve automaticamente i ticket di intervento al variare dello stato dei trigger. La sicurezza di questa comunicazione Server-to-Server è garantita dall'utilizzo di JSON Web Token (JWT) generati e firmati crittograficamente con algoritmo asimmetrico RSA (RS512) tramite librerie Python dedicate.
 
-A completamento dell'infrastruttura, sono stati integrati strumenti per l'analisi dei dati operativi. Le serie storiche degli allarmi vengono esportate su file system in formato testuale (CSV) ed elaborate da un motore di analisi Python per estrarre Key Performance Indicators (KPI), tra cui il \textit{Mean Time To Resolution} (MTTR) e l'incidenza di anomalie hardware (flapping). L'orchestrazione di questi flussi di esportazione, l'invio della reportistica e la rotazione sicura dei file di log avvengono a livello di sistema operativo Linux sfruttando utilità native come Crontab e Logrotate.
+% A completamento dell'infrastruttura, sono stati integrati strumenti per l'analisi dei dati operativi. Le serie storiche degli allarmi vengono esportate su file system in formato testuale (CSV) ed elaborate da un motore di analisi Python per estrarre Key Performance Indicators (KPI), tra cui il \textit{Mean Time To Resolution} (MTTR) e l'incidenza di anomalie hardware (flapping). L'orchestrazione di questi flussi di esportazione, l'invio della reportistica e la rotazione sicura dei file di log avvengono a livello di sistema operativo Linux sfruttando utilità native come Crontab e Logrotate.
 
 % Citazioni e Bibliografia:
 
@@ -295,44 +296,43 @@ A completamento dell'infrastruttura, sono stati integrati strumenti per l'analis
 %         Schema del flusso logico dello script ISAPI (come cattura l'evento e lo spara a Zabbix Sender).
 
 \section{Obiettivi e Analisi dei Requisiti}
-\textit{[Classificazione dei requisiti funzionali e di vincolo. Cosa ti ha chiesto di fare Secoval? Quali erano le limitazioni?]}.
+% \textit{[Classificazione dei requisiti funzionali e di vincolo. Cosa ti ha chiesto di fare Secoval? Quali erano le limitazioni?]}.
 
-"Attività oggetto del tirocinio
 
-Il progetto formativo mira a trasformare l'infrastruttura di rete (videosorveglianza, Wi-Fi pubblico) che serve oltre 30 Comuni in un sistema Smart City integrato lavorando su tre pilastri:
+Il progetto formativo mira a trasformare l'infrastruttura di rete (videosorveglianza, Wi-Fi pubblico) che serve 31 Comuni in un sistema Smart City che possa essere monitorato e possa scalare facilmente, lavorando su tre pilastri:
+\begin{itemize}
+    \item Sviluppo e miglioramento del monitoraggio di rete.
+    \item Integrazione degli apparati (telecamere, switch, AP) con la Cartografia GIS per creare uno strumento di gestione georeferenziato(parzialmente raggiunto).
+    \item Integrazione con la piattaforma cloud di ticketing aziendale Interacta, garantendo la sicurezza delle comunicazioni machine-to-machine.
+\end{itemize}
 
-Sviluppo e miglioramento del monitoraggio di rete.
 
-Integrazione di tutti gli apparati (telecamere, switch, AP) con la Cartografia GIS per creare uno strumento di gestione georeferenziato.
 
-Cybersecurity e Compliance GDPR, verificando configurazioni di firewall, captive portal, descrivendo le procedure operative per la gestione degli account per garantire la sicurezza dell'intera rete."
 
-Il progetto formativo concordato con Secoval S.r.l. si inserisce in un piano di modernizzazione dell'infrastruttura di rete che serve oltre 30 Comuni. L'esigenza primaria è trasformare la rete periferica esistente, composta da dispositivi di videosorveglianza urbana e access point Wi-Fi, in un ecosistema Smart City integrato, reattivo e facilmente scalabile.
-
-Come definito dal patto formativo, il lavoro si articola su tre pilastri fondamentali:
-\begin{enumerate}
-    \item \textbf{Sviluppo e miglioramento del monitoraggio di rete:} superare i limiti dell'inserimento manuale e del tradizionale discovery basato su ICMP, implementando un'architettura centralizzata su Zabbix 7.0 capace di auto-configurarsi e orchestrare dinamicamente centinaia di nodi eterogenei.
-    \item \textbf{Integrazione con la Cartografia GIS:} collegare gli apparati hardware (telecamere, switch, AP) al territorio. Questo prevede lo sviluppo di script per l'estrazione automatica di coordinate spaziali e metadati da file Excel e PDF, al fine di popolare l'Host Inventory di Zabbix e creare uno strumento di gestione visuale e georeferenziato.
-    \item \textbf{Cybersecurity e Compliance GDPR:} garantire la sicurezza delle comunicazioni machine-to-machine, verificare le configurazioni degli apparati per rispettare gli standard normativi e descrivere procedure operative rigorose per la gestione degli account e il logging degli eventi.
-\end{enumerate}
+% Come definito dal patto formativo, il lavoro si articola su tre pilastri fondamentali:
+% \begin{enumerate}
+%     \item \textbf{Sviluppo e miglioramento del monitoraggio di rete:} superare i limiti dell'inserimento manuale e del tradizionale discovery basato su ICMP, implementando un'architettura centralizzata su Zabbix 7.0 capace di auto-configurarsi e orchestrare dinamicamente centinaia di nodi eterogenei.
+%     \item \textbf{Integrazione con la Cartografia GIS:} collegare gli apparati hardware (telecamere, switch, AP) al territorio. Questo prevede lo sviluppo di script per l'estrazione automatica di coordinate spaziali e metadati da file Excel e PDF, al fine di popolare l'Host Inventory di Zabbix e creare uno strumento di gestione visuale e georeferenziato.
+%     \item \textbf{Cybersecurity e Compliance GDPR:} garantire la sicurezza delle comunicazioni machine-to-machine, verificare le configurazioni degli apparati per rispettare gli standard normativi e descrivere procedure operative rigorose per la gestione degli account e il logging degli eventi.
+% \end{enumerate}
 
 \subsection*{Classificazione dei Requisiti}
-L'analisi del dominio applicativo e dei vincoli imposti dall'infrastruttura aziendale ha portato alla definizione dei seguenti requisiti tecnici e funzionali.
+L'analisi del contesto applicativo e dei vincoli imposti dall'infrastruttura e dall'azienda ha portato alla definizione dei seguenti requisiti tecnici e funzionali.
 
-\textbf{Requisiti Funzionali}
+\textbf{Requisiti}
 \begin{itemize}
-    \item \textbf{Provisioning dinamico tramite CMDB:} il sistema deve importare gli host leggendo un Configuration Management Database in formato Excel, associando automaticamente gli indirizzi IP a metadati specifici (ID Host, ID Palo).
-    \item \textbf{Gestione proattiva degli eventi TVCC:} il monitoraggio deve intercettare logiche applicative complesse, come il \textit{Video Tampering} e il \textit{Motion Detection}, mediante l'ascolto continuo degli stream ISAPI generati nativamente dalle telecamere Hikvision.
-    \item \textbf{Automazione del ticketing (Interacta):} al verificarsi di un disservizio o al suo rientro, il sistema deve interfacciarsi con le API REST del cloud aziendale Interacta per gestire l'apertura e la risoluzione automatica dei ticket di manutenzione.
-    \item \textbf{Elaborazione KPI:} il sistema deve estrarre serie storiche in formato CSV per calcolare metriche operative, come il \textit{Mean Time To Resolution} (MTTR) e l'identificazione di host instabili (Flapping).
+    \item \textbf{Associazione metadati:} attraverso un Configuration Management Database in formato Excel, il sistema deve associare agli host, identificati con gli indirizzi IP, metadati specifici (ID Host, ID Palo).
+    \item \textbf{Gestione degli eventi TVCC:} il monitoraggio deve intercettare logiche di allarme provenienti dalle telecamere, come il \textit{Video Tampering} e il \textit{Motion Detection}, mediante l'ascolto continuo degli stream ISAPI  e visualizzarli nel frontend di Zabbix.
+    \item \textbf{Automazione del ticketing (Interacta):} al verificarsi di un disservizio o al suo rientro, il sistema deve interfacciarsi con le API REST del cloud aziendale Interacta per gestire l'apertura e la risoluzione automatica dei ticket. La comunicazione machine-to-machine deve supportare qualche tipo di autenticazione.
+    \item \textbf{Elaborazione KPI:} il sistema deve estrarre informazioni e metriche riguardo gli host, per offrire anche una visione d'insieme sullo stato del sistema.
 \end{itemize}
 
-\textbf{Requisiti di Vincolo (Tecnologici e Operativi)}
-\begin{itemize}
-    \item \textbf{Stack Tecnologico:} obbligo di impiegare Zabbix 7.0 LTS come core engine. Le automazioni e le integrazioni di terze parti devono essere sviluppate in linguaggi compatibili con l'ambiente Linux server, primariamente Python 3 e script Bash.
-    \item \textbf{Sicurezza crittografica (JWT):} l'integrazione con Interacta impone una rigorosa autenticazione Server-to-Server. Le richieste HTTP devono essere protette tramite JSON Web Token (JWT) compilato in locale e firmato crittograficamente con chiave asimmetrica RSA e algoritmo RS512.
-    \item \textbf{Gestione risorse e asincronia:} l'esecuzione di script esterni non deve gravare sui processi di polling di Zabbix. L'interazione deve sfruttare logiche di inoltro asincrono (Zabbix Sender). Inoltre, per evitare l'esaurimento dello spazio su disco, l'output dei processi custom deve essere gestito rigidamente a livello di sistema operativo tramite l'utility \texttt{Logrotate}.
-\end{itemize}
+% \textbf{Requisiti di Vincolo (Tecnologici e Operativi)}
+% \begin{itemize}
+%     \item \textbf{Stack Tecnologico:} obbligo di impiegare Zabbix 7.0 LTS come core engine. Le automazioni e le integrazioni di terze parti devono essere sviluppate in linguaggi compatibili con l'ambiente Linux server, primariamente Python 3 e script Bash.
+%     \item \textbf{Sicurezza crittografica (JWT):} l'integrazione con Interacta impone una rigorosa autenticazione Server-to-Server. Le richieste HTTP devono essere protette tramite JSON Web Token (JWT) compilato in locale e firmato crittograficamente con chiave asimmetrica RSA e algoritmo RS512.
+%     \item \textbf{Gestione risorse e asincronia:} l'esecuzione di script esterni non deve gravare sui processi di polling di Zabbix. L'interazione deve sfruttare logiche di inoltro asincrono (Zabbix Sender). Inoltre, per evitare l'esaurimento dello spazio su disco, l'output dei processi custom deve essere gestito rigidamente a livello di sistema operativo tramite l'utility \texttt{Logrotate}.
+% \end{itemize}
 % Sezione 1.3: Obiettivi e Analisi dei Requisiti
 
 % Citazioni e Bibliografia:
@@ -1501,9 +1501,12 @@ i protocolli e i concetti architetturali utilizzati nel progetto.
     \item[ISAPI:] un set di API specifico e proprietario sviluppato da Hikvision.
           Permette di interrogare e comandare le telecamere tramite protocollo HTTP
           e di ricevere flussi continui di avvisi di sicurezza.
+          %In Hikvision cameras, ISAPI stands for Intelligent Security Application Programming Interface. It is a standardized, HTTP-based communication protocol that allows software, apps, and third-party systems (like Home Assistant or Blue Iris) to interact directly with your camera or NVR.
+          %ISAPI utilizes a RESTful (Representational State Transfer) architecture, which is standard across modern web development. Developers send commands using standard HTTP methods (like GET for fetching data, or PUT for saving new settings) accompanied by XML or JSON payloads.
           % \item[Script / Middleware:] un programma (in questo progetto scritto in linguaggio Python)
           %  che funge da intermediario. Si occupa di tradurre, filtrare o trasportare dati da un punto A
           %   (es. file Excel o telecamera) a un punto B (Zabbix).
+    \item[API REST e RESTful... DA CONTROLLARE:] API che seguono il paradigma REST (Representational State Transfer), consentendo una comunicazione più semplice e scalabile tra i sistemi.
     \item[GIS (Geographic Information System):] sistemi informatici (come QGIS)
           progettati per acquisire, memorizzare, analizzare e gestire dati georeferenziati.
           Nel caso di Zabbix permettono di visualizzare gli apparati guasti direttamente su una mappa cartografica.
