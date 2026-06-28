@@ -1,0 +1,42 @@
+flowchart TD
+    %% Definizione degli stili (Colori chiari per tesi, bordi smussati)
+    classDef nodo fill:#ffffff,stroke:#343a40,stroke-width:1px,color:#212529,rx:8px,ry:8px,shadow:true;
+    classDef periferia fill:#f8f9fa,stroke:#ced4da,stroke-width:2px,rx:10px,ry:10px;
+    classDef vm fill:#e7f1ff,stroke:#0d6efd,stroke-width:2px,rx:10px,ry:10px;
+    classDef cloud fill:#fff3cd,stroke:#ffc107,stroke-width:2px,rx:10px,ry:10px;
+
+    %% 1. Livello Periferia
+    subgraph PERIFERIA ["1. SMART CITY (sul territorio)"]
+        direction LR
+        CAM["fa:fa-video Telecamere Hikvision<br/>"]:::nodo
+        AP["Hosts: AP, TVCC,<br/>SW, LTE"]:::nodo
+    end
+
+    %% 2. Livello Server
+    subgraph VM ["2. VM SECOVAL (Ubuntu Server)"]
+        direction LR
+        MID[" Middleware Python"]:::nodo
+        ZAB["fa:fa-server Zabbix 7.0 Server<br/>(Core Engine)"]:::nodo
+        ALR["Custom Ticketing Script "]:::nodo
+
+        MID -- "zabbix_sender" --> ZAB
+        ZAB -. "Trigger PROBLEM/OK" .-> ALR
+    end
+
+    %% 3. Livello Cloud
+    subgraph CLOUD ["3. INTERACTA CLOUD"]
+        direction LR
+        INT["fa:fa-ticket Piattaforma Ticketing"]:::nodo
+    end
+
+    %% Relazioni tra i livelli (Verticali)
+    CAM -- "HTTP Stream (ISAPI)<br/>Connessione Persistente" --> MID
+    ZAB <-->|"Polling<br/>(ICMP / SNMP)"| AP
+    ALR == "HTTPS POST<br/>(Auth - JWT RS512)" ==> INT
+
+    %% Assegnazione classi ai sottografi
+    class PERIFERIA periferia;
+    class VM vm;
+    class CLOUD cloud;
+
+    https://mermaid.ai/app/projects/648035c8-1fa6-4d1b-984f-c3bc4b892d00/diagrams/bcc829b5-eb49-4312-bedd-cd4a5d54c7c3/version/v0.1/edit

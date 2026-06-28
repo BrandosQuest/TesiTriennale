@@ -327,6 +327,24 @@ L'analisi del contesto applicativo e dei vincoli imposti dall'infrastruttura e d
     \item \textbf{Elaborazione KPI:} il sistema deve estrarre informazioni e metriche riguardo gli host, per offrire anche una visione d'insieme sullo stato del sistema.
 \end{itemize}
 
+\begin{figure}[H]
+    % Apre l'ambiente per l'immagine. [H] forza l'immagine a stare esattamente QUI (requires \usepackage{float}). 
+    % In alternativa, usa [htbp] per lasciare che LaTeX trovi la posizione tipografica migliore (Here, Top, Bottom, Page).
+    \centering
+    % Centra l'immagine orizzontalmente nel foglio.
+    \includegraphics[width=1\linewidth]{figures/SystemArchSchema-2026-06-28-074223.pdf}
+    % \includegraphics è il comando "magico" fornito da graphicx.
+    % [width=1\linewidth] dice a LaTeX di scalare l'immagine affinché sia larga esattamente quanto la larghezza del testo della pagina.
+    % Tra le graffe metti il percorso. 
+    % TRUCCO PRO: Puoi anche omettere ".pdf" scrivendo solo {figures/SystemArchSchema...}, LaTeX troverà il file automaticamente!
+    %\caption{Architettura concettuale del sistema di monitoraggio Smart City e flussi di comunicazione.} 
+    \caption{Caption Example}
+    % La didascalia che apparirà sotto l'immagine. Scrivi sempre una didascalia descrittiva in una tesi.
+    \label{fig:SystemArchSchema}
+    % Il "segnalibro" invisibile. Ti permette di citare l'immagine nel testo scrivendo: "Come visibile in Figura \ref{fig:SystemArchSchema}...".
+
+\end{figure}
+
 % \textbf{Requisiti di Vincolo (Tecnologici e Operativi)}
 % \begin{itemize}
 %     \item \textbf{Stack Tecnologico:} obbligo di impiegare Zabbix 7.0 LTS come core engine. Le automazioni e le integrazioni di terze parti devono essere sviluppate in linguaggi compatibili con l'ambiente Linux server, primariamente Python 3 e script Bash.
@@ -1507,6 +1525,7 @@ i protocolli e i concetti architetturali utilizzati nel progetto.
           %  che funge da intermediario. Si occupa di tradurre, filtrare o trasportare dati da un punto A
           %   (es. file Excel o telecamera) a un punto B (Zabbix).
     \item[API REST e RESTful... DA CONTROLLARE:] API che seguono il paradigma REST (Representational State Transfer), consentendo una comunicazione più semplice e scalabile tra i sistemi.
+    \item[ICMP e ICMP Ping] DA CONTROLLARE... L'ICMP (Internet Control Message Protocol) è un protocollo di livello di rete utilizzato dai dispositivi per scambiare informazioni di diagnostica e notifica degli errori . L'ICMP Ping è lo strumento diagnostico principale basato su ICMP che invia una richiesta (Echo Request) e attende una risposta (Echo Reply) per verificare la connettività
     \item[GIS (Geographic Information System):] sistemi informatici (come QGIS)
           progettati per acquisire, memorizzare, analizzare e gestire dati georeferenziati.
           Nel caso di Zabbix permettono di visualizzare gli apparati guasti direttamente su una mappa cartografica.
