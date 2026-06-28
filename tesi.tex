@@ -373,25 +373,26 @@ L'analisi del contesto applicativo e dei vincoli imposti dall'infrastruttura e d
 % CAPITOLO 2: TECNOLOGIE
 % ====================================================================
 \chapter{Tecnologie Utilizzate}
-\textit{[In questo capitolo descriveremo formalmente gli strumenti, includendo i relativi loghi come figure, esattamente come nella tesi di riferimento].}
+% \textit{[In questo capitolo descriveremo formalmente gli strumenti, includendo i relativi loghi come figure, esattamente come nella tesi di riferimento].}
 \section{Zabbix 7.0 LTS}
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    % \includegraphics[width=0.3\textwidth]{images/zabbix_logo.png} % Scommentare e inserire il path corretto
+    \includegraphics[width=0.3\textwidth]{figures/Zabbix_logo.png}
     \caption{Logo Zabbix}
     \label{fig:zabbix_logo}
 \end{figure}
+%https://it.wikipedia.org/wiki/File:Zabbix_logo.svg
 
-Zabbix è una piattaforma open-source di livello enterprise progettata per il monitoraggio distribuito e in tempo reale di metriche di rete, apparati hardware, server e servizi applicativi. L'architettura del sistema si fonda su un modello client-server altamente scalabile, composto dai seguenti moduli principali:
+Zabbix è una piattaforma open-source progettata per il monitoraggio, anche distribuito, e in tempo reale di metriche di rete, apparati, server e applicativi. L'architettura del sistema si fonda su un modello client-server altamente scalabile, composto dai seguenti moduli principali:
 
 \begin{itemize}
-    \item \textbf{Zabbix Server:} il motore centrale sviluppato in linguaggio C. Si occupa della raccolta dei dati, della valutazione logica dei \textit{Trigger} (soglie di allarme) e dell'orchestrazione delle \textit{Actions} (notifiche o script di remediation).
-    \item \textbf{Database Relazionale:} il livello di persistenza, tipicamente basato su PostgreSQL o MySQL, destinato all'archiviazione delle configurazioni, degli eventi e delle serie temporali (history e trend).
-    \item \textbf{Web Frontend:} l'interfaccia utente sviluppata in PHP, utilizzata per l'amministrazione del sistema, la configurazione visuale e la generazione di dashboard analitiche.
-    \item \textbf{Zabbix Proxy e Agent:} demoni impiegati per delegare la raccolta dati in scenari multi-tenant o reti segmentate, limitando il carico sul server centrale e riducendo l'apertura delle porte firewall.
+    \item \textbf{Zabbix server:} il motore centrale sviluppato in linguaggio C. Si occupa della raccolta dei dati, della valutazione dei \textit{Trigger} (soglie di allarme) e delle \textit{Actions}.
+    \item \textbf{Database relazionale:} il livello di persistenza dei dati, tipicamente basato su PostgreSQL o MySQL(MySQL in questo progetto), in cui si archiviano le configurazioni e le serie temporali.
+    \item \textbf{Web frontend:} l'interfaccia utente sviluppata in PHP, utilizzata per l'amministrazione del sistema, la configurazione visuale e la generazione di dashboard analitiche. \emph{Apache2} è il web server impiegato in questo progetto.
+    \item \textbf{Zabbix Proxy e Agent:} demoni impiegati sugli host periferici limitando il carico sul server centrale e dando la possibilità di distribuire il sistema. Non utilizzati in questo progetto.
 \end{itemize}
-
+%DA CONTROLLARE FINO A FINE SECTION
 Il funzionamento della piattaforma si basa su due paradigmi complementari di acquisizione dati. Il primo è il \textit{polling} (controllo attivo), in cui il server interroga ciclicamente i dispositivi target tramite protocolli standard come ICMP, SNMP o interrogazioni HTTP/API. Il secondo è il \textit{trapping} (controllo passivo o asincrono), che consente a sistemi esterni di spingere proattivamente i dati verso il server Zabbix. Questo secondo meccanismo si avvale dell'utility a riga di comando \texttt{Zabbix Sender} e risulta fondamentale per abbattere i tempi di latenza nella rilevazione degli allarmi.
 
 Per questo progetto è stata adottata la versione 7.0 LTS (Long Term Support). La scelta di una release LTS garantisce stabilità e supporto esteso nel tempo, un requisito imprescindibile per le infrastrutture critiche della Pubblica Amministrazione. Dal punto di vista tecnico, questa versione introduce o consolida funzionalità determinanti per le attività del tirocinio:
@@ -417,10 +418,11 @@ Per questo progetto è stata adottata la versione 7.0 LTS (Long Term Support). L
 
 \begin{figure}[h]
     \centering
-    % \includegraphics[width=0.3\textwidth]{images/python_logo.png} % Inserire il path corretto
+    \includegraphics[width=0.3\textwidth]{figures/Python-logo.png} % Inserire il path corretto
     \caption{Logo Python}
     \label{fig:python_logo}
 \end{figure}
+%https://commons.wikimedia.org/wiki/File:Python-logo.png
 
 Python è un linguaggio di programmazione ad alto livello, interpretato, tipizzato dinamicamente e orientato agli oggetti. La sua sintassi chiara e la vasta disponibilità di librerie lo rendono lo standard di fatto per lo sviluppo di script di automazione, middleware di integrazione e analisi dati. Nel contesto di questo progetto, Python è stato il linguaggio principale utilizzato per estendere le funzionalità di Zabbix e interfacciare i vari sistemi eterogenei (Hikvision, Interacta, CMDB aziendale).
 
