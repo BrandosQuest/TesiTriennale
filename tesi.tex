@@ -503,12 +503,26 @@ La gestione dei pacchetti e delle librerie è stata effettuata tramite \texttt{p
 
 \section{Interacta e JSON Web Token (JWT)}
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    % \includegraphics[width=0.3\textwidth]{images/interacta_logo.png} % Inserire il path corretto
+    \includegraphics[width=0.3\textwidth]{figures/interacta_logo.png}
     \caption{Logo Interacta}
     \label{fig:interacta_logo}
 \end{figure}
+
+Interacta è la piattaforma cloud aziendale adottata da Secoval per la governance dei processi e la gestione del ticketing. Nel contesto operativo di una Smart City, questo software rappresenta il punto di arrivo di ogni allarme: quando un apparato sul territorio subisce un guasto o perde la connettività, la squadra di manutenzione deve ricevere una tempestiva segnalazione di intervento. L'apporto ingegneristico del tirocinio è stato quello di automatizzare l'intero ciclo, collegando il motore di Zabbix direttamente alle API REST di Interacta affinché i ticket di guasto (e i rispettivi rientri nominali) vengano aperti e risolti in tempo reale dall'infrastruttura software, eliminando qualsiasi intermediario umano.
+
+Trattandosi di una comunicazione \textit{Server-to-Server} tra una macchina virtuale locale (\textit{on-premise}) e un servizio esterno ospitato sul cloud, la sfida architetturale principale era la sicurezza: bisognava impedire a soggetti terzi non autorizzati di poter iniettare finte richieste nel portale di ticketing aziendale. Per risolvere questa criticità, il progetto adotta lo standard \textbf{JSON Web Token (JWT)}. Un token JWT funziona come un "badge digitale" temporaneo e a prova di manomissione, che accompagna ogni singola chiamata HTTP inviata da Zabbix per dimostrare a Interacta l'assoluta autenticità della comunicazione.
+
+Per blindare questi certificati digitali, l'infrastruttura sfrutta la crittografia asimmetrica basata sull'algoritmo \textbf{RS512} (chiavi RSA combinate a una funzione di hash SHA-512). Il principio di funzionamento si fonda sulla separazione delle responsabilità: una chiave privata viene custodita gelosamente all'interno del server Linux locale, protetta da permessi rigorosi, mentre la corrispondente chiave pubblica viene depositata sul cloud di Interacta. Al verificarsi di un'anomalia, uno script Python impacchetta i metadati dell'evento, genera un token con una validità temporale di pochi minuti e lo firma digitalmente usando la chiave privata. Quando il pacchetto raggiunge il cloud, Interacta applica la chiave pubblica: se la verifica matematica ha successo, l'identità del mittente è confermata e il ticket viene istanziato sul portale.
+
+
+
+
+
+
+
+
 
 Interacta è una piattaforma cloud enterprise progettata per la gestione dei processi aziendali, la collaborazione e il ticketing. All'interno di Secoval S.r.l., questo strumento costituisce il fulcro operativo per la gestione delle manutenzioni sul territorio: ogni guasto hardware o anomalia di rete deve tradursi in un ticket assegnato alla squadra tecnica competente.
 
