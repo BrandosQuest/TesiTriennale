@@ -19,6 +19,35 @@
 
 \refsection{0}
   \datalist[entry]{nyt/apasortcite//global/global}
+    \entry{UbuntuServer}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=aacfea8cb27c1b8d0dd136a1aca2f0a4}{%
+           family={{Canonical Ltd.}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{fullhash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{bibnamehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{authorbibnamehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{authornamehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{authorfullhash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 28 Giugno 2026}
+      \field{title}{Ubuntu Server}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://ubuntu.com/download/server
+      \endverb
+      \verb{url}
+      \verb https://ubuntu.com/download/server
+      \endverb
+    \endentry
     \entry{PaesslerPricing}{online}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=f92a302aa92a89cd45fb933091bbe181}{%
@@ -191,6 +220,35 @@
     \endentry
   \enddatalist
   \datalist[entry]{nyt/global//global/global}
+    \entry{UbuntuServer}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=aacfea8cb27c1b8d0dd136a1aca2f0a4}{%
+           family={{Canonical Ltd.}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{fullhash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{bibnamehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{authorbibnamehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{authornamehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{authorfullhash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 28 Giugno 2026}
+      \field{title}{Ubuntu Server}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://ubuntu.com/download/server
+      \endverb
+      \verb{url}
+      \verb https://ubuntu.com/download/server
+      \endverb
+    \endentry
     \entry{PaesslerPricing}{online}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=f92a302aa92a89cd45fb933091bbe181}{%

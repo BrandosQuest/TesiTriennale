@@ -374,6 +374,34 @@ L'analisi del contesto applicativo e dei vincoli imposti dall'infrastruttura e d
 % ====================================================================
 \chapter{Tecnologie Utilizzate}
 % \textit{[In questo capitolo descriveremo formalmente gli strumenti, includendo i relativi loghi come figure, esattamente come nella tesi di riferimento].}
+\section{Ubuntu Server}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{figures/Ubuntu-logo.png} % Inserire il path corretto
+    \caption{Logo Ubuntu}
+    \label{fig:ubuntu_logo}
+\end{figure}
+%https://it.wikipedia.org/wiki/File:Ubuntu-logo-no-wordmark-2022.svg
+
+L' infrastruttura di monitoraggio è stata messa in produzione su una macchina virtuale con sistema operativo Ubuntu Server\parencite{UbuntuServer}. Il sistema operativomette a disposizione strumenti nativi utili per automatizzare il lavoro in background, rendendo il sitema più robusto e autonomo senza la necessità di appoggiarsi a software di terze parti.
+
+Per orchestrare i flussi di dati e i vari script, il progetto ha sfruttato intensivamente tre componenti e tool di Ubuntu. Il primo è \textbf{Crontab}, lo schedulatore di Linux che permette di eseguire comandi a orari o intervalli prestabiliti. È stato utilizzato per gestire le operazioni periodiche. Ad esempio, la generazione e l'invio del report delle statistiche via email prima dell'inizio del turno aziendale.
+
+Il secondo strumento impiegato  è \textbf{Systemd}, ovvero il programma che gestisce i servizi del sistema operativo. Per garantire che lo script Python in ascolto sulle telecamere fosse sempre in funzione, è stato trasformato in un servizio di sistema (demone). Systemd lo avvia automaticamente all'accensione del server e lo riavvia in totale autonomia a seguito di eventuali errori imprevisti o cadute di rete o spegnimenti improvvisi.
+
+Infine, è stata affrontata la gestione dello spazio su disco. Un'sistema sempre attivo genera continuamente righe di log; tuttavia, se lasciati accumulare, questi file saturerebbero la memoria. Per prevenire questo rischio, è stato configurato \textbf{Logrotate}. Questa utility di sistema ogni settimana intercetta i file di log, li comprime per ridurne il peso e li archivia.
+
+% Immagini e Tabelle:
+
+%     Immagine (Stack di Esecuzione): Uno schema che illustri come il sistema operativo orchestra i processi: Systemd che mantiene attivo il demone Python, Cron che lancia i job periodici, e Logrotate che agisce sui file di output.
+
+%     Tabella (Configurazione Logrotate): Una tabella che spieghi tecnicamente le direttive utilizzate (es. Spiegazione tecnica della differenza tra create e copytruncate e il motivo per cui sono stati scelti per script diversi).
+
+% Bibliografia e Citazioni:
+
+%     Tecnica/Non Scientifica: Pagine di manuale Linux (Man pages) per cron(8), logrotate(8), systemd.service(5), setfacl(1) (se hai usato ACL per i permessi).
+
+%     Scientifica: Testi universitari di Sistemi Operativi (es. Silberschatz) per citare i concetti formali di "demone", gestione dei processi in background, concorrenza e gestione dei permessi nel file system (File System Permissions e Access Control Lists).
 \section{Zabbix 7.0 LTS}
 
 \begin{figure}[H]
@@ -447,43 +475,32 @@ La gestione dei pacchetti e delle librerie è stata effettuata tramite \texttt{p
 
 %     Scientifica: Eventuali manuali o pubblicazioni tecniche riguardanti l'estrazione dati (Data Parsing e Data Wrangling) e l'automazione dei processi IT.
 
-\section{Scripting Bash e Ambiente Linux (Cron, Logrotate)}
+% \section{Scripting Bash e Ambiente Linux (Cron, Logrotate)}
 
-L'intera infrastruttura di monitoraggio e i relativi script di automazione sono stati distribuiti e messi in produzione su una macchina virtuale basata su sistema operativo Ubuntu Linux. La scelta dell'ambiente Linux ha permesso di sfruttare nativamente potenti strumenti a riga di comando e demoni di sistema per orchestrare i flussi di dati e ottimizzare i processi eseguiti in background.
+% L'intera infrastruttura di monitoraggio e i relativi script di automazione sono stati distribuiti e messi in produzione su una macchina virtuale basata su sistema operativo Ubuntu Linux. La scelta dell'ambiente Linux ha permesso di sfruttare nativamente potenti strumenti a riga di comando e demoni di sistema per orchestrare i flussi di dati e ottimizzare i processi eseguiti in background.
 
-\subsection*{Scripting Bash e Gestione dei Permessi}
-Il linguaggio Bash è stato impiegato per la realizzazione di script leggeri, focalizzati sull'interazione diretta con il sistema operativo o per fare da ponte (wrapper) tra l'interfaccia di Zabbix e gli applicativi complessi scritti in Python. Un caso d'uso primario ha riguardato lo sviluppo dei \textit{Custom AlertScripts}, posizionati in specifiche directory di sistema come \texttt{/usr/lib/zabbix/alertscripts/}. Un esempio rilevante è lo script \texttt{ScriptCustomExportProblemsToCSV.sh}, progettato per intercettare i parametri degli allarmi che Zabbix passa come variabili d'ambiente (tramite le Macro come \texttt{\$1, \$2...}) e accodarli in un file CSV strutturato.
+% \subsection*{Scripting Bash e Gestione dei Permessi}
+% Il linguaggio Bash è stato impiegato per la realizzazione di script leggeri, focalizzati sull'interazione diretta con il sistema operativo o per fare da ponte (wrapper) tra l'interfaccia di Zabbix e gli applicativi complessi scritti in Python. Un caso d'uso primario ha riguardato lo sviluppo dei \textit{Custom AlertScripts}, posizionati in specifiche directory di sistema come \texttt{/usr/lib/zabbix/alertscripts/}. Un esempio rilevante è lo script \texttt{ScriptCustomExportProblemsToCSV.sh}, progettato per intercettare i parametri degli allarmi che Zabbix passa come variabili d'ambiente (tramite le Macro come \texttt{\$1, \$2...}) e accodarli in un file CSV strutturato.
 
-Un aspetto critico affrontato in ambiente server è stata la rigorosa gestione dei permessi: i processi automatizzati eseguiti dall'utente di sistema \texttt{zabbix} operano in un perimetro isolato per motivi di sicurezza. Per consentire al demone di scrivere l'output all'interno di una directory protetta dell'utente principale (come \texttt{/home/administrator/}), è stato necessario configurare dei link simbolici (Symlink) o applicare \textit{Access Control Lists} (ACL), aggirando l'errore di \textit{Permission Denied} senza compromettere le politiche di isolamento Linux.
+% Un aspetto critico affrontato in ambiente server è stata la rigorosa gestione dei permessi: i processi automatizzati eseguiti dall'utente di sistema \texttt{zabbix} operano in un perimetro isolato per motivi di sicurezza. Per consentire al demone di scrivere l'output all'interno di una directory protetta dell'utente principale (come \texttt{/home/administrator/}), è stato necessario configurare dei link simbolici (Symlink) o applicare \textit{Access Control Lists} (ACL), aggirando l'errore di \textit{Permission Denied} senza compromettere le politiche di isolamento Linux.
 
-\subsection*{Orchestrazione dei Flussi tramite Crontab e Systemd}
-Per disaccoppiare i carichi di calcolo analitico e di reportistica dal ciclo di vita vitale del server Zabbix, le esecuzioni sono state delegate direttamente al sistema operativo tramite due approcci complementari:
-\begin{itemize}
-    \item \textbf{Crontab:} Impiegato per l'orchestrazione dei task in modalità batch (periodica). Ad esempio, l'invio automatizzato del report giornaliero dei KPI è stato schedulato alle ore 06:10 del mattino inserendo la direttiva \texttt{10 6 * * *} per richiamare lo script eseguendo esplicitamente l'interprete Python all'interno del suo \textit{virtual environment} (\texttt{venv}).
-    \item \textbf{Systemd:} Utilizzato per trasformare i middleware di ascolto continuo (come lo script asincrono per gli eventi ISAPI delle telecamere Hikvision) in demoni nativi del sistema. Questo garantisce l'avvio automatico delle dipendenze al boot e l'applicazione di policy di \texttt{Restart=always}, essenziali per ripristinare autonomamente il servizio a seguito di crash inattesi della connessione.
-\end{itemize}
+% \subsection*{Orchestrazione dei Flussi tramite Crontab e Systemd}
+% Per disaccoppiare i carichi di calcolo analitico e di reportistica dal ciclo di vita vitale del server Zabbix, le esecuzioni sono state delegate direttamente al sistema operativo tramite due approcci complementari:
+% \begin{itemize}
+%     \item \textbf{Crontab:} Impiegato per l'orchestrazione dei task in modalità batch (periodica). Ad esempio, l'invio automatizzato del report giornaliero dei KPI è stato schedulato alle ore 06:10 del mattino inserendo la direttiva \texttt{10 6 * * *} per richiamare lo script eseguendo esplicitamente l'interprete Python all'interno del suo \textit{virtual environment} (\texttt{venv}).
+%     \item \textbf{Systemd:} Utilizzato per trasformare i middleware di ascolto continuo (come lo script asincrono per gli eventi ISAPI delle telecamere Hikvision) in demoni nativi del sistema. Questo garantisce l'avvio automatico delle dipendenze al boot e l'applicazione di policy di \texttt{Restart=always}, essenziali per ripristinare autonomamente il servizio a seguito di crash inattesi della connessione.
+% \end{itemize}
 
-\subsection*{Prevenzione della Saturazione e Manutenzione (Logrotate)}
-L'esecuzione parallela di interfacciamenti API, elaborazioni GIS e demoni in ascolto, genera un volume costante di log testuali a fini di \textit{troubleshooting}. Per scongiurare la saturazione dello spazio su disco e il conseguente stallo del server di produzione, la manutenzione (retention) dei log è stata automatizzata tramite l'utility \textbf{Logrotate}.
+% \subsection*{Prevenzione della Saturazione e Manutenzione (Logrotate)}
+% L'esecuzione parallela di interfacciamenti API, elaborazioni GIS e demoni in ascolto, genera un volume costante di log testuali a fini di \textit{troubleshooting}. Per scongiurare la saturazione dello spazio su disco e il conseguente stallo del server di produzione, la manutenzione (retention) dei log è stata automatizzata tramite l'utility \textbf{Logrotate}.
 
-Sono stati creati file di configurazione dedicati nella directory \texttt{/etc/logrotate.d/} (come \texttt{hikvision\_scripts} e \texttt{zabbix-interacta-script}), applicando policy temporali (\texttt{weekly}) e dimensionali (es. \texttt{maxsize 10M} o \texttt{30M}) combinate a direttive di compressione \texttt{compress}.
-Durante la fase di progettazione si è resa necessaria una distinzione tecnica fondamentale:
-\begin{itemize}
-    \item Per i log afferenti agli script periodici gestiti da Crontab, è stata configurata la direttiva \texttt{create}, la quale provvede a rinominare il vecchio file creandone contestualmente uno nuovo con permessi predefiniti (\texttt{0644}).
-    \item Per i log manipolati in tempo reale dal servizio continuo sotto systemd, la rotazione classica comportava la perdita del descrittore (file pointer) da parte di Python. Il problema è stato ovviato implementando il parametro \texttt{copytruncate}, che copia il contenuto del log corrente nell'archivio storico e svuota l'originale, consentendo allo script di proseguire la scrittura in modo ininterrotto e invisibile al processo applicativo.
-\end{itemize}
+% Sono stati creati file di configurazione dedicati nella directory \texttt{/etc/logrotate.d/} (come \texttt{hikvision\_scripts} e \texttt{zabbix-interacta-script}), applicando policy temporali (\texttt{weekly}) e dimensionali (es. \texttt{maxsize 10M} o \texttt{30M}) combinate a direttive di compressione \texttt{compress}.
+% Durante la fase di progettazione si è resa necessaria una distinzione tecnica fondamentale:
+% \begin{itemize}
+%     \item Per i log afferenti agli script periodici gestiti da Crontab, è stata configurata la direttiva \texttt{create}, la quale provvede a rinominare il vecchio file creandone contestualmente uno nuovo con permessi predefiniti (\texttt{0644}).
+%     \item Per i log manipolati in tempo reale dal servizio continuo sotto systemd, la rotazione classica comportava la perdita del descrittore (file pointer) da parte di Python. Il problema è stato ovviato implementando il parametro \texttt{copytruncate}, che copia il contenuto del log corrente nell'archivio storico e svuota l'originale, consentendo allo script di proseguire la scrittura in modo ininterrotto e invisibile al processo applicativo.
+% \end{itemize}
 
-% Immagini e Tabelle:
-
-%     Immagine (Stack di Esecuzione): Uno schema che illustri come il sistema operativo orchestra i processi: Systemd che mantiene attivo il demone Python, Cron che lancia i job periodici, e Logrotate che agisce sui file di output.
-
-%     Tabella (Configurazione Logrotate): Una tabella che spieghi tecnicamente le direttive utilizzate (es. Spiegazione tecnica della differenza tra create e copytruncate e il motivo per cui sono stati scelti per script diversi).
-
-% Bibliografia e Citazioni:
-
-%     Tecnica/Non Scientifica: Pagine di manuale Linux (Man pages) per cron(8), logrotate(8), systemd.service(5), setfacl(1) (se hai usato ACL per i permessi).
-
-%     Scientifica: Testi universitari di Sistemi Operativi (es. Silberschatz) per citare i concetti formali di "demone", gestione dei processi in background, concorrenza e gestione dei permessi nel file system (File System Permissions e Access Control Lists).
 \section{Interacta e JSON Web Token (JWT)}
 
 \begin{figure}[h]
