@@ -393,14 +393,13 @@ Zabbix è una piattaforma open-source progettata per il monitoraggio, anche dist
     \item \textbf{Zabbix Proxy e Agent:} demoni impiegati sugli host periferici limitando il carico sul server centrale e dando la possibilità di distribuire il sistema. Non utilizzati in questo progetto.
 \end{itemize}
 %DA CONTROLLARE FINO A FINE SECTION
-Il funzionamento della piattaforma si basa su due paradigmi complementari di acquisizione dati. Il primo è il \textit{polling} (controllo attivo), in cui il server interroga ciclicamente i dispositivi target tramite protocolli standard come ICMP, SNMP o interrogazioni HTTP/API. Il secondo è il \textit{trapping} (controllo passivo o asincrono), che consente a sistemi esterni di spingere proattivamente i dati verso il server Zabbix. Questo secondo meccanismo si avvale dell'utility a riga di comando \texttt{Zabbix Sender} e risulta fondamentale per abbattere i tempi di latenza nella rilevazione degli allarmi.
+Il funzionamento della piattaforma si basa su due metodi per l'acquisizione dei dati. Il primo è il \textit{polling}, in cui il server interroga ciclicamente i dispositivi tramite protocolli standard come ICMP o SNMP. Il secondo è il \textit{trapping}, che consente a sistemi esterni di spingere i dati verso il server Zabbix. Di questo secondo metodo si avvale l'utility a riga di comando \texttt{Zabbix Sender}.
 
-Per questo progetto è stata adottata la versione 7.0 LTS (Long Term Support). La scelta di una release LTS garantisce stabilità e supporto esteso nel tempo, un requisito imprescindibile per le infrastrutture critiche della Pubblica Amministrazione. Dal punto di vista tecnico, questa versione introduce o consolida funzionalità determinanti per le attività del tirocinio:
+Per questo progetto è stata adottata la versione 7.0 LTS (Long Term Support) \parencite{zabbix7_Docs}. La scelta di una release LTS garantisce stabilità. Utili dap punto di vista delle attività del tirocinio questa versione include:
 
 \begin{itemize}
-    \item \textbf{API JSON-RPC:} un'interfaccia di programmazione strutturata che consente il controllo totale della piattaforma via codice. È stata utilizzata intensivamente per sviluppare il motore Python di provisioning automatico, capace di popolare l'Host Inventory leggendo i metadati dal CMDB aziendale.
-    \item \textbf{Custom AlertScripts:} la capacità di lanciare eseguibili esterni (Python, Bash) al verificarsi di un evento. Questo modulo è stato impiegato per integrare Zabbix con la piattaforma cloud Interacta, gestendo l'apertura e la risoluzione dei ticket tramite chiamate crittografate.
-    \item \textbf{Data Preprocessing avanzato:} strumenti nativi per il parsing di stringhe (regex), JSONPath e XMLXPath prima della memorizzazione a database. Tali logiche sono essenziali per normalizzare gli eventi asincroni intercettati dai flussi ISAPI delle telecamere Hikvision.
+    \item \textbf{API JSON-RPC:} l’API web di Zabbix, un'interfaccia strutturata che consente il controllo totale della piattaforma via codice. È stata utilizzata per popolare l'Host Inventory leggendo i metadati dal CMDB aziendale.
+    \item \textbf{Custom AlertScripts:} la capacità di lanciare eseguibili esterni (Python, Bash...) al verificarsi di un evento. Questo modulo è stato impiegato per integrare Zabbix con la piattaforma cloud Interacta, e per creare un sistema di logging del sistema.
 \end{itemize}
 % Immagini e Tabelle:
 
@@ -1527,7 +1526,9 @@ i protocolli e i concetti architetturali utilizzati nel progetto.
           %  che funge da intermediario. Si occupa di tradurre, filtrare o trasportare dati da un punto A
           %   (es. file Excel o telecamera) a un punto B (Zabbix).
     \item[API REST e RESTful... DA CONTROLLARE:] API che seguono il paradigma REST (Representational State Transfer), consentendo una comunicazione più semplice e scalabile tra i sistemi.
-    \item[ICMP e ICMP Ping] DA CONTROLLARE... L'ICMP (Internet Control Message Protocol) è un protocollo di livello di rete utilizzato dai dispositivi per scambiare informazioni di diagnostica e notifica degli errori . L'ICMP Ping è lo strumento diagnostico principale basato su ICMP che invia una richiesta (Echo Request) e attende una risposta (Echo Reply) per verificare la connettività
+    \item[API JSON-RPC (Zabbix):]
+          L'API web di Zabbix si basa integralmente sul protocollo JSON-RPC 2.0. Qualsiasi operazione eseguibile dall'interfaccia grafica (creazione host, assegnazione template, update dell'inventario) è esposta tramite questo protocollo. Il popolamento dell'Host Inventory tramite script Python è un caso d'uso da manuale.
+    \item[ICMP e ICMP Ping:] DA CONTROLLARE... L'ICMP (Internet Control Message Protocol) è un protocollo di livello di rete utilizzato dai dispositivi per scambiare informazioni di diagnostica e notifica degli errori . L'ICMP Ping è lo strumento diagnostico principale basato su ICMP che invia una richiesta (Echo Request) e attende una risposta (Echo Reply) per verificare la connettività
     \item[GIS (Geographic Information System):] sistemi informatici (come QGIS)
           progettati per acquisire, memorizzare, analizzare e gestire dati georeferenziati.
           Nel caso di Zabbix permettono di visualizzare gli apparati guasti direttamente su una mappa cartografica.
@@ -1715,12 +1716,12 @@ i protocolli e i concetti architetturali utilizzati nel progetto.
 
 \clearpage
 \addcontentsline{toc}{chapter}{Bibliografia}
-\begin{thebibliography}{9}
-    \bibitem{zabbixdoc}
-    Zabbix LLC, \textit{Zabbix 7.0 Manual}. [Online]. Disponibile su: https://www.zabbix.com/documentation/
-    \bibitem{pythondoc}
-    Python Software Foundation, \textit{Python Programming Language}. [Online]. Disponibile su: https://www.python.org/
-\end{thebibliography}
+% \begin{thebibliography}{9}
+%     \bibitem{zabbixdoc}
+%     Zabbix LLC, \textit{Zabbix 7.0 Manual}. [Online]. Disponibile su: https://www.zabbix.com/documentation/
+%     \bibitem{pythondoc}
+%     Python Software Foundation, \textit{Python Programming Language}. [Online]. Disponibile su: https://www.python.org/
+% \end{thebibliography}
 
 \printbibliography[title={Bibliografia}]
 

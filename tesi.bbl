@@ -131,6 +131,35 @@
       \verb https://trasparenza.secoval.it/archiviofile/secoval/OrganigrammaCompleto9.pdf
       \endverb
     \endentry
+    \entry{zabbix7_Docs}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=ec1b747b6f99a441a29d7092c11058d9}{%
+           family={{Zabbix LLC}},
+           familyi={Z\bibinitperiod}}}%
+      }
+      \strng{namehash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{fullhash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{bibnamehash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{authorbibnamehash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{authornamehash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{authorfullhash}{ec1b747b6f99a441a29d7092c11058d9}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 28 Giugno 2026}
+      \field{title}{Zabbix 7.0 Manual-Documentation}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://www.zabbix.com/documentation/current/en/
+      \endverb
+      \verb{url}
+      \verb https://www.zabbix.com/documentation/current/en/
+      \endverb
+    \endentry
   \enddatalist
   \datalist[entry]{nyt/global//global/global}
     \entry{PaesslerPricing}{online}{}
@@ -243,6 +272,35 @@
       \endverb
       \verb{url}
       \verb https://trasparenza.secoval.it/archiviofile/secoval/OrganigrammaCompleto9.pdf
+      \endverb
+    \endentry
+    \entry{zabbix7_Docs}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=ec1b747b6f99a441a29d7092c11058d9}{%
+           family={{Zabbix LLC}},
+           familyi={Z\bibinitperiod}}}%
+      }
+      \strng{namehash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{fullhash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{bibnamehash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{authorbibnamehash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{authornamehash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{authorfullhash}{ec1b747b6f99a441a29d7092c11058d9}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 28 Giugno 2026}
+      \field{title}{Zabbix 7.0 Manual-Documentation}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://www.zabbix.com/documentation/current/en/
+      \endverb
+      \verb{url}
+      \verb https://www.zabbix.com/documentation/current/en/
       \endverb
     \endentry
   \enddatalist
