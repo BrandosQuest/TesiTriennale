@@ -12,30 +12,30 @@
 \contentsline {section}{\numberline {2.2}Python, Venv e i package pip utilizzati}{12}{section.2.2}%
 \contentsline {section}{\numberline {2.3}Scripting Bash e Ambiente Linux (Cron, Logrotate)}{13}{section.2.3}%
 \contentsline {section}{\numberline {2.4}Interacta e JSON Web Token (JWT)}{14}{section.2.4}%
-\contentsline {chapter}{\numberline {3}Architettura e Configuration Management}{16}{chapter.3}%
-\contentsline {section}{\numberline {3.1}I CMDB aziendali (Excel) come Source of Truth}{16}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Sviluppo del motore di Provisioning in Python via Zabbix API e setup della Macchina Virtuale Ubuntu}{17}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Integrazione GIS: Estrazione coordinate tramite Excel e visualizzazione in Zabbix}{20}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Organizzazione gerarchica in Host Groups degli host e i codici comunali}{21}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Implementazione: Controlli Attivi ed Eventi TVCC}{24}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Logiche di Polling vs Trapping in Zabbix}{24}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Sviluppo del Middleware e Ascolto degli Stream Hikvision ISAPI}{26}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Inoltro asincrono tramite Zabbix Sender}{28}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Definizione di Trigger e Discovery Actions OPPURE MEGLIO Configurazione Pratica di Trigger e Actions per gli Eventi TVCC}{29}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Integrazione con il Sistema di Ticketing Interacta}{31}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Sicurezza e Autenticazione Server-to-Server}{31}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Generazione e firma del token JWT (Algoritmo RS512)}{32}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Sviluppo del Custom AlertScript in Zabbix}{34}{section.5.3}%
-\contentsline {chapter}{\numberline {6}Analisi Dati, KPI e Manutenzione di Sistema}{37}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Esportazione degli eventi in formato strutturato (CSV)}{37}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Sviluppo del motore Python per il calcolo dei KPI}{38}{section.6.2}%
-\contentsline {section}{\numberline {6.3}Automazione reportistica tramite Crontab e SMTP}{40}{section.6.3}%
-\contentsline {section}{\numberline {6.4}Gestione dei log e manutenzione (Logrotate)}{42}{section.6.4}%
-\contentsline {chapter}{\numberline {7}Conclusioni}{44}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Raggiungimento degli Obiettivi}{44}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Limiti del sistema e Sviluppi Futuri}{45}{section.7.2}%
-\contentsline {section}{\numberline {7.3}Valutazione Personale}{46}{section.7.3}%
-\contentsline {chapter}{Glossario}{48}{section.7.3}%
-\contentsline {section}{\numberline {7.4}Terminologia}{48}{section.7.4}%
-\contentsline {chapter}{Bibliografia}{57}{section.7.4}%
-\contentsline {chapter}{Ringraziamenti}{58}{chapter*.52}%
+\contentsline {chapter}{\numberline {3}Architettura e Configuration Management}{15}{chapter.3}%
+\contentsline {section}{\numberline {3.1}I CMDB aziendali (Excel) come Source of Truth}{15}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Sviluppo del motore di Provisioning in Python via Zabbix API e setup della Macchina Virtuale Ubuntu}{16}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Integrazione GIS: Estrazione coordinate tramite Excel e visualizzazione in Zabbix}{19}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Organizzazione gerarchica in Host Groups degli host e i codici comunali}{20}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Implementazione: Controlli Attivi ed Eventi TVCC}{23}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Logiche di Polling vs Trapping in Zabbix}{23}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Sviluppo del Middleware e Ascolto degli Stream Hikvision ISAPI}{25}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Inoltro asincrono tramite Zabbix Sender}{27}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Definizione di Trigger e Discovery Actions OPPURE MEGLIO Configurazione Pratica di Trigger e Actions per gli Eventi TVCC}{28}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Integrazione con il Sistema di Ticketing Interacta}{30}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Sicurezza e Autenticazione Server-to-Server}{30}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Generazione e firma del token JWT (Algoritmo RS512)}{31}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Sviluppo del Custom AlertScript in Zabbix}{33}{section.5.3}%
+\contentsline {chapter}{\numberline {6}Analisi Dati, KPI e Manutenzione di Sistema}{36}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Esportazione degli eventi in formato strutturato (CSV)}{36}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Sviluppo del motore Python per il calcolo dei KPI}{37}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Automazione reportistica tramite Crontab e SMTP}{39}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Gestione dei log e manutenzione (Logrotate)}{41}{section.6.4}%
+\contentsline {chapter}{\numberline {7}Conclusioni}{43}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Raggiungimento degli Obiettivi}{43}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Limiti del sistema e Sviluppi Futuri}{44}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Valutazione Personale}{45}{section.7.3}%
+\contentsline {chapter}{Glossario}{47}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Terminologia}{47}{section.7.4}%
+\contentsline {chapter}{Bibliografia}{56}{section.7.4}%
+\contentsline {chapter}{Ringraziamenti}{57}{chapter*.52}%
