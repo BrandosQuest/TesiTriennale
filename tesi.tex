@@ -639,10 +639,9 @@ Questi due file sono depositati all'interno del file system della macchina virtu
 \subsection*{L'estrazione dei dati}
 Purtroppo Zabbix non è in grado di leggere nativamente un file \texttt{.xlsx} per configurare i propri host. Per risolvere questo problema e automatizzare il flusso di informazioni verso Zabbix, è stata ideata un'architettura software in linguaggio Python.
 
-Il sistema opera secondo una logica basata su tre fasi:
+Il sistema opera secondo una logica basata su due fasi:
 \begin{itemize}
-    \item \textbf{Estrazione:} lo script Python, sfruttando  librerie dedicate alla manipolazione dati come \texttt{pandas} e \texttt{openpyxl}, accede ai percorsi assoluti dei due file Excel e ne legge le righe. Questa operazione permette di estrarre la conoscenza testuale racchiusa nelle celle (indirizzi IP, ID Palo, denominazione del Comune).
-    \item \textbf{Trasformazione:} i dati grezzi estratti dagli Excel vengono mappati all'interno di dizionari Python. In questa fase, ad esempio, lo script associa a ciascun dispositivo il corretto \textbf{Host Group} di Zabbix (es. separando logicamente il gruppo \texttt{SmartCity/TVCC} dal gruppo \texttt{SmartCity/Connectivity}) e determina quale \textbf{Template} di monitoraggio applicare in base al modello hardware rilevato nel foglio elettronico.
+    \item \textbf{Estrazione:} lo script Python, sfruttando  librerie dedicate alla manipolazione dati come \texttt{pandas} e \texttt{openpyxl}, accede ai percorsi assoluti dei due file Excel e ne legge le righe. Questa operazione permette di estrarre la conoscenza testuale racchiusa nelle celle (indirizzi IP, ID Palo, denominazione del Comune). I dati grezzi estratti dagli Excel vengono mappati all'interno di dizionari Python. %In questa fase, ad esempio, lo script associa a ciascun dispositivo il corretto \textbf{Host Group} di Zabbix (es. separando logicamente il gruppo \texttt{SmartCity/TVCC} dal gruppo \texttt{SmartCity/Connectivity}) e determina quale \textbf{Template} di monitoraggio applicare in base al modello hardware rilevato nel foglio elettronico.
     \item \textbf{Caricamento via API):} i dati vengono inseriti all'interno del server Zabbix. Lo script Python effettua chiamate al server zabbix attraverso la libreria \emph{pyzabbix}. Il sistema esegue un confronto tra le informazioni presenti negli Excel e quelle su Zabbix; per esempio se l'IP di un asset non è presente su Zabbix allora non viene forzata la sua creazione, se invece è presente si associano ad esso i relativi metadati(nome, ID palo, coordinate...).
 \end{itemize}
 
