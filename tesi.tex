@@ -656,19 +656,22 @@ Il sistema opera secondo una logica basata su due fasi:
 %     Tabelle: Una tabella anonimizzata che mostra la struttura dei file Excel aziendali. Colonne suggerite: Indirizzo IP, Hostname, Modello, ID Palo, Coordinate. Serve per far capire immediatamente al lettore quale sia l'input del tuo motore.
 
 %     Immagini: Un diagramma a blocchi del processo ETL (Extract, Transform, Load).
-\section{Sviluppo del motore di Provisioning in Python via Zabbix API e setup della Macchina Virtuale Ubuntu}
+\section{Setup della macchina virtuale Ubuntu, Python e gestione dei dati}
 
-Per tradurre in realtà l'astrazione del CMDB basato su Excel (analizzato nella sezione precedente) e automatizzare il popolamento dell'infrastruttura, è stato necessario progettare un ambiente di esecuzione dedicato. L'architettura prevede l'impiego di una Macchina Virtuale (VM) basata su sistema operativo Ubuntu Linux, ospitata sull'infrastruttura di virtualizzazione aziendale (Nutanix). La scelta di Ubuntu Server garantisce stabilità, leggerezza e una perfetta compatibilità con gli stack di automazione open-source tipici degli ambienti cloud-native.
+Per realizzare l'integazione tra i dati Excel e il server Zabbix è stato necessario progettare un ambiente di esecuzione dedicato. L'architettura prevede l'impiego di una Macchina Virtuale (VM) basata su sistema operativo Ubuntu Linux, ospitata sull'infrastruttura di virtualizzazione aziendale (Nutanix). La scelta di Ubuntu Server garantisce stabilità, e  compatibilità con software open-source come Zabbix.
 
-\subsection*{Setup dell'Ambiente Operativo e Sicurezza}
-La configurazione della VM è stata guidata dal principio del minimo privilegio (\textit{Principle of Least Privilege}). A livello di sistema operativo, sono stati definiti contesti di esecuzione nettamente separati per proteggere l'integrità del motore:
+\subsection*{Setup della VM Ubuntu}
+L'applicativo Zabbix viene eseguito su una virtual machine gestita da Nutanix, sui server Secoval, chiamata
+"SECZABBIX-TLC". Il sistema operativo utilizzato è Ubuntu Server (Ubuntu 24.04).
+
+Nella VM a livello di sistema operativo, sono stati definiti contesti di esecuzione separati per necessità tecniche:
 \begin{itemize}
-    \item L'utente \texttt{administrator}: impiegato per le fasi di sviluppo, amministrazione SSH e per l'aggiornamento dei file Excel di input. L'intera \textit{codebase} risiede all'interno della sua directory di lavoro, specificamente nel percorso \texttt{/home/administrator/zabbixHostsScript/}.
-    \item L'utente di sistema \texttt{zabbix}: utilizzato dal demone del server di monitoraggio per l'esecuzione in background (\textit{headless}) degli script di alert e di integrazione.
+    \item l'utente \texttt{administrator}: impiegato per le fasi di sviluppo, utilizzo di SSH e per l'aggiornamento dei file Excel di input. La maggior parte della \textit{codebase} risiede all'interno della sua directory di lavoro, specificamente nel percorso \\\texttt{/home/administrator/zabbixHostsScript/}.
+    \item l'utente di sistema \texttt{zabbix}: utilizzato dal demone del server di monitoraggio per l'esecuzione in background (\textit{headless}) degli script di alert e di integrazione.
 \end{itemize}
-Un vincolo ingegneristico fondamentale per far coesistere i due utenti ed evitare fallimenti critici è stato l'utilizzo esclusivo di percorsi assoluti (\textit{Absolute Paths}) all'interno del codice Python. Questa scelta ovvia all'imprevedibilità della \textit{Current Working Directory} (CWD) quando i task vengono scatenati in background dal motore Zabbix.
+% Un vincolo ingegneristico fondamentale per far coesistere i due utenti ed evitare fallimenti critici è stato l'utilizzo esclusivo di percorsi assoluti (\textit{Absolute Paths}) all'interno del codice Python. Questa scelta ovvia all'imprevedibilità della \textit{Current Working Directory} (CWD) quando i task vengono scatenati in background dal motore Zabbix.
 
-\subsection*{L'ecosistema Python e il Virtual Environment (venv)}
+\subsection*{Python e il Virtual Environment (venv)}
 Il motore di automazione (provisioning) è stato interamente sviluppato in linguaggio Python 3. In un ambiente server di produzione, l'installazione di librerie esterne a livello globale (tramite \texttt{sudo pip}) è considerata una pratica da evitare (anti-pattern). Questa operazione rischia infatti di sovrascrivere moduli necessari al sistema operativo, generando conflitti noti come \textit{Dependency Hell}.
 
 Per garantire l'isolamento e la futura scalabilità del sistema, è stato istanziato un \textit{Virtual Environment} (\texttt{venv}) dedicato. Come tracciato nella documentazione architetturale, al suo interno sono state installate le dipendenze essenziali:
