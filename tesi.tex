@@ -188,7 +188,7 @@ frontend
 % CAPITOLO 1: INTRODUZIONE E CONTESTO AZIENDALE
 % ====================================================================
 \chapter{Introduzione}
-\section{L'Azienda: Secoval S.r.l.}
+\section{L'azienda: Secoval S.r.l.}
 %\textit{[Descrizione dell'azienda, del suo ruolo nella gestione tecnologica per enti locali e comunità  montane]. da ~\textcite{einstein1905}}
 
 Secoval srl è una società a capitale interamente pubblico, partecipata dalla Comunità Montana di Valle Sabbia e da oltre 40 enti locali. Opera come supporto tecnologico e operativo per le Pubbliche Amministrazioni del nord-est bresciano, con sede a Vestone. Il suo ruolo è supportare la trasformazione digitale dei Comuni, compresi quelli più periferici, fornendo servizi amministrativi, informatici e gestionali. \parencite{secoval_chisiamo}
@@ -255,7 +255,7 @@ Il lavoro ha previsto l'automazione del discovery e dell'assegnazione dei metada
 
 %         Organigramma aziendale semplificato, per mostrare dove si colloca il reparto IT in cui hai operato.
 
-\section{Il Progetto di Stage}
+\section{Il progetto di stage}
 %\textit{[Descrizione ad alto livello del progetto: l'esigenza di monitorare TVCC, AP, Switch e LTE. Integrazione con script esterni per implementare funzionalità e per fare analisi dei dati. Integrazione con Interacta].}
 
 Il progetto di stage ha come obiettivo la progettazione e l'implementazione di un'architettura di monitoraggio centralizzata basata su Zabbix 7.0. Esso sarà destinato alla gestione di una delle infrastrutture di rete per Smart City che Secoval si trova a gestire. L'esigenza primaria è migliorare e superare i limiti dei sistemi di monitoraggio precedenti, come PRTG (Paessler Router Traffic Grapher), software proprietario con un sostanziale costo per la gestione di reti di certe dimensioni (1350,00€/month per 1000 devices \parencite{PaesslerPricing}) e con da un'elevata gestione manuale nella implementazione precedente al tirocinio.
@@ -295,7 +295,7 @@ L'infrastruttura monitorata è eterogenea e distribuita sul territorio. I dispos
 
 %         Schema del flusso logico dello script ISAPI (come cattura l'evento e lo spara a Zabbix Sender).
 
-\section{Obiettivi e Analisi dei Requisiti}
+\section{Obiettivi e analisi dei requisiti}
 % \textit{[Classificazione dei requisiti funzionali e di vincolo. Cosa ti ha chiesto di fare Secoval? Quali erano le limitazioni?]}.
 
 
@@ -316,7 +316,7 @@ Il progetto formativo mira a trasformare l'infrastruttura di rete (videosorvegli
 %     \item \textbf{Cybersecurity e Compliance GDPR:} garantire la sicurezza delle comunicazioni machine-to-machine, verificare le configurazioni degli apparati per rispettare gli standard normativi e descrivere procedure operative rigorose per la gestione degli account e il logging degli eventi.
 % \end{enumerate}
 
-\subsection*{Classificazione dei Requisiti}
+\subsection*{Classificazione dei requisiti}
 L'analisi del contesto applicativo e dei vincoli imposti dall'infrastruttura e dall'azienda ha portato alla definizione dei seguenti requisiti tecnici e funzionali.
 
 \textbf{Requisiti}
@@ -372,7 +372,7 @@ L'analisi del contesto applicativo e dei vincoli imposti dall'infrastruttura e d
 % ====================================================================
 % CAPITOLO 2: TECNOLOGIE
 % ====================================================================
-\chapter{Tecnologie Utilizzate}
+\chapter{Tecnologie utilizzate}
 % \textit{[In questo capitolo descriveremo formalmente gli strumenti, includendo i relativi loghi come figure, esattamente come nella tesi di riferimento].}
 \section{Ubuntu Server}
 \begin{figure}[h]
@@ -429,6 +429,33 @@ Per questo progetto è stata adottata la versione 7.0 LTS (Long Term Support) \p
     \item \textbf{API JSON-RPC:} l’API web di Zabbix, un'interfaccia strutturata che consente il controllo totale della piattaforma via codice. È stata utilizzata per popolare l'Host Inventory leggendo i metadati dal CMDB aziendale.
     \item \textbf{Custom AlertScripts:} la capacità di lanciare eseguibili esterni (Python, Bash...) al verificarsi di un evento. Questo modulo è stato impiegato per integrare Zabbix con la piattaforma cloud Interacta, e per creare un sistema di logging del sistema.
 \end{itemize}
+\subsection{Terminologia parziale per Zabbix}
+Per facilitare la lettura e la comprensione di questo elaborato a personale non strettamente sistemistico,
+di seguito vengono definiti i termini tecnici principali, riguardo Zabbix, utilizzati nel progetto.
+
+% Unlike itemize (bullets) or enumerate (numbers), 
+%the description environment allows for custom, text-based labels for each 
+\begin{description}
+    % \item[Zabbix:] è una piattaforma software open-source per il monitoraggio proattivo
+    %       di infrastrutture IT, reti, server, macchine virtuali e servizi cloud.
+    %       Consente di raccogliere, visualizzare e analizzare metriche in tempo reale
+    %       (come utilizzo CPU, RAM, rete e spazio disco), inviando avvisi immediati in caso di anomalie.
+    \item[Host:] qualsiasi dispositivo fisico o virtuale monitorato dal sistema.
+          Nel nostro caso, una telecamera, uno switch, un Access Point o un router.
+    \item[Item:] la singola metrica o il singolo dato raccolto da un Host.
+          Esempi di item sono: la risposta di un comando ping a un host o il tempo di risposta,
+          la risposta ricevuta da un comando, il valore di un sensore fisico o virtuale.
+    \item[Trigger:] una regola logica associata a un Item.
+          Es. la telecamera non risponde al ping per 3 minuti, il Trigger "scatta" e genera un allarme (Problem).
+    \item[Action:] l'azione automatica che il sistema intraprende quando qualche evento soddisfa alcune condizioni.
+          Può essere relativa ai trigger o alla scoperta di un nuovo host.
+    \item[Template:] un modello preconfigurato che contiene un insieme logico di
+          Item, Trigger e regole. Viene applicato a più dispositivi per evitare di configurarli manualmente.
+    \item[Macro:] variabili integrate in Zabbix (scritte tra parentesi graffe,
+          es. \texttt{\{HOST.NAME\}}) che permettono di inserire dinamicamente il nome,
+          l'IP o altri dati all'interno di svariati campi, per esempio le mail di allarme.
+
+\end{description}
 % Immagini e Tabelle:
 
 %     Immagine (Diagramma Architetturale Zabbix): Inserisci uno schema a blocchi che mostri i componenti core (Zabbix Server, Database, Frontend) e come interagiscono con l'esterno tramite API, Zabbix Sender e Zabbix Agent. Dimostra la comprensione dell'architettura di sistema.
@@ -553,33 +580,72 @@ Per blindare questi certificati digitali, l'infrastruttura sfrutta la crittograf
 % ====================================================================
 % CAPITOLO 3: ARCHITETTURA E AUTOMAZIONE DELL'INVENTARIO
 % ====================================================================
-\chapter{Architettura e Configuration Management}
+\chapter{Architettura e configurazione}
 \section{I fogli di calcolo aziendali (Excel) come Source of Truth}
 
-Nell'ingegneria dei sistemi informativi enterprise, il Configuration Management Database \\(CMDB) rappresenta il pilastro fondamentale per la governance IT, configurandosi come l'archivio centralizzato che contiene tutte le informazioni relative ai Configuration Item (CI), ovvero gli asset hardware e software che compongono l'infrastruttura aziendale. Nel contesto della Smart City gestita da Secoval S.r.l., la configurazione e la mappatura dei dispositivi dislocati sul territorio (telecamere IP, Access Point, gateway LTE, switch di rete) erano storicamente frammentate in flussi documentali manuali.
+Per abilitare un'architettura di monitoraggio automatizzata basata su Zabbix, è stato necessario identificare una \textbf{sorgente della verità}, ovvero un'entità a cui il sistema potesse attingere per allineare il suo stato con lo stato fisico degli asset sul territorio.
 
-Per abilitare un'architettura di monitoraggio automatizzata basata su Zabbix, è stato necessario identificare una \textbf{Single Source of Truth} (Sorgente Unica della Verità), ovvero un'entità informativa autoritativa a cui il sistema potesse attingere per allineare lo stato logico dei controlli con lo stato fisico degli asset sul territorio.
+Nel contesto della Smart City gestita da Secoval Srl, il Source of Truth riguardo gli asset hardware e software che compongono l'infrastruttura della Smart City e la configurazione e la mappatura dei dispositivi dislocati sul territorio (telecamere IP, Access Point, gateway LTE, switch di rete) è rappresentato da 2 fogli di calcolo: uno fondamentale come archivio e uno di supporto.
 
-\subsection*{Struttura e Ruolo dei Due File Excel Aziendali}
-Sebbene i framework metodologici avanzati (come ITIL) prevedano l'adozione di software CMDB relazionali dedicati, la realtà operativa di molte medie imprese e utility locali vede l'utilizzo consolidato di fogli di calcolo elettronici per la gestione degli inventari. Secoval gestisce la conoscenza della propria infrastruttura Smart City attraverso \textbf{due file Excel principali}, che fungono a tutti gli effetti da CMDB operativi:
+
+\subsection*{Struttura e ruolo dei due file Excel aziendali}
+Secoval, e le aziende che hanni implemetato fisicamente la rete di telecamere sul territorio, gestisce la conoscenza della propria infrastruttura Smart City attraverso \textbf{due file Excel principali}:
 \begin{enumerate}
-    \item \textbf{Excel degli Asset di Videosorveglianza (TVCC):} Questo documento contiene l'inventario analitico di tutte le telecamere IP (prevalentemente Hikvision) installate nei vari comuni della Comunità Montana. Per ogni apparato sono mappati dati cruciali quali l'indirizzo IP statico, l'univoco \texttt{ID Host} aziendale, il costruttore, il modello e, dato fondamentale per la manutenzione fisica, l'\texttt{ID Palo} o l'identificativo della cassetta stradale di derivazione all'interno della quale è alloggiato il dispositivo.
-    \item \textbf{Excel degli Asset di Connettività e Networking:} Questo secondo file cataloga l'infrastruttura di rete che abilita il trasporto del dato, contenente i record relativi agli Access Point Wi-Fi pubblici, ai router di frontiera, ai gateway LTE utilizzati per il rilegamento wireless dei siti isolati e agli switch industriali da campo. Anche in questo caso, la struttura associa a ogni IP i relativi metadati logici e geografici.
+    \item \textbf{Excel degli asset:} questo documento contiene l'inventario di tutti gli asset hardware (come le telecamere, prevalentemente di marca Hikvision) installati nei vari comuni aderenti al progetto. Per ogni apparato sono mappati dati cruciali quali l'indirizzo IP statico, l'univoco \texttt{ID Host} aziendale, il costruttore, il modello e, dato fondamentale per la manutenzione fisica, l'\texttt{ID Palo} che identifica e da un nome alla posizione di istallazione del dispositivo.
+          \begin{table}[ht]
+              \centering
+              % \resizebox adatta la tabella alla larghezza del testo (\textwidth)
+              \resizebox{\textwidth}{!}{%
+                  \begin{tabular}{llllllllllllcll}
+                      \toprule
+                      \textbf{Nome Punto} & \textbf{ID Palo} & \textbf{Tipo Apparato} & \textbf{ID} & \textbf{ID Apparato} & \textbf{Marca/Modello} & \textbf{Nome Host/DNS} & \textbf{Indirizzo IP} & \textbf{Netmask} & \textbf{Gateway} & \textbf{Server DNS 1} & \textbf{Server DNS 2} & \textbf{VLAN ID} & \textbf{Indirizzo MAC} & \textbf{Note} \\
+                      \midrule
+                      % Riga 1 - Esempio Telecamera
+                      1\_Sabbio\_1TVCC    & 1\_Sabbio\_1TVCC & Telecamera di contesto & X           & SABB-TVCC-01         & HIKVISION ...          & SABB-TVCC-01           & X.X.X.X               & 255.255.255.X    & X.X.X.X          & X.X.X.X               & X.X.X.X               & XXX              & XX:XX:XX:XX:XX:XX      &               \\
+                      % Riga 2 - Esempio Switch
+                      1\_Sabbio\_1TVCC    & 1\_Sabbio\_1TVCC & Switch Industriale     & X           & SABB-SW-TVCC-01      & Switch 5 porte         & SABB-SW-TVCC-01        & X.X.X.X               & 255.255.255.X    & X.X.X.X          & X.X.X.X               & X.X.X.X               & XXX              & XX:XX:XX:XX:XX:XX      &               \\
+                      \bottomrule
+                  \end{tabular}%
+              }
+              \caption{Tabella Excel degli asset(dati sensibili offuscati)}
+              \label{tab:ExcelAsset}
+          \end{table}
+    \item \textbf{Excel delle coordinate geografiche:} Questo secondo file cataloga e associa gli \texttt{ID Palo} alle coordinate geografiche relative, espresse in latitudine e longitudine in gradi decimali.
+          \begin{table}[ht]
+              \centering
+              % Adatta la tabella alla larghezza della pagina
+              %DA CONTROLLARE
+              \resizebox{\textwidth}{!}{
+                  \begin{tabular}{lccllcllccccc}
+                      \toprule
+                      \textbf{Comune} & \textbf{Punto} & \textbf{Lotto} & \textbf{Nome Punto} & \textbf{Wifi Punto} & \textbf{Tipo Punto} & \textbf{Tecnologia} & \textbf{Indirizzo} & \textbf{COORDINATE MYGEST} & \textbf{Latitudine} & \textbf{Longitudine} & \textbf{Dec. Latitudine} & \textbf{Dec. Longitudine} \\
+                      \midrule
+                      % Riga 1 - Esempio con FTTH (cella azzurra)
+                      Agnosine        & 1              & 1              & 1\_Agnosine\_1TVCC  & 4\_Agnosine\_WiFi   & TVCC                & FTTH                & Via XXXXX civ. XX  &                            & 45°XX'XX.X''N       & 10°XX'XX.X''E        & 45.XXXXXX                & 10.XXXXXX                 \\
+                      % Riga 2 - Esempio con FWA (cella gialla e testo in grassetto)
+                      Agnosine        & 6              & 1              & 6\_Agnosine\_1TVCC  &                     & TVCC                & FWA                 & Via XXXXX          &                            & 45°XX'XX.X''N       & 10°XX'XX.X''E        & 45.XXXXXX                & 10.XXXXXX                 \\
+                      \bottomrule
+                  \end{tabular}%
+              }
+              \caption{Tabella Excel delle coordinate geografiche(dati sensibili offuscati)}
+              \label{tab:ExcelCoordinate}
+          \end{table}
 \end{enumerate}
 
-Questi due file sono depositati all'interno del file system della macchina virtuale Ubuntu Server dedicata al monitoraggio, all'interno della directory di lavoro del progetto (\texttt{/home/administrator/zabbixHostsScript/}). Essi vengono aggiornati periodicamente dal personale tecnico di Secoval non appena un nuovo apparato viene installato o censito sul campo.
+Questi due file sono depositati all'interno del file system della macchina virtuale Ubuntu Server dedicata al monitoraggio, all'interno della directory di lavoro del progetto \\(\texttt{/home/administrator/zabbixHostsScript/}). Essi vengono aggiornati periodicamente dal personale tecnico di Secoval non appena un nuovo apparato viene installato o censito sul campo.
 
-\subsection*{Il Processo di Estrazione della Conoscenza}
-Il limite insito nell'uso dei fogli di calcolo come CMDB è la loro staticità: Zabbix non è in grado di leggere nativamente un file \texttt{.xlsx} per configurare i propri controlli. Per risolvere questo problema e automatizzare il flusso, è stata ingegnerizzata un'architettura di sincronizzazione software in linguaggio Python.
 
-Il sistema opera secondo una logica sequenziale basata su tre fasi macro-operative (ETL - Extraction, Transformation, Loading):
+
+\subsection*{L'estrazione dei dati}
+Purtroppo Zabbix non è in grado di leggere nativamente un file \texttt{.xlsx} per configurare i propri host. Per risolvere questo problema e automatizzare il flusso di informazioni verso Zabbix, è stata ideata un'architettura software in linguaggio Python.
+
+Il sistema opera secondo una logica basata su tre fasi:
 \begin{itemize}
-    \item \textbf{Estrazione (Extraction):} Lo script Python, sfruttando l'efficienza di librerie dedicate alla manipolazione dati come \texttt{pandas} e \texttt{openpyxl}, accede ai percorsi assoluti dei due file Excel e ne legge le righe in modo asincrono. Questa operazione permette di estrarre la conoscenza testuale e strutturata racchiusa nelle celle (indirizzi IP, ID Palo, denominazione del Comune).
-    \item \textbf{Trasformazione (Transformation):} I dati grezzi estratti dagli Excel vengono normalizzati e mappati all'interno di dizionari ed entità computazionali Python. In questa fase, ad esempio, lo script associa a ciascun dispositivo il corretto \textbf{Host Group} di Zabbix (es. separando logicamente il gruppo \texttt{SmartCity/TVCC} dal gruppo \texttt{SmartCity/Connectivity}) e determina quale \textbf{Template} di monitoraggio applicare in base al modello hardware rilevato nel foglio elettronico.
-    \item \textbf{Caricamento (Loading via API JSON-RPC):} La conoscenza strutturata e arricchita viene infine iniettata all'interno del server Zabbix. Lo script Python effettua chiamate HTTP POST verso l'endpoint delle API native di Zabbix, utilizzando il protocollo leggero \textbf{JSON-RPC}. Il sistema esegue un confronto dinamico: se un host presente nell'Excel non esiste su Zabbix, viene creato ex-novo valorizzando i campi dell'inventario (inclusi i metadati aziendali come l'ID Palo); se l'host esiste già ma presenta discrepanze (es. è cambiato l'IP o la posizione), viene aggiornato; se l'host è stato rimosso dall'Excel, viene disattivato o rimosso dal monitoraggio.
+    \item \textbf{Estrazione:} lo script Python, sfruttando  librerie dedicate alla manipolazione dati come \texttt{pandas} e \texttt{openpyxl}, accede ai percorsi assoluti dei due file Excel e ne legge le righe. Questa operazione permette di estrarre la conoscenza testuale racchiusa nelle celle (indirizzi IP, ID Palo, denominazione del Comune).
+    \item \textbf{Trasformazione:} i dati grezzi estratti dagli Excel vengono mappati all'interno di dizionari Python. In questa fase, ad esempio, lo script associa a ciascun dispositivo il corretto \textbf{Host Group} di Zabbix (es. separando logicamente il gruppo \texttt{SmartCity/TVCC} dal gruppo \texttt{SmartCity/Connectivity}) e determina quale \textbf{Template} di monitoraggio applicare in base al modello hardware rilevato nel foglio elettronico.
+    \item \textbf{Caricamento via API):} i dati vengono inseriti all'interno del server Zabbix. Lo script Python effettua chiamate al server zabbix attraverso la libreria \emph{pyzabbix}. Il sistema esegue un confronto tra le informazioni presenti negli Excel e quelle su Zabbix; per esempio se l'IP di un asset non è presente su Zabbix allora non viene forzata la sua creazione, se invece è presente si associano ad esso i relativi metadati(nome, ID palo, coordinate...).
 \end{itemize}
 
-Questa scelta progettuale ha consentito di salvaguardare l'operatività quotidiana dell'azienda – che continua a utilizzare i familiari fogli Excel come interfaccia di inserimento dati – e al contempo di garantire i requisiti rigorosi di un'architettura ITID, trasformando un archivio statico manuale nella vera forza motrice (\textit{Source of Truth}) dell'automazione del monitoraggio.
 % Citazioni e Bibliografia:
 
 %     Scientifiche/Metodologiche: Manuali del framework ITIL v4 (Information Technology Infrastructure Library), specificamente la pratica del Service Asset and Configuration Management (SACM). Libri di architettura software che definiscono il pattern della Single Source of Truth (SSoT).
