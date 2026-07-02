@@ -1,0 +1,541 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/apasortcite//global/global}
+    \entry{UbuntuServer}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=aacfea8cb27c1b8d0dd136a1aca2f0a4}{%
+           family={{Canonical Ltd.}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{fullhash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{bibnamehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{authorbibnamehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{authornamehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{authorfullhash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 28 Giugno 2026}
+      \field{title}{Ubuntu Server}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://ubuntu.com/download/server
+      \endverb
+      \verb{url}
+      \verb https://ubuntu.com/download/server
+      \endverb
+    \endentry
+    \entry{JWT}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=8156eae38e17275f0d4e90ae1051c2ab}{%
+           family={{IETF}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{fullhash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{bibnamehash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{authorbibnamehash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{authornamehash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{authorfullhash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 29 Giugno 2026}
+      \field{title}{JSON Web Token (JWT)}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://datatracker.ietf.org/doc/html/rfc7519
+      \endverb
+      \verb{url}
+      \verb https://datatracker.ietf.org/doc/html/rfc7519
+      \endverb
+    \endentry
+    \entry{Interacta}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=95da935e2a82bfb5cc23fde6167fde52}{%
+           family={{Interacta}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{95da935e2a82bfb5cc23fde6167fde52}
+      \strng{fullhash}{95da935e2a82bfb5cc23fde6167fde52}
+      \strng{bibnamehash}{95da935e2a82bfb5cc23fde6167fde52}
+      \strng{authorbibnamehash}{95da935e2a82bfb5cc23fde6167fde52}
+      \strng{authornamehash}{95da935e2a82bfb5cc23fde6167fde52}
+      \strng{authorfullhash}{95da935e2a82bfb5cc23fde6167fde52}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 29 Giugno 2026}
+      \field{title}{Interacta}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://www.interacta.space/chi-siamo/
+      \endverb
+      \verb{url}
+      \verb https://www.interacta.space/chi-siamo/
+      \endverb
+    \endentry
+    \entry{PaesslerPricing}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=f92a302aa92a89cd45fb933091bbe181}{%
+           family={{Paessler}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {Paessler}%
+      }
+      \strng{namehash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{fullhash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{bibnamehash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{authorbibnamehash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{authornamehash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{authorfullhash}{f92a302aa92a89cd45fb933091bbe181}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{PaesslerPricingWebPage}
+      \field{urlday}{25}
+      \field{urlmonth}{6}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.paessler.com/prtg/prtg-network-monitor#pricing
+      \endverb
+      \verb{url}
+      \verb https://www.paessler.com/prtg/prtg-network-monitor#pricing
+      \endverb
+    \endentry
+    \entry{PythonSoftwareFoundation}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=c7b5508dc5e59a2846d22617276cc27c}{%
+           family={{Python Software Foundation}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{fullhash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{bibnamehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{authorbibnamehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{authornamehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{authorfullhash}{c7b5508dc5e59a2846d22617276cc27c}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 28 Giugno 2026}
+      \field{title}{Python Software Foundation}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://www.python.org/
+      \endverb
+      \verb{url}
+      \verb https://www.python.org/
+      \endverb
+    \endentry
+    \entry{secoval_chisiamo}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=580205d26105897dccf1b082532f5191}{%
+           family={{Secoval S.r.l.}},
+           familyi={S\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {Secoval}%
+      }
+      \strng{namehash}{580205d26105897dccf1b082532f5191}
+      \strng{fullhash}{580205d26105897dccf1b082532f5191}
+      \strng{bibnamehash}{580205d26105897dccf1b082532f5191}
+      \strng{authorbibnamehash}{580205d26105897dccf1b082532f5191}
+      \strng{authornamehash}{580205d26105897dccf1b082532f5191}
+      \strng{authorfullhash}{580205d26105897dccf1b082532f5191}
+      \field{extraname}{1}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradate}{1}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Chi Siamo}
+      \field{urlday}{19}
+      \field{urlmonth}{6}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.secoval.it/pagina21048_chi-siamo.html
+      \endverb
+      \verb{url}
+      \verb https://www.secoval.it/pagina21048_chi-siamo.html
+      \endverb
+    \endentry
+    \entry{organigrammaSecoval}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=580205d26105897dccf1b082532f5191}{%
+           family={{Secoval S.r.l.}},
+           familyi={S\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {Secoval}%
+      }
+      \strng{namehash}{580205d26105897dccf1b082532f5191}
+      \strng{fullhash}{580205d26105897dccf1b082532f5191}
+      \strng{bibnamehash}{580205d26105897dccf1b082532f5191}
+      \strng{authorbibnamehash}{580205d26105897dccf1b082532f5191}
+      \strng{authornamehash}{580205d26105897dccf1b082532f5191}
+      \strng{authorfullhash}{580205d26105897dccf1b082532f5191}
+      \field{extraname}{2}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradate}{2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Organigramma}
+      \field{urlday}{23}
+      \field{urlmonth}{6}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://trasparenza.secoval.it/archiviofile/secoval/OrganigrammaCompleto9.pdf
+      \endverb
+      \verb{url}
+      \verb https://trasparenza.secoval.it/archiviofile/secoval/OrganigrammaCompleto9.pdf
+      \endverb
+    \endentry
+    \entry{zabbix7_Docs}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=ec1b747b6f99a441a29d7092c11058d9}{%
+           family={{Zabbix LLC}},
+           familyi={Z\bibinitperiod}}}%
+      }
+      \strng{namehash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{fullhash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{bibnamehash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{authorbibnamehash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{authornamehash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{authorfullhash}{ec1b747b6f99a441a29d7092c11058d9}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 28 Giugno 2026}
+      \field{title}{Zabbix 7.0 Manual-Documentation}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://www.zabbix.com/documentation/current/en/
+      \endverb
+      \verb{url}
+      \verb https://www.zabbix.com/documentation/current/en/
+      \endverb
+    \endentry
+  \enddatalist
+  \datalist[entry]{nyt/global//global/global}
+    \entry{UbuntuServer}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=aacfea8cb27c1b8d0dd136a1aca2f0a4}{%
+           family={{Canonical Ltd.}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{fullhash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{bibnamehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{authorbibnamehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{authornamehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{authorfullhash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 28 Giugno 2026}
+      \field{title}{Ubuntu Server}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://ubuntu.com/download/server
+      \endverb
+      \verb{url}
+      \verb https://ubuntu.com/download/server
+      \endverb
+    \endentry
+    \entry{JWT}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=8156eae38e17275f0d4e90ae1051c2ab}{%
+           family={{IETF}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{fullhash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{bibnamehash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{authorbibnamehash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{authornamehash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{authorfullhash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 29 Giugno 2026}
+      \field{title}{JSON Web Token (JWT)}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://datatracker.ietf.org/doc/html/rfc7519
+      \endverb
+      \verb{url}
+      \verb https://datatracker.ietf.org/doc/html/rfc7519
+      \endverb
+    \endentry
+    \entry{Interacta}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=95da935e2a82bfb5cc23fde6167fde52}{%
+           family={{Interacta}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{95da935e2a82bfb5cc23fde6167fde52}
+      \strng{fullhash}{95da935e2a82bfb5cc23fde6167fde52}
+      \strng{bibnamehash}{95da935e2a82bfb5cc23fde6167fde52}
+      \strng{authorbibnamehash}{95da935e2a82bfb5cc23fde6167fde52}
+      \strng{authornamehash}{95da935e2a82bfb5cc23fde6167fde52}
+      \strng{authorfullhash}{95da935e2a82bfb5cc23fde6167fde52}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 29 Giugno 2026}
+      \field{title}{Interacta}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://www.interacta.space/chi-siamo/
+      \endverb
+      \verb{url}
+      \verb https://www.interacta.space/chi-siamo/
+      \endverb
+    \endentry
+    \entry{PaesslerPricing}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=f92a302aa92a89cd45fb933091bbe181}{%
+           family={{Paessler}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {Paessler}%
+      }
+      \strng{namehash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{fullhash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{bibnamehash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{authorbibnamehash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{authornamehash}{f92a302aa92a89cd45fb933091bbe181}
+      \strng{authorfullhash}{f92a302aa92a89cd45fb933091bbe181}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{PaesslerPricingWebPage}
+      \field{urlday}{25}
+      \field{urlmonth}{6}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.paessler.com/prtg/prtg-network-monitor#pricing
+      \endverb
+      \verb{url}
+      \verb https://www.paessler.com/prtg/prtg-network-monitor#pricing
+      \endverb
+    \endentry
+    \entry{PythonSoftwareFoundation}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=c7b5508dc5e59a2846d22617276cc27c}{%
+           family={{Python Software Foundation}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{fullhash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{bibnamehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{authorbibnamehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{authornamehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{authorfullhash}{c7b5508dc5e59a2846d22617276cc27c}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 28 Giugno 2026}
+      \field{title}{Python Software Foundation}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://www.python.org/
+      \endverb
+      \verb{url}
+      \verb https://www.python.org/
+      \endverb
+    \endentry
+    \entry{secoval_chisiamo}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=580205d26105897dccf1b082532f5191}{%
+           family={{Secoval S.r.l.}},
+           familyi={S\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {Secoval}%
+      }
+      \strng{namehash}{580205d26105897dccf1b082532f5191}
+      \strng{fullhash}{580205d26105897dccf1b082532f5191}
+      \strng{bibnamehash}{580205d26105897dccf1b082532f5191}
+      \strng{authorbibnamehash}{580205d26105897dccf1b082532f5191}
+      \strng{authornamehash}{580205d26105897dccf1b082532f5191}
+      \strng{authorfullhash}{580205d26105897dccf1b082532f5191}
+      \field{extraname}{1}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradate}{1}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Chi Siamo}
+      \field{urlday}{19}
+      \field{urlmonth}{6}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.secoval.it/pagina21048_chi-siamo.html
+      \endverb
+      \verb{url}
+      \verb https://www.secoval.it/pagina21048_chi-siamo.html
+      \endverb
+    \endentry
+    \entry{organigrammaSecoval}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=580205d26105897dccf1b082532f5191}{%
+           family={{Secoval S.r.l.}},
+           familyi={S\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {Secoval}%
+      }
+      \strng{namehash}{580205d26105897dccf1b082532f5191}
+      \strng{fullhash}{580205d26105897dccf1b082532f5191}
+      \strng{bibnamehash}{580205d26105897dccf1b082532f5191}
+      \strng{authorbibnamehash}{580205d26105897dccf1b082532f5191}
+      \strng{authornamehash}{580205d26105897dccf1b082532f5191}
+      \strng{authorfullhash}{580205d26105897dccf1b082532f5191}
+      \field{extraname}{2}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradate}{2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Organigramma}
+      \field{urlday}{23}
+      \field{urlmonth}{6}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://trasparenza.secoval.it/archiviofile/secoval/OrganigrammaCompleto9.pdf
+      \endverb
+      \verb{url}
+      \verb https://trasparenza.secoval.it/archiviofile/secoval/OrganigrammaCompleto9.pdf
+      \endverb
+    \endentry
+    \entry{zabbix7_Docs}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=ec1b747b6f99a441a29d7092c11058d9}{%
+           family={{Zabbix LLC}},
+           familyi={Z\bibinitperiod}}}%
+      }
+      \strng{namehash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{fullhash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{bibnamehash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{authorbibnamehash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{authornamehash}{ec1b747b6f99a441a29d7092c11058d9}
+      \strng{authorfullhash}{ec1b747b6f99a441a29d7092c11058d9}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 28 Giugno 2026}
+      \field{title}{Zabbix 7.0 Manual-Documentation}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://www.zabbix.com/documentation/current/en/
+      \endverb
+      \verb{url}
+      \verb https://www.zabbix.com/documentation/current/en/
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
