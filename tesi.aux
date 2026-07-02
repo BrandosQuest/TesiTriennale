@@ -97,4 +97,65 @@
 \@writefile{toc}{\contentsline {section}{\numberline {5.1}Il problema}{30}{section.5.1}\protected@file@percent }
 \@writefile{lol}{\contentsline {lstlisting}{\numberline {5.1}Autenticazione tramite API Token}{30}{lstlisting.5.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {5.2}Implementazione dell'aggiornamento degli host}{30}{section.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}Associazion
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}Associazione host name e IDpalo}{31}{subsection.5.2.1}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.2}setup of periodic execution in Crontab}{31}{lstlisting.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}Associazione coordinate, indirizzo e tecnologia}{31}{subsection.5.2.2}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.3}crontab configuration per zabbix\_palo\_location\_and\_info\_updater.py}{31}{lstlisting.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.3}Memorizzazione dei messaggi di log}{32}{subsection.5.2.3}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.4}Configurazione logrotate per \lstinline |cron_log.log|}{32}{lstlisting.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Estrazione Dati Host tramite Template Zabbix}{33}{chapter.6}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}Acquisizione informazioni sugli host}{33}{section.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}Configurazione dell'host Inventory}{33}{section.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.3}Template telecamere Hikvision}{34}{section.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.4}Apparati standard (switch, access point, LTE)}{34}{section.6.4}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.1}Esempio di discovery manuale dei MIB via CLI}{34}{lstlisting.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Integrazione con il Sistema di Ticketing Interacta}{35}{chapter.7}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {7.1}Sicurezza e Autenticazione Server-to-Server}{35}{section.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7.2}Generazione e firma del token JWT (Algoritmo RS512)}{36}{section.7.2}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {7.1}Snippet Python per la generazione e firma del JWT con algoritmo RS512}{37}{lstlisting.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7.3}Sviluppo del Custom AlertScript in Zabbix}{38}{section.7.3}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {7.2}Estrazione semplificata della gestione parametri e logging nello script Python}{39}{lstlisting.7.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {8}Analisi Dati, KPI e Manutenzione di Sistema}{41}{chapter.8}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {8.1}Esportazione degli eventi in formato strutturato (CSV)}{41}{section.8.1}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {8.1}Snippet concettuale dello script di esportazione CSV (\texttt  {ScriptCustomExportProblemsToCSV.sh})}{42}{lstlisting.8.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8.2}Sviluppo del motore Python per il calcolo dei KPI}{42}{section.8.2}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {8.2}Snippet concettuale in Pandas per il calcolo dell'MTTR per host}{43}{lstlisting.8.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8.3}Automazione reportistica tramite Crontab e SMTP}{44}{section.8.3}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {8.3}Esempio di schedulazione in Crontab per il report mattutino}{44}{lstlisting.8.3}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {8.4}Snippet Python per la composizione e l'invio del report via SMTP}{45}{lstlisting.8.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8.4}Gestione dei log e manutenzione (Logrotate)}{46}{section.8.4}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {8.5}Configurazione logrotate per la manutenzione dei log di integrazione}{46}{lstlisting.8.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {9}Conclusioni}{48}{chapter.9}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {9.1}Raggiungimento degli Obiettivi}{48}{section.9.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {9.2}Limiti del sistema e Sviluppi Futuri}{49}{section.9.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {9.3}Valutazione Personale}{50}{section.9.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{Glossario}{52}{section.9.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {9.4}Terminologia}{52}{section.9.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{Bibliografia}{61}{section.9.4}\protected@file@percent }
+\abx@aux@page{10}{61}
+\abx@aux@page{11}{61}
+\abx@aux@page{12}{61}
+\abx@aux@page{13}{61}
+\abx@aux@page{14}{61}
+\abx@aux@page{15}{61}
+\abx@aux@page{16}{61}
+\abx@aux@page{17}{61}
+\@writefile{toc}{\contentsline {chapter}{Ringraziamenti}{62}{chapter*.47}\protected@file@percent }
+\abx@aux@read@bbl@mdfivesum{EAE17F95148FC30F708AA1C1ABE7C66F}
+\abx@aux@defaultrefcontext{0}{UbuntuServer}{nyt/global//global/global}
+\abx@aux@defaultrefcontext{0}{JWT}{nyt/global//global/global}
+\abx@aux@defaultrefcontext{0}{Interacta}{nyt/global//global/global}
+\abx@aux@defaultrefcontext{0}{PaesslerPricing}{nyt/global//global/global}
+\abx@aux@defaultrefcontext{0}{PythonSoftwareFoundation}{nyt/global//global/global}
+\abx@aux@defaultrefcontext{0}{secoval_chisiamo}{nyt/global//global/global}
+\abx@aux@defaultrefcontext{0}{organigrammaSecoval}{nyt/global//global/global}
+\abx@aux@defaultrefcontext{0}{zabbix7_Docs}{nyt/global//global/global}
+\gdef \@abspage@last{62}
