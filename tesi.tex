@@ -9,7 +9,7 @@
 %\renewcommand{\familydefault}{\sfdefault}%Di norma, LaTeX impiega un carattere con grazie (serif), noto come Computer Modern Roman. Questo comando sovrascrive tale impostazione globale nel preambolo.
 \usepackage{geometry}
 % \geometry{a4paper, top=25mm, bottom=20mm, left=35mm, right=30mm}
-\geometry{a4paper, top=25mm, bottom=20mm, left=20mm, right=20mm}
+\geometry{a4paper, top=25mm, bottom=20mm, left=30mm, right=30mm}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -31,21 +31,21 @@
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
 \lstdefinestyle{codeStyle}{
-    backgroundcolor=\color{backcolour},   
+    backgroundcolor=\color{backcolour},
     commentstyle=\color{codegreen},
     keywordstyle=\color{blue},
     numberstyle=\tiny\color{codegray},
     stringstyle=\color{codepurple},
     basicstyle=\ttfamily\footnotesize,
-    breakatwhitespace=false,         
-    breaklines=true,                 
-    captionpos=b,                    
-    keepspaces=true,                 
-    numbers=left,                    
-    numbersep=5pt,                  
-    showspaces=false,                
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
     showstringspaces=false,
-    showtabs=false,                  
+    showtabs=false,
     tabsize=2
 }
 \lstset{style=codeStyle}
@@ -75,9 +75,9 @@
 %     sorting=none       % Ordina la bibliografia finale secondo l'ordine di apparizione nel testo
 % ]{biblatex}
 \usepackage[ %Author-Year format (like Harvard/APA)
-    backend=biber,     
+    backend=biber,
     style=apa,  % Changed from ieee to authoryear or apa with parentesis
-    language=italian,  
+    language=italian,
     sorting=nyt        % Changed to Name-Year-Title sorting (Standard for APA/Harvard)
 ]{biblatex}
 
@@ -85,7 +85,7 @@
 \usepackage{csquotes}
 
 % 3. Carica il tuo file dei database delle citazioni
-\addbibresource{references.bib} 
+\addbibresource{references.bib}
 
 \begin{document}
 
@@ -173,7 +173,7 @@ sviluppate. Il lavoro svolto durante lo stage ha richiesto una costante
 collaborazione con il team, al fine di garantire che il backend fosse
 coerente con le esigenze progettuali e si integrasse senza problemi con il
 frontend
-\textit{[Qui aggiungeremo 10- 15 righe di riassunto del progetto: Zabbix, Python, API, Interacta].}
+% \textit{[Qui aggiungeremo 10- 15 righe di riassunto del progetto: Zabbix, Python, API, Interacta].}
 
 \clearpage
 \tableofcontents
@@ -214,15 +214,15 @@ Le principali aree di operatività dell'azienda includono:
 %https://en.wikipedia.org/wiki/Smart_city
 Nel contesto tecnologico delle Smart City, Secoval gestisce apparati tra cui telecamere per la videosorveglianza urbana (TVCC), Access Point (AP) per la connettività pubblica, switch industriali e gateway LTE per le aree non cablate. Essi fanno parte di reti distribuite sul territorio per l'erogazione di servizi diretti ai cittadini.
 
-%La vastità e la dispersione geografica di questa rete richiedono sistemi di monitoraggio solidi ereattivi. 
+%La vastità e la dispersione geografica di questa rete richiedono sistemi di monitoraggio solidi ereattivi.
 Il progetto svolto durante il tirocinio si inserisce direttamente in questo scenario operativo, con l'obiettivo di superare la gestione manuale implementando un'architettura automatizzata e centralizzata basata su Zabbix, in modo che si realizzi un sistema di monitoraggio solido per la rete di apparati di Secoval, abbastanza vasta e appena installata quindi instabile.
 Il lavoro ha previsto l'automazione del discovery e dell'assegnazione dei metadati degli apparati tramite fogli Excel, l'integrazione con i flussi di allarme nativi dei dispositivi periferici (come gli eventi ISAPI Hikvision) e la comunicazione sincrona e crittografata con la piattaforma cloud di ticketing aziendale Interacta per la gestione asincrona dei guasti da parte degli operatori.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\linewidth]{figures/ComuniConTelecamere.png}
-    \caption{Caption Example}
-    \label{fig:ComuniConTelecamere}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=1\linewidth]{figures/ComuniConTelecamere.png}
+%     \caption{Caption Example}
+%     \label{fig:ComuniConTelecamere}
+% \end{figure}
 
 
 % \begin{figure}[H]
@@ -262,7 +262,7 @@ Il lavoro ha previsto l'automazione del discovery e dell'assegnazione dei metada
 \section{Il progetto di stage}
 %\textit{[Descrizione ad alto livello del progetto: l'esigenza di monitorare TVCC, AP, Switch e LTE. Integrazione con script esterni per implementare funzionalità e per fare analisi dei dati. Integrazione con Interacta].}
 
-Il progetto di stage ha come obiettivo la progettazione e l'implementazione di un'architettura di monitoraggio centralizzata basata su Zabbix 7.0. Esso sarà destinato alla gestione di una delle infrastrutture di rete per Smart City che Secoval si trova a gestire. L'esigenza primaria è migliorare e superare i limiti dei sistemi di monitoraggio precedenti, come PRTG (Paessler Router Traffic Grapher), software proprietario con un sostanziale costo per la gestione di reti di certe dimensioni (1350,00€/month per 1000 devices \parencite{PaesslerPricing}) e con da un'elevata gestione manuale nella implementazione precedente al tirocinio.
+Il progetto di stage ha come obiettivo la progettazione e l'implementazione di un'architettura di monitoraggio centralizzata basata su Zabbix 7.0. Esso sarà destinato alla gestione di una delle infrastrutture di rete per Smart City che Secoval si trova a gestire. L'esigenza primaria è migliorare e superare i limiti dei sistemi di monitoraggio precedenti, come PRTG (Paessler Router Traffic Grapher), software proprietario con un sostanziale costo per la gestione di reti di certe dimensioni (1350,00€/month per 1000 devices \parencite{PaesslerPricing}) e con un'elevata gestione manuale nella implementazione precedente al tirocinio.
 
 L'infrastruttura monitorata è eterogenea e distribuita sul territorio. I dispositivi principali comprendono e si dividono in:
 \begin{itemize}
@@ -309,6 +309,12 @@ Il progetto formativo mira a trasformare l'infrastruttura di rete (videosorvegli
     \item Integrazione degli apparati (telecamere, switch, AP) con la Cartografia GIS per creare uno strumento di gestione georeferenziato(parzialmente raggiunto).
     \item Integrazione con la piattaforma cloud di ticketing aziendale Interacta, garantendo la sicurezza delle comunicazioni machine-to-machine.
 \end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{figures/ComuniConTelecamere.png}
+    \caption{Mappa relativa ai comuni che si avvalgono del sistema Smart City}
+    \label{fig:ComuniConTelecamere}
+\end{figure}
 
 
 
@@ -332,16 +338,16 @@ L'analisi del contesto applicativo e dei vincoli imposti dall'infrastruttura e d
 \end{itemize}
 
 \begin{figure}[H]
-    % Apre l'ambiente per l'immagine. [H] forza l'immagine a stare esattamente QUI (requires \usepackage{float}). 
+    % Apre l'ambiente per l'immagine. [H] forza l'immagine a stare esattamente QUI (requires \usepackage{float}).
     % In alternativa, usa [htbp] per lasciare che LaTeX trovi la posizione tipografica migliore (Here, Top, Bottom, Page).
     \centering
     % Centra l'immagine orizzontalmente nel foglio.
     \includegraphics[width=1\linewidth]{figures/SystemArchSchema-2026-06-28-074223.pdf}
     % \includegraphics è il comando "magico" fornito da graphicx.
     % [width=1\linewidth] dice a LaTeX di scalare l'immagine affinché sia larga esattamente quanto la larghezza del testo della pagina.
-    % Tra le graffe metti il percorso. 
+    % Tra le graffe metti il percorso.
     % TRUCCO PRO: Puoi anche omettere ".pdf" scrivendo solo {figures/SystemArchSchema...}, LaTeX troverà il file automaticamente!
-    %\caption{Architettura concettuale del sistema di monitoraggio Smart City e flussi di comunicazione.} 
+    %\caption{Architettura concettuale del sistema di monitoraggio Smart City e flussi di comunicazione.}
     \caption{Caption Example}
     % La didascalia che apparirà sotto l'immagine. Scrivi sempre una didascalia descrittiva in una tesi.
     \label{fig:SystemArchSchema}
@@ -387,13 +393,13 @@ L'analisi del contesto applicativo e dei vincoli imposti dall'infrastruttura e d
 \end{figure}
 %https://it.wikipedia.org/wiki/File:Ubuntu-logo-no-wordmark-2022.svg
 
-L' infrastruttura di monitoraggio è stata messa in produzione su una macchina virtuale con sistema operativo Ubuntu Server\parencite{UbuntuServer}. Il sistema operativomette a disposizione strumenti nativi utili per automatizzare il lavoro in background, rendendo il sitema più robusto e autonomo senza la necessità di appoggiarsi a software di terze parti.
+L' infrastruttura di monitoraggio è stata messa in produzione su una macchina virtuale con sistema operativo Ubuntu Server\parencite{UbuntuServer}. Il sistema operativo mette a disposizione strumenti nativi utili per automatizzare il lavoro in background, rendendo il sitema più robusto e autonomo senza la necessità di appoggiarsi a software di terze parti.
 
 Per orchestrare i flussi di dati e i vari script, il progetto ha sfruttato intensivamente tre componenti e tool di Ubuntu. Il primo è \textbf{Crontab}, lo schedulatore di Linux che permette di eseguire comandi a orari o intervalli prestabiliti. È stato utilizzato per gestire le operazioni periodiche. Ad esempio, la generazione e l'invio del report delle statistiche via email prima dell'inizio del turno aziendale.
 
 Il secondo strumento impiegato  è \textbf{Systemd}, ovvero il programma che gestisce i servizi del sistema operativo. Per garantire che lo script Python in ascolto sulle telecamere fosse sempre in funzione, è stato trasformato in un servizio di sistema (demone). Systemd lo avvia automaticamente all'accensione del server e lo riavvia in totale autonomia a seguito di eventuali errori imprevisti o cadute di rete o spegnimenti improvvisi.
 
-Infine, è stata affrontata la gestione dello spazio su disco. Un'sistema sempre attivo genera continuamente righe di log; tuttavia, se lasciati accumulare, questi file saturerebbero la memoria. Per prevenire questo rischio, è stato configurato \textbf{Logrotate}. Questa utility di sistema ogni settimana intercetta i file di log, li comprime per ridurne il peso e li archivia.
+Infine, è stata affrontata la gestione dello spazio su disco. Un'sistema sempre attivo genera continuamente righe di log; tuttavia, se lasciate accumulare, questi file saturerebbero la memoria. Per prevenire questo rischio, è stato configurato \textbf{Logrotate}. Questa utility di sistema ogni settimana intercetta i file di log, li comprime per ridurne il peso e li archivia.
 
 % Immagini e Tabelle:
 
@@ -437,8 +443,8 @@ Per questo progetto è stata adottata la versione 7.0 LTS (Long Term Support) \p
 Per facilitare la lettura e la comprensione di questo elaborato a personale non strettamente sistemistico,
 di seguito vengono definiti i termini tecnici principali, riguardo Zabbix, utilizzati nel progetto.
 
-% Unlike itemize (bullets) or enumerate (numbers), 
-%the description environment allows for custom, text-based labels for each 
+% Unlike itemize (bullets) or enumerate (numbers),
+%the description environment allows for custom, text-based labels for each
 \begin{description}
     % \item[Zabbix:] è una piattaforma software open-source per il monitoraggio proattivo
     %       di infrastrutture IT, reti, server, macchine virtuali e servizi cloud.
@@ -642,7 +648,7 @@ Nella VM a livello di sistema operativo, sono stati definiti contesti di esecuzi
 %             zapi.host.create(
 %                 host=hostname,
 %                 interfaces=[{
-%                     "type": 1, "main": 1, "useip": 1, 
+%                     "type": 1, "main": 1, "useip": 1,
 %                     "ip": ip, "dns": "", "port": "10050"
 %                 }],
 %                 groups=[{"groupid": group_id}],
@@ -956,29 +962,29 @@ from requests.auth import HTTPDigestAuth
 
 def listen_to_camera_stream(camera_ip, user, password, host_zabbix):
     url = f"http://{camera_ip}/ISAPI/Event/notification/alertStream"
-    
+
     try:
         # Apertura della connessione persistente (stream=True)
         response = requests.get(url, auth=HTTPDigestAuth(user, password), stream=True, timeout=60)
-        
+
         # Iterazione continua sui chunk di dati in arrivo
         for line in response.iter_lines():
             if line:
                 decoded_line = line.decode('utf-8')
-                
+
                 # Intercettazione dell'inizio di un blocco XML
                 if "<EventNotificationAlert" in decoded_line:
-                    # Logica di buffering (omessa per brevita') 
+                    # Logica di buffering (omessa per brevita')
                     # Parsing dell'XML ricevuto
                     root = ET.fromstring(xml_buffer)
                     event_type = root.find('.//eventType').text
                     event_state = root.find('.//eventState').text
-                    
+
                     # Se l'evento e' un Tampering o un Motion Detection
                     if event_type in ["videoloss", "tampering", "VMD"]:
                         # Traduzione per Zabbix: active=1, inactive=0
                         value = "1" if event_state == "active" else "0"
-                        
+
                         # Inoltro asincrono a Zabbix tramite Zabbix Sender
                         send_to_zabbix(host_zabbix, event_type, value)
 
@@ -1104,7 +1110,7 @@ from pyzabbix import ZabbixAPI
 
 # Inizializzazione connessione API
 zapi = ZabbixAPI("http://192.168.100.57/zabbix")
-# Autenticazione con token 
+# Autenticazione con token
 zapi.login(api_token='SECRET_API_TOKEN_FROM_ZABBIX')
 \end{lstlisting}
 
@@ -1202,7 +1208,7 @@ Al suo interno troviamo:
     missingok
     #don't rotate if logfile is 0 bytes
     notifempty
-    #create - permission - user ownership 
+    #create - permission - user ownership
     create 0644 administrator administrator
 }
 \end{lstlisting}
@@ -1283,7 +1289,7 @@ Essi interrogano tramite SNMP gli host, leggono le informazioni e le inseriscono
 Per l'esplorazione dei campi raggiungibili in SNMP ho usato questo strumento CLI:
 
 \begin{lstlisting}[language=bash, caption=Esempio di discovery manuale dei MIB via CLI]
-snmpwalk -v2c -c public 10.0.50.5 
+snmpwalk -v2c -c public 10.0.50.5
 \end{lstlisting}
 %corretto fino a qui
 
@@ -1369,7 +1375,7 @@ def generate_interacta_jwt(private_key_path, issuer_id, subject_id):
         )
 
     current_time = int(time.time())
-    
+
     # 2. Definizione del payload strutturato con i Claim obbligatori
     payload = {
         "iss": issuer_id,         # Issuer: identificativo di chi emette il token
@@ -1422,7 +1428,7 @@ import requests
 
 # Configurazione del file di log con percorsi assoluti
 LOG_FILE = "/usr/lib/zabbix/alertscripts/interactaCreateOrSolveTicket_log.log"
-logging.basicConfig(filename=LOG_FILE, level=logging.INFO, 
+logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 def main():
@@ -1431,17 +1437,17 @@ def main():
         trigger_status = sys.argv[1] # es. "PROBLEM" o "OK"
         event_id = sys.argv[2]       # es. "123456"
         host_name = sys.argv[3]      # es. "TVCC-ComuneA-01"
-        
+
         logging.info(f"Ricevuto evento {event_id} per host {host_name} con stato {trigger_status}")
-        
+
         # Generazione JWT (omessa)
         # jwt_token = generate_jwt(...)
-        
+
         if trigger_status == "PROBLEM":
             create_ticket(event_id, host_name, jwt_token)
         elif trigger_status == "OK":
             resolve_ticket(event_id, jwt_token)
-            
+
     except Exception as e:
         logging.error(f"Errore fatale durante l'esecuzione: {e}")
 
@@ -1547,20 +1553,20 @@ def calculate_mttr(csv_path):
     # Importazione del CSV e assegnazione degli header
     cols = ['EventID', 'Host', 'StartDate', 'StartTime', 'RecDate', 'RecTime']
     df = pd.read_csv(csv_path, sep=';', names=cols)
-    
+
     # Filtraggio: si considerano solo gli eventi effettivamente risolti
     df_resolved = df.dropna(subset=['RecDate', 'RecTime']).copy()
-    
+
     # Conversione delle stringhe in oggetti datetime
     df_resolved['Start_DT'] = pd.to_datetime(df_resolved['StartDate'] + ' ' + df_resolved['StartTime'])
     df_resolved['Rec_DT'] = pd.to_datetime(df_resolved['RecDate'] + ' ' + df_resolved['RecTime'])
-    
+
     # Calcolo del Resolution Time (differenza temporale convertita in ore)
     df_resolved['Resolution_Time_Hrs'] = (df_resolved['Rec_DT'] - df_resolved['Start_DT']).dt.total_seconds() / 3600
-    
+
     # Raggruppamento per Host e calcolo della media temporale (MTTR)
     mttr_by_host = df_resolved.groupby('Host')['Resolution_Time_Hrs'].mean().reset_index()
-    
+
     return mttr_by_host
 \end{lstlisting}
 
@@ -1603,23 +1609,23 @@ def send_kpi_report(html_content, recipient_email):
     smtp_server = "smtp.secoval.internal"
     smtp_port = 25
     sender_email = "zabbix-reports@secoval.it"
-    
+
     # Costruzione dell'oggetto MIME
     msg = MIMEMultipart('alternative')
     msg['Subject'] = "Report Giornaliero KPI Infrastruttura Smart City"
     msg['From'] = sender_email
     msg['To'] = recipient_email
-    
+
     # Inserimento del contenuto HTML generato da Pandas
     msg.attach(MIMEText(html_content, 'html'))
-    
+
     try:
         # Connessione al mail server e invio
         with smtplib.SMTP(smtp_server, smtp_port) as server:
             # server.starttls() # Se richiesto dal server aziendale
             server.sendmail(sender_email, recipient_email, msg.as_string())
             print(f"Report inviato con successo a {recipient_email}")
-            
+
     except smtplib.SMTPException as e:
         print(f"Errore fatale durante l'invio SMTP: {e}")
 \end{lstlisting}
@@ -1844,7 +1850,7 @@ i protocolli e i concetti architetturali utilizzati nel progetto.
     \item[GIS (Geographic Information System):] sistemi informatici (come QGIS)
           progettati per acquisire, memorizzare, analizzare e gestire dati georeferenziati.
           Nel caso di Zabbix permettono di visualizzare gli apparati guasti direttamente su una mappa cartografica.
-          % \item[Payload:] in informatica, è il "carico utile" di un pacchetto di dati. 
+          % \item[Payload:] in informatica, è il "carico utile" di un pacchetto di dati.
           % Quando lo script aggiorna Zabbix, il payload è il blocco di testo (solitamente in formato JSON)
           %  che contiene le vere e proprie informazioni da modificare (es. nome e coordinate dell'host).
 \end{description}

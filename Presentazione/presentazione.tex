@@ -1,0 +1,685 @@
+\documentclass[aspectratio=169]{beamer} 
+\usepackage{tabularx}
+
+\usetheme{metropolis} 
+\metroset{block=fill}
+\usecolortheme{default}
+\setbeamercolor{background canvas}{bg=white}
+\setbeamercolor{normal text}{bg=white}
+
+\title{Audio Source Separation}
+\subtitle{Dalle Tecniche Tradizionali al Deep Learning}
+\author{Andrea Bellu \and Brando Calderara}
+\institute{Università degli Studi di Brescia}
+\date{A.A. 2025/2026}
+
+\begin{document}
+
+% Slide 1: Titolo e Introduzione
+\begin{frame}
+    \titlepage
+    %\begin{center}
+    %    \textit{Progetto finale per il processamento dei cybermedia} [cite: 155]
+    %\end{center}
+    % [inserisci immagine qui: Logo dell'Università o un'immagine rappresentativa del Cocktail Party Problem ]
+\end{frame}
+
+% Slide 2
+\begin{frame}
+    \frametitle{Definizione del Problema e Obiettivi}
+
+    \textbf{L'Audio Source Separation}
+    \begin{itemize}
+        \item L'obiettivo è isolare specifici flussi sonori (sorgenti) a partire da un segnale misto (\textit{canzone}).
+        \item Si inquadra nel \textbf{Cocktail Party Problem}: la sfida di emulare la capacità dell'orecchio umano di discriminare un suono da altri.
+    \end{itemize}
+
+    \vspace{0.3cm}
+
+    \textbf{Scopo del Progetto}
+    \begin{itemize}
+        \item \textbf{Sperimentazione tradizionale}: implementazione della tecnica \textit{Harmonic-Percussive Separation} (\textbf{HPS}).
+        \item \textbf{Deep Learning}: analisi e test del modello \textbf{Demucs}.
+        \item \textbf{Valutazione}: confronto dei risultati e delle metriche di separazione.
+    \end{itemize}
+
+    \vspace{0.2cm}
+    % [inserisci immagine qui: Rappresentazione concettuale della separazione Mixture -> Stems, Figura 1 della relazione]
+
+\end{frame}
+
+% Slide 3
+\begin{frame}
+    \frametitle{Analisi in Frequenza: I Limiti}
+
+    \textbf{Discrete Fourier Transform (DFT):}
+    \begin{itemize}
+        \item Analizza le frequenze presenti.
+        \item \textbf{Problema:} perde il riferimento temporale.
+    \end{itemize}
+
+    \vspace{0.3cm}
+
+    \begin{block}{Principio di Indeterminazione}
+        Non è possibile conoscere con precisione assoluta e simultanea \textit{quando} avviene un evento sonoro e \textit{quale} frequenza lo compone.
+    \end{block}
+
+    \vspace{0.3cm}
+
+    \textbf{Soluzione Necessaria:}
+    \begin{itemize}
+        \item Serve una mappatura congiunta \textbf{Tempo-Frequenza}.
+    \end{itemize}
+
+    \vspace{0.5cm}
+
+\end{frame}
+
+% Slide 4
+\begin{frame}{Short-Time Fourier Transform (STFT)}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.5\textwidth}
+            \textbf{Come funziona:}
+            \begin{itemize}
+                \item \textbf{Framing}
+                \item \textbf{Windowing}
+                \item \textbf{Hop Size ($H$)}
+            \end{itemize}
+
+            \vspace{0.4cm}
+
+            \begin{block}{Lo Spettrogramma}
+                Matrice derivata dalla STFT. Rappresenta visivamente l'energia del segnale:
+                \begin{itemize}
+                    \item \textbf{Asse X:} Tempo
+                    \item \textbf{Asse Y:} Frequenza
+                    \item \textbf{Colore:} Intensità/Modulo
+                \end{itemize}
+            \end{block}
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+            \centering
+            % \includegraphics[width=\textwidth]{imgs/test_spectrograms_demucs.png}
+            %tagliare l'immagine e mettere la formula?
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+% Slide 5
+\begin{frame}
+    \frametitle{Metodi Statistici: Non-Negative Matrix Factorization (NMF)}
+    \begin{block}{Principio Matematico}
+        Si scompone lo spettrogramma originale $V$ nel prodotto di due matrici non negative: $V \approx W \cdot H$
+    \end{block}
+
+    \begin{itemize}
+        \item \textbf{Dictionary Matrix ($W$)}: contiene le basi spettrali o "firme" caratteristiche di ogni sorgente sonora.
+        \item \textbf{Activation Matrix ($H$)}: rappresenta l'inviluppo temporale, indicando l'istante di attivazione di ogni componente di $W$.
+    \end{itemize}
+
+    \vspace{0.3cm}
+
+    \textbf{Limiti dell'algoritmo}
+    \begin{itemize}
+        \item \textbf{Instabilità}: l'algoritmo è soggetto al problema dei minimi locali.
+        \item \textbf{Parametrizzazione}: il numero di sorgenti $K$ viene definito preventivamente.
+        \item \textbf{Sorgenti Astratte}: separazione matematica ma non \textit{semantica}.
+    \end{itemize}
+
+    %\begin{block}{Nota sull'implementazione}
+    %Sebbene l'NMF sia un pilastro storico, nei notebook \texttt{HPS.ipynb} e \texttt{Demucs.ipynb} abbiamo esplorato tecniche che superano la necessità di una scomposizione matriciale così rigida.
+    %\end{block}
+
+\end{frame}
+
+\section{L'Approccio Classico: Harmonic-Percussive Separation}
+% Slide 6
+\begin{frame}{L'Idea di Base e la Pipeline}
+
+    \textbf{L'Idea di Base:}
+    Scomporre il segnale in due componenti: \textbf{armonica} e \textbf{percussiva}.
+
+    \noindent
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} c c c c c c c @{}}
+        \textbf{1.} STFT & $\rightarrow$ & \textbf{2.} Filtri Mediani & $\rightarrow$ & \textbf{3.} Maschere & $\rightarrow$ & \textbf{4.} iSTFT
+    \end{tabular*}
+
+    \begin{center}
+        % \includegraphics[width=0.7\textwidth]{imgs/HPS.png}
+    \end{center}
+
+\end{frame}
+
+% Slide 7
+\begin{frame}{Mascheramento}
+    \begin{columns}[T]
+
+        \begin{column}{0.48\textwidth}
+            \textbf{Maschere Tempo-Frequenza:}
+            \begin{itemize}
+                \item \textbf{Binary:} Decisione netta (0 o 1).
+                \item \textbf{Soft:} Rapporto probabilistico tra le energie.
+            \end{itemize}
+
+            \vspace{0.3cm}
+
+            \textbf{Il ritorno al Tempo:}
+            \begin{itemize}
+                \item Applicazione alla STFT originale ($\mathcal{X}$).
+                \item \textbf{iSTFT} per ottenere l'audio finale.
+            \end{itemize}
+
+            \vspace{0.3cm}
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+
+            \begin{block}{Binary Masking (es. Armonica)}
+                \footnotesize
+                \begin{equation*}
+                    M_h(n, k) =
+                    \begin{cases}
+                        1, & \text{se } \tilde{\mathcal{Y}}^h(n, k) \ge \tilde{\mathcal{Y}}^p(n, k) \\
+                        0, & \text{altrimenti}
+                    \end{cases}
+                \end{equation*}
+            \end{block}
+
+            \vspace{0.2cm}
+
+            \begin{block}{Soft Masking (es. Armonica)}
+                \footnotesize
+                \begin{equation*}
+                    M_h(n, k) = \frac{\tilde{\mathcal{Y}}^h(n,k) + \frac{\epsilon}{2}}{\tilde{\mathcal{Y}}^h(n,k) + \tilde{\mathcal{Y}}^p(n,k) + \epsilon}
+                \end{equation*}
+            \end{block}
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+% Slide 8
+\begin{frame}{I Limiti Strutturali dell'HPS}
+    \begin{columns}[c]
+
+        \begin{column}{0.4\textwidth}
+            \large
+            \begin{itemize}
+                \item \textbf{Fase Imprecisa:} il mascheramento agisce solo sul modulo. Riutilizzare la fase originale nella iSTFT genera gravi artefatti (\textit{"suono metallico"}).
+                      \vspace{0.4cm}
+                \item \textbf{Semantica Assente:} l'algoritmo fatica a separare strumenti complessi.
+            \end{itemize}
+        \end{column}
+
+        \begin{column}{0.6\textwidth}
+            \vspace{0.5cm}
+            \centering
+            % \includegraphics[width=1.0\textwidth]{imgs/hps_spectrograms.png}
+        \end{column}
+
+    \end{columns}
+\end{frame}
+
+\section{L'avvento del Deep Learning: Demucs}
+
+% Slide 9
+\begin{frame}{Deep Learning}
+    \begin{columns}[c]
+
+        \begin{column}{0.4\textwidth}
+            \large
+            \textbf{Apprendimento automatico}
+            \begin{itemize}
+                \item Il Deep Learning permette di apprendere le caratteristiche dei dati tramite strati (\textit{layers}) gerarchici.
+                \item L'unità fondamentale è il \textbf{neurone artificiale}.
+            \end{itemize}
+        \end{column}
+
+        \begin{column}{0.6\textwidth}
+            \vspace{0.5cm}
+            \centering
+            % \includegraphics[width=1.0\textwidth]{imgs/neuron.png}
+        \end{column}
+
+    \end{columns}
+
+
+\end{frame}
+
+% Slide 10
+\begin{frame}{CNN}
+    %\vspace{0.2cm}
+
+    \textbf{Convolutional Neural Networks}
+    \begin{itemize}
+        \item \textbf{Layer Convoluzionale}: estrazione di caratteristiche locali,  \textit{feature map}, tramite lo scorrimento di un \textit{kernel}.
+        \item \textbf{Layer di Attivazione}: introduzione della non linearità:  \textbf{ReLU} ($f(x) = \max(0, x)$)
+        \item \textbf{Layer di Pooling}: riduzione delle dimensioni spaziali (es. \textit{Max Pooling}) e invarianza spaziale.
+    \end{itemize}
+
+    \vspace{0.2cm}
+
+    \textbf{Il problema della profondità}
+
+    Reti molto profonde rischiano la perdita di dettagli spaziali. Soluzione: \textbf{residual block}, in cui l’input originale aggira i layer convoluzionali
+    e va a sommarsi direttamente al loro output.
+
+
+    \vspace{0.2cm}
+    % [inserisci immagine qui: Rappresentazione di un neurone artificiale o schema di un layer convoluzionale - Figura 4 o 5 della relazione]
+
+\end{frame}
+
+% Slide 11
+\begin{frame}{L'Architettura U-Net}
+
+    \textbf{Caratteristiche Fondamentali}
+    \begin{itemize}
+        \item Progettata per produrre un output con \textbf{dimensioni identiche all'input}.
+        \item Particolarmente adatta alla separazione audio. Mantiene la durata temporale.
+    \end{itemize}
+
+    \begin{figure}
+        \centering
+        % \includegraphics[width=0.5\linewidth]{imgs/u-net.png}
+    \end{figure}
+
+    %\vspace{0.2cm}
+    %\begin{block}{Riferimento Implementativo}
+    %L'architettura U-Net costituisce la base %logica del modello \textbf{Demucs}, le cui %fasi di caricamento e inferenza sono %documentate nel file \texttt{Demucs.ipynb}.
+    %\end{block}
+
+
+    % [inserisci immagine qui: Figura 4 o 5 della relazione - Architettura U-Net]
+
+\end{frame}
+
+% Slide 12
+\begin{frame}
+    \frametitle{Il Modello Demucs}
+
+    Il modello \textbf{Demucs} adatta la potenza delle reti U-Net all'elaborazione sonora.
+    %    \item Supera l'approccio classico che tratta lo spettrogramma come una semplice immagine
+    %\end{itemize}
+
+    \vspace{0.3cm}
+
+    %\textbf{Il Limite degli Spettrogrammi}
+    %\begin{itemize}
+    %    \item L'uso esclusivo del modulo dello spettrogramma comporta la perdita dell'informazione sulla \textbf{fase}. Spesso la ricostruzione del segnale acquisisce artefatti udibili e "suoni metallici".
+    %\end{itemize}
+
+    \vspace{0.3cm}
+
+    \textbf{L'Innovazione: Dominio del Tempo}
+    \begin{itemize}
+        \item Demucs opera direttamente sulla \textbf{waveform grezza} (forma d'onda nel dominio del tempo).
+        \item Questo permette di preservare e impiegare le informazioni di fase per una ricostruzione più naturale e fedele.
+    \end{itemize}
+
+    \vspace{0.3cm}
+
+    %\begin{block}{Implementazione Sperimentale}
+    %L'efficacia di questo approccio è testata nel file \texttt{Demucs.ipynb}e confrontata qualitativamente con i metodi tradizionali in \texttt{SpectrogramComparison.ipynb}
+    %\end{block}
+
+    \vspace{0.2cm}
+    % [inserisci immagine qui: Rappresentazione di una Waveform grezza vs Spettrogramma]
+
+\end{frame}
+
+% Slide 13
+\begin{frame}{Demucs: convoluzioni 1D}
+
+    \begin{columns}[c]
+        \begin{column}{0.4\textwidth}
+            \begin{itemize}
+                \item I segnali audio sono monodimensionali. Demucs utilizza \textbf{kernel 1D} (vettori di lunghezza $K$) che scorrono lungo l'asse del tempo per individuare pattern temporali e frequenziali.
+                      %\item L'encoder riduce la dimensionalità temporale tramite convoluzioni con \textit{stride} pari a 4, utilizzando attivazioni \textbf{GLU} (\textit{Gated Linear Units}) per decisioni dinamiche sulle feature.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.6\textwidth}
+            \vspace{0.5cm}
+            %\centering
+            % \includegraphics[width=1.0\textwidth]{imgs/kernel.png}
+        \end{column}
+    \end{columns}
+
+\end{frame}
+
+% Slide 14
+\begin{frame}{Architettura}
+    %\textbf{Convoluzioni 1D e Dominio Temporale}
+
+
+    \textbf{Cosa cambia rispetto alle U-Net}
+    \vspace{0.2cm}
+    \begin{itemize}
+        \item \textbf{Encoder:} il \textit{max pooling} viene sostituito da convoluzioni 1D. La funzione ReLu viene sostituita con attivazioni \textbf{GLU (Gated Linear Unit)} che attuano una decisione dinamica.
+        \item \textbf{BiLSTM (Bidirectional
+                  Long Short-Term Memory)}: Fornisce al modello una "memoria"(layer BiLSTM), analizzando il brano in entrambe le direzioni per catturare dipendenze e contesto globale (ritmo e melodia).
+        \item \textbf{Decoder e Output}: Tramite convoluzioni 1D trasposte e \textit{skip connections}, in fase ascendente, la rete si dirama per generare simultaneamente 4 sorgenti: \textit{Vocals, Bass, Drums, Other}.
+    \end{itemize}
+
+    %\begin{block}{Riferimento al Codice (\texttt{Demucs.ipynb})} L'implementazione sfrutta l'interfaccia \texttt{demucs.api.Separator} per gestire questa complessa architettura in un'unica operazione di inferenza, restituendo il dizionario delle sorgenti isolate.
+    %\end{block}
+
+    %\vspace{0.2cm}
+    % [inserisci immagine qui: Figura 6 della relazione - Confronto Convoluzione 2D vs 1D]
+\end{frame}
+%vuoi mettere evoluzione di demucs?
+
+\section{Laboratorio Sperimentale}
+
+% Slide 15
+\begin{frame}
+    \frametitle{Setup e Metodologia}
+
+    \textbf{Obiettivo del Laboratorio}
+    \begin{itemize}
+        \item Validazione e confronto tra l'approccio statistico tradizionale (\textbf{HPS}) e quello più moderno del Deep Learning (\textbf{Demucs}).
+        \item Analisi della robustezza degli algoritmi su tracce audio reali in diverse condizioni di pulizia del segnale.
+    \end{itemize}
+
+    \vspace{0.3cm}
+
+    \textbf{Dataset MUSDB18}
+    \begin{itemize}
+        \item Utilizzo della libreria \texttt{musdb} per il caricamento di brani in formato non compresso, \emph{wav}.
+        \item Definizione del \textbf{Ground Truth}: sempre la stessa libreira fornisce gli stems originali isolati per il calcolo delle metriche di errore (implementato in \texttt{SpectrogramComparison.ipynb}).
+    \end{itemize}
+
+    %\vspace{0.2cm}
+    % [inserisci immagine qui: Schema del setup sperimentale o loghi delle librerie Python utilizzate]
+
+\end{frame}
+
+% Slide 16
+\begin{frame}{Stack tecnologico}
+    L'ambiente di sviluppo e testing è stato interamente realizzato in Python, strutturando lo stack tecnologico nelle seguenti macro-aree:
+    \begin{itemize}
+        \item \textbf{Calcolo Scientifico:} \texttt{numpy} e \texttt{scipy} per la manipolazione matriciale e il filtraggio matematico.
+        \item \textbf{Elaborazione Audio e Dataset:} \texttt{librosa} e \texttt{soundfile} per il calcolo delle trasformate (STFT/iSTFT) e l'I/O audio. Abbiamo usato la libreria \texttt{musdb} per accedere al dataset MUSDB18.
+        \item \textbf{Deep Learning:} \texttt{demucs} per sfruttare il modello.
+        \item \textbf{Visualizzazione:} \texttt{matplotlib} e \texttt{IPython} per il rendering degli spettrogrammi e il playback durante l'analisi.
+        \item \textbf{Valutazione:} abbiamo usato la libreria \texttt{mir\_eval} per la valutazione oggettiva della qualità delle tracce.
+    \end{itemize}
+\end{frame}
+
+% Slide 17
+\begin{frame}
+    \frametitle{Implementazione: HPS}
+    %L'approccio alla realizzazione dell'algoritmo HPS è stato prettamente manuale, non appoggiandosi alla libreira \texttt{librosa}, per stimolare la comprensione di ogni passaggio.
+    \begin{columns}
+        \column{0.5\textwidth}
+
+        %\textbf{Pipeline "Manuale"}
+        \begin{itemize}
+            \item \textbf{STFT}: Mappatura nel dominio tempo-frequenza con parametri fissi ($n_{fft}=2048$, $hop=512$).
+            \item \textbf{Filtering}: Applicazione dei filtri mediani direzionali, finestra $L_h=31$. Un filtro orizzontale isola le linee armoniche continue
+                  ($Y_h$), mentre un filtro verticale estrae gli impulsi percussivi ($Y_p$).
+            \item \textbf{iSTFT}: Sintesi finale del segnale nel dominio del tempo.
+        \end{itemize}
+
+        \column{0.5\textwidth}
+        \textbf{Code Snippet}
+        \begin{block}{Estratti da \texttt{HPS.ipynb}}
+            \tiny
+            \begin{itemize}
+                \item[] \texttt{X = librosa.stft(x, n\_fft=2048, hop\_length=512)}
+                \item[] \texttt{Y = np.abs(X)**2}
+                      \vspace{0.2cm}
+                \item[] \texttt{\# Filtraggio ($L_h=31, L_p=31$)}
+                \item[] \texttt{Y\_h = median\_filter(Y, size=(1, 31))}
+                \item[] \texttt{Y\_p = median\_filter(Y, size=(31, 1))}
+                      \vspace{0.2cm}
+                \item[] \texttt{\# Ricostruzione}
+                \item[] \texttt{x\_h = librosa.istft(X\_h)}
+            \end{itemize}
+        \end{block}
+    \end{columns}
+
+    %\vspace{0.4cm}
+    % [inserisci immagine qui: Rappresentazione del flusso di lavoro nel notebook HPS.ipynb]
+
+\end{frame}
+
+% Slide 18
+\begin{frame}{Implementazione in Python: Demucs}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.48\textwidth}
+            \textbf{Il Flusso di Lavoro:}
+            \begin{itemize}
+                \item \textbf{1. Acquisizione:} conversione da matrice a tensore \texttt{PyTorch}. Controllo dimensionale e forzatura del formato stereo.
+                      \vspace{0.3cm}
+                \item \textbf{2. Inferenza:} passaggio all'API \texttt{Separator}. Il modello elabora la waveform ed estrae simultaneamente \textit{vocals, bass, drums, other}.
+                      \vspace{0.3cm}
+                \item \textbf{3. Export:} i tensori di output vengono riconvertiti in array \texttt{NumPy} e salvati come \texttt{.wav}.
+            \end{itemize}
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+            \vspace{1.5cm}
+            \begin{block}{Core Snippet (\texttt{Demucs.ipynb})}
+                \tiny
+                \texttt{\# 1. Preparazione del Tensore Stereo}\\
+                \texttt{wav\_tensor = torch.tensor(audio).T.float()}\\
+                \texttt{if wav\_tensor.ndim == 1:}\\
+                \texttt{\quad wav\_tensor = wav\_tensor.unsqueeze(0).repeat(2, 1)}\\
+                \vspace{0.3cm}
+                \texttt{\# 2. Passaggio all'API}\\
+                \texttt{\_, separated = separator.separate\_tensor(}\\
+                \texttt{\quad wav\_tensor, sr)}\\
+                \vspace{0.3cm}
+                \texttt{\# 3. Post-processing ed Export}\\
+                \texttt{vocals = separated['vocals'].cpu().numpy()}\\
+                \texttt{sf.write("vocals.wav", vocals.T, sr)}
+            \end{block}
+
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+% Slide 19
+\begin{frame}
+    \frametitle{Valutazione Visiva e Uditiva}
+
+    \textbf{Analisi visiva qualitativa Tempo-Frequenza}
+    \begin{itemize}
+        \item Attraverso il confronto degli spettrogrammi, è possibile identificare visivamente l'efficacia della separazione operata dai due modelli.
+        \item Si possono suddividere le imperfezioni nella separazione in: \textbf{Leakage (Sbavature)} e \textbf{Artifacts (Buchi)}.
+              %\item \textbf{Leakage (Sbavature)}: Residui di energia di una sorgente che "sconfinano" in un'altra traccia isolata.
+              %\item \textbf{Artifacts (Buchi)}: Zone in cui l'algoritmo ha rimosso erroneamente energia spettrale, causando suoni "vuoti" o metallici.
+    \end{itemize}
+
+    \vspace{0.2cm}
+
+    %\begin{columns}
+    %\column{0.45\textwidth}
+    %\begin{block}{Strumenti di Visualizzazione}
+    %\tiny
+    %Nel notebook %\texttt{SpectrogramComparison.ipynb}, la visualizzazione è realizzata convertendo le ampiezze in decibel (\texttt{amplitude\_to\_db}) e mappandole con \texttt{librosa.display.specshow}.
+    %\end{block}
+
+    %\column{0.55\textwidth}
+    %\centering
+    % [inserisci immagine qui: Figura generata in SpectrogramComparison.ipynb con gli spettrogrammi affiancati: Originale, HPS, Demucs]
+    %\end{columns}
+
+    \vspace{0.2cm}
+
+    \textbf{Osservazioni sui risultati}
+    \begin{itemize}
+        \item come è chiaro anche ad un primo ascolto, \textbf{HPS} tende a smembrare strumenti complessi, inserendo l'attacco percussivo in una traccia e la coda armonica nell'altra causa la mancanza di comprensione semantica (voce, chitarra...)
+        \item grazie al bottleneck con memoria (\texttt{BiLSTM}), \textbf{Demucs} preserva meglio la struttura globale del brano e riduce i buchi spettrali.
+    \end{itemize}
+
+\end{frame}
+
+% Slide 20
+\begin{frame}{Valutazione Oggettiva: BSS Eval}
+
+    \begin{columns}[c]
+
+        \begin{column}{0.5\textwidth}
+            \textbf{Il Framework Matematico:}
+            \begin{itemize}
+                \item Confronto imparziale tra le stime dei modelli e il \textbf{Ground Truth} (dataset MUSDB18).
+                \item Metriche estratte: \textbf{SDR}, \textbf{SIR}, \textbf{SAR}.
+            \end{itemize}
+
+            \vspace{0.4cm}
+
+            \begin{block}{Implementazione (\texttt{mir\_eval})}
+                \footnotesize
+                \texttt{sdr, sir, sar, perm = \\
+                    mir\_eval.separation.bss\_eval\_sources( \\
+                    \quad reference\_sources, estimated\_sources)}
+            \end{block}
+        \end{column}
+
+        \begin{column}{0.52\textwidth}
+            \centering
+
+            \textbf{Risultati Sperimentali}
+            \vspace{0.4cm}
+
+            \begin{tabular}{lcc}
+                \hline
+                \textbf{Metrica}  & \textbf{HPS}   & \textbf{Demucs} \\
+                \hline
+                \textbf{SDR (dB)} & \textit{-4.05} & \textit{7.05}   \\
+                \textbf{SIR (dB)} & \textit{1.35}  & \textit{14.98}  \\
+                \textbf{SAR (dB)} & \textit{-0.18} & \textit{7.95}   \\
+                \hline
+            \end{tabular}
+
+            \vspace{0.5cm}
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+
+\begin{frame}{Test di Robustezza: Addizione del Rumore}
+
+    \textbf{Stress Test:}
+    \begin{itemize}
+        \item \textbf{Il Problema:} Le valutazioni su audio da studio non riflettono la realtà (es. registrazioni live sporche).
+        \item \textbf{Metodo:} Iniezione di \textbf{Rumore Bianco Gaussiano} con un Rapporto Segnale-Rumore (SNR).
+    \end{itemize}
+
+    \vspace{0.4cm}
+
+    \begin{alertblock}{Le nostre ipotesi}
+        \small
+        \textbf{HPS:} essendo puramente geometrico, i filtri mediani verranno "accecati" dal rumore. Ci aspettiamo un risultato impreciso e "metallico".\\
+        \vspace{0.1cm}
+        \textbf{Demucs:} la rete, avendo appreso pattern semantici durante il training, dovrebbe agire da \textit{denoiser} e non avere troppi problemi nella separazione.
+    \end{alertblock}
+
+\end{frame}
+
+\begin{frame}{Risultati Ottenuti}
+    \begin{columns}[c]
+        \begin{column}{0.5\textwidth}
+            \begin{itemize}
+                \item \textbf{HPS:} il risultato pessimo di \textbf{SDR} conferma che l'algoritmo non è più in grado di distinguere l'energia del segnale da quella del rumore maschera.
+                      \vspace{0.3cm}
+                \item \textbf{Demucs:} mantiene prestazioni accettabili. La U-Net scarta la perturbazione ricostruendo le frequenze armoniche in modo coerente.
+            \end{itemize}
+        \end{column}
+
+        \begin{column}{0.52\textwidth}
+            \centering
+
+            \textbf{Risultati Sperimentali (traccia percussiva e batteria)}
+            \vspace{0.4cm}
+
+            \begin{tabular}{lcc}
+                \hline
+                \textbf{Metrica}  & \textbf{HPS}   & \textbf{Demucs} \\
+                \hline
+                \textbf{SDR (dB)} & \textit{-7.36} & \textit{5.56}   \\
+                \textbf{SIR (dB)} & \textit{0.91}  & \textit{16.28}  \\
+                \textbf{SAR (dB)} & \textit{-4.08} & \textit{6.05}   \\
+                \hline
+            \end{tabular}
+
+            \vspace{0.5cm}
+
+        \end{column}
+
+    \end{columns}
+\end{frame}
+
+%snr_target = 5
+%audio_noisy = add_white_noise(audio, snr_target)
+%Risultati Voce     -> SDR: 10.75 dB, SIR: 16.07 dB, SAR: 12.37 dB
+%Risultati Batteria -> SDR: 5.56 dB, SIR: 16.28 dB, SAR: 6.05 dB
+%Risultati Altro -> SDR: -4.02 dB, SIR: 4.31 dB, SAR: -1.96 dB
+%Risultati Basso -> SDR: 9.41 dB, SIR: 14.14 dB, SAR: 11.35 dB
+%Risultati PercussiveHPS -> SDR: -7.36 dB, SIR: 0.91 dB, SAR: -4.08 dB%
+
+
+
+
+% Slide 21
+\begin{frame}{Considerazioni}
+    Dopo aver realizzato e utilizzato i due modelli siamo giunti alle seguenti conclusioni:
+
+    \begin{columns}[T]
+
+        \begin{column}{0.5\textwidth}
+            \begin{alertblock}{HPS}
+                \small
+                \begin{itemize}
+                    \item \textbf{Pro:} leggero, veloce e deterministico (zero training).
+                    \item \textbf{Contro:} assenza di divisione semantica.
+                    \item \textbf{Sotto Stress:} i filtri geometrici non riescono a reggere il rumore.
+                \end{itemize}
+            \end{alertblock}
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+            \begin{exampleblock}{Demucs}
+                \small
+                \begin{itemize}
+                    \item \textbf{Pro:} alta qualità.
+                    \item \textbf{Contro:} architettura "pesante" e computazionalmente esosa.
+                    \item \textbf{Sotto Stress:} la rete agisce da \textit{denoiser} garantendo una separazione accettabile delle tracce.
+                \end{itemize}
+            \end{exampleblock}
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}[plain]
+    \centering
+    \vspace{1cm}
+
+    {\Large \textbf{Grazie per l'attenzione}}
+
+    \vspace{0.5cm}
+    \rule{0.5\textwidth}{1pt}
+    \vspace{0.5cm}
+
+    {\large Progetto di Audio Source Separation}
+
+\end{frame}
+
+\end{document}
