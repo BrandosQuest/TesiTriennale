@@ -15,39 +15,46 @@
 \contentsline {section}{\numberline {2.4}Interacta e JSON Web Token (JWT)}{14}{section.2.4}%
 \contentsline {chapter}{\numberline {3}Architettura e configurazione}{16}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Setup della macchina virtuale Ubuntu e gestione dei dati}{16}{section.3.1}%
-\contentsline {section}{\numberline {3.2}I fogli di calcolo aziendali (Excel) come Source of Truth}{16}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Organizzazione gerarchica in Host Groups degli host e i codici comunali}{18}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Integrazione GIS: Estrazione coordinate tramite Excel e visualizzazione in Zabbix}{19}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Implementazione: Controlli Attivi ed Eventi TVCC}{22}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Logiche di Polling vs Trapping in Zabbix}{22}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Sviluppo del Middleware e Ascolto degli Stream Hikvision ISAPI}{24}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Inoltro asincrono tramite Zabbix Sender}{27}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Definizione di Trigger e Discovery Actions OPPURE MEGLIO Configurazione Pratica di Trigger e Actions per gli Eventi TVCC}{28}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Automazione dell'assegnazione dei metadati degli host - Inventory}{30}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Il problema}{30}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Implementazione dell'aggiornamento degli host}{30}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Associazione host name e IDpalo}{31}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}Associazione coordinate, indirizzo e tecnologia}{31}{subsection.5.2.2}%
-\contentsline {subsection}{\numberline {5.2.3}Memorizzazione dei messaggi di log}{32}{subsection.5.2.3}%
-\contentsline {chapter}{\numberline {6}Estrazione Dati Host tramite Template Zabbix}{33}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Acquisizione informazioni sugli host}{33}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Configurazione dell'host Inventory}{33}{section.6.2}%
-\contentsline {section}{\numberline {6.3}Template telecamere Hikvision}{34}{section.6.3}%
-\contentsline {section}{\numberline {6.4}Apparati standard (switch, access point, LTE)}{34}{section.6.4}%
-\contentsline {chapter}{\numberline {7}Integrazione con il Sistema di Ticketing Interacta}{36}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Sicurezza e Autenticazione Server-to-Server}{36}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Generazione e firma del token JWT (Algoritmo RS512)}{38}{section.7.2}%
-\contentsline {section}{\numberline {7.3}Sviluppo del Custom AlertScript in Zabbix}{40}{section.7.3}%
-\contentsline {chapter}{\numberline {8}Analisi Dati, KPI e Manutenzione di Sistema}{42}{chapter.8}%
-\contentsline {section}{\numberline {8.1}Esportazione degli eventi in formato strutturato (CSV)}{42}{section.8.1}%
-\contentsline {section}{\numberline {8.2}Sviluppo del motore Python per il calcolo dei KPI}{44}{section.8.2}%
-\contentsline {section}{\numberline {8.3}Automazione reportistica tramite Crontab e SMTP}{45}{section.8.3}%
-\contentsline {section}{\numberline {8.4}Gestione dei log e manutenzione (Logrotate)}{47}{section.8.4}%
-\contentsline {chapter}{\numberline {9}Conclusioni}{50}{chapter.9}%
-\contentsline {section}{\numberline {9.1}Raggiungimento degli Obiettivi}{50}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Limiti del sistema e Sviluppi Futuri}{51}{section.9.2}%
-\contentsline {section}{\numberline {9.3}Valutazione Personale}{52}{section.9.3}%
-\contentsline {chapter}{Glossario}{54}{section.9.3}%
-\contentsline {section}{\numberline {9.4}Terminologia}{54}{section.9.4}%
-\contentsline {chapter}{Bibliografia}{64}{section.9.4}%
-\contentsline {chapter}{Ringraziamenti}{65}{chapter*.47}%
+\contentsline {section}{\numberline {3.2}Zabbix nella funzione di monitoraggio della smart city}{16}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Architettura generale dell'infrastruttura}{16}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}L'autodiscovery degli host da parte di Zabbix}{17}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}I fogli di calcolo aziendali (Excel) come Source of Truth}{18}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Implementazione dell'aggiornamento degli \\host}{19}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Associazione host name e IDpalo}{19}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Associazione coordinate, indirizzo e tecnologia}{20}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Memorizzazione dei messaggi di log}{20}{subsection.3.4.3}%
+\contentsline {section}{\numberline {3.5}Georeferenziazione e integrazione GIS integrato in Zabbix}{21}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Integrazione GIS: Estrazione coordinate tramite Excel e visualizzazione in Zabbix}{21}{section.3.6}%
+\contentsline {chapter}{\numberline {4}Implementazione: Controlli Attivi ed Eventi TVCC}{24}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Logiche di Polling vs Trapping in Zabbix}{24}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Sviluppo del Middleware e Ascolto degli Stream Hikvision ISAPI}{26}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Inoltro asincrono tramite Zabbix Sender}{29}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Definizione di Trigger e Discovery Actions OPPURE MEGLIO Configurazione Pratica di Trigger e Actions per gli Eventi TVCC}{30}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Automazione dell'assegnazione dei metadati degli host - Inventory}{32}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Il problema}{32}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Implementazione dell'aggiornamento degli host}{32}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Associazione host name e IDpalo}{33}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Associazione coordinate, indirizzo e tecnologia}{33}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Memorizzazione dei messaggi di log}{34}{subsection.5.2.3}%
+\contentsline {chapter}{\numberline {6}Estrazione Dati Host tramite Template Zabbix}{35}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Acquisizione informazioni sugli host}{35}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Configurazione dell'host Inventory}{35}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Template telecamere Hikvision}{36}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Apparati standard (switch, access point, LTE)}{36}{section.6.4}%
+\contentsline {chapter}{\numberline {7}Integrazione con il Sistema di Ticketing Interacta}{38}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Sicurezza e Autenticazione Server-to-Server}{38}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Generazione e firma del token JWT (Algoritmo RS512)}{40}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Sviluppo del Custom AlertScript in Zabbix}{42}{section.7.3}%
+\contentsline {chapter}{\numberline {8}Analisi Dati, KPI e Manutenzione di Sistema}{44}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Esportazione degli eventi in formato strutturato (CSV)}{44}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Sviluppo del motore Python per il calcolo dei KPI}{46}{section.8.2}%
+\contentsline {section}{\numberline {8.3}Automazione reportistica tramite Crontab e SMTP}{47}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Gestione dei log e manutenzione (Logrotate)}{49}{section.8.4}%
+\contentsline {chapter}{\numberline {9}Conclusioni}{52}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Raggiungimento degli Obiettivi}{52}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Limiti del sistema e Sviluppi Futuri}{53}{section.9.2}%
+\contentsline {section}{\numberline {9.3}Valutazione Personale}{54}{section.9.3}%
+\contentsline {chapter}{Glossario}{56}{section.9.3}%
+\contentsline {section}{\numberline {9.4}Terminologia}{56}{section.9.4}%
+\contentsline {chapter}{Bibliografia}{66}{section.9.4}%
+\contentsline {chapter}{Ringraziamenti}{67}{chapter*.43}%

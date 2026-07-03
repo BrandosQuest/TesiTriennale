@@ -113,7 +113,7 @@
 %         %\textsl{\Large{Tesi di Laurea Triennale}}\\
 %         \Large{\textbf{Relazione Finale}}\\
 %         \vspace{10mm}
-%         \Huge{\textbf{MONITORAGGIO, MANUTENZIONE E SICUREZZA PER SMART CITY: DALLA GESTIONE MANUALE AD UN'ARCHITETTURA AUTOMATIZZATA BASATA SU ZABBIX}}\\%Monitoraggio, manutenzione e sicurezza per smart city: dalla gestione manuale ad un'architettura automatizzata basata su Zabbix}}\\
+%         \Huge{\textbf{MONITORAGGIO, MANUTENZIONE E SICUREZZA PER smart city: DALLA GESTIONE MANUALE AD UN'ARCHITETTURA AUTOMATIZZATA BASATA SU ZABBIX}}\\%Monitoraggio, manutenzione e sicurezza per smart city: dalla gestione manuale ad un'architettura automatizzata basata su Zabbix}}\\
 %         %\vspace{5mm}
 %         %\Large{\textit{Integrazioni Crittografiche e Caso di Studio presso Secoval srl}}
 
@@ -145,7 +145,7 @@
 % ====================================================================
 \chapter*{Sommario}
 \addcontentsline{toc}{chapter}{Sommario}
-Il presente documento descrive il lavoro svolto durante il periodo di stage curricolare,  della durata di circa duecentoventicinque ore, dal laureando Brando Calderara presso l'azienda Secoval Srl. Il progetto ha avuto come obiettivo principale la realizzazione di un sistema di monitoraggio centralizzato e automatizzato per le infrastrutture Smart City del territorio, superando i limiti dei precedenti sistemi manuali e statici.
+Il presente documento descrive il lavoro svolto durante il periodo di stage curricolare,  della durata di circa duecentoventicinque ore, dal laureando Brando Calderara presso l'azienda Secoval Srl. Il progetto ha avuto come obiettivo principale la realizzazione di un sistema di monitoraggio centralizzato e automatizzato per le infrastrutture smart city del territorio, superando i limiti dei precedenti sistemi manuali e statici.
 Lo scopo è stato sviluppare e integrare un sistema di monitoraggio basato su Zabbix...
 
 Il progetto di stage ha avuto
@@ -212,7 +212,7 @@ Le principali aree di operatività dell'azienda includono:
 %ADD smart city definitions: https://ec.europa.eu/programmes/erasmus-plus/project-result-content/b3c8cbaf-a161-4a99-aaa0-b46a21b1135f/SMACC_Definitions_of_a_Smart_City.pdf
 %https://www.ibm.com/think/topics/smart-city
 %https://en.wikipedia.org/wiki/Smart_city
-Nel contesto tecnologico delle Smart City, Secoval gestisce apparati tra cui telecamere per la videosorveglianza urbana (TVCC), Access Point (AP) per la connettività pubblica, switch industriali e gateway LTE per le aree non cablate. Essi fanno parte di reti distribuite sul territorio per l'erogazione di servizi diretti ai cittadini.
+Nel contesto tecnologico delle smart city, Secoval gestisce apparati tra cui telecamere per la videosorveglianza urbana (TVCC), Access Point (AP) per la connettività pubblica, switch industriali e gateway LTE per le aree non cablate. Essi fanno parte di reti distribuite sul territorio per l'erogazione di servizi diretti ai cittadini.
 
 %La vastità e la dispersione geografica di questa rete richiedono sistemi di monitoraggio solidi ereattivi.
 Il progetto svolto durante il tirocinio si inserisce direttamente in questo scenario operativo, con l'obiettivo di superare la gestione manuale implementando un'architettura automatizzata e centralizzata basata su Zabbix, in modo che si realizzi un sistema di monitoraggio solido per la rete di apparati di Secoval, abbastanza vasta e appena installata quindi instabile.
@@ -262,7 +262,7 @@ Il lavoro ha previsto l'automazione del discovery e dell'assegnazione dei metada
 \section{Il progetto di stage}
 %\textit{[Descrizione ad alto livello del progetto: l'esigenza di monitorare TVCC, AP, Switch e LTE. Integrazione con script esterni per implementare funzionalità e per fare analisi dei dati. Integrazione con Interacta].}
 
-Il progetto di stage ha come obiettivo la progettazione e l'implementazione di un'architettura di monitoraggio centralizzata basata su Zabbix 7.0. Esso sarà destinato alla gestione di una delle infrastrutture di rete per Smart City che Secoval si trova a gestire. L'esigenza primaria è migliorare e superare i limiti dei sistemi di monitoraggio precedenti, come PRTG (Paessler Router Traffic Grapher), software proprietario con un sostanziale costo per la gestione di reti di certe dimensioni (1350,00€/month per 1000 devices \parencite{PaesslerPricing}) e con un'elevata gestione manuale nella implementazione precedente al tirocinio.
+Il progetto di stage ha come obiettivo la progettazione e l'implementazione di un'architettura di monitoraggio centralizzata basata su Zabbix 7.0. Esso sarà destinato alla gestione di una delle infrastrutture di rete per smart city che Secoval si trova a gestire. L'esigenza primaria è migliorare e superare i limiti dei sistemi di monitoraggio precedenti, come PRTG (Paessler Router Traffic Grapher), software proprietario con un sostanziale costo per la gestione di reti di certe dimensioni (1350,00€/month per 1000 devices \parencite{PaesslerPricing}) e con un'elevata gestione manuale nella implementazione precedente al tirocinio.
 
 L'infrastruttura monitorata è eterogenea e distribuita sul territorio. I dispositivi principali comprendono e si dividono in:
 \begin{itemize}
@@ -281,7 +281,7 @@ L'infrastruttura monitorata è eterogenea e distribuita sul territorio. I dispos
 
 % Citazioni e Bibliografia:
 
-%     Scientifiche: Paper accademici (IEEE Xplore, ACM) sull'architettura delle reti Smart City, sui colli di bottiglia del monitoraggio IoT su larga scala e sull'automazione del provisioning di rete.
+%     Scientifiche: Paper accademici (IEEE Xplore, ACM) sull'architettura delle reti smart city, sui colli di bottiglia del monitoraggio IoT su larga scala e sull'automazione del provisioning di rete.
 
 %     Tecniche:
 
@@ -303,7 +303,7 @@ L'infrastruttura monitorata è eterogenea e distribuita sul territorio. I dispos
 % \textit{[Classificazione dei requisiti funzionali e di vincolo. Cosa ti ha chiesto di fare Secoval? Quali erano le limitazioni?]}.
 
 
-Il progetto formativo mira a trasformare l'infrastruttura di rete (videosorveglianza, Wi-Fi pubblico) che serve 31 Comuni in un sistema Smart City che possa essere monitorato e possa scalare facilmente, lavorando su tre pilastri:
+Il progetto formativo mira a trasformare l'infrastruttura di rete (videosorveglianza, Wi-Fi pubblico) che serve 31 Comuni in un sistema smart city che possa essere monitorato e possa scalare facilmente, lavorando su tre pilastri:
 \begin{itemize}
     \item Sviluppo e miglioramento del monitoraggio di rete.
     \item Integrazione degli apparati (telecamere, switch, AP) con la Cartografia GIS per creare uno strumento di gestione georeferenziato(parzialmente raggiunto).
@@ -312,7 +312,7 @@ Il progetto formativo mira a trasformare l'infrastruttura di rete (videosorvegli
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{figures/ComuniConTelecamere.png}
-    \caption{Mappa relativa ai comuni che si avvalgono del sistema Smart City}
+    \caption{Mappa relativa ai comuni che si avvalgono del sistema smart city}
     \label{fig:ComuniConTelecamere}
 \end{figure}
 
@@ -347,7 +347,7 @@ L'analisi del contesto applicativo e dei vincoli imposti dall'infrastruttura e d
     % [width=1\linewidth] dice a LaTeX di scalare l'immagine affinché sia larga esattamente quanto la larghezza del testo della pagina.
     % Tra le graffe metti il percorso.
     % TRUCCO PRO: Puoi anche omettere ".pdf" scrivendo solo {figures/SystemArchSchema...}, LaTeX troverà il file automaticamente!
-    %\caption{Architettura concettuale del sistema di monitoraggio Smart City e flussi di comunicazione.}
+    %\caption{Architettura concettuale del sistema di monitoraggio smart city e flussi di comunicazione.}
     \caption{Caption Example}
     % La didascalia che apparirà sotto l'immagine. Scrivi sempre una didascalia descrittiva in una tesi.
     \label{fig:SystemArchSchema}
@@ -476,7 +476,7 @@ di seguito vengono definiti i termini tecnici principali, riguardo Zabbix, utili
 
 %     Tecnica/Non Scientifica: Zabbix 7.0 Official Documentation. Cita specificamente i capitoli relativi a: JSON-RPC API, Zabbix Sender protocol, e Custom AlertScripts.
 
-%     Scientifica: Paper accademici riguardanti il monitoraggio di infrastrutture IoT/Smart City e la scalabilità dei Network Management Systems (NMS). Cita studi che confrontano Zabbix con altre piattaforme (es. PRTG o Nagios) per giustificare la scelta aziendale in contesti su larga scala.
+%     Scientifica: Paper accademici riguardanti il monitoraggio di infrastrutture IoT/smart city e la scalabilità dei Network Management Systems (NMS). Cita studi che confrontano Zabbix con altre piattaforme (es. PRTG o Nagios) per giustificare la scelta aziendale in contesti su larga scala.
 
 \section{Python, Venv e i package pip utilizzati}
 
@@ -675,16 +675,73 @@ Nella VM a livello di sistema operativo, sono stati definiti contesti di esecuzi
 %     Tabelle: Tabella descrittiva dei principali metodi API utilizzati nello script. Colonne: Metodo API (es. host.get, host.create), Funzione nello script (Ricerca, Inserimento), Payload tipico.
 
 %     Immagini: Uno schema dell'architettura della macchina virtuale. Mostra i confini tra l'utente administrator (dove risiede il codice e il venv) e l'utente zabbix (il demone che esegue i processi in background).
+\section{Zabbix nella funzione di monitoraggio della smart city}
+\subsection{Architettura generale dell'infrastruttura}
+L'infrastruttura che necessita di monitoraggio nel progetto di \emph{smart city} a cui L'azienda Secoval Srl
+è costituita da una serie di sottoreti virtuali \emph{VLAN} che si sviluppano sul territorio. In esse sono collegati diversi host, di natura eterogenea,
+per oltre 1000 dispositivi attivi.
 
+Come già discusso in precedenza, il monitoraggio delle sottoreti era affidato a Paessler PRTG Network Monitor.
+La migrazione a Zabbix è stata una scelta dettata da fattori di costo dovuti alle licenze a numero limitato
+di host monitorabili di PRTG e da fattori di automatizzazione: le API di Zabbix sono
+più facilmente utilizzabili e meglio documentate, per la loro natura open-source.
+
+Per ogni comune posso avere 4 sottoreti, per esempio nel comune di \lstinline|Lavenone|:
+\begin{description}
+    \item [TVCC-LAVE:] ne fanno parte le telecamere principalmente di marca Hikvision, un gateway e un possibile server di gestione delle telecamere daparte del comune.
+    \item [SW-LAVE: ]ne fanno parte gli switch, un gateway e un possibile server.
+    \item [AP-LAVE: ]ne fanno parte gli access point e un gateway.
+    \item [LTE-LAVE:] sottorete facoltativa che contiene host di ogni tipo che si basano su
+          tecnologia LTE o satellitare per comunicare da aree remote non coperte dai normali servizi.
+\end{description}
+
+La \textbf{funzionalità principale del sistema} consiste nell'applicare il template \emph{ICMP ping}
+per ogni host presente nelle VLAN del progetto.
+Questo template permette di applicare a tutti gli host un comando \emph{ping}, ogni minuto, e misurare,
+tra 3 diversi item, l'accessibilità dell'host sulla rete. In caso di comunicazione interrotta
+il relativo trigger lancia un problem con \lstinline|Severity: high|.
+\subsection{L'autodiscovery degli host da parte di Zabbix}
+Essendo le sottoreti da monitorare già presenti nel sistema di monitoraggio precedente, PRTG, con il nome desiderato, è stato esportato
+un file \emph{json} contenente un array di oggetti così strutturati:
+\begin{lstlisting}[language=c, caption=Struttura della sottorete estratta da PRTG]
+    {
+        "PRTG_ID":  4591,
+        "Full_Path":  "smartCity/LAVENONE/TVCC-LAVE",
+        "GroupName":  "TVCC-LAVE",
+        "IPv4_Subnet":  "10.82.241.0/25"
+    },
+\end{lstlisting}
+Questo file è stato utilizzato per inizializzare in Zabbix le stesse sottoreti,
+attraverso uno script python.
+
+In Zabbix gli host possono essere catalogati in \emph{host groups},
+a cui vengono assegnati da delle \emph{actions} chiamate \emph{discovery actions}
+dopo essere stati scoperti da delle \emph{discovery rules}: sistemi automatici
+che trovano gli host presenti in una determinata sottorete.
+
+I compiti svolti da questo script sono stati:
+\begin{itemize}
+    \item Creazione di un nuovo \emph{host group} per ogni \lstinline|"Full_Path"|
+    \item Creazione di una nuova \emph{discovery rule} per ogni \lstinline|"Full_Path"|
+          contenente la sottorete IPv4 e la modalità con cui può scoprire nuovi host,
+          in questo caso \lstinline|ICMP ping|
+    \item Creazione di un nuovo \emph{discovery action} per ogni \lstinline|"Full_Path"| che assegni
+          l'host appena scoperto dalla discovery rule al suo host group
+          e allo specifico template \emph{ICMP ping}, citato in precedenza( 3.2.1).
+\end{itemize}
 \section{I fogli di calcolo aziendali (Excel) come Source of Truth}
+Una volta scoperti gli host e memorizzati nel database di Zabbix essi sono quasi inutili,
+perché non contengono alcuna informazione che li riguarda.
+Molte delle loro caratteristiche, come nome e l'ID del palo a cui sono montati, non
+sono rilevabili dallo stumento softtware Zabbix perchè non sono stati memorizzati sui singoli host.
 
-Per abilitare un'architettura di monitoraggio automatizzata basata su Zabbix, è stato necessario identificare una \textbf{sorgente della verità}, ovvero un'entità a cui il sistema potesse attingere per allineare il suo stato con lo stato fisico degli asset sul territorio.
+Per abilitare un'architettura di monitoraggio automatizzata, è stato necessario identificare una \textbf{sorgente della verità}, ovvero un'entità a cui il sistema potesse attingere per allineare il suo stato con lo stato fisico degli asset sul territorio.
 
-Nel contesto della Smart City gestita da Secoval Srl, il Source of Truth riguardo gli asset hardware e software che compongono l'infrastruttura della Smart City e la configurazione e la mappatura dei dispositivi dislocati sul territorio (telecamere IP, Access Point, gateway LTE, switch di rete) è rappresentato da 2 fogli di calcolo: uno fondamentale come archivio e uno di supporto.
+Nel contesto della smart city gestita da Secoval Srl, il Source of Truth riguardo gli asset hardware e software che compongono l'infrastruttura della smart city e la configurazione e la mappatura dei dispositivi dislocati sul territorio (telecamere IP, Access Point, gateway LTE, switch di rete) è rappresentato da 2 fogli di calcolo: uno fondamentale come archivio e uno di supporto.
 
 
 \subsection*{Struttura e ruolo dei due file Excel aziendali}
-Secoval, e le aziende che hanni implemetato fisicamente la rete di telecamere sul territorio, gestisce la conoscenza della propria infrastruttura Smart City attraverso \textbf{due file Excel principali}:
+Secoval, e le aziende che hanni implemetato fisicamente la rete di telecamere sul territorio, gestisce la conoscenza della propria infrastruttura smart city attraverso \textbf{due file Excel principali}:
 \begin{enumerate}
     \item \textbf{Excel degli asset:} questo documento contiene l'inventario di tutti gli asset hardware (come le telecamere, prevalentemente di marca Hikvision) installati nei vari comuni aderenti al progetto. Per ogni apparato sono mappati dati cruciali quali l'indirizzo IP statico, l'univoco \texttt{ID Host} aziendale, il costruttore, il modello e, dato fondamentale per la manutenzione fisica, l'\texttt{ID Palo} che identifica e da un nome alla posizione di istallazione del dispositivo.
           \begin{table}[ht]
@@ -751,51 +808,150 @@ Il sistema opera secondo una logica basata su due fasi:
 %     Tabelle: Una tabella anonimizzata che mostra la struttura dei file Excel aziendali. Colonne suggerite: Indirizzo IP, Hostname, Modello, ID Palo, Coordinate. Serve per far capire immediatamente al lettore quale sia l'input del tuo motore.
 
 %     Immagini: Un diagramma a blocchi del processo ETL (Extract, Transform, Load).
-\section{Organizzazione gerarchica in Host Groups degli host e i codici comunali}
+\section{Implementazione dell'aggiornamento degli \\host}
 
-La gestione su larga scala di un'infrastruttura IoT e di rete distribuita sul territorio, come quella di una Smart City, impone la necessità di adottare paradigmi di classificazione logica rigorosi. Un approccio "piatto" (\textit{flat}), in cui tutti i dispositivi (Configuration Item) risiedono in un unico contenitore logico o vengono raggruppati senza un criterio formale, rende impossibile l'analisi aggregata degli allarmi, complica l'assegnazione dei permessi e vanifica il calcolo di KPI specifici per singola area geografica.
+Ogni host in Zabbix viene identificato con un attributo "name" che contiene l'IP con cui è stato scoperto.
+Inoltre possiede anche un attributo "visible name" che lo rappresenta nel sistema. L'obiettivo è andare a estrarre
+dal file Excel degli asset l'informazione del loro nome, da inserire nell'attributo "visible name"
+e l'informazione sull'id del palo su cui sono montati, da inserire le campo "location" del loro attributo
+"inventory" (ogni host possiede un ampio elenco di campi da compilare nell'attributo "inventory").
 
-\subsection*{Il Paradigma dei Nested Host Groups in Zabbix}
-Per risolvere questa criticità architetturale, si è sfruttata la funzionalità nativa di Zabbix relativa ai \textbf{Nested Host Groups} (Gruppi di Host annidati). Questa feature permette di creare alberature gerarchiche e \textit{namespace} logici separando i livelli tramite il carattere \textit{slash} (\texttt{/}).
+Nel file Excel delle coordinate geografiche: viene associata all'IDpalo anche le coordinate geografica.
+Quindi per ogni host con uno specifico IDpalo gli si deve associare anche le coordinate geografiche.
 
-In fase di analisi e progettazione congiunta con i sistemisti di Secoval, è stata definita una tassonomia standardizzata basata su tre livelli gerarchici principali:
-\begin{enumerate}
-    \item \textbf{Dominio di Progetto:} Il nodo radice (es. \texttt{SmartCity} o \texttt{Corporate}), che disaccoppia logicamente i servizi esposti al pubblico e sul territorio dai server interni aziendali.
-    \item \textbf{Dominio Tecnologico:} Il ramo funzionale, che separa le tipologie di apparato (es. \texttt{SmartCity/TVCC} per l'ecosistema di videosorveglianza Hikvision, \texttt{SmartCity/Networking} per switch e Access Point).
-    \item \textbf{Dominio Geografico / Amministrativo:} Il nodo foglia, rappresentato dal \textbf{Codice Comunale} o dalla denominazione normalizzata del comune di pertinenza.
-\end{enumerate}
+Siccome la quasi totalità delle sottoreti al momento del mio tirocinio
+presenta numerosi host con svariati problemi, che impediscono al sistema di scoprirli tramite
+ping, risulta impossibile assegnare i loro metadati in una sola volta.
+Quindi, mano a mano che essi andranno online, verranno scoperti dal sistema che dovrà associare
+a essi le informazioni contenute nei file Excel. Proprio come per gli host scoperti inizialmente.
+Questo implica che l'assegnazione di questi dati deve essere fatta periodicamente,
+con un periodo congruo. Per questo ho scelto di utilizzare script python, eseguiti periodicamente
+dal servizio \texttt{crontab} presente nativamente in Ubuntu.
 
-\subsection*{Gestione dei Codici Comunali e Normalizzazione (Data Cleansing)}
-Poiché Secoval opera come partner tecnologico per molteplici amministrazioni comunali (territorio della Valle Sabbia e limitrofi), la separazione per ente è il requisito fondamentale per la reportistica direzionale e per la corretta fatturazione dei servizi legati agli SLA.
+Nella pratica vengono utilizzati degli script python eseguiti nella macchina virtuale che
+ospita Zabbix. Tutti gli script ausiliari vengono salvati nella directory
+\texttt{/home/administrator/zabbixHostsScripts} (con alcune eccezioni) e tutte le esecuzioni sono svolte nell'ambiente
+virtualizzato \texttt{venv} della stessa directory.
 
-Tuttavia, l'inserimento manuale del nome del comune nei file Excel (che fungono da CMDB) espone il sistema a refusi o variazioni di nomenclatura (es. "Roè Volciano" contro "Roe' Volciano" o "Roe Volciano"). Per garantire l'integrità referenziale all'interno del database relazionale di Zabbix, lo script Python di \textit{provisioning} implementa una logica di normalizzazione (\textit{Data Cleansing}): mappa le stringhe testuali eterogenee lette dall'Excel in \textbf{Codici Comunali} univoci e standardizzati (ad esempio derivandoli dal codice catastale Belfiore o da codifiche interne prestabilite).
+\subsection{Associazione host name e IDpalo}
+%aggiungere comune e progetto edison
+Per j l'hostname e l'IDpalo allo specifico host, identificato dall'IP, viene utilizzato uno script python: DA CONTROLLARE
+\lstinline|zabbix_HostName_IDpalo_updater.py|.
+Questo script utilizza \texttt{pandas} per la gestione del file .xlsx  che
+contiene il nome dell'host da inserire in "visible Name" e il nome del palo, "IDpalo", da inserire in
+"inventory>location".
+Viene creato un dizionario degli host in Zabbix, comparati tramite IP con le informazioni presenti
+in Excel e l'host viene aggiornato solo se c'è incongruenza.
 
-\subsection*{Automazione dell'Alberatura via API}
-Durante il ciclo di caricamento (\textit{Loading}) verso il server, il middleware Python non si limita ad assegnare l'host a un gruppo preesistente, ma gestisce dinamicamente l'intera alberatura del sistema.
+Questo script viene eseguito periodicamente ogni oratramite questo comando crontab: %inlineCode formatting
+\begin{lstlisting}[language=Python, caption=setup of periodic execution in Crontab]
+0 * * * * /home/administrator/zabbixHostsScripts/venv/bin/python3 /home/administrator/zabbixHostsScripts/zabbix_HostName_IDpalo_updater.py >> /home/administrator/zabbixHostsScripts/cron_log.log 2>&1
+\end{lstlisting}
 
-Per ogni riga elaborata dal dataframe Pandas, lo script calcola la stringa del gruppo di destinazione, assemblandola dinamicamente (es. \texttt{SmartCity/TVCC/Vestone}). Successivamente, interroga il server tramite API JSON-RPC richiamando il metodo \texttt{hostgroup.get}. Se la risposta indica che il gruppo non esiste (uno scenario tipico quando si acquisisce la gestione di un nuovo comune), lo script invoca asincronamente \texttt{hostgroup.create} per generare il nuovo ramo gerarchico. Solo a seguito di questa validazione topologica, il dispositivo viene inglobato e associato all'\texttt{hostgroupid} corretto.
+\subsection{Associazione coordinate, indirizzo e tecnologia}
 
-\subsection*{Vantaggi Operativi e Architetturali}
-L'ingegnerizzazione di questa struttura logica, abilitata dall'automazione Python, garantisce all'infrastruttura di Secoval tre vantaggi misurabili:
-\begin{itemize}
-    \item \textbf{Role-Based Access Control (RBAC) multi-tenant:} Sfruttando i permessi granulari del frontend web di Zabbix, è ora possibile generare account utente limitati (ad esempio per le forze di Polizia Locale di un determinato municipio) che godono di visibilità in sola lettura esclusivamente sul ramo gerarchico del proprio territorio (\texttt{SmartCity/TVCC/CodiceComune}), precludendo l'accesso agli asset di altri enti.
-    \item \textbf{Filtraggio Dinamico delle Dashboard:} L'interfaccia grafica e i widget operativi (come la \textit{Geomap} implementata per le coordinate GIS o i widget \textit{Problems by severity}) possono essere filtrati in modo macroscopico puntando al nodo radice, oppure focalizzati sul singolo nodo amministrativo.
-    \item \textbf{Aggregazione dei KPI:} La gerarchia rigorosa facilita enormemente il lavoro del motore Python deputato all'analisi dei log (descritto nel Capitolo 6). Sfruttando le funzioni di aggregazione (\texttt{groupby}), il sistema aggrega facilmente metriche complesse come l'MTTR o la frequenza di \textit{Flapping} per singolo codice comunale, fornendo \textit{insight} precisi alla direzione tecnica.
-\end{itemize}
+Per associare le coordinate, l'indirizzo e la tecnologia a ogni host identificato dall'IDpalo
+viene utilizzato un altro script python: DA CONTROLLARE
+\inlinecode{zabbix_palo_location_and_info_updater.py}.
+Questo script utilizza \texttt{pandas} per la gestione del file xlsx, che
+contiene il nome del palo, "IDpalo", associato alle colonne
+"Tecnologia", "Indirizzo", "Dec. Latitudine" e "Dec. Longitudine" da inserire per ogni host in
+inventory>location nei vari campi: HW architecture, Site address A, Location latitude,
+Location longitude. Le informazioni di "Dec. Latitudine" e "Dec. Longitudine" devono essere aggiornate
+ogni volta che si inseriscono nuovi possibili pali nel sistema monitorato.
+Nello script viene creato un dizionario degli host in Zabbix, comparati tramite IDpalo con le informazioni presenti
+in Excel e l'host viene aggiornato solo se c'è incongruenza.
 
-% Citazioni e Bibliografia:
-% Scientifiche/Metodologiche: Teoria della sicurezza informatica sul Role-Based Access Control (RBAC), per spiegare come la gerarchia permetta di segregare gli accessi e limitare la visibilità solo a determinati utenti (es. Polizia Locale di un singolo comune).
-% Tecniche: Documentazione Zabbix 7.0 sulla sintassi dei Nested Host Groups e sulla configurazione dei permessi utente.
-% Immagini e Tabelle:
-% Tabelle: Una tabella con esempi di normalizzazione testuale (Data Cleansing). Colonne: Testo Sporco su Excel (es. "Roe' Volciano", "Roe Volciano"), Stringa Normalizzata/Codice (es. "Roe_Volciano"), Host Group Finale.
-% Immagini: Un diagramma ad albero (tipo struttura di directory) che mostri l'alberatura: SmartCity $\rightarrow$ ramo TVCC e ramo Networking $\rightarrow$ nodi finali dei Comuni.
-% ====================================================================
-% CAPITOLO 4: IMPLEMENTAZIONE: MONITORAGGIO E EVENTI
-% ====================================================================
+Questo script viene eseguito periodicamente tramite questo comando crontab:
+\begin{lstlisting}[language=Python, caption=crontab configuration per zabbix\_palo\_location\_and\_info\_updater.py]
+19 * * * * /home/administrator/zabbixHostsScripts/venv/bin/python3 /home/administrator/zabbixHostsScripts/zabbix_palo_location_and_info_updater.py >> /home/administrator/zabbixHostsScripts/cron_log.log 2>&1
+\end{lstlisting}
+
+\subsection{Memorizzazione dei messaggi di log}
+Gli script python visti fino a ora generano degli output testuali, che andrebbero nello standard output,
+ma vengono reindirizzati dai job crontab in uno specifico file di log:
+\lstinline|cron_log.log|, ogni scrittura nel file è preceduta dal timestamp e dallo script che la genera.
+
+Per evitare di memorizzare questi dati all'infinito e generare un file di testo gigantesco,
+ho utilizzato il sistema \textbf{Logrotate}, una utility Linux il cui scopo è la rotazione,
+compressione e rimozione di file di log automatici.
+
+In questo caso il file contenente le configurazioni per il job logrotate del file \lstinline|cron_log.log| è accessibile nel file: \inlinecode{/etc/logrotate.d/zabbix_scripts}.
+Al suo interno troviamo:
+\begin{lstlisting}[language=python, caption=Configurazione logrotate per \lstinline|cron_log.log|]
+#path del file di log da gestire
+/home/administrator/zabbixHostsScripts/cron_log.log {
+    #user privileges
+    su administrator administrator
+    #periodo temporale di rotazione dei log
+    weekly
+    #quante copie di log tenere
+    rotate 12
+    #aggiungi la data al nome del file
+    dateext
+    dateformat -%Y-%m-%d
+    #dove archiviare i log
+    olddir /home/administrator/zabbixHostsScripts/storico_log
+    #comprimi i file di log vecchi ma aspetta un ciclo
+    compress
+    delaycompress
+    #ignora gli errori se il file non esiste
+    missingok
+    #non ruotare il log se e' vuoto
+    notifempty
+    # crea un nuovo file alla rotazione e assegna questi permessi 
+    create 0644 administrator administrator
+}
+\end{lstlisting}
+% \section{Organizzazione gerarchica in Host Groups degli host e i codici comunali}
+
+% La gestione su larga scala di un'infrastruttura IoT e di rete distribuita sul territorio, come quella di una smart city, impone la necessità di adottare paradigmi di classificazione logica rigorosi. Un approccio "piatto" (\textit{flat}), in cui tutti i dispositivi (Configuration Item) risiedono in un unico contenitore logico o vengono raggruppati senza un criterio formale, rende impossibile l'analisi aggregata degli allarmi, complica l'assegnazione dei permessi e vanifica il calcolo di KPI specifici per singola area geografica.
+
+% \subsection*{Il Paradigma dei Nested Host Groups in Zabbix}
+% Per risolvere questa criticità architetturale, si è sfruttata la funzionalità nativa di Zabbix relativa ai \textbf{Nested Host Groups} (Gruppi di Host annidati). Questa feature permette di creare alberature gerarchiche e \textit{namespace} logici separando i livelli tramite il carattere \textit{slash} (\texttt{/}).
+
+% In fase di analisi e progettazione congiunta con i sistemisti di Secoval, è stata definita una tassonomia standardizzata basata su tre livelli gerarchici principali:
+% \begin{enumerate}
+%     \item \textbf{Dominio di Progetto:} Il nodo radice (es. \texttt{SmartCity} o \texttt{Corporate}), che disaccoppia logicamente i servizi esposti al pubblico e sul territorio dai server interni aziendali.
+%     \item \textbf{Dominio Tecnologico:} Il ramo funzionale, che separa le tipologie di apparato (es. \texttt{SmartCity/TVCC} per l'ecosistema di videosorveglianza Hikvision, \texttt{SmartCity/Networking} per switch e Access Point).
+%     \item \textbf{Dominio Geografico / Amministrativo:} Il nodo foglia, rappresentato dal \textbf{Codice Comunale} o dalla denominazione normalizzata del comune di pertinenza.
+% \end{enumerate}
+
+% \subsection*{Gestione dei Codici Comunali e Normalizzazione (Data Cleansing)}
+% Poiché Secoval opera come partner tecnologico per molteplici amministrazioni comunali (territorio della Valle Sabbia e limitrofi), la separazione per ente è il requisito fondamentale per la reportistica direzionale e per la corretta fatturazione dei servizi legati agli SLA.
+
+% Tuttavia, l'inserimento manuale del nome del comune nei file Excel (che fungono da CMDB) espone il sistema a refusi o variazioni di nomenclatura (es. "Roè Volciano" contro "Roe' Volciano" o "Roe Volciano"). Per garantire l'integrità referenziale all'interno del database relazionale di Zabbix, lo script Python di \textit{provisioning} implementa una logica di normalizzazione (\textit{Data Cleansing}): mappa le stringhe testuali eterogenee lette dall'Excel in \textbf{Codici Comunali} univoci e standardizzati (ad esempio derivandoli dal codice catastale Belfiore o da codifiche interne prestabilite).
+
+% \subsection*{Automazione dell'Alberatura via API}
+% Durante il ciclo di caricamento (\textit{Loading}) verso il server, il middleware Python non si limita ad assegnare l'host a un gruppo preesistente, ma gestisce dinamicamente l'intera alberatura del sistema.
+
+% Per ogni riga elaborata dal dataframe Pandas, lo script calcola la stringa del gruppo di destinazione, assemblandola dinamicamente (es. \texttt{SmartCity/TVCC/Vestone}). Successivamente, interroga il server tramite API JSON-RPC richiamando il metodo \texttt{hostgroup.get}. Se la risposta indica che il gruppo non esiste (uno scenario tipico quando si acquisisce la gestione di un nuovo comune), lo script invoca asincronamente \texttt{hostgroup.create} per generare il nuovo ramo gerarchico. Solo a seguito di questa validazione topologica, il dispositivo viene inglobato e associato all'\texttt{hostgroupid} corretto.
+
+% \subsection*{Vantaggi Operativi e Architetturali}
+% L'ingegnerizzazione di questa struttura logica, abilitata dall'automazione Python, garantisce all'infrastruttura di Secoval tre vantaggi misurabili:
+% \begin{itemize}
+%     \item \textbf{Role-Based Access Control (RBAC) multi-tenant:} Sfruttando i permessi granulari del frontend web di Zabbix, è ora possibile generare account utente limitati (ad esempio per le forze di Polizia Locale di un determinato municipio) che godono di visibilità in sola lettura esclusivamente sul ramo gerarchico del proprio territorio (\texttt{SmartCity/TVCC/CodiceComune}), precludendo l'accesso agli asset di altri enti.
+%     \item \textbf{Filtraggio Dinamico delle Dashboard:} L'interfaccia grafica e i widget operativi (come la \textit{Geomap} implementata per le coordinate GIS o i widget \textit{Problems by severity}) possono essere filtrati in modo macroscopico puntando al nodo radice, oppure focalizzati sul singolo nodo amministrativo.
+%     \item \textbf{Aggregazione dei KPI:} La gerarchia rigorosa facilita enormemente il lavoro del motore Python deputato all'analisi dei log (descritto nel Capitolo 6). Sfruttando le funzioni di aggregazione (\texttt{groupby}), il sistema aggrega facilmente metriche complesse come l'MTTR o la frequenza di \textit{Flapping} per singolo codice comunale, fornendo \textit{insight} precisi alla direzione tecnica.
+% \end{itemize}
+
+% % Citazioni e Bibliografia:
+% % Scientifiche/Metodologiche: Teoria della sicurezza informatica sul Role-Based Access Control (RBAC), per spiegare come la gerarchia permetta di segregare gli accessi e limitare la visibilità solo a determinati utenti (es. Polizia Locale di un singolo comune).
+% % Tecniche: Documentazione Zabbix 7.0 sulla sintassi dei Nested Host Groups e sulla configurazione dei permessi utente.
+% % Immagini e Tabelle:
+% % Tabelle: Una tabella con esempi di normalizzazione testuale (Data Cleansing). Colonne: Testo Sporco su Excel (es. "Roe' Volciano", "Roe Volciano"), Stringa Normalizzata/Codice (es. "Roe_Volciano"), Host Group Finale.
+% % Immagini: Un diagramma ad albero (tipo struttura di directory) che mostri l'alberatura: SmartCity $\rightarrow$ ramo TVCC e ramo Networking $\rightarrow$ nodi finali dei Comuni.
+% % ====================================================================
+% % CAPITOLO 4: IMPLEMENTAZIONE: MONITORAGGIO E EVENTI
+% % ====================================================================
+\section{Georeferenziazione  e integrazione GIS integrato in Zabbix}
+I metadati associati agli host in Zabbix, come longitudine e latitudine, vengono utilizzati nativamente dal software GIS(geographic information system) integrato.
+Le coordinate geografiche degli apparati vengono estratte dai campi \texttt{location\_lat} (Latitudine) e \texttt{location\_lon} (Longitudine) dell'inventory degli host.
+All'interno del widget \emph{GeoMap}, nativamente disponibile nelle dashboard di Zabbix, si possono visualizzare gli host su di una cartina, codificati tramite colore per la gravità dei problemi che eventualmente riscontrano. Essi mantangono l'integraaione con il sistema di monitoraggio, quindi un host con un problema visualizzato in rosso sulla mappa permette di risalire al suo nome e caratteristice e, se risolto, diventa verde in tempo reale.
 
 \section{Integrazione GIS: Estrazione coordinate tramite Excel e visualizzazione in Zabbix}
 
-Un elemento distintivo dei progetti in ambito Smart City è la forte connotazione geografica degli asset. Nel contesto del territorio gestito da Secoval, conoscere lo stato logico di un apparato (es. \textit{UP} o \textit{DOWN}) è un'informazione incompleta se non è associata alla sua esatta ubicazione fisica. L'integrazione di logiche GIS (\textit{Geographic Information System}) all'interno del sistema di monitoraggio diventa quindi un requisito architetturale fondamentale per ottimizzare l'intervento sul campo delle squadre di manutenzione e abbattere il \textit{Mean Time To Resolution} (MTTR).
+Un elemento distintivo dei progetti in ambito smart city è la forte connotazione geografica degli asset. Nel contesto del territorio gestito da Secoval, conoscere lo stato logico di un apparato (es. \textit{UP} o \textit{DOWN}) è un'informazione incompleta se non è associata alla sua esatta ubicazione fisica. L'integrazione di logiche GIS (\textit{Geographic Information System}) all'interno del sistema di monitoraggio diventa quindi un requisito architetturale fondamentale per ottimizzare l'intervento sul campo delle squadre di manutenzione e abbattere il \textit{Mean Time To Resolution} (MTTR).
 
 \subsection*{Il flusso dei dati spaziali: dal CMDB (Excel) all'API}
 La sorgente primaria per i dati spaziali è rappresentata dai file Excel aziendali (il CMDB descritto nella Sezione 3.1). Durante le fasi di installazione o censimento, gli operatori sul campo registrano le coordinate GPS (Latitudine e Longitudine) di ogni singolo palo, telecamera o Access Point all'interno di colonne dedicate nel foglio di calcolo.
@@ -852,7 +1008,7 @@ Questa interfaccia geografica permette all'operatore di Secoval di ottenere un'i
 %come deve succedere
 \section{Logiche di Polling vs Trapping in Zabbix}
 
-Per comprendere le scelte architetturali adottate durante il tirocinio per il monitoraggio della rete Smart City di Secoval, è fondamentale analizzare come il server Zabbix opera "sotto il cofano" (under the hood) per la raccolta e l'elaborazione delle metriche. Zabbix si basa sul concetto di \textit{Item}, ovvero la singola unità di dato raccolta da un host. L'acquisizione di questi Item può avvenire seguendo due paradigmi diametralmente opposti: il \textbf{Polling} (controllo attivo) e il \textbf{Trapping} (controllo asincrono o passivo).
+Per comprendere le scelte architetturali adottate durante il tirocinio per il monitoraggio della rete smart city di Secoval, è fondamentale analizzare come il server Zabbix opera "sotto il cofano" (under the hood) per la raccolta e l'elaborazione delle metriche. Zabbix si basa sul concetto di \textit{Item}, ovvero la singola unità di dato raccolta da un host. L'acquisizione di questi Item può avvenire seguendo due paradigmi diametralmente opposti: il \textbf{Polling} (controllo attivo) e il \textbf{Trapping} (controllo asincrono o passivo).
 
 \subsection*{Il Paradigma del Polling (Controllo Attivo e Network Discovery)}
 Nel modello di Polling, è il server Zabbix (tramite i suoi processi interni denominati \textit{poller}) a prendere l'iniziativa. A intervalli di tempo regolari e predefiniti (\textit{Update interval}), il server apre una connessione verso l'host target, interroga il dispositivo (tramite protocolli come ICMP, SNMP, o richieste HTTP) e attende una risposta.
@@ -891,7 +1047,7 @@ Sotto il cofano, un Trigger è un'espressione logica e matematica che valuta lo 
 \end{center}
 Questa espressione stabilisce che se l'ultimo valore raccolto dal ping è 0 (host non raggiungibile), il trigger cambia il suo stato.
 
-I trigger in Zabbix sono dotati di funzionalità avanzate cruciali per il nostro ambiente Smart City:
+I trigger in Zabbix sono dotati di funzionalità avanzate cruciali per il nostro ambiente smart city:
 \begin{itemize}
     \item \textbf{Isteresi (Hysteresis):} Permette di definire soglie differenti per l'attivazione e la risoluzione del problema, fondamentale per evitare il fenomeno del \textit{Flapping} su reti LTE instabili (dove il ping potrebbe fallire e tornare ciclicamente in pochi secondi).
     \item \textbf{Gestione degli Eventi e Macros:} Quando un trigger scatta, Zabbix genera un \textit{Event} univoco (es. \texttt{\{EVENT.ID\}}). Il motore interno associa automaticamente al problema tutta una serie di metadati tramite le \textbf{Macro} (variabili di sistema come \texttt{\{HOST.NAME\}}, \texttt{\{TRIGGER.NAME\}}, \texttt{\{EVENT.DATE\}}).
@@ -902,7 +1058,7 @@ L'ultimo anello della catena architetturale è l'\textbf{Action}. Quando un trig
 
 % Citazioni e Bibliografia:
 
-%     Scientifiche: Manuali di architettura delle reti o paper accademici sui \textit{Network Management Systems} (NMS) che confrontano i paradigmi \textit{Push} (Trapping) e \textit{Pull} (Polling) nei dispositivi IoT e Smart City.
+%     Scientifiche: Manuali di architettura delle reti o paper accademici sui \textit{Network Management Systems} (NMS) che confrontano i paradigmi \textit{Push} (Trapping) e \textit{Pull} (Polling) nei dispositivi IoT e smart city.
 
 %     Tecniche: Documentazione ufficiale Zabbix 7.0: sezioni "Zabbix trapper items", "Network discovery" e "Active/Passive checks".
 
@@ -1075,7 +1231,7 @@ La motivazione per utilizzare questo paradigma è la possibilità di iniettare d
     \item \texttt{\{TRIGGER.STATUS\}}: Il valore che indica allo script se inviare alla piattaforma un payload per la "Creazione" (PROBLEM) o per la "Risoluzione" (OK) del ticket.
 \end{itemize}
 
-Questa catena di configurazioni (Item Trapper $\rightarrow$ Trigger con isteresi $\rightarrow$ Action con passaggio di Macro) rappresenta il core logico che ha permesso di azzerare l'intervento umano nella gestione degli incidenti dell'infrastruttura Smart City.
+Questa catena di configurazioni (Item Trapper $\rightarrow$ Trigger con isteresi $\rightarrow$ Action con passaggio di Macro) rappresenta il core logico che ha permesso di azzerare l'intervento umano nella gestione degli incidenti dell'infrastruttura smart city.
 
 % Citazioni e Bibliografia:
 
@@ -1462,7 +1618,7 @@ Per rendere il sistema affidabile e mantenibile (\textit{troubleshooting}), è s
 \begin{enumerate}
     \item \textbf{Percorsi Assoluti:} Poiché la directory di lavoro corrente (CWD) del processo di Zabbix non è prevedibile, all'interno dello script Python è stato obbligatorio dichiarare esclusivamente percorsi assoluti (es. per il caricamento delle chiavi RSA e per i file di log) per evitare errori bloccanti di \texttt{FileNotFound}.
     \item \textbf{File di Log Dedicato:} Tutte le transazioni HTTP, inclusi i codici di risposta di Interacta (es. HTTP 200 OK, HTTP 500 Server Error) e le eventuali eccezioni, vengono scritte in append nel file \texttt{interactaCreateOrSolveTicket\_log.log}.
-    \item \textbf{Logrotate:} Dato l'elevato volume di eventi intercettati nella rete Smart City, un file di log non gestito porterebbe rapidamente all'esaurimento dello spazio su disco della macchina virtuale. Per scongiurare questo rischio, è stata definita una direttiva \texttt{Logrotate} di sistema che, settimanalmente, comprime e archivia lo storico, mantenendo un tetto massimo dimensionale (es. 30MB) e applicando correttamente la direttiva \texttt{su zabbix zabbix} per non alterare i permessi di scrittura sul file appena ruotato.
+    \item \textbf{Logrotate:} Dato l'elevato volume di eventi intercettati nella rete smart city, un file di log non gestito porterebbe rapidamente all'esaurimento dello spazio su disco della macchina virtuale. Per scongiurare questo rischio, è stata definita una direttiva \texttt{Logrotate} di sistema che, settimanalmente, comprime e archivia lo storico, mantenendo un tetto massimo dimensionale (es. 30MB) e applicando correttamente la direttiva \texttt{su zabbix zabbix} per non alterare i permessi di scrittura sul file appena ruotato.
 \end{enumerate}
 
 % Citazioni e Bibliografia:
@@ -1489,7 +1645,7 @@ Zabbix immagazzina nativamente tutti gli eventi nel proprio database relazionale
 \subsection*{Implementazione tramite Custom Media Type}
 Per ottenere l'esportazione continua e in tempo reale degli allarmi senza pesare sul database, si è deciso di sfruttare il sistema di \textit{Media Types} di Zabbix. Solitamente, un Media Type definisce il canale di consegna di una notifica (es. Email, SMS o Telegram). Nel nostro caso, è stato creato un Media Type personalizzato di tipo \textbf{Script}.
 
-A questo Media Type è stata agganciata un'\textit{Action} configurata per scattare ogni volta che si verifica un problema critico sulla rete Smart City. Invece di inviare una mail, Zabbix esegue lo script Bash \texttt{ScriptCustomExportProblemsToCSV.sh} depositato sulla macchina virtuale Ubuntu.
+A questo Media Type è stata agganciata un'\textit{Action} configurata per scattare ogni volta che si verifica un problema critico sulla rete smart city. Invece di inviare una mail, Zabbix esegue lo script Bash \texttt{ScriptCustomExportProblemsToCSV.sh} depositato sulla macchina virtuale Ubuntu.
 
 Zabbix passa allo script una stringa pre-formattata contenente tutte le \textbf{Macro} necessarie per l'analisi. I parametri in ingresso includono tipicamente:
 \begin{itemize}
@@ -1536,7 +1692,7 @@ Il motore di calcolo si compone di moduli script eseguiti all'interno del \texti
 Poiché i dati provengono da un output Bash asincrono, è necessario pulire e normalizzare il dataset: si eliminano eventuali righe corrotte, si gestiscono i valori nulli (ad esempio, gli allarmi ancora attivi per i quali non esiste ancora un \textit{Recovery Time}) e si esegue il parsing dei campi data e ora. I campi \texttt{\{EVENT.DATE\}} e \texttt{\{EVENT.TIME\}} vengono concatenati e convertiti in oggetti \texttt{datetime} nativi di Python, requisito fondamentale per poter eseguire l'aritmetica temporale necessaria al calcolo dei KPI.
 
 \subsection*{Estrazione dei Key Performance Indicators (KPI)}
-L'obiettivo primario del motore Python è distillare il dataset per calcolare metriche operative (KPI) essenziali per valutare l'affidabilità dell'infrastruttura Smart City e l'efficienza degli interventi di Secoval. Le logiche algoritmiche si concentrano su tre direttrici principali:
+L'obiettivo primario del motore Python è distillare il dataset per calcolare metriche operative (KPI) essenziali per valutare l'affidabilità dell'infrastruttura smart city e l'efficienza degli interventi di Secoval. Le logiche algoritmiche si concentrano su tre direttrici principali:
 
 \begin{itemize}
     \item \textbf{Mean Time To Resolution (MTTR):} Questo indicatore misura il tempo medio impiegato dall'azienda per risolvere un guasto a partire dal suo rilevamento. Lo script isola le righe relative ai problemi risolti e calcola la differenza temporale (delta) tra l'istante di ripristino e l'istante di attivazione del trigger. L'MTTR viene poi aggregato per comune o per tipologia di apparato (es. TVCC vs Access Point), offrendo alla direzione tecnica un dato quantitativo per valutare il rispetto degli SLA (\textit{Service Level Agreement}) verso gli enti pubblici.
@@ -1612,7 +1768,7 @@ def send_kpi_report(html_content, recipient_email):
 
     # Costruzione dell'oggetto MIME
     msg = MIMEMultipart('alternative')
-    msg['Subject'] = "Report Giornaliero KPI Infrastruttura Smart City"
+    msg['Subject'] = "Report Giornaliero KPI Infrastruttura smart city"
     msg['From'] = sender_email
     msg['To'] = recipient_email
 
@@ -1701,7 +1857,7 @@ Grazie a questa ingegnerizzazione della reportistica e della manutenzione log, i
 \chapter{Conclusioni}
 \section{Raggiungimento degli Obiettivi}
 
-Il progetto di stage ha perseguito e completato con successo l'obiettivo primario delineato nel patto formativo: la trasformazione dell'infrastruttura di rete periferica (videosorveglianza, access point pubblici e nodi LTE) in un ecosistema Smart City integrato, automatizzato e centralizzato. La migrazione tecnologica dal precedente sistema statico (PRTG) alla piattaforma open-source Zabbix 7.0 ha permesso di superare le criticità legate all'inserimento manuale degli host e alla latenza nella rilevazione dei guasti.
+Il progetto di stage ha perseguito e completato con successo l'obiettivo primario delineato nel patto formativo: la trasformazione dell'infrastruttura di rete periferica (videosorveglianza, access point pubblici e nodi LTE) in un ecosistema smart city integrato, automatizzato e centralizzato. La migrazione tecnologica dal precedente sistema statico (PRTG) alla piattaforma open-source Zabbix 7.0 ha permesso di superare le criticità legate all'inserimento manuale degli host e alla latenza nella rilevazione dei guasti.
 
 Analizzando i requisiti funzionali stabiliti in fase di analisi, è possibile confermare il pieno raggiungimento dei seguenti traguardi ingegneristici:
 
@@ -1722,7 +1878,7 @@ Nello specifico, il sistema è stato esteso con un motore di calcolo KPI svilupp
 Infine, l'orchestrazione nativa tramite Crontab e la spedizione automatizzata di questi report via SMTP ha fornito all'azienda uno strumento decisionale proattivo, confermando l'efficacia dell'architettura ingegnerizzata durante il tirocinio.
 % Citazioni e Bibliografia:
 
-%     Scientifiche/Metodologiche: Testi o pubblicazioni sul paradigma delle Smart City e sull'importanza dell'Internet of Things (IoT) per la gestione del territorio pubblico. Eventuali riferimenti al PMBOK (Project Management Body of Knowledge) per la definizione, misurazione e chiusura formale dei requisiti di progetto (scope management).
+%     Scientifiche/Metodologiche: Testi o pubblicazioni sul paradigma delle smart city e sull'importanza dell'Internet of Things (IoT) per la gestione del territorio pubblico. Eventuali riferimenti al PMBOK (Project Management Body of Knowledge) per la definizione, misurazione e chiusura formale dei requisiti di progetto (scope management).
 
 %     Tecniche: Nessuna citazione strettamente legata al codice qui, ma puoi citare i casi di studio (Case Studies) ufficiali sul sito di Zabbix riguardanti migrazioni da sistemi legacy (come PRTG) in ambito Enterprise o Pubblica Amministrazione.
 
@@ -1733,7 +1889,7 @@ Infine, l'orchestrazione nativa tramite Crontab e la spedizione automatizzata di
 %     Immagini: Questo è il momento di mostrare il risultato finale. Inserisci uno o due screenshot puliti della Geomap di Zabbix popolata con i sensori, o della dashboard principale che mostra i trigger e gli host group di Secoval.
 \section{Limiti del sistema e Sviluppi Futuri}
 
-Sebbene l'architettura implementata abbia raggiunto gli obiettivi prefissati, riducendo drasticamente il carico di lavoro manuale per la gestione dell'infrastruttura Smart City, la messa in produzione ha fatto emergere alcuni limiti intrinseci. Parte di questi limiti derivano da scelte implementative necessarie per rispettare le tempistiche del tirocinio, generando quello che in ingegneria del software viene definito \textit{debito tecnico}.
+Sebbene l'architettura implementata abbia raggiunto gli obiettivi prefissati, riducendo drasticamente il carico di lavoro manuale per la gestione dell'infrastruttura smart city, la messa in produzione ha fatto emergere alcuni limiti intrinseci. Parte di questi limiti derivano da scelte implementative necessarie per rispettare le tempistiche del tirocinio, generando quello che in ingegneria del software viene definito \textit{debito tecnico}.
 
 Un'analisi critica del sistema, documentata anche nelle linee guida interne redatte per i tecnici aziendali, ha permesso di isolare le seguenti aree di miglioramento e di delineare i relativi sviluppi futuri.
 
@@ -2025,7 +2181,7 @@ i protocolli e i concetti architetturali utilizzati nel progetto.
 
     \item[HashiCorp Vault:] Strumento software enterprise per la gestione sicura, la conservazione e il controllo degli accessi a segreti, certificati, password e token crittografici utilizzati all'interno di infrastrutture IT moderne.
 
-    \item[IoT (Internet of Things):] Rete di oggetti fisici ("cose") dotati di sensori, software e altre tecnologie allo scopo di connettersi e scambiare dati con altri dispositivi e sistemi su Internet (es. sensori ambientali Smart City).
+    \item[IoT (Internet of Things):] Rete di oggetti fisici ("cose") dotati di sensori, software e altre tecnologie allo scopo di connettersi e scambiare dati con altri dispositivi e sistemi su Internet (es. sensori ambientali smart city).
 
     \item[Resilienza (Resilience):] In ingegneria informatica, la capacità di un sistema, un'architettura o una rete di resistere a condizioni anomale, assorbire guasti hardware o software imprevisti e continuare a fornire un livello di servizio accettabile senza interruzioni totali.
 
