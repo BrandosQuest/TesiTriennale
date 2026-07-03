@@ -944,65 +944,77 @@ Al suo interno troviamo:
 % % ====================================================================
 % % CAPITOLO 4: IMPLEMENTAZIONE: MONITORAGGIO E EVENTI
 % % ====================================================================
-\section{Georeferenziazione  e integrazione GIS integrato in Zabbix}
+\section{Georeferenziazione e GIS integrato in Zabbix}
 I metadati associati agli host in Zabbix, come longitudine e latitudine, vengono utilizzati nativamente dal software GIS(geographic information system) integrato.
 Le coordinate geografiche degli apparati vengono estratte dai campi \texttt{location\_lat} (Latitudine) e \texttt{location\_lon} (Longitudine) dell'inventory degli host.
-All'interno del widget \emph{GeoMap}, nativamente disponibile nelle dashboard di Zabbix, si possono visualizzare gli host su di una cartina, codificati tramite colore per la gravità dei problemi che eventualmente riscontrano. Essi mantangono l'integraaione con il sistema di monitoraggio, quindi un host con un problema visualizzato in rosso sulla mappa permette di risalire al suo nome e caratteristice e, se risolto, diventa verde in tempo reale.
+All'interno del widget \emph{GeoMap}, nativamente disponibile nelle dashboard di Zabbix grazie allo stumento OpenStreetMap \parencite{OpenStreetMap}, si possono visualizzare gli host su di una cartina, codificati tramite colore per la gravità dei problemi che eventualmente riscontrano. Essi mantangono l'integraaione con il sistema di monitoraggio, quindi un host con un problema visualizzato in rosso sulla mappa permette di risalire al suo nome e caratteristice e, se risolto, diventa verde in tempo reale.
+DA CONTROLLARE LE FOTO
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/MapWithProblems.png} % Inserire il path corretto
+    \caption{GIS integrato in Zabbix}
+    \label{fig:GIS_Zabbix}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/MapCloseUp.png} % Inserire il path corretto
+    \caption{GIS integrato in Zabbix}
+    \label{fig:GIS_Zabbix}
+\end{figure}
+% \section{Integrazione GIS: Estrazione coordinate tramite Excel e visualizzazione in Zabbix}
 
-\section{Integrazione GIS: Estrazione coordinate tramite Excel e visualizzazione in Zabbix}
+% Un elemento distintivo dei progetti in ambito smart city è la forte connotazione geografica degli asset. Nel contesto del territorio gestito da Secoval, conoscere lo stato logico di un apparato (es. \textit{UP} o \textit{DOWN}) è un'informazione incompleta se non è associata alla sua esatta ubicazione fisica. L'integrazione di logiche GIS (\textit{Geographic Information System}) all'interno del sistema di monitoraggio diventa quindi un requisito architetturale fondamentale per ottimizzare l'intervento sul campo delle squadre di manutenzione e abbattere il \textit{Mean Time To Resolution} (MTTR).
 
-Un elemento distintivo dei progetti in ambito smart city è la forte connotazione geografica degli asset. Nel contesto del territorio gestito da Secoval, conoscere lo stato logico di un apparato (es. \textit{UP} o \textit{DOWN}) è un'informazione incompleta se non è associata alla sua esatta ubicazione fisica. L'integrazione di logiche GIS (\textit{Geographic Information System}) all'interno del sistema di monitoraggio diventa quindi un requisito architetturale fondamentale per ottimizzare l'intervento sul campo delle squadre di manutenzione e abbattere il \textit{Mean Time To Resolution} (MTTR).
+% \subsection*{Il flusso dei dati spaziali: dal CMDB (Excel) all'API}
+% La sorgente primaria per i dati spaziali è rappresentata dai file Excel aziendali (il CMDB descritto nella Sezione 3.1). Durante le fasi di installazione o censimento, gli operatori sul campo registrano le coordinate GPS (Latitudine e Longitudine) di ogni singolo palo, telecamera o Access Point all'interno di colonne dedicate nel foglio di calcolo.
 
-\subsection*{Il flusso dei dati spaziali: dal CMDB (Excel) all'API}
-La sorgente primaria per i dati spaziali è rappresentata dai file Excel aziendali (il CMDB descritto nella Sezione 3.1). Durante le fasi di installazione o censimento, gli operatori sul campo registrano le coordinate GPS (Latitudine e Longitudine) di ogni singolo palo, telecamera o Access Point all'interno di colonne dedicate nel foglio di calcolo.
+% Il motore di automazione Python è stato esteso per includere una pipeline di estrazione e normalizzazione di questi dati geografici. La fase di \textit{Data Cleansing} è cruciale: poiché l'inserimento umano su Excel è prono a errori di formattazione (es. l'utilizzo della virgola al posto del punto per i decimali, o la presenza di stringhe di testo accidentali), lo script Pandas intercetta questi campi, esegue il \textit{parsing} e forza la conversione dei valori in formato \textit{floating-point} aderente allo standard internazionale WGS 84.
 
-Il motore di automazione Python è stato esteso per includere una pipeline di estrazione e normalizzazione di questi dati geografici. La fase di \textit{Data Cleansing} è cruciale: poiché l'inserimento umano su Excel è prono a errori di formattazione (es. l'utilizzo della virgola al posto del punto per i decimali, o la presenza di stringhe di testo accidentali), lo script Pandas intercetta questi campi, esegue il \textit{parsing} e forza la conversione dei valori in formato \textit{floating-point} aderente allo standard internazionale WGS 84.
+% Una volta normalizzate, le coordinate vengono passate al modulo di comunicazione JSON-RPC. Come definito nelle logiche di \textit{provisioning}, Zabbix richiede che l'\textit{Inventory Mode} dell'host sia impostato su \texttt{0} (Manuale/API). In questo modo, lo script Python inietta direttamente i valori nei campi nativi \texttt{location\_lat} e \texttt{location\_lon} del database Zabbix.
 
-Una volta normalizzate, le coordinate vengono passate al modulo di comunicazione JSON-RPC. Come definito nelle logiche di \textit{provisioning}, Zabbix richiede che l'\textit{Inventory Mode} dell'host sia impostato su \texttt{0} (Manuale/API). In questo modo, lo script Python inietta direttamente i valori nei campi nativi \texttt{location\_lat} e \texttt{location\_lon} del database Zabbix.
+% \begin{lstlisting}[language=Python, caption={Iniezione delle coordinate geografiche tramite API JSON-RPC}]
+% # Estratto della logica di update dell'inventario host
+% def update_host_location(host_id, latitude, longitude):
+%     try:
+%         zapi.host.update(
+%             hostid=host_id,
+%             inventory={
+%                 "location_lat": str(latitude),
+%                 "location_lon": str(longitude)
+%             }
+%         )
+%     except Exception as e:
+%         print(f"Errore durante l'aggiornamento GIS per host {host_id}: {e}")
+% \end{lstlisting}
 
-\begin{lstlisting}[language=Python, caption={Iniezione delle coordinate geografiche tramite API JSON-RPC}]
-# Estratto della logica di update dell'inventario host
-def update_host_location(host_id, latitude, longitude):
-    try:
-        zapi.host.update(
-            hostid=host_id,
-            inventory={
-                "location_lat": str(latitude),
-                "location_lon": str(longitude)
-            }
-        )
-    except Exception as e:
-        print(f"Errore durante l'aggiornamento GIS per host {host_id}: {e}")
-\end{lstlisting}
+% \subsection*{Gestione dinamica e Aggiornamento degli Host}
+% Il sistema è progettato per essere tollerante ai cambiamenti (\textit{Idempotenza}). Quando viene aggiunto un nuovo host nell'Excel, lo script lo rileva e, contestualmente all'operazione di \texttt{host.create}, ne inietta le coordinate.
 
-\subsection*{Gestione dinamica e Aggiornamento degli Host}
-Il sistema è progettato per essere tollerante ai cambiamenti (\textit{Idempotenza}). Quando viene aggiunto un nuovo host nell'Excel, lo script lo rileva e, contestualmente all'operazione di \texttt{host.create}, ne inietta le coordinate.
+% Tuttavia, il reale valore ingegneristico si manifesta nella gestione delle modifiche (es. una telecamera che viene ricollocata su un incrocio differente). Durante l'esecuzione schedulata, lo script effettua un \textit{diffing} (confronto) tra le coordinate correntemente salvate su Zabbix (ottenute tramite \texttt{host.get}) e quelle appena lette dall'Excel. Se viene rilevata una discrepanza (Delta $> 0$), il sistema lancia una chiamata \texttt{host.update} sovrascrivendo la vecchia posizione, garantendo che Zabbix sia sempre un "gemello digitale" perfettamente allineato con la realtà fisica.
 
-Tuttavia, il reale valore ingegneristico si manifesta nella gestione delle modifiche (es. una telecamera che viene ricollocata su un incrocio differente). Durante l'esecuzione schedulata, lo script effettua un \textit{diffing} (confronto) tra le coordinate correntemente salvate su Zabbix (ottenute tramite \texttt{host.get}) e quelle appena lette dall'Excel. Se viene rilevata una discrepanza (Delta $> 0$), il sistema lancia una chiamata \texttt{host.update} sovrascrivendo la vecchia posizione, garantendo che Zabbix sia sempre un "gemello digitale" perfettamente allineato con la realtà fisica.
+% \subsection*{Visualizzazione su Zabbix Geomap}
+% Per chiudere il cerchio e fornire un reale supporto operativo alla centrale di controllo, si è sfruttato il widget nativo \textbf{Geomap} introdotto nelle recenti versioni di Zabbix.
 
-\subsection*{Visualizzazione su Zabbix Geomap}
-Per chiudere il cerchio e fornire un reale supporto operativo alla centrale di controllo, si è sfruttato il widget nativo \textbf{Geomap} introdotto nelle recenti versioni di Zabbix.
+% La Geomap non è una semplice mappa statica, ma una \textit{dashboard interattiva} che funge da aggregatore visivo. Il widget è configurato per appoggiarsi a \textit{Tile Providers} open-source (come OpenStreetMap), interrogando in tempo reale il database per estrarre l'elenco degli host (es. filtrando per Host Group "TVCC" o "Access Point") e i rispettivi campi \texttt{location\_lat} e \texttt{location\_lon}.
 
-La Geomap non è una semplice mappa statica, ma una \textit{dashboard interattiva} che funge da aggregatore visivo. Il widget è configurato per appoggiarsi a \textit{Tile Providers} open-source (come OpenStreetMap), interrogando in tempo reale il database per estrarre l'elenco degli host (es. filtrando per Host Group "TVCC" o "Access Point") e i rispettivi campi \texttt{location\_lat} e \texttt{location\_lon}.
+% La potenza di questo strumento risiede nel suo accoppiamento diretto con il motore di valutazione dei \textbf{Trigger}:
+% \begin{itemize}
+%     \item \textbf{Stato Nominale (OK):} Se tutti gli Item associati al dispositivo (es. Ping, flusso video ISAPI) rientrano nelle soglie attese, l'host viene renderizzato sulla mappa con un \textit{marker} verde.
+%     \item \textbf{Stato di Anomalia (PROBLEM):} Appena il middleware rileva, ad esempio, un \textit{Video Tampering} e fa scattare il trigger, la propagazione dello stato raggiunge immediatamente la dashboard. Il \textit{marker} sulla mappa cambia istantaneamente colore, assumendo la tinta corrispondente alla \textit{Severity} del guasto (es. giallo per \textit{Warning}, rosso lampeggiante per \textit{High/Disaster}).
+% \end{itemize}
 
-La potenza di questo strumento risiede nel suo accoppiamento diretto con il motore di valutazione dei \textbf{Trigger}:
-\begin{itemize}
-    \item \textbf{Stato Nominale (OK):} Se tutti gli Item associati al dispositivo (es. Ping, flusso video ISAPI) rientrano nelle soglie attese, l'host viene renderizzato sulla mappa con un \textit{marker} verde.
-    \item \textbf{Stato di Anomalia (PROBLEM):} Appena il middleware rileva, ad esempio, un \textit{Video Tampering} e fa scattare il trigger, la propagazione dello stato raggiunge immediatamente la dashboard. Il \textit{marker} sulla mappa cambia istantaneamente colore, assumendo la tinta corrispondente alla \textit{Severity} del guasto (es. giallo per \textit{Warning}, rosso lampeggiante per \textit{High/Disaster}).
-\end{itemize}
+% Questa interfaccia geografica permette all'operatore di Secoval di ottenere un'immediata \textit{Situational Awareness} (consapevolezza situazionale). A colpo d'occhio è possibile individuare cluster di guasti (es. intere vie o piazze oscurate contemporaneamente), facilitando l'analisi delle cause alla radice (\textit{Root Cause Analysis}) legate a problematiche di fornitura elettrica o cadute dei ponti radio dorsali che alimentano quelle specifiche aree territoriali.
+% % Citazioni e Bibliografia:
 
-Questa interfaccia geografica permette all'operatore di Secoval di ottenere un'immediata \textit{Situational Awareness} (consapevolezza situazionale). A colpo d'occhio è possibile individuare cluster di guasti (es. intere vie o piazze oscurate contemporaneamente), facilitando l'analisi delle cause alla radice (\textit{Root Cause Analysis}) legate a problematiche di fornitura elettrica o cadute dei ponti radio dorsali che alimentano quelle specifiche aree territoriali.
-% Citazioni e Bibliografia:
+% %     Scientifiche/Metodologiche: Lo standard geografico internazionale WGS 84 (World Geodetic System 1984), che è il sistema di coordinate di riferimento utilizzato globalmente dai sistemi GPS.
 
-%     Scientifiche/Metodologiche: Lo standard geografico internazionale WGS 84 (World Geodetic System 1984), che è il sistema di coordinate di riferimento utilizzato globalmente dai sistemi GPS.
+% %     Tecniche: Documentazione ufficiale Zabbix 7.0: sezione relativa al widget Geomap e alla gestione dell'Inventory Mode via API.
 
-%     Tecniche: Documentazione ufficiale Zabbix 7.0: sezione relativa al widget Geomap e alla gestione dell'Inventory Mode via API.
+% % Immagini e Tabelle:
 
-% Immagini e Tabelle:
+% %     Tabelle: Tabella di mappatura (Mapping) dei campi GIS. Colonne: Campo Excel (es. Lat, Lon), Trasformazione Python (conversione in float decimale), Campo Zabbix Inventory di destinazione (location_lat, location_lon).
 
-%     Tabelle: Tabella di mappatura (Mapping) dei campi GIS. Colonne: Campo Excel (es. Lat, Lon), Trasformazione Python (conversione in float decimale), Campo Zabbix Inventory di destinazione (location_lat, location_lon).
-
-%     Immagini: Assolutamente fondamentale uno screenshot della Geomap di Zabbix popolata con i dispositivi Secoval. Mostra chiaramente la differenza visiva tra i marker verdi (OK) e rossi/gialli (PROBLEM). È la prova visiva più forte del tuo lavoro.
+% %     Immagini: Assolutamente fondamentale uno screenshot della Geomap di Zabbix popolata con i dispositivi Secoval. Mostra chiaramente la differenza visiva tra i marker verdi (OK) e rossi/gialli (PROBLEM). È la prova visiva più forte del tuo lavoro.
 
 \chapter{Implementazione: Controlli Attivi ed Eventi TVCC}
 %come deve succedere

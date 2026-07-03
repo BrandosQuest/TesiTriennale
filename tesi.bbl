@@ -106,6 +106,35 @@
       \verb https://www.interacta.space/chi-siamo/
       \endverb
     \endentry
+    \entry{OpenStreetMap}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=813861b5e679b1cea6e8539acb78a079}{%
+           family={{OpenStreetMap Foundation}},
+           familyi={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{813861b5e679b1cea6e8539acb78a079}
+      \strng{fullhash}{813861b5e679b1cea6e8539acb78a079}
+      \strng{bibnamehash}{813861b5e679b1cea6e8539acb78a079}
+      \strng{authorbibnamehash}{813861b5e679b1cea6e8539acb78a079}
+      \strng{authornamehash}{813861b5e679b1cea6e8539acb78a079}
+      \strng{authorfullhash}{813861b5e679b1cea6e8539acb78a079}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 29 Giugno 2026}
+      \field{title}{OpenStreetMap}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://welcome.openstreetmap.org/what-is-openstreetmap/
+      \endverb
+      \verb{url}
+      \verb https://welcome.openstreetmap.org/what-is-openstreetmap/
+      \endverb
+    \endentry
     \entry{PaesslerPricing}{online}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=f92a302aa92a89cd45fb933091bbe181}{%
@@ -363,6 +392,35 @@
       \endverb
       \verb{url}
       \verb https://www.interacta.space/chi-siamo/
+      \endverb
+    \endentry
+    \entry{OpenStreetMap}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=813861b5e679b1cea6e8539acb78a079}{%
+           family={{OpenStreetMap Foundation}},
+           familyi={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{813861b5e679b1cea6e8539acb78a079}
+      \strng{fullhash}{813861b5e679b1cea6e8539acb78a079}
+      \strng{bibnamehash}{813861b5e679b1cea6e8539acb78a079}
+      \strng{authorbibnamehash}{813861b5e679b1cea6e8539acb78a079}
+      \strng{authornamehash}{813861b5e679b1cea6e8539acb78a079}
+      \strng{authorfullhash}{813861b5e679b1cea6e8539acb78a079}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 29 Giugno 2026}
+      \field{title}{OpenStreetMap}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://welcome.openstreetmap.org/what-is-openstreetmap/
+      \endverb
+      \verb{url}
+      \verb https://welcome.openstreetmap.org/what-is-openstreetmap/
       \endverb
     \endentry
     \entry{PaesslerPricing}{online}{}
