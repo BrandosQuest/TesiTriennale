@@ -368,9 +368,13 @@ INPUT ./presentazione.nav
 INPUT presentazione.nav
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmss8.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmss8.tfm
+INPUT ./logoUnibsScreennato.png
+INPUT ./logoUnibsScreennato.png
+INPUT ./logoUnibsScreennato.png
+INPUT ./logoUnibsScreennato.png
+INPUT ./logoUnibsScreennato.png
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmss12.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmssbx10.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmss12.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmss10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmss8.tfm
 INPUT /var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map
@@ -380,6 +384,7 @@ INPUT /usr/share/texlive/texmf-dist/tex/latex/base/ts1cmss.fd
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/ts1cmss.fd
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcss1095.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmssi10.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmss12.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmssbx10.tfm
 INPUT /usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm

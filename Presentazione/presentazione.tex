@@ -2,16 +2,44 @@
 \usepackage{tabularx}
 
 \usetheme{metropolis} 
+% 1. Aggiunge la barra di progresso sotto i titoli delle slide
+\metroset{progressbar=frametitle}
+% 2. Personalizza i colori con un blu in stile "UniBs"
+\definecolor{UniBsBlue}{RGB}{29, 66, 138}
+\setbeamercolor{palette primary}{bg=UniBsBlue, fg=white}
+\setbeamercolor{progress bar}{fg=UniBsBlue}
+\setbeamercolor{title separator}{fg=UniBsBlue}
+\setbeamercolor{title separator}{fg=UniBsBlue}
+
+% 3. Inserisce il logo (assicurati di avere un'immagine "logo.png" nella stessa cartella)
+\titlegraphic{\vspace{4.3cm}\flushright\includegraphics[width=5cm]{logoUnibsScreennato.png}} 
+
+% (Regola il \vspace o \flushright a seconda di dove vuoi posizionarlo)
 \metroset{block=fill}
 \usecolortheme{default}
 \setbeamercolor{background canvas}{bg=white}
 \setbeamercolor{normal text}{bg=white}
 
-\title{Audio Source Separation}
-\subtitle{Dalle Tecniche Tradizionali al Deep Learning}
-\author{Andrea Bellu \and Brando Calderara}
-\institute{Università degli Studi di Brescia}
-\date{A.A. 2025/2026}
+\title{Monitoraggio, manutenzione e
+sicurezza per smart city: dalla gestione
+manuale ad un’architettura
+automatizzata basata su Zabbix}
+% \subtitle{Dalle Tecniche Tradizionali al Deep Learning}
+\author[Brando Calderara]{
+    Laureando: Brando Calderara (Mat. 746352) \\
+    \vspace{0.3cm}
+    Relatore: Chiar.mo Prof. Francesco Gringoli
+}
+% \institute[UniBs]{
+%     Università degli Studi di Brescia \\
+%     Dipartimento di Ingegneria dell'Informazione \\
+%     Corso di Laurea in Ingegneria delle Tecnologie per l'Impresa Digitale
+% }
+% \institute{Università degli Studi di Brescia}
+\date{Anno Accademico 2025/2026}
+% \institute[UniBs]{%DA CONTROLLARE
+%     Ingegneria delle Tecnologie per l'Impresa Digitale
+% }
 
 \begin{document}
 
@@ -23,7 +51,7 @@
     %\end{center}
     % [inserisci immagine qui: Logo dell'Università o un'immagine rappresentativa del Cocktail Party Problem ]
 \end{frame}
-
+% \section{Nome Sezione}
 % Slide 2
 \begin{frame}
     \frametitle{Definizione del Problema e Obiettivi}

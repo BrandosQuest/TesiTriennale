@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1783027443.51007 "/home/brando/Documents/TesiTriennale/Presentazione/presentazione.tex" "presentazione.pdf" "presentazione" 1783027444.58141 0
+["pdflatex"] 1783067385.76591 "/home/brando/Documents/TesiTriennale/Presentazione/presentazione.tex" "presentazione.pdf" "presentazione" 1783067386.91965 0
   "/etc/texmf/web2c/texmf.cnf" 1781877153.96915 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/brando/Documents/TesiTriennale/Presentazione/presentazione.tex" 1783027443.28951 26020 08a297e1a1e427f4f8a338f9e89eea71 ""
+  "/home/brando/Documents/TesiTriennale/Presentazione/presentazione.tex" 1783067385.55006 27209 9ad1318a910d1ed73b70c7e5a7aef0a1 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcss1000.tfm" 1136768653 1536 293044035fd171bb1d18cf655049b101 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcss1095.tfm" 1136768653 1536 f0fa079cdc83a6ffeda21e42352cf1ea ""
@@ -245,10 +245,11 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1781877171.28181 5472669 54eaf61a88b6b7896ebd0dac973cb29c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1781877246 8212789 067713bffb547f22100fa0f5b46fe3f6 ""
-  "presentazione.aux" 1783027444.51118 4962 4bf22b2af26927afd77e3de6b5dc8312 "pdflatex"
-  "presentazione.nav" 1783027444.5119 3300 77588cb5298ec90cf85a2cc8beded603 "pdflatex"
-  "presentazione.out" 1783027444.51142 708 b93f8a71755ba2aa3b10d3994059baa7 "pdflatex"
-  "presentazione.tex" 1783027443.28951 26020 08a297e1a1e427f4f8a338f9e89eea71 ""
+  "logoUnibsScreennato.png" 1783066197.05891 291868 01e8a6da43cbfa109de94cc4ea635afb ""
+  "presentazione.aux" 1783067386.85715 4962 4bf22b2af26927afd77e3de6b5dc8312 "pdflatex"
+  "presentazione.nav" 1783067386.85779 3300 77588cb5298ec90cf85a2cc8beded603 "pdflatex"
+  "presentazione.out" 1783067386.85737 708 b93f8a71755ba2aa3b10d3994059baa7 "pdflatex"
+  "presentazione.tex" 1783067385.55006 27209 9ad1318a910d1ed73b70c7e5a7aef0a1 ""
   (generated)
   "presentazione.aux"
   "presentazione.log"
