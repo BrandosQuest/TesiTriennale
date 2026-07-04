@@ -99,74 +99,59 @@
 \newlabel{fig:GIS_Zabbix}{{3.1}{21}{GIS integrato in Zabbix}{figure.3.1}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces GIS integrato in Zabbix}}{22}{figure.3.2}\protected@file@percent }
 \newlabel{fig:GIS_Zabbix}{{3.2}{22}{GIS integrato in Zabbix}{figure.3.2}{}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Implementazione: Controlli Attivi ed Eventi TVCC}{23}{chapter.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Rilevamento manomissioni TVCC(ISAPI)}{23}{chapter.4}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{toc}{\contentsline {section}{\numberline {4.1}Logiche di Polling vs Trapping in Zabbix}{23}{section.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}Sviluppo del Middleware e Ascolto degli Stream Hikvision ISAPI}{25}{section.4.2}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.1}Esempio di payload XML per l'attivazione del Video Tampering}{26}{lstlisting.4.1}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.2}Middleware Python per l'ascolto persistente dello stream ISAPI}{26}{lstlisting.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}Inoltro asincrono tramite Zabbix Sender}{28}{section.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.4}Definizione di Trigger e Discovery Actions OPPURE MEGLIO Configurazione Pratica di Trigger e Actions per gli Eventi TVCC}{29}{section.4.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Automazione dell'assegnazione dei metadati degli host - Inventory}{31}{chapter.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Descrizione dell'implementazione}{23}{section.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}Configurazioni tamperdetection e motiondetection hikvision tramite XML}{24}{section.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}Sviluppo del Middleware e Ascolto degli Stream Hikvision ISAPI}{24}{section.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Ricezione degli eventi e invio a Zabbix}{24}{section.4.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1}Implementazione del listener}{25}{subsection.4.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Items in Zabbix}{25}{section*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2}Esecuzione continuativa e log}{25}{subsection.4.5.2}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.1}Configurazione Systemd per hikvision\_listener\_multiplehosts.py}{25}{lstlisting.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.6}Gestione dei log relativi al rilevamento manomissioni}{26}{section.4.6}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.2}Cronjob log relativi al rilevamento manomissioni}{26}{lstlisting.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Integrazione con il sistema di ticketing Interacta}{28}{chapter.5}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}Il problema}{31}{section.5.1}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.1}Autenticazione tramite API Token}{31}{lstlisting.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Implementazione dell'aggiornamento degli host}{31}{section.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}Associazione host name e IDpalo}{32}{subsection.5.2.1}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.2}setup of periodic execution in Crontab}{32}{lstlisting.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}Associazione coordinate, indirizzo e tecnologia}{32}{subsection.5.2.2}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.3}crontab configuration per zabbix\_palo\_location\_and\_info\_updater.py}{33}{lstlisting.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.3}Memorizzazione dei messaggi di log}{33}{subsection.5.2.3}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.4}Configurazione logrotate per \lstinline |cron_log.log|}{33}{lstlisting.5.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Estrazione Dati Host tramite Template Zabbix}{34}{chapter.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Scopo e architettura dell'integrazione}{28}{section.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Generazione e firma del token JWT (Algoritmo RS512)}{29}{section.5.2}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.1}Snippet Python per la generazione e firma del JWT con algoritmo RS512}{30}{lstlisting.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Sviluppo del Custom AlertScript in Zabbix}{31}{section.5.3}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.2}Estrazione semplificata della gestione parametri e logging nello script Python}{32}{lstlisting.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Analisi Dati, KPI e Manutenzione di Sistema}{34}{chapter.6}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {6.1}Acquisizione informazioni sugli host}{34}{section.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.2}Configurazione dell'host Inventory}{34}{section.6.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.3}Template telecamere Hikvision}{35}{section.6.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.4}Apparati standard (switch, access point, LTE)}{35}{section.6.4}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.1}Esempio di discovery manuale dei MIB via CLI}{36}{lstlisting.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {7}Integrazione con il Sistema di Ticketing Interacta}{37}{chapter.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}Esportazione degli eventi in formato strutturato (CSV)}{34}{section.6.1}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.1}Snippet concettuale dello script di esportazione CSV (\texttt  {ScriptCustomExportProblemsToCSV.sh})}{35}{lstlisting.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}Sviluppo del motore Python per il calcolo dei KPI}{36}{section.6.2}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.2}Snippet concettuale in Pandas per il calcolo dell'MTTR per host}{37}{lstlisting.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.3}Automazione reportistica tramite Crontab e SMTP}{37}{section.6.3}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.3}Esempio di schedulazione in Crontab per il report mattutino}{38}{lstlisting.6.3}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.4}Snippet Python per la composizione e l'invio del report via SMTP}{38}{lstlisting.6.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.4}Gestione dei log e manutenzione (Logrotate)}{39}{section.6.4}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {6.5}Configurazione logrotate per la manutenzione dei log di integrazione}{40}{lstlisting.6.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusioni}{42}{chapter.7}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {7.1}Sicurezza e Autenticazione Server-to-Server}{37}{section.7.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7.2}Generazione e firma del token JWT (Algoritmo RS512)}{39}{section.7.2}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {7.1}Snippet Python per la generazione e firma del JWT con algoritmo RS512}{39}{lstlisting.7.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7.3}Sviluppo del Custom AlertScript in Zabbix}{41}{section.7.3}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {7.2}Estrazione semplificata della gestione parametri e logging nello script Python}{41}{lstlisting.7.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {8}Analisi Dati, KPI e Manutenzione di Sistema}{43}{chapter.8}\protected@file@percent }
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {8.1}Esportazione degli eventi in formato strutturato (CSV)}{43}{section.8.1}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {8.1}Snippet concettuale dello script di esportazione CSV (\texttt  {ScriptCustomExportProblemsToCSV.sh})}{44}{lstlisting.8.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {8.2}Sviluppo del motore Python per il calcolo dei KPI}{45}{section.8.2}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {8.2}Snippet concettuale in Pandas per il calcolo dell'MTTR per host}{46}{lstlisting.8.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {8.3}Automazione reportistica tramite Crontab e SMTP}{46}{section.8.3}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {8.3}Esempio di schedulazione in Crontab per il report mattutino}{47}{lstlisting.8.3}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {8.4}Snippet Python per la composizione e l'invio del report via SMTP}{47}{lstlisting.8.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {8.4}Gestione dei log e manutenzione (Logrotate)}{48}{section.8.4}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {8.5}Configurazione logrotate per la manutenzione dei log di integrazione}{49}{lstlisting.8.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {9}Conclusioni}{51}{chapter.9}\protected@file@percent }
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {9.1}Raggiungimento degli Obiettivi}{51}{section.9.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {9.2}Limiti del sistema e Sviluppi Futuri}{52}{section.9.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {9.3}Valutazione Personale}{53}{section.9.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{Glossario}{55}{section.9.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {9.4}Terminologia}{55}{section.9.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{Bibliografia}{65}{section.9.4}\protected@file@percent }
-\abx@aux@page{11}{65}
-\abx@aux@page{12}{65}
-\abx@aux@page{13}{65}
-\abx@aux@page{14}{65}
-\abx@aux@page{15}{65}
-\abx@aux@page{16}{65}
-\abx@aux@page{17}{65}
-\abx@aux@page{18}{65}
-\abx@aux@page{19}{65}
-\@writefile{toc}{\contentsline {chapter}{Ringraziamenti}{66}{chapter*.40}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7.1}Raggiungimento degli Obiettivi}{42}{section.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7.2}Limiti del sistema e Sviluppi Futuri}{43}{section.7.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7.3}Valutazione Personale}{44}{section.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{Glossario}{46}{section.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7.4}Terminologia}{46}{section.7.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{Bibliografia}{56}{section.7.4}\protected@file@percent }
+\abx@aux@page{11}{56}
+\abx@aux@page{12}{56}
+\abx@aux@page{13}{56}
+\abx@aux@page{14}{56}
+\abx@aux@page{15}{56}
+\abx@aux@page{16}{56}
+\abx@aux@page{17}{56}
+\abx@aux@page{18}{56}
+\abx@aux@page{19}{56}
+\@writefile{toc}{\contentsline {chapter}{Ringraziamenti}{57}{chapter*.32}\protected@file@percent }
 \abx@aux@read@bbl@mdfivesum{68F64F822E0A4FAFBC40DAEB119C0B4A}
 \abx@aux@defaultrefcontext{0}{UbuntuServer}{nyt/global//global/global}
 \abx@aux@defaultrefcontext{0}{JWT}{nyt/global//global/global}
@@ -177,4 +162,4 @@
 \abx@aux@defaultrefcontext{0}{secoval_chisiamo}{nyt/global//global/global}
 \abx@aux@defaultrefcontext{0}{organigrammaSecoval}{nyt/global//global/global}
 \abx@aux@defaultrefcontext{0}{zabbix7_Docs}{nyt/global//global/global}
-\gdef \@abspage@last{66}
+\gdef \@abspage@last{57}

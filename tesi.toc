@@ -24,36 +24,30 @@
 \contentsline {subsection}{\numberline {3.4.2}Associazione coordinate, indirizzo e tecnologia}{20}{subsection.3.4.2}%
 \contentsline {subsection}{\numberline {3.4.3}Memorizzazione dei messaggi di log}{20}{subsection.3.4.3}%
 \contentsline {section}{\numberline {3.5}Georeferenziazione e GIS integrato in Zabbix}{21}{section.3.5}%
-\contentsline {chapter}{\numberline {4}Implementazione: Controlli Attivi ed Eventi TVCC}{23}{chapter.4}%
+\contentsline {chapter}{\numberline {4}Rilevamento manomissioni TVCC(ISAPI)}{23}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Logiche di Polling vs Trapping in Zabbix}{23}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Sviluppo del Middleware e Ascolto degli Stream Hikvision ISAPI}{25}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Inoltro asincrono tramite Zabbix Sender}{28}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Definizione di Trigger e Discovery Actions OPPURE MEGLIO Configurazione Pratica di Trigger e Actions per gli Eventi TVCC}{29}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Automazione dell'assegnazione dei metadati degli host - Inventory}{31}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Il problema}{31}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Implementazione dell'aggiornamento degli host}{31}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Associazione host name e IDpalo}{32}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}Associazione coordinate, indirizzo e tecnologia}{32}{subsection.5.2.2}%
-\contentsline {subsection}{\numberline {5.2.3}Memorizzazione dei messaggi di log}{33}{subsection.5.2.3}%
-\contentsline {chapter}{\numberline {6}Estrazione Dati Host tramite Template Zabbix}{34}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Acquisizione informazioni sugli host}{34}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Configurazione dell'host Inventory}{34}{section.6.2}%
-\contentsline {section}{\numberline {6.3}Template telecamere Hikvision}{35}{section.6.3}%
-\contentsline {section}{\numberline {6.4}Apparati standard (switch, access point, LTE)}{35}{section.6.4}%
-\contentsline {chapter}{\numberline {7}Integrazione con il Sistema di Ticketing Interacta}{37}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Sicurezza e Autenticazione Server-to-Server}{37}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Generazione e firma del token JWT (Algoritmo RS512)}{39}{section.7.2}%
-\contentsline {section}{\numberline {7.3}Sviluppo del Custom AlertScript in Zabbix}{41}{section.7.3}%
-\contentsline {chapter}{\numberline {8}Analisi Dati, KPI e Manutenzione di Sistema}{43}{chapter.8}%
-\contentsline {section}{\numberline {8.1}Esportazione degli eventi in formato strutturato (CSV)}{43}{section.8.1}%
-\contentsline {section}{\numberline {8.2}Sviluppo del motore Python per il calcolo dei KPI}{45}{section.8.2}%
-\contentsline {section}{\numberline {8.3}Automazione reportistica tramite Crontab e SMTP}{46}{section.8.3}%
-\contentsline {section}{\numberline {8.4}Gestione dei log e manutenzione (Logrotate)}{48}{section.8.4}%
-\contentsline {chapter}{\numberline {9}Conclusioni}{51}{chapter.9}%
-\contentsline {section}{\numberline {9.1}Raggiungimento degli Obiettivi}{51}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Limiti del sistema e Sviluppi Futuri}{52}{section.9.2}%
-\contentsline {section}{\numberline {9.3}Valutazione Personale}{53}{section.9.3}%
-\contentsline {chapter}{Glossario}{55}{section.9.3}%
-\contentsline {section}{\numberline {9.4}Terminologia}{55}{section.9.4}%
-\contentsline {chapter}{Bibliografia}{65}{section.9.4}%
-\contentsline {chapter}{Ringraziamenti}{66}{chapter*.40}%
+\contentsline {section}{\numberline {4.2}Descrizione dell'implementazione}{23}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Configurazioni tamperdetection e motiondetection hikvision tramite XML}{24}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Sviluppo del Middleware e Ascolto degli Stream Hikvision ISAPI}{24}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Ricezione degli eventi e invio a Zabbix}{24}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Implementazione del listener}{25}{subsection.4.5.1}%
+\contentsline {subsubsection}{Items in Zabbix}{25}{section*.9}%
+\contentsline {subsection}{\numberline {4.5.2}Esecuzione continuativa e log}{25}{subsection.4.5.2}%
+\contentsline {section}{\numberline {4.6}Gestione dei log relativi al rilevamento manomissioni}{26}{section.4.6}%
+\contentsline {chapter}{\numberline {5}Integrazione con il sistema di ticketing Interacta}{28}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Scopo e architettura dell'integrazione}{28}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Generazione e firma del token JWT (Algoritmo RS512)}{29}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Sviluppo del Custom AlertScript in Zabbix}{31}{section.5.3}%
+\contentsline {chapter}{\numberline {6}Analisi Dati, KPI e Manutenzione di Sistema}{34}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Esportazione degli eventi in formato strutturato (CSV)}{34}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Sviluppo del motore Python per il calcolo dei KPI}{36}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Automazione reportistica tramite Crontab e SMTP}{37}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Gestione dei log e manutenzione (Logrotate)}{39}{section.6.4}%
+\contentsline {chapter}{\numberline {7}Conclusioni}{42}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Raggiungimento degli Obiettivi}{42}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Limiti del sistema e Sviluppi Futuri}{43}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Valutazione Personale}{44}{section.7.3}%
+\contentsline {chapter}{Glossario}{46}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Terminologia}{46}{section.7.4}%
+\contentsline {chapter}{Bibliografia}{56}{section.7.4}%
+\contentsline {chapter}{Ringraziamenti}{57}{chapter*.32}%

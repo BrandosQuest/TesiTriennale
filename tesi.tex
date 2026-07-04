@@ -1016,227 +1016,389 @@ DA CONTROLLARE LE FOTO
 
 % %     Immagini: Assolutamente fondamentale uno screenshot della Geomap di Zabbix popolata con i dispositivi Secoval. Mostra chiaramente la differenza visiva tra i marker verdi (OK) e rossi/gialli (PROBLEM). È la prova visiva più forte del tuo lavoro.
 
-\chapter{Implementazione: Controlli Attivi ed Eventi TVCC}
-%come deve succedere
+% \chapter{Implementazione: Controlli Attivi ed Eventi TVCC}
+\chapter{Rilevamento manomissioni TVCC(ISAPI)}
+Essendo questo un progetto di gestione di telecamere di sicurezza abbastanza moderne è stato valutato come utile l'utilizzo dei sistemi di
+intelligenza artificiale implementati a bordo per rilevare diversi tipi di eventi che accadono alla singola telecamera.
+Tra questi troviamo la possibilità di rilevare l'oscuramento dell'obiettivo della telecamera.
+Per sfruttare questa funzionalità è stato creato un sistema di raccoglimento e invio automatico di avvisi, integrandolo con Zabbix.
+
 \section{Logiche di Polling vs Trapping in Zabbix}
 
-Per comprendere le scelte architetturali adottate durante il tirocinio per il monitoraggio della rete smart city di Secoval, è fondamentale analizzare come il server Zabbix opera "sotto il cofano" (under the hood) per la raccolta e l'elaborazione delle metriche. Zabbix si basa sul concetto di \textit{Item}, ovvero la singola unità di dato raccolta da un host. L'acquisizione di questi Item può avvenire seguendo due paradigmi diametralmente opposti: il \textbf{Polling} (controllo attivo) e il \textbf{Trapping} (controllo asincrono o passivo).
+Per comprendere le scelte architetturali adottate durante il tirocinio, è utile analizzare come il server Zabbix operi per la raccolta e l'elaborazione delle metriche. Zabbix si basa sul concetto di \textit{Item}, ovvero la singola unità di dato raccolta da un host. L'acquisizione di questi Item può avvenire seguendo due paradigmi opposti: il \textbf{Polling} (controllo attivo) e il \textbf{Trapping} (controllo asincrono o passivo).
 
-\subsection*{Il Paradigma del Polling (Controllo Attivo e Network Discovery)}
-Nel modello di Polling, è il server Zabbix (tramite i suoi processi interni denominati \textit{poller}) a prendere l'iniziativa. A intervalli di tempo regolari e predefiniti (\textit{Update interval}), il server apre una connessione verso l'host target, interroga il dispositivo (tramite protocolli come ICMP, SNMP, o richieste HTTP) e attende una risposta.
+Per la parte relativa al monitoraggio dell'accessibilità degli host alla rete e al corretto funzionamento dei servizi, è stato utilizzato il paradigma del Polling. Invece per il rilevamento delle manomissioni delle telecamere è stato utilizzato il paradigma del Trapping, in quanto le telecamere Hikvision implementano un sistema di avvisi automatici che possono essere intercettati e gestiti da Zabbix e da script ausiliari.
+\section{Descrizione dell'implementazione}
+Il sistema gestisce 2 eventi provenienti dalle telecamere: il  tamperdetection o l'oscuramento dell'obiettivo e il motiondetection o il rilevamento di movimento.
+Il secondo è stato implementato solo per motivi di debug, dato che condivide gli stessi canali dell'oscuramento ma è molto più facilmente riproducibile.
 
-Nella fase iniziale del progetto in Secoval, questa logica è stata sfruttata pesantemente per l'individuazione automatica degli apparati sul territorio tramite le \textbf{Discovery Rule}. Zabbix era configurato per lanciare un "ICMP Ping" orario su intere sottoreti (subnet) al fine di scovare nuovi nodi (TVCC, Access Point, Switch, Gateway LTE).
-
-Il flusso di automazione nativo procedeva in questo modo:
-\begin{enumerate}
-    \item \textbf{Discovery Rule:} Il server scansiona la sottorete. Se un indirizzo IP risponde al ping, viene generato un evento di "Discovery".
-    \item \textbf{Discovery Action:} Un set di regole logiche intercetta l'evento. Se l'IP risponde e magari presenta specifiche porte aperte, l'Action provvede ad aggiungere automaticamente l'host al sistema.
-    \item \textbf{Host Groups e Templates:} L'host appena scoperto viene inserito in un gruppo logico (es. \texttt{SmartCity/TVCC}) e gli viene associato un \textbf{Template}. Il template è un "modello" preconfezionato che contiene tutti gli \textit{Item}, i \textit{Trigger} e i grafici specifici per quella tecnologia, garantendo che ogni telecamera erediti le stesse logiche di monitoraggio senza configurazioni manuali ripetitive.
-\end{enumerate}
-
-\textbf{I limiti del Polling riscontrati nel progetto:}
-Nonostante l'efficacia del Network Discovery nativo, abbiamo riscontrato due limiti architetturali critici. In primo luogo, il discovery basato su ICMP creava host nominati univocamente con il loro indirizzo IP (o DNS name generico), privandoli del contesto aziendale vitale (come l'\texttt{ID Host} o l'\texttt{ID Palo}). In secondo luogo, il polling introduce una latenza intrinseca: se l'update interval di un controllo è di 5 minuti, un guasto che si verifica al minuto 1 verrà rilevato solo al minuto 5. Per eventi di sicurezza critici (come l'oscuramento di una telecamera), questo ritardo non è accettabile.
-
-\subsection*{Il Paradigma del Trapping (Controllo Asincrono e Zabbix Sender)}
-Per superare i limiti del polling sugli eventi critici, il progetto ha implementato il paradigma del \textbf{Trapping}. Nel trapping, il server Zabbix non interroga il dispositivo, ma rimane in ascolto passivo (tipicamente sulla porta TCP 10051 tramite i processi \textit{trapper}). È l'host periferico (o un middleware intermedio) a prendere l'iniziativa e a inviare (\textit{push}) proattivamente il dato al server nel momento esatto in cui l'evento si verifica.
-
-In Zabbix, questo si traduce nell'utilizzo di Item di tipo \textbf{Zabbix Trapper}. Tali item non hanno un intervallo di aggiornamento; si limitano ad attendere che l'utility a riga di comando \texttt{zabbix\_sender} (o una libreria API equivalente) inietti un valore formattato con la tripla: \texttt{<Hostname> <Item Key> <Value>}.
-
-Questa logica è stata la chiave di volta per integrare le telecamere \textbf{Hikvision}. Poiché le telecamere non possedevano un agent Zabbix nativo in grado di inviare trap, è stato sviluppato uno script Python (Middleware) che:
+Il workflow che viene eseguito per garantire la corretta gestione di queste informazioni si divide in questi step:
 \begin{itemize}
-    \item Mantiene una connessione HTTP in streaming (ISAPI) con la telecamera.
-    \item Intercetta istantaneamente gli eventi XML/JSON generati dall'hardware (es. \textit{Video Tampering} o \textit{Motion Detection}).
-    \item Traduce l'evento e lancia in background un comando \texttt{zabbix\_sender} indirizzato al server Zabbix, valorizzando l'item Trapper associato a quello specifico dispositivo.
+    \item Estrazione degli IP delle telecamere Hikvision presenti in Zabbix con uno script python.
+    \item Ogni IP estratto è utilizzato per lanciare verso la telecamera le configurazioni dei loro servizi tamperdetection e motiondetection tramite configurazioni in formato XML.
+    \item Si apre una connessione http con ogni telecamera mantenuta perpetuamente aperta in modo asincrono, attraverso uno script python. Su queste connessioni le telecamere comunicano i loro avvisi
+          ed essi vengono comunicati a Zabbix sugli appositi Item dei trigger tramite un API CLI di Zabbix.
+    \item All'interno del template relativo alle telecamere Hikvision abbiamo 2 trigger per motiondetection e oscuramento con le loro impostazioni.
+    \item I log di questi script vengono gestiti da logrotate salvandoli fino a 3 mesi.
 \end{itemize}
-Il risultato è un monitoraggio in tempo reale a latenza zero, impossibile da ottenere con il solo Polling, riducendo peraltro il traffico di rete e il carico di calcolo della CPU sul server Zabbix (che non deve più ciclare richieste a vuoto su centinaia di host).
+\textbf{Bottleneck}: se molti allarmi si attivano contemporaneamente,
+lo script python lancia altrettanti script bash e ciò sovraccaricherebbe la CPU.
+Se l'utilizzo rimane per il tamperdetection e solo saltuariamente per motiondetection non è un problema.
 
-\subsection*{Trigger e Motore di Valutazione (History Cache e Alarms)}
-Una volta che il dato raggiunge Zabbix, indipendentemente dal fatto che derivi da un Polling o da un Trapping, viene immagazzinato nella RAM (History Cache) per un'elaborazione ultra-rapida. È qui che entrano in gioco i \textbf{Trigger}.
+%come deve succedere
+% \section{Logiche di Polling vs Trapping in Zabbix}
 
-Sotto il cofano, un Trigger è un'espressione logica e matematica che valuta lo storico recente dei dati di un Item per determinare se l'host si trova in uno stato di "OK" o "PROBLEM". Ad esempio, un trigger potrebbe avere una logica simile a:
-\begin{center}
-    \texttt{last(/Host/icmp.ping) = 0}
-\end{center}
-Questa espressione stabilisce che se l'ultimo valore raccolto dal ping è 0 (host non raggiungibile), il trigger cambia il suo stato.
+% Per comprendere le scelte architetturali adottate durante il tirocinio per il monitoraggio della rete smart city di Secoval, è fondamentale analizzare come il server Zabbix opera "sotto il cofano" (under the hood) per la raccolta e l'elaborazione delle metriche. Zabbix si basa sul concetto di \textit{Item}, ovvero la singola unità di dato raccolta da un host. L'acquisizione di questi Item può avvenire seguendo due paradigmi diametralmente opposti: il \textbf{Polling} (controllo attivo) e il \textbf{Trapping} (controllo asincrono o passivo).
 
-I trigger in Zabbix sono dotati di funzionalità avanzate cruciali per il nostro ambiente smart city:
-\begin{itemize}
-    \item \textbf{Isteresi (Hysteresis):} Permette di definire soglie differenti per l'attivazione e la risoluzione del problema, fondamentale per evitare il fenomeno del \textit{Flapping} su reti LTE instabili (dove il ping potrebbe fallire e tornare ciclicamente in pochi secondi).
-    \item \textbf{Gestione degli Eventi e Macros:} Quando un trigger scatta, Zabbix genera un \textit{Event} univoco (es. \texttt{\{EVENT.ID\}}). Il motore interno associa automaticamente al problema tutta una serie di metadati tramite le \textbf{Macro} (variabili di sistema come \texttt{\{HOST.NAME\}}, \texttt{\{TRIGGER.NAME\}}, \texttt{\{EVENT.DATE\}}).
-\end{itemize}
+% \subsection*{Il Paradigma del Polling (Controllo Attivo e Network Discovery)}
+% Nel modello di Polling, è il server Zabbix (tramite i suoi processi interni denominati \textit{poller}) a prendere l'iniziativa. A intervalli di tempo regolari e predefiniti (\textit{Update interval}), il server apre una connessione verso l'host target, interroga il dispositivo (tramite protocolli come ICMP, SNMP, o richieste HTTP) e attende una risposta.
 
-L'ultimo anello della catena architetturale è l'\textbf{Action}. Quando un trigger rileva un'anomalia, l'Action intercetta il cambiamento di stato. Nel contesto dell'integrazione Secoval, l'Action non si limita a inviare una banale e-mail, ma esegue un \textit{Custom AlertScript} in Bash/Python. A tale script vengono passate le Macro generate dal Trigger come argomenti in input (\texttt{\$1, \$2...}), fornendo al programma tutto il contesto necessario per compilare il JSON Web Token e invocare le API del cloud di ticketing \textbf{Interacta} per gestire l'intervento dei tecnici sul campo.
+% Nella fase iniziale del progetto in Secoval, questa logica è stata sfruttata pesantemente per l'individuazione automatica degli apparati sul territorio tramite le \textbf{Discovery Rule}. Zabbix era configurato per lanciare un "ICMP Ping" orario su intere sottoreti (subnet) al fine di scovare nuovi nodi (TVCC, Access Point, Switch, Gateway LTE).
+
+% Il flusso di automazione nativo procedeva in questo modo:
+% \begin{enumerate}
+%     \item \textbf{Discovery Rule:} Il server scansiona la sottorete. Se un indirizzo IP risponde al ping, viene generato un evento di "Discovery".
+%     \item \textbf{Discovery Action:} Un set di regole logiche intercetta l'evento. Se l'IP risponde e magari presenta specifiche porte aperte, l'Action provvede ad aggiungere automaticamente l'host al sistema.
+%     \item \textbf{Host Groups e Templates:} L'host appena scoperto viene inserito in un gruppo logico (es. \texttt{SmartCity/TVCC}) e gli viene associato un \textbf{Template}. Il template è un "modello" preconfezionato che contiene tutti gli \textit{Item}, i \textit{Trigger} e i grafici specifici per quella tecnologia, garantendo che ogni telecamera erediti le stesse logiche di monitoraggio senza configurazioni manuali ripetitive.
+% \end{enumerate}
+
+% \textbf{I limiti del Polling riscontrati nel progetto:}
+% Nonostante l'efficacia del Network Discovery nativo, abbiamo riscontrato due limiti architetturali critici. In primo luogo, il discovery basato su ICMP creava host nominati univocamente con il loro indirizzo IP (o DNS name generico), privandoli del contesto aziendale vitale (come l'\texttt{ID Host} o l'\texttt{ID Palo}). In secondo luogo, il polling introduce una latenza intrinseca: se l'update interval di un controllo è di 5 minuti, un guasto che si verifica al minuto 1 verrà rilevato solo al minuto 5. Per eventi di sicurezza critici (come l'oscuramento di una telecamera), questo ritardo non è accettabile.
+
+% \subsection*{Il Paradigma del Trapping (Controllo Asincrono e Zabbix Sender)}
+% Per superare i limiti del polling sugli eventi critici, il progetto ha implementato il paradigma del \textbf{Trapping}. Nel trapping, il server Zabbix non interroga il dispositivo, ma rimane in ascolto passivo (tipicamente sulla porta TCP 10051 tramite i processi \textit{trapper}). È l'host periferico (o un middleware intermedio) a prendere l'iniziativa e a inviare (\textit{push}) proattivamente il dato al server nel momento esatto in cui l'evento si verifica.
+
+% In Zabbix, questo si traduce nell'utilizzo di Item di tipo \textbf{Zabbix Trapper}. Tali item non hanno un intervallo di aggiornamento; si limitano ad attendere che l'utility a riga di comando \texttt{zabbix\_sender} (o una libreria API equivalente) inietti un valore formattato con la tripla: \texttt{<Hostname> <Item Key> <Value>}.
+
+% Questa logica è stata la chiave di volta per integrare le telecamere \textbf{Hikvision}. Poiché le telecamere non possedevano un agent Zabbix nativo in grado di inviare trap, è stato sviluppato uno script Python (Middleware) che:
+% \begin{itemize}
+%     \item Mantiene una connessione HTTP in streaming (ISAPI) con la telecamera.
+%     \item Intercetta istantaneamente gli eventi XML/JSON generati dall'hardware (es. \textit{Video Tampering} o \textit{Motion Detection}).
+%     \item Traduce l'evento e lancia in background un comando \texttt{zabbix\_sender} indirizzato al server Zabbix, valorizzando l'item Trapper associato a quello specifico dispositivo.
+% \end{itemize}
+% Il risultato è un monitoraggio in tempo reale a latenza zero, impossibile da ottenere con il solo Polling, riducendo peraltro il traffico di rete e il carico di calcolo della CPU sul server Zabbix (che non deve più ciclare richieste a vuoto su centinaia di host).
+
+% \subsection*{Trigger e Motore di Valutazione (History Cache e Alarms)}
+% Una volta che il dato raggiunge Zabbix, indipendentemente dal fatto che derivi da un Polling o da un Trapping, viene immagazzinato nella RAM (History Cache) per un'elaborazione ultra-rapida. È qui che entrano in gioco i \textbf{Trigger}.
+
+% Sotto il cofano, un Trigger è un'espressione logica e matematica che valuta lo storico recente dei dati di un Item per determinare se l'host si trova in uno stato di "OK" o "PROBLEM". Ad esempio, un trigger potrebbe avere una logica simile a:
+% \begin{center}
+%     \texttt{last(/Host/icmp.ping) = 0}
+% \end{center}
+% Questa espressione stabilisce che se l'ultimo valore raccolto dal ping è 0 (host non raggiungibile), il trigger cambia il suo stato.
+
+% I trigger in Zabbix sono dotati di funzionalità avanzate cruciali per il nostro ambiente smart city:
+% \begin{itemize}
+%     \item \textbf{Isteresi (Hysteresis):} Permette di definire soglie differenti per l'attivazione e la risoluzione del problema, fondamentale per evitare il fenomeno del \textit{Flapping} su reti LTE instabili (dove il ping potrebbe fallire e tornare ciclicamente in pochi secondi).
+%     \item \textbf{Gestione degli Eventi e Macros:} Quando un trigger scatta, Zabbix genera un \textit{Event} univoco (es. \texttt{\{EVENT.ID\}}). Il motore interno associa automaticamente al problema tutta una serie di metadati tramite le \textbf{Macro} (variabili di sistema come \texttt{\{HOST.NAME\}}, \texttt{\{TRIGGER.NAME\}}, \texttt{\{EVENT.DATE\}}).
+% \end{itemize}
+
+% L'ultimo anello della catena architetturale è l'\textbf{Action}. Quando un trigger rileva un'anomalia, l'Action intercetta il cambiamento di stato. Nel contesto dell'integrazione Secoval, l'Action non si limita a inviare una banale e-mail, ma esegue un \textit{Custom AlertScript} in Bash/Python. A tale script vengono passate le Macro generate dal Trigger come argomenti in input (\texttt{\$1, \$2...}), fornendo al programma tutto il contesto necessario per compilare il JSON Web Token e invocare le API del cloud di ticketing \textbf{Interacta} per gestire l'intervento dei tecnici sul campo.
 
 
-% Citazioni e Bibliografia:
+% % Citazioni e Bibliografia:
 
-%     Scientifiche: Manuali di architettura delle reti o paper accademici sui \textit{Network Management Systems} (NMS) che confrontano i paradigmi \textit{Push} (Trapping) e \textit{Pull} (Polling) nei dispositivi IoT e smart city.
+% %     Scientifiche: Manuali di architettura delle reti o paper accademici sui \textit{Network Management Systems} (NMS) che confrontano i paradigmi \textit{Push} (Trapping) e \textit{Pull} (Polling) nei dispositivi IoT e smart city.
 
-%     Tecniche: Documentazione ufficiale Zabbix 7.0: sezioni "Zabbix trapper items", "Network discovery" e "Active/Passive checks".
+% %     Tecniche: Documentazione ufficiale Zabbix 7.0: sezioni "Zabbix trapper items", "Network discovery" e "Active/Passive checks".
 
-% Immagini e Tabelle:
+% % Immagini e Tabelle:
 
-%     Tabelle: Una tabella comparativa tra Polling e Trapping. Colonne: Paradigma (Push/Pull), Iniziatore (Zabbix/Host), Latenza (Alta/Bassa), Carico sul Server, Caso d'Uso in Secoval (Discovery ICMP vs Eventi Tampering).
+% %     Tabelle: Una tabella comparativa tra Polling e Trapping. Colonne: Paradigma (Push/Pull), Iniziatore (Zabbix/Host), Latenza (Alta/Bassa), Carico sul Server, Caso d'Uso in Secoval (Discovery ICMP vs Eventi Tampering).
 
-%     Immagini: Un diagramma architetturale a blocchi (creato da te, ad esempio con Draw.io o Lucidchart) che mostra visivamente il server Zabbix al centro. A sinistra il server "tira" i dati con il ping (Polling), a destra le telecamere "spingono" i dati verso il server (Trapping).
+% %     Immagini: Un diagramma architetturale a blocchi (creato da te, ad esempio con Draw.io o Lucidchart) che mostra visivamente il server Zabbix al centro. A sinistra il server "tira" i dati con il ping (Polling), a destra le telecamere "spingono" i dati verso il server (Trapping).
+\section{Configurazioni tamperdetection e motiondetection hikvision tramite XML}
+
+Le telecamere Hikvision espongono una API HTTP che permette di modificare le configurazioni e
+le impostazioni della telecamera tramite l'upload di file semi strutturati XML.
+Essi riguardano il setup delle impostazioni e della modalità di comunicazione per 2 eventi: tamperdetection e motiondetection.
+Dopo avere estratto gli IP delle telecamere da Zabbix, lo script python lancia verso ogni telecamera le configurazioni necessarie per abilitare questi eventi.
+Esse gestiscono l'attivazione e l'impostazione dell'area dell'immagine in cui la telecamera è
+sensibile all'oscuramento o al motion detection e la comunicazione dell'evento triggerato all'\texttt{EventTriggerNotification center} (lancia la comunicazione http).
+
 
 \section{Sviluppo del Middleware e Ascolto degli Stream Hikvision ISAPI}
 
-Il monitoraggio tradizionale basato sul protocollo ICMP (Ping) è in grado di certificare la presenza in rete di un dispositivo, ma risulta cieco di fronte a guasti di natura applicativa o fisica. Nel contesto della videosorveglianza urbana (TVCC), una telecamera potrebbe rispondere regolarmente al ping ma risultare oscurata, manomessa o ruotata. Per ottenere una visibilità reale sullo stato di salute degli apparati, è stato necessario spostare il monitoraggio dal livello di rete (L3) al livello applicativo (L7).
+% Il monitoraggio tradizionale basato sul protocollo ICMP (Ping) è in grado di certificare la presenza in rete di un dispositivo, ma risulta cieco di fronte a guasti di natura applicativa o fisica. Nel contesto della videosorveglianza urbana (TVCC), una telecamera potrebbe rispondere regolarmente al ping ma risultare oscurata, manomessa o ruotata. Per ottenere una visibilità reale sullo stato di salute degli apparati, è stato necessario spostare il monitoraggio dal livello di rete (L3) al livello applicativo (L7).
 
-Le telecamere Hikvision in dotazione a Secoval S.r.l. espongono le proprie funzionalità tramite \textbf{ISAPI} (\textit{Intelligent Security API}), un'interfaccia RESTful basata su HTTP. L'obiettivo ingegneristico è stato quello di creare un \textit{middleware} in grado di configurare massivamente questi apparati e di restare in ascolto dei loro allarmi in tempo reale, traducendoli in metriche compatibili con Zabbix.
+% Le telecamere Hikvision in dotazione a Secoval S.r.l. espongono le proprie funzionalità tramite \textbf{ISAPI} (\textit{Intelligent Security API}), un'interfaccia RESTful basata su HTTP. L'obiettivo ingegneristico è stato quello di creare un \textit{middleware} in grado di configurare massivamente questi apparati e di restare in ascolto dei loro allarmi in tempo reale, traducendoli in metriche compatibili con Zabbix.
 
-\subsection*{Setup e Configurazione tramite Payload XML}
-Affinché una telecamera generi un evento, le funzioni di analisi video (\textit{Smart Events}) devono essere prima abilitate e configurate. La sfida principale consisteva nel superare la configurazione manuale tramite interfaccia web, impraticabile per centinaia di dispositivi.
+% \subsection*{Setup e Configurazione tramite Payload XML}
+% Affinché una telecamera generi un evento, le funzioni di analisi video (\textit{Smart Events}) devono essere prima abilitate e configurate. La sfida principale consisteva nel superare la configurazione manuale tramite interfaccia web, impraticabile per centinaia di dispositivi.
 
-È stato quindi sviluppato un meccanismo di \textit{provisioning} che, tramite richieste HTTP di tipo \texttt{PUT}, invia specifici payload in formato XML agli endpoint ISAPI della telecamera. Ad esempio, per abilitare l'allarme di manomissione (\textit{Video Tampering}), il sistema trasmette un documento strutturato al percorso \texttt{/ISAPI/Smart/VideoTampering/1}:
+% È stato quindi sviluppato un meccanismo di \textit{provisioning} che, tramite richieste HTTP di tipo \texttt{PUT}, invia specifici payload in formato XML agli endpoint ISAPI della telecamera. Ad esempio, per abilitare l'allarme di manomissione (\textit{Video Tampering}), il sistema trasmette un documento strutturato al percorso \texttt{/ISAPI/Smart/VideoTampering/1}:
 
-\begin{lstlisting}[language=XML, caption={Esempio di payload XML per l'attivazione del Video Tampering}]
-<VideoTampering version="2.0" xmlns="http://www.isapi.org/ver20/XMLSchema">
-    <enabled>true</enabled>
-    <videoTamperingLevel>2</videoTamperingLevel>
-    <RegionList>
-        <Region>
-            <id>1</id>
-            <RegionCoordinatesList>
-                <RegionCoordinates>
-                    <positionX>0</positionX>
-                    <positionY>0</positionY>
-                </RegionCoordinates>
-                <RegionCoordinates>
-                    <positionX>1000</positionX>
-                    <positionY>1000</positionY>
-                </RegionCoordinates>
-            </RegionCoordinatesList>
-        </Region>
-    </RegionList>
-</VideoTampering>
+% \begin{lstlisting}[language=XML, caption={Esempio di payload XML per l'attivazione del Video Tampering}]
+% <VideoTampering version="2.0" xmlns="http://www.isapi.org/ver20/XMLSchema">
+%     <enabled>true</enabled>
+%     <videoTamperingLevel>2</videoTamperingLevel>
+%     <RegionList>
+%         <Region>
+%             <id>1</id>
+%             <RegionCoordinatesList>
+%                 <RegionCoordinates>
+%                     <positionX>0</positionX>
+%                     <positionY>0</positionY>
+%                 </RegionCoordinates>
+%                 <RegionCoordinates>
+%                     <positionX>1000</positionX>
+%                     <positionY>1000</positionY>
+%                 </RegionCoordinates>
+%             </RegionCoordinatesList>
+%         </Region>
+%     </RegionList>
+% </VideoTampering>
+% \end{lstlisting}
+
+% Nella prima iterazione del progetto, l'invio di queste configurazioni è stato demandato a script Bash ausiliari (come \texttt{configura\_telecamere.sh}) orchestrati da Python tramite la libreria \texttt{subprocess}. Tuttavia, come evidenziato nell'analisi prestazionale, questo approccio introduce un overhead di sistema. Un'evoluzione architetturale futura prevede l'implementazione di chiamate native asincrone tramite \texttt{aiohttp} per eliminare i colli di bottiglia legati all'apertura continua di nuovi processi shell.
+\section{Ricezione degli eventi e invio a Zabbix}
+È stato creato uno script python in \\\inlinecode{/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts}\\\inlinecode{/hikvision_listener_multiplehosts.py}
+che si comporta come middleware. Il suo scopo principale è fare da ponte tra le telecamere di videosorveglianza Hikvision e il server di monitoraggio Zabbix,
+intercettando gli allarmi in tempo reale e convertendoli valori di item nel sistema Zabbix.
+
+Invece di interrogare continuamente le telecamere (polling),
+lo script si mette in "ascolto" continuo sui loro flussi di eventi (streaming),
+catturando istantaneamente anomalie come il rilevamento del movimento (VMD)
+o l'oscuramento della telecamera (Tampering/Shelter alarm).
+
+\subsection{Implementazione del listener}
+Lo script si collega tramite API token a Zabbix, utilizzando la libreria pyzabbix,
+estrae tutti gli host, con il relativo campo "contact" dell'inventory, per filtrarli, e salva l'indirizzo IP solo
+se nel "contact" abbiamo una stringa corrispondente a "Hikvision.China".
+Questo rende il sistema altamente scalabile: se aggiungi una nuova telecamera su Zabbix,
+il riavvio successivo dello script la includerà automaticamente.
+
+Per ogni telecamera trovata, viene avviato un "task" indipendente grazie alla libreria asyncio(Funzione ascolta\_telecamera).
+Questo permette di gestire decine di telecamere contemporaneamente usando un solo processo leggero,
+senza che l'attesa di dati da una telecamera blocchi le altre.
+Lo script utilizza http per aprire una connessione HTTP persistente (Stream) verso l'endpoint ISAPI delle telecamere (/ISAPI/Event/notification/alertStream).
+In questo flusso continuo, la telecamera invia frammenti in formato XML ogni volta che accade qualcosa.
+Lo script legge il flusso riga per riga, isola i blocchi XML (<EventNotificationAlert>) e li analizza in tempo reale.
+Estrae il tipo di evento (eventType) e il suo stato (eventState, se attivo o rientrato).
+Quando viene rilevato un evento valido (es. movimento o telecamera coperta), lo script deve avvisare Zabbix.
+Per farlo lo script esegue un comando di sistema: zabbix\_sender.
+Questo è uno strumento a riga di comando nativo di Zabbix,
+progettato specificamente per inviare dati ad alte prestazioni a Zabbix.
+Il comando comunica l'hostname esatto della telecamera, la chiave dell'allarme
+(es. hikvision.motionDetection) e il valore (1 per allarme attivo, 0 per allarme rientrato).
+
+\subsubsection{Items in Zabbix}
+Nel template \texttt{templateSC\_configurazione\_hikvision} sono stati creati 2 nuovi Item di tipo \emph{Zabbix trapper}:
+AllarmeItemOscuramentoProva(key: hikvision.oscuration) e AllarmeItemMotionDetectionProva(hikvision.motionDetection). %valutare se togliere prova
+Essi sono aggiornati solo da zabbix\_sender.
+
+\subsection{Esecuzione continuativa e log}
+
+Lo script viene configurato come servizio systemd, garantendo che si avvii automaticamente all'accensione del server.
+Il file con le configurazioni è \\\inlinecode{/etc/systemd/system/hikvision-monitor.service}.
+Se lo script dovesse bloccarsi per un errore critico, il sistema operativo lo riavvierà automaticamente entro 10 secondi.
+È stata inserita una regola che "uccide" e riavvia il servizio ogni 24 ore in modo controllato.
+Questo è un ottimo accorgimento tecnico per evitare accumuli di memoria
+dovuti alle connessioni in streaming prolungate e per forzare il sistema a riscaricare la lista aggiornata delle telecamere da Zabbix ogni giorno.
+Tutto l'output standard viene reindirizzato in un file di log \inlinecode{hikvision_listener_log.log} su disco per permettere il monitoraggio del corretto funzionamento.
+
+
+\begin{lstlisting}[language=bash, caption=Configurazione Systemd per hikvision\_listener\_multiplehosts.py]
+[Unit]
+Description=Monitoraggio Eventi Hikvision (Tampering e VMD) verso Zabbix
+After=network.target
+
+[Service]
+# Esegue Python in modalita' "unbuffered" (-u) per scrivere subito i print nel log
+ExecStart=/home/administrator/zabbixHostsScripts/venv/bin/python3 -u /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/hikvision_listener_multiplehosts.py
+WorkingDirectory=/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts
+
+# Politiche di riavvio in caso di crash
+Restart=always
+RestartSec=10
+
+# metodo per l'aggiornamento quotidiano:
+# Forza il riavvio del servizio ogni 86400 secondi (24 ore)
+RuntimeMaxSec=86400
+
+# Gestione dei Log
+StandardOutput=append:/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/hikvision_listener_log.log
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target
+
+#Per controllare se lo script sta girando correttamente, chiedere lo stato a systemd:
+#sudo systemctl status hikvision-monitor.service
+
+#E per vedere l'output in tempo reale, usare il comando tail:
+#tail -f /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/hikvision_listener_log.log
 \end{lstlisting}
 
-Nella prima iterazione del progetto, l'invio di queste configurazioni è stato demandato a script Bash ausiliari (come \texttt{configura\_telecamere.sh}) orchestrati da Python tramite la libreria \texttt{subprocess}. Tuttavia, come evidenziato nell'analisi prestazionale, questo approccio introduce un overhead di sistema. Un'evoluzione architetturale futura prevede l'implementazione di chiamate native asincrone tramite \texttt{aiohttp} per eliminare i colli di bottiglia legati all'apertura continua di nuovi processi shell.
+\section{Gestione dei log relativi al rilevamento manomissioni}
+Gli script visti fino a ora generano degli output testuali, che andrebbero
+nello standard output, ma vengono reindirizzati dai job crontab e systemd in specifici file di log:
+ipHik\_log.log, config\_telecamere\_log.log e hikvision\_listener\_log.log.
+Ogni scrittura nei file è preceduta dal timestamp.
+Come visto in precedenza per evitare di memorizzare questi dati all'infinito e generare un file di testo
+gigantesco, ho utilizzato il sistema Logrotate, una utility linux il cui scopo è la
+rotazione, compressione e rimozione di file di log automatici.
+In questo caso il file contenente le configurazioni per il job logrotate
+é accessibile tramite: \inlinecode{nano /etc/logrotate.d/hikvision_scripts}. Al
+suo interno troviamo:
 
-\subsection*{Il Middleware Python e l'ascolto dell'Alert Stream}
-Una volta configurate, le telecamere sono pronte a generare allarmi. Invece di interrogare continuamente la telecamera per chiedere se ci siano novità (\textit{Polling}), abbiamo optato per un approccio \textit{Event-Driven} (basato su \textit{Trapping}). Questo azzera la latenza di rilevamento e minimizza il traffico di rete.
+\begin{lstlisting}[language=bash, caption=Cronjob log relativi al rilevamento manomissioni]
+# Blocco 1: Per gli script periodici (crontab)
+/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/config_telecamere_log.log
+/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/ipHik_log.log {
+    su administrator administrator
+    weekly
+    maxsize 30M
+    rotate 12
+    dateext
+    dateformat -%Y-%m-%d
+    olddir /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/storico_log
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 0644 administrator administrator
+}
 
-Il cuore di questa integrazione è uno script Python, eseguito come demone (\textit{systemd service}) in background sul server. Lo script instaura una connessione HTTP persistente in streaming verso l'endpoint \texttt{/ISAPI/Event/notification/alertStream}. Finché la connessione è aperta, la telecamera "spinge" proattivamente (push) pacchetti XML (o multipart) ogni volta che un sensore scatta.
-
-Di seguito si riporta un estratto semplificato della logica core del middleware in ascolto:
-
-\begin{lstlisting}[language=Python, caption={Middleware Python per l'ascolto persistente dello stream ISAPI}]
-import requests
-import subprocess
-import xml.etree.ElementTree as ET
-from requests.auth import HTTPDigestAuth
-
-def listen_to_camera_stream(camera_ip, user, password, host_zabbix):
-    url = f"http://{camera_ip}/ISAPI/Event/notification/alertStream"
-
-    try:
-        # Apertura della connessione persistente (stream=True)
-        response = requests.get(url, auth=HTTPDigestAuth(user, password), stream=True, timeout=60)
-
-        # Iterazione continua sui chunk di dati in arrivo
-        for line in response.iter_lines():
-            if line:
-                decoded_line = line.decode('utf-8')
-
-                # Intercettazione dell'inizio di un blocco XML
-                if "<EventNotificationAlert" in decoded_line:
-                    # Logica di buffering (omessa per brevita')
-                    # Parsing dell'XML ricevuto
-                    root = ET.fromstring(xml_buffer)
-                    event_type = root.find('.//eventType').text
-                    event_state = root.find('.//eventState').text
-
-                    # Se l'evento e' un Tampering o un Motion Detection
-                    if event_type in ["videoloss", "tampering", "VMD"]:
-                        # Traduzione per Zabbix: active=1, inactive=0
-                        value = "1" if event_state == "active" else "0"
-
-                        # Inoltro asincrono a Zabbix tramite Zabbix Sender
-                        send_to_zabbix(host_zabbix, event_type, value)
-
-    except requests.exceptions.RequestException as e:
-        print(f"Errore di connessione allo stream di {camera_ip}: {e}")
-
-def send_to_zabbix(zabbix_host, item_key, value):
-    # Costruzione del comando zabbix_sender
-    cmd = [
-        "zabbix_sender",
-        "-z", "127.0.0.1",
-        "-s", zabbix_host,
-        "-k", item_key,
-        "-o", value
-    ]
-    # Esecuzione isolata per non bloccare lo stream
-    subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+# Blocco 2: Per lo script Python in ascolto continuo (systemd)
+/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/hikvision_listener_log.log {
+    su administrator administrator
+    weekly
+    maxsize 15M
+    rotate 12
+    dateext
+    dateformat -%Y-%m-%d
+    olddir /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/storico_log
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+}
 \end{lstlisting}
 
-\subsection*{Motivazioni Architetturali e Sicurezza}
-L'implementazione di questo listener continuo in Python ha rappresentato una svolta prestazionale. La scelta di utilizzare \texttt{subprocess.Popen} al posto di \texttt{subprocess.run} per l'invio del dato tramite \texttt{zabbix\_sender} è fondamentale: consente al processo Python di "sganciare" l'invio della notifica (modalità *fire-and-forget*), tornando immediatamente in ascolto sullo stream senza perdere eventuali eventi ravvicinati.
+% \subsection*{Il Middleware Python e l'ascolto dell'Alert Stream}
+% Una volta configurate, le telecamere sono pronte a generare allarmi. Invece di interrogare continuamente la telecamera per chiedere se ci siano novità (\textit{Polling}), abbiamo optato per un approccio \textit{Event-Driven} (basato su \textit{Trapping}). Questo azzera la latenza di rilevamento e minimizza il traffico di rete.
 
-Inoltre, operando nel contesto di un ambiente di produzione Linux rigoroso, lo script è configurato per utilizzare percorsi assoluti ed è eseguito all'interno del proprio \textit{Virtual Environment} (\texttt{venv}). Come documentato internamente, l'eseguibile lavora senza elevare i privilegi (\texttt{su zabbix zabbix}), delegando la gestione degli errori e la rotazione dei log all'utility di sistema per prevenire saturazioni del disco causate dall'elevato \textit{throughput} dei messaggi XML elaborati.
+% Il cuore di questa integrazione è uno script Python, eseguito come demone (\textit{systemd service}) in background sul server. Lo script instaura una connessione HTTP persistente in streaming verso l'endpoint \texttt{/ISAPI/Event/notification/alertStream}. Finché la connessione è aperta, la telecamera "spinge" proattivamente (push) pacchetti XML (o multipart) ogni volta che un sensore scatta.
+
+% Di seguito si riporta un estratto semplificato della logica core del middleware in ascolto:
+
+% \begin{lstlisting}[language=Python, caption={Middleware Python per l'ascolto persistente dello stream ISAPI}]
+% import requests
+% import subprocess
+% import xml.etree.ElementTree as ET
+% from requests.auth import HTTPDigestAuth
+
+% def listen_to_camera_stream(camera_ip, user, password, host_zabbix):
+%     url = f"http://{camera_ip}/ISAPI/Event/notification/alertStream"
+
+%     try:
+%         # Apertura della connessione persistente (stream=True)
+%         response = requests.get(url, auth=HTTPDigestAuth(user, password), stream=True, timeout=60)
+
+%         # Iterazione continua sui chunk di dati in arrivo
+%         for line in response.iter_lines():
+%             if line:
+%                 decoded_line = line.decode('utf-8')
+
+%                 # Intercettazione dell'inizio di un blocco XML
+%                 if "<EventNotificationAlert" in decoded_line:
+%                     # Logica di buffering (omessa per brevita')
+%                     # Parsing dell'XML ricevuto
+%                     root = ET.fromstring(xml_buffer)
+%                     event_type = root.find('.//eventType').text
+%                     event_state = root.find('.//eventState').text
+
+%                     # Se l'evento e' un Tampering o un Motion Detection
+%                     if event_type in ["videoloss", "tampering", "VMD"]:
+%                         # Traduzione per Zabbix: active=1, inactive=0
+%                         value = "1" if event_state == "active" else "0"
+
+%                         # Inoltro asincrono a Zabbix tramite Zabbix Sender
+%                         send_to_zabbix(host_zabbix, event_type, value)
+
+%     except requests.exceptions.RequestException as e:
+%         print(f"Errore di connessione allo stream di {camera_ip}: {e}")
+
+% def send_to_zabbix(zabbix_host, item_key, value):
+%     # Costruzione del comando zabbix_sender
+%     cmd = [
+%         "zabbix_sender",
+%         "-z", "127.0.0.1",
+%         "-s", zabbix_host,
+%         "-k", item_key,
+%         "-o", value
+%     ]
+%     # Esecuzione isolata per non bloccare lo stream
+%     subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+% \end{lstlisting}
+
+% \subsection*{Motivazioni Architetturali e Sicurezza}
+% L'implementazione di questo listener continuo in Python ha rappresentato una svolta prestazionale. La scelta di utilizzare \texttt{subprocess.Popen} al posto di \texttt{subprocess.run} per l'invio del dato tramite \texttt{zabbix\_sender} è fondamentale: consente al processo Python di "sganciare" l'invio della notifica (modalità *fire-and-forget*), tornando immediatamente in ascolto sullo stream senza perdere eventuali eventi ravvicinati.
+
+% Inoltre, operando nel contesto di un ambiente di produzione Linux rigoroso, lo script è configurato per utilizzare percorsi assoluti ed è eseguito all'interno del proprio \textit{Virtual Environment} (\texttt{venv}). Come documentato internamente, l'eseguibile lavora senza elevare i privilegi (\texttt{su zabbix zabbix}), delegando la gestione degli errori e la rotazione dei log all'utility di sistema per prevenire saturazioni del disco causate dall'elevato \textit{throughput} dei messaggi XML elaborati.
 
 
-% Citazioni e Bibliografia:
-% Scientifiche: Testi sull'architettura RESTful e sui paradigmi architetturali \textit{Event-Driven} per l'integrazione di sistemi distribuiti.
-% Tecniche: Documentazione ufficiale dell'API ISAPI di Hikvision (se non coperta da NDA, puoi citare il manuale di riferimento). La documentazione della libreria \texttt{requests} di Python, specificamente la gestione dello \textit{Streaming Requests} e del \textit{Chunked Transfer Encoding}.
+% % Citazioni e Bibliografia:
+% % Scientifiche: Testi sull'architettura RESTful e sui paradigmi architetturali \textit{Event-Driven} per l'integrazione di sistemi distribuiti.
+% % Tecniche: Documentazione ufficiale dell'API ISAPI di Hikvision (se non coperta da NDA, puoi citare il manuale di riferimento). La documentazione della libreria \texttt{requests} di Python, specificamente la gestione dello \textit{Streaming Requests} e del \textit{Chunked Transfer Encoding}.
 
-% Immagini e Tabelle:
-% Tabelle: Una tabella che mappa gli allarmi ISAPI (es. \texttt{videoloss}, \texttt{tampering}, \texttt{VMD}) ai corrispondenti valori passati all'Item Zabbix (1/0) e al loro livello di criticità o gravità configurato nel sistema.
-% Immagini: Uno schema concettuale dell'elaborazione del middleware: 1) Flusso HTTP continuo in ingresso $\rightarrow$ 2) Buffering del frammento XML $\rightarrow$ 3) Parsing dell'albero XML $\rightarrow$ 4) Chiamata al processo \texttt{zabbix_sender}. Può anche essere utile uno screenshot reale anonimizzato dell'interfaccia della telecamera che mostra la griglia di rilevamento del "Video Tampering" sull'ottica.
+% % Immagini e Tabelle:
+% % Tabelle: Una tabella che mappa gli allarmi ISAPI (es. \texttt{videoloss}, \texttt{tampering}, \texttt{VMD}) ai corrispondenti valori passati all'Item Zabbix (1/0) e al loro livello di criticità o gravità configurato nel sistema.
+% % Immagini: Uno schema concettuale dell'elaborazione del middleware: 1) Flusso HTTP continuo in ingresso $\rightarrow$ 2) Buffering del frammento XML $\rightarrow$ 3) Parsing dell'albero XML $\rightarrow$ 4) Chiamata al processo \texttt{zabbix_sender}. Può anche essere utile uno screenshot reale anonimizzato dell'interfaccia della telecamera che mostra la griglia di rilevamento del "Video Tampering" sull'ottica.
 
-\section{Inoltro asincrono tramite Zabbix Sender}
+% \section{Inoltro asincrono tramite Zabbix Sender}
 
-Una volta che il middleware Python ha intercettato e decodificato un evento critico (come il \textit{Video Tampering}) dallo stream ISAPI della telecamera, emerge la necessità di notificare l'anomalia al server Zabbix nel minor tempo possibile. Per soddisfare questo requisito e garantire un monitoraggio in tempo reale, l'architettura si affida a un inoltro dati di tipo \textit{push}.
+% Una volta che il middleware Python ha intercettato e decodificato un evento critico (come il \textit{Video Tampering}) dallo stream ISAPI della telecamera, emerge la necessità di notificare l'anomalia al server Zabbix nel minor tempo possibile. Per soddisfare questo requisito e garantire un monitoraggio in tempo reale, l'architettura si affida a un inoltro dati di tipo \textit{push}.
 
-La tecnologia impiegata per questa operazione è \textbf{Zabbix Sender}, un'utility nativa a riga di comando (CLI) progettata per inviare pacchetti di dati direttamente al processo \textit{Zabbix Trapper}, tipicamente in ascolto sulla porta TCP 10051 del server.
+% La tecnologia impiegata per questa operazione è \textbf{Zabbix Sender}, un'utility nativa a riga di comando (CLI) progettata per inviare pacchetti di dati direttamente al processo \textit{Zabbix Trapper}, tipicamente in ascolto sulla porta TCP 10051 del server.
 
-A livello implementativo, la chiamata all'eseguibile \texttt{zabbix\_sender} è gestita dallo script Python, ma in maniera strettamente \textbf{asincrona}. Invece di utilizzare funzioni bloccanti, l'invio è demandato al costruttore \texttt{subprocess.Popen}, configurato in modalità \textit{fire-and-forget} reindirizzando i flussi di output e di errore standard (\texttt{stdout} e \texttt{stderr}) verso \texttt{subprocess.DEVNULL}.
+% A livello implementativo, la chiamata all'eseguibile \texttt{zabbix\_sender} è gestita dallo script Python, ma in maniera strettamente \textbf{asincrona}. Invece di utilizzare funzioni bloccanti, l'invio è demandato al costruttore \texttt{subprocess.Popen}, configurato in modalità \textit{fire-and-forget} reindirizzando i flussi di output e di errore standard (\texttt{stdout} e \texttt{stderr}) verso \texttt{subprocess.DEVNULL}.
 
-Le ragioni e le motivazioni ingegneristiche alla base di questa specifica scelta implementativa sono molteplici e documentate nelle linee guida di sistema:
+% Le ragioni e le motivazioni ingegneristiche alla base di questa specifica scelta implementativa sono molteplici e documentate nelle linee guida di sistema:
 
-\begin{itemize}
-    \item \textbf{Prevenzione del blocco del listener (Non-blocking I/O):} Se lo script Python avesse utilizzato una chiamata sincrona (come \texttt{subprocess.run}), il processo si sarebbe sospeso in attesa di un ACK (Acknowledgement) da parte del server Zabbix. In caso di temporanea latenza di rete o sovraccarico del server, questo blocco avrebbe interrotto la lettura dello stream HTTP della telecamera, causando un buffer overflow o la potenziale perdita di allarmi ravvicinati.
-    \item \textbf{Latenza Zero:} Demandando l'invio asincrono a un processo figlio separato, l'evento viene "sparato" a Zabbix nella frazione di secondo successiva al parsing dell'XML. Questo garantisce che i tempi di reazione del sistema di monitoraggio siano praticamente nulli.
-    \item \textbf{Disaccoppiamento dei componenti:} Il middleware Python mantiene un focus esclusivo e performante sull'ingestione e la traduzione del flusso ISAPI. L'onere di instaurare i socket TCP, negoziare la trasmissione e chiudere la connessione viene delegato al sistema operativo e al binario \texttt{zabbix\_sender} (scritto nativamente in C e altamente ottimizzato), alleggerendo così il carico computazionale della virtual machine.
-\end{itemize}
+% \begin{itemize}
+%     \item \textbf{Prevenzione del blocco del listener (Non-blocking I/O):} Se lo script Python avesse utilizzato una chiamata sincrona (come \texttt{subprocess.run}), il processo si sarebbe sospeso in attesa di un ACK (Acknowledgement) da parte del server Zabbix. In caso di temporanea latenza di rete o sovraccarico del server, questo blocco avrebbe interrotto la lettura dello stream HTTP della telecamera, causando un buffer overflow o la potenziale perdita di allarmi ravvicinati.
+%     \item \textbf{Latenza Zero:} Demandando l'invio asincrono a un processo figlio separato, l'evento viene "sparato" a Zabbix nella frazione di secondo successiva al parsing dell'XML. Questo garantisce che i tempi di reazione del sistema di monitoraggio siano praticamente nulli.
+%     \item \textbf{Disaccoppiamento dei componenti:} Il middleware Python mantiene un focus esclusivo e performante sull'ingestione e la traduzione del flusso ISAPI. L'onere di instaurare i socket TCP, negoziare la trasmissione e chiudere la connessione viene delegato al sistema operativo e al binario \texttt{zabbix\_sender} (scritto nativamente in C e altamente ottimizzato), alleggerendo così il carico computazionale della virtual machine.
+% \end{itemize}
 
 
-% Citazioni e Bibliografia:
+% % Citazioni e Bibliografia:
 
-%     Scientifiche: Pubblicazioni sui concetti di I/O non bloccante, parallelismo ed esecuzione asincrona dei processi nei sistemi operativi.
+% %     Scientifiche: Pubblicazioni sui concetti di I/O non bloccante, parallelismo ed esecuzione asincrona dei processi nei sistemi operativi.
 
-%     Tecniche: Pagine di manuale (\textit{man pages}) di Unix/Linux per la gestione dei processi figlio. Documentazione ufficiale del modulo \texttt{subprocess} di Python (in particolare le differenze architetturali tra \texttt{subprocess.run} e \texttt{subprocess.Popen}). Manuale di \texttt{zabbix_sender}.
+% %     Tecniche: Pagine di manuale (\textit{man pages}) di Unix/Linux per la gestione dei processi figlio. Documentazione ufficiale del modulo \texttt{subprocess} di Python (in particolare le differenze architetturali tra \texttt{subprocess.run} e \texttt{subprocess.Popen}). Manuale di \texttt{zabbix_sender}.
 
-% Immagini e Tabelle:
+% % Immagini e Tabelle:
 
-%     Tabelle: Tabella riassuntiva dei parametri (flag) passati all'utility \texttt{zabbix_sender} all'interno dello script (es. \texttt{-z} per l'host del server Zabbix, \texttt{-s} per l'host target, \texttt{-k} per la chiave dell'Item, \texttt{-o} per il valore).
+% %     Tabelle: Tabella riassuntiva dei parametri (flag) passati all'utility \texttt{zabbix_sender} all'interno dello script (es. \texttt{-z} per l'host del server Zabbix, \texttt{-s} per l'host target, \texttt{-k} per la chiave dell'Item, \texttt{-o} per il valore).
 
-%     Immagini: Un diagramma di sequenza (UML Sequence Diagram) che illustra il paradigma \textit{fire-and-forget}. Il middleware riceve l'evento, "sgancia" l'esecuzione al processo figlio e torna immediatamente in ascolto, mentre il processo figlio comunica con Zabbix e si spegne da solo.
+% %     Immagini: Un diagramma di sequenza (UML Sequence Diagram) che illustra il paradigma \textit{fire-and-forget}. Il middleware riceve l'evento, "sgancia" l'esecuzione al processo figlio e torna immediatamente in ascolto, mentre il processo figlio comunica con Zabbix e si spegne da solo.
 
-\section{Definizione di Trigger e Discovery Actions OPPURE MEGLIO Configurazione Pratica di Trigger e Actions per gli Eventi TVCC}
+% \section{Definizione di Trigger e Discovery Actions OPPURE MEGLIO Configurazione Pratica di Trigger e Actions per gli Eventi TVCC}
 
-Avendo già analizzato le logiche di base del motore di valutazione di Zabbix (Sezione 4.1), in questa sezione ci si concentrerà sull'implementazione pratica degli Item, dei Trigger e delle Action configurate per orchestrare gli allarmi provenienti dalle telecamere e integrarli con la piattaforma Interacta.
+% Avendo già analizzato le logiche di base del motore di valutazione di Zabbix (Sezione 4.1), in questa sezione ci si concentrerà sull'implementazione pratica degli Item, dei Trigger e delle Action configurate per orchestrare gli allarmi provenienti dalle telecamere e integrarli con la piattaforma Interacta.
 
-\subsection*{Il superamento delle Discovery Rule tradizionali}
-Nella fase di prototipazione del sistema, il popolamento degli host (le telecamere e gli AP) era stato affidato alle \textbf{Discovery Rule} native di Zabbix. Il sistema effettuava un ping (ICMP) su intere sottoreti; le \textbf{Discovery Action} intercettavano l'IP che rispondeva e applicavano automaticamente un Template predefinito.
+% \subsection*{Il superamento delle Discovery Rule tradizionali}
+% Nella fase di prototipazione del sistema, il popolamento degli host (le telecamere e gli AP) era stato affidato alle \textbf{Discovery Rule} native di Zabbix. Il sistema effettuava un ping (ICMP) su intere sottoreti; le \textbf{Discovery Action} intercettavano l'IP che rispondeva e applicavano automaticamente un Template predefinito.
 
-Tuttavia, come documentato nelle specifiche di progetto, questo approccio è stato scartato. La motivazione architetturale risiede nel fatto che le Discovery Rule native nominavano gli host esclusivamente tramite il loro indirizzo IP o il nome DNS generico, perdendo tutto il contesto aziendale necessario (come l'\texttt{ID Host} e l'\texttt{ID Palo}). Per questo motivo, l'automazione tramite Discovery nativa è stata disabilitata e sostituita integralmente dallo script Python che agisce via API (JSON-RPC) leggendo i file Excel del CMDB aziendale, garantendo così un allineamento perfetto tra il sistema di monitoraggio e l'inventario fisico.
+% Tuttavia, come documentato nelle specifiche di progetto, questo approccio è stato scartato. La motivazione architetturale risiede nel fatto che le Discovery Rule native nominavano gli host esclusivamente tramite il loro indirizzo IP o il nome DNS generico, perdendo tutto il contesto aziendale necessario (come l'\texttt{ID Host} e l'\texttt{ID Palo}). Per questo motivo, l'automazione tramite Discovery nativa è stata disabilitata e sostituita integralmente dallo script Python che agisce via API (JSON-RPC) leggendo i file Excel del CMDB aziendale, garantendo così un allineamento perfetto tra il sistema di monitoraggio e l'inventario fisico.
 
-\subsection*{Item Trapper e Trigger per le Telecamere}
-Le telecamere importate dallo script API vengono associate a un Template specifico creato ad-hoc per i dispositivi Hikvision. All'interno di questo Template, per gestire gli eventi del middleware ISAPI, sono stati definiti degli \textbf{Item di tipo Zabbix Trapper} (es. con chiave \texttt{hikvision.event.tampering}).
+% \subsection*{Item Trapper e Trigger per le Telecamere}
+% Le telecamere importate dallo script API vengono associate a un Template specifico creato ad-hoc per i dispositivi Hikvision. All'interno di questo Template, per gestire gli eventi del middleware ISAPI, sono stati definiti degli \textbf{Item di tipo Zabbix Trapper} (es. con chiave \texttt{hikvision.event.tampering}).
 
-Il \textbf{Trigger} associato a questo Item è il vero motore decisionale. Non si limita a valutare la presenza di un guasto, ma deve gestire la transizione di stato per l'apertura del ticket. L'espressione logica applicata è simile alla seguente:
-\begin{center}
-    \texttt{last(/Template Hikvision/hikvision.event.tampering)=1}
-\end{center}
-Inoltre, per prevenire falsi allarmi dovuti a micro-disconnessioni del flusso video, è stata implementata la funzione \texttt{nodata()} all'interno del Trigger. Se il middleware Python smette di inviare dati per un tempo predefinito (es. 5 minuti), il Trigger scatta per segnalare non una manomissione, ma l'irreperibilità del servizio di ascolto stesso.
+% Il \textbf{Trigger} associato a questo Item è il vero motore decisionale. Non si limita a valutare la presenza di un guasto, ma deve gestire la transizione di stato per l'apertura del ticket. L'espressione logica applicata è simile alla seguente:
+% \begin{center}
+%     \texttt{last(/Template Hikvision/hikvision.event.tampering)=1}
+% \end{center}
+% Inoltre, per prevenire falsi allarmi dovuti a micro-disconnessioni del flusso video, è stata implementata la funzione \texttt{nodata()} all'interno del Trigger. Se il middleware Python smette di inviare dati per un tempo predefinito (es. 5 minuti), il Trigger scatta per segnalare non una manomissione, ma l'irreperibilità del servizio di ascolto stesso.
 
 \subsection*{Trigger Actions e Integrazione con Interacta}
 Quando un Trigger cambia stato (da \texttt{OK} a \texttt{PROBLEM} o viceversa), entra in gioco il sistema di \textbf{Actions}. Invece di configurare un'Action per inviare una semplice notifica e-mail, il sistema è stato istruito per eseguire un'operazione di tipo "Remote Command", puntando al \textit{Custom AlertScript} denominato \texttt{interactaCreateOrSolveTicket}.
 
-La motivazione per utilizzare questo paradigma è la possibilità di iniettare dinamicamente il contesto del guasto all'interno dello script Bash/Python. L'Action è configurata per passare allo script i seguenti argomenti tramite le Macro di Zabbix:
+La motivazione per utilizzare questo paradigma è la possibilità di iniettare dinamicamente il contesto del guasto all'interno dello script Bash/Python. L'Action è configurata per passare allo script degli argomenti tramite le Macro di Zabbix, tra cui:
 \begin{itemize}
     \item \texttt{\{EVENT.ID\}}: L'identificativo univoco del guasto, essenziale per correlare la futura risoluzione allo stesso ticket aperto in Interacta.
     \item \texttt{\{HOST.NAME\}} e \texttt{\{INVENTORY.LOCATION\}}: Per comunicare alla piattaforma l'ID dell'host e il palo fisico su cui i tecnici dovranno intervenire.
@@ -1258,233 +1420,247 @@ Questa catena di configurazioni (Item Trapper $\rightarrow$ Trigger con isteresi
 %     Immagini: Uno screenshot reale e ritagliato dell'interfaccia web di Zabbix che mostra la formula esatta del Trigger con l'utilizzo della funzione \texttt{nodata()}, oppure lo schema dell'operazione Action che invoca lo script remoto con le macro inserite nei parametri.
 
 
-\chapter{Automazione dell'assegnazione dei metadati degli host - Inventory}
+% \chapter{Automazione dell'assegnazione dei metadati degli host - Inventory}
 
-\section{Il problema}
-Una volta scoperti gli host e memorizzati nel database di Zabbix essi sono quasi inutili,
-perché non contengono alcuna informazione che li riguarda.
-Molte delle loro caratteristiche, come nome e l'ID del palo a cui sono montati,
-sono presenti in fogli Excel di configurazione con molte altre informazioni.
+% \section{Il problema}
+% Una volta scoperti gli host e memorizzati nel database di Zabbix essi sono quasi inutili,
+% perché non contengono alcuna informazione che li riguarda.
+% Molte delle loro caratteristiche, come nome e l'ID del palo a cui sono montati,
+% sono presenti in fogli Excel di configurazione con molte altre informazioni.
 
-Per collegare queste informazioni all'infrastruttura di monitoraggio,
-abbiamo sviluppato una serie di script Python che sfruttano la libreria \texttt{pandas}
-per l'elaborazione massiva dei dati tabellari e la libreria \texttt{pyzabbix}
-per l'interazione asincrona e sicura con le API di Zabbix.
-L'autenticazione verso Zabbix avviene esclusivamente tramite API Token associato a un utente di
-servizio con permessi ben definiti:
+% Per collegare queste informazioni all'infrastruttura di monitoraggio,
+% abbiamo sviluppato una serie di script Python che sfruttano la libreria \texttt{pandas}
+% per l'elaborazione massiva dei dati tabellari e la libreria \texttt{pyzabbix}
+% per l'interazione asincrona e sicura con le API di Zabbix.
+% L'autenticazione verso Zabbix avviene esclusivamente tramite API Token associato a un utente di
+% servizio con permessi ben definiti:
 
-\begin{lstlisting}[language=Python, caption=Autenticazione tramite API Token]
-from pyzabbix import ZabbixAPI
+% \begin{lstlisting}[language=Python, caption=Autenticazione tramite API Token]
+% from pyzabbix import ZabbixAPI
 
-# Inizializzazione connessione API
-zapi = ZabbixAPI("http://192.168.100.57/zabbix")
-# Autenticazione con token
-zapi.login(api_token='SECRET_API_TOKEN_FROM_ZABBIX')
-\end{lstlisting}
+% # Inizializzazione connessione API
+% zapi = ZabbixAPI("http://192.168.100.57/zabbix")
+% # Autenticazione con token
+% zapi.login(api_token='SECRET_API_TOKEN_FROM_ZABBIX')
+% \end{lstlisting}
 
-\section{Implementazione dell'aggiornamento degli host}
+% \section{Implementazione dell'aggiornamento degli host}
 
-Ogni host in Zabbix viene identificato con un attributo "name" che contiene l'IP con cui è stato scoperto.
-Inoltre possiede anche un attributo "visible name" che lo rappresenta nel sistema. L'obiettivo è andare a estrarre
-dal file Excel di configurazione l'informazione del loro nome, da inserire nell'attributo "visible name"
-e l'informazione sull'id del palo su cui sono montati, da inserire le campo "location" del loro attributo
-"inventory" (ogni host possiede un ampio elenco di campi da compilare nell'attributo "inventory").
+% Ogni host in Zabbix viene identificato con un attributo "name" che contiene l'IP con cui è stato scoperto.
+% Inoltre possiede anche un attributo "visible name" che lo rappresenta nel sistema. L'obiettivo è andare a estrarre
+% dal file Excel di configurazione l'informazione del loro nome, da inserire nell'attributo "visible name"
+% e l'informazione sull'id del palo su cui sono montati, da inserire le campo "location" del loro attributo
+% "inventory" (ogni host possiede un ampio elenco di campi da compilare nell'attributo "inventory").
 
-In un file separato viene associata all'IDpalo anche la coordinata geografica.
-Quindi per ogni host con uno specifico IDpalo gli si deve associare anche le coordinate geografiche.
+% In un file separato viene associata all'IDpalo anche la coordinata geografica.
+% Quindi per ogni host con uno specifico IDpalo gli si deve associare anche le coordinate geografiche.
 
-Siccome la quasi totalità delle sottoreti al momento della scrittura di questa relazione
-presenta numerosi host con svariati problemi, che impediscono al sistema di scoprirli tramite
-ping, risulta impossibile assegnare i loro metadati in una sola volta.
-Quindi, mano a mano che essi andranno online, verranno scoperti dal sistema che dovrà associare
-a essi le informazioni contenute nei file Excel. Proprio come per gli host scoperti inizialmente.
-Questo implica che l'assegnazione di questi dati deve essere fatta periodicamente,
-con un periodo congruo. Per questo ho scelto di utilizzare script python, eseguiti periodicamente
-dal servizio \texttt{crontab} presente nativamente in Ubuntu.
+% Siccome la quasi totalità delle sottoreti al momento della scrittura di questa relazione
+% presenta numerosi host con svariati problemi, che impediscono al sistema di scoprirli tramite
+% ping, risulta impossibile assegnare i loro metadati in una sola volta.
+% Quindi, mano a mano che essi andranno online, verranno scoperti dal sistema che dovrà associare
+% a essi le informazioni contenute nei file Excel. Proprio come per gli host scoperti inizialmente.
+% Questo implica che l'assegnazione di questi dati deve essere fatta periodicamente,
+% con un periodo congruo. Per questo ho scelto di utilizzare script python, eseguiti periodicamente
+% dal servizio \texttt{crontab} presente nativamente in Ubuntu.
 
-Nella pratica vengono utilizzati degli script python eseguiti nella macchina virtuale che
-ospita Zabbix. Tutti gli script ausiliari vengono salvati nella directory
-\texttt{/home/administrator/zabbixHostsScripts} (con alcune eccezioni) e tutte le esecuzioni sono svolte nell'ambiente
-virtualizzato \texttt{venv} della stessa directory.
+% Nella pratica vengono utilizzati degli script python eseguiti nella macchina virtuale che
+% ospita Zabbix. Tutti gli script ausiliari vengono salvati nella directory
+% \texttt{/home/administrator/zabbixHostsScripts} (con alcune eccezioni) e tutte le esecuzioni sono svolte nell'ambiente
+% virtualizzato \texttt{venv} della stessa directory.
 
-\subsection{Associazione host name e IDpalo}
-%aggiungere comune e progetto edison
-Per associare l'hostname e l'IDpalo allo specifico host, identificato dall'IP, viene utilizzato lo script:
-\lstinline|zabbix_HostName_IDpalo_updater.py|.
-Questo script utilizza \texttt{pandas} per la gestione del file .xlsx chiamato \lstinline|HostInfosUbuntu.xlsx|, che
-contiene il nome dell'host da inserire in "visible Name" e il nome del palo, "IDpalo", da inserire in
-"inventory>location".
-Viene creato un dizionario degli host in Zabbix, comparati tramite IP con le informazioni presenti
-in Excel e l'host viene aggiornato solo se c'è incongruenza.
-Gli IP vengono normalizzati (si sistema il formato, ecc, ecc...) in una funzione separata(non è al 100\% perfetta,
-in alcuni casi limite ci può essere ambiguità).
+% \subsection{Associazione host name e IDpalo}
+% %aggiungere comune e progetto edison
+% Per associare l'hostname e l'IDpalo allo specifico host, identificato dall'IP, viene utilizzato lo script:
+% \lstinline|zabbix_HostName_IDpalo_updater.py|.
+% Questo script utilizza \texttt{pandas} per la gestione del file .xlsx chiamato \lstinline|HostInfosUbuntu.xlsx|, che
+% contiene il nome dell'host da inserire in "visible Name" e il nome del palo, "IDpalo", da inserire in
+% "inventory>location".
+% Viene creato un dizionario degli host in Zabbix, comparati tramite IP con le informazioni presenti
+% in Excel e l'host viene aggiornato solo se c'è incongruenza.
+% Gli IP vengono normalizzati (si sistema il formato, ecc, ecc...) in una funzione separata(non è al 100\% perfetta,
+% in alcuni casi limite ci può essere ambiguità).
 
-Questo script viene eseguito periodicamente tramite questo comando crontab, accessibile con il comando \inlinecode{crontab -e}: %inlineCode formatting
-\begin{lstlisting}[language=Python, caption=setup of periodic execution in Crontab]
-0 * * * * /home/administrator/zabbixHostsScripts/venv/bin/python3 /home/administrator/zabbixHostsScripts/zabbix_HostName_IDpalo_updater.py >> /home/administrator/zabbixHostsScripts/cron_log.log 2>&1
-\end{lstlisting}
+% Questo script viene eseguito periodicamente tramite questo comando crontab, accessibile con il comando \inlinecode{crontab -e}: %inlineCode formatting
+% \begin{lstlisting}[language=Python, caption=setup of periodic execution in Crontab]
+% 0 * * * * /home/administrator/zabbixHostsScripts/venv/bin/python3 /home/administrator/zabbixHostsScripts/zabbix_HostName_IDpalo_updater.py >> /home/administrator/zabbixHostsScripts/cron_log.log 2>&1
+% \end{lstlisting}
 
-\subsection{Associazione coordinate, indirizzo e tecnologia}
+% \subsection{Associazione coordinate, indirizzo e tecnologia}
 
-Per associare le coordinate, l'indirizzo e la tecnologia a ogni host identificato dall'IDpalo
-viene utilizzato lo script:
-\inlinecode{zabbix_palo_location_and_info_updater.py}.
-Questo script utilizza \texttt{pandas} per la gestione del file .xlsx chiamato \\
-\texttt{\detokenize{info_e_location_pali_ubuntu.xlsx}}, che
-contiene il nome del palo, "IDpalo", associato alle colonne
-"Tecnologia", "Indirizzo", "Dec. Latitudine" e "Dec. Longitudine" da inserire per ogni host in
-inventory>location nei vari campi: HW architecture, Site address A, Location latitude,
-Location longitude. Le informazioni di "Dec. Latitudine" e "Dec. Longitudine" devono essere aggiornate
-ogni volta che si inseriscono nuovi possibili pali nel sistema monitorato.
-Nello script viene creato un dizionario degli host in Zabbix, comparati tramite IDpalo con le informazioni presenti
-in Excel e l'host viene aggiornato solo se c'è incongruenza.
+% Per associare le coordinate, l'indirizzo e la tecnologia a ogni host identificato dall'IDpalo
+% viene utilizzato lo script:
+% \inlinecode{zabbix_palo_location_and_info_updater.py}.
+% Questo script utilizza \texttt{pandas} per la gestione del file .xlsx chiamato \\
+% \texttt{\detokenize{info_e_location_pali_ubuntu.xlsx}}, che
+% contiene il nome del palo, "IDpalo", associato alle colonne
+% "Tecnologia", "Indirizzo", "Dec. Latitudine" e "Dec. Longitudine" da inserire per ogni host in
+% inventory>location nei vari campi: HW architecture, Site address A, Location latitude,
+% Location longitude. Le informazioni di "Dec. Latitudine" e "Dec. Longitudine" devono essere aggiornate
+% ogni volta che si inseriscono nuovi possibili pali nel sistema monitorato.
+% Nello script viene creato un dizionario degli host in Zabbix, comparati tramite IDpalo con le informazioni presenti
+% in Excel e l'host viene aggiornato solo se c'è incongruenza.
 
-Questo script viene eseguito periodicamente tramite questo comando crontab, accessibile con \inlinecode{crontab -e}:
-\begin{lstlisting}[language=Python, caption=crontab configuration per zabbix\_palo\_location\_and\_info\_updater.py]
-19 * * * * /home/administrator/zabbixHostsScripts/venv/bin/python3 /home/administrator/zabbixHostsScripts/zabbix_palo_location_and_info_updater.py >> /home/administrator/zabbixHostsScripts/cron_log.log 2>&1
-\end{lstlisting}
+% Questo script viene eseguito periodicamente tramite questo comando crontab, accessibile con \inlinecode{crontab -e}:
+% \begin{lstlisting}[language=Python, caption=crontab configuration per zabbix\_palo\_location\_and\_info\_updater.py]
+% 19 * * * * /home/administrator/zabbixHostsScripts/venv/bin/python3 /home/administrator/zabbixHostsScripts/zabbix_palo_location_and_info_updater.py >> /home/administrator/zabbixHostsScripts/cron_log.log 2>&1
+% \end{lstlisting}
 
-\subsection{Memorizzazione dei messaggi di log}
-Gli script python visti fino a ora generano degli output testuali, che andrebbero nello standard output,
-ma vengono reindirizzati dai job crontab in uno specifico file di log:
-\lstinline|cron_log.log|, ogni scrittura nel file è preceduta dal timestamp e dallo script che la genera.
+% \subsection{Memorizzazione dei messaggi di log}
+% Gli script python visti fino a ora generano degli output testuali, che andrebbero nello standard output,
+% ma vengono reindirizzati dai job crontab in uno specifico file di log:
+% \lstinline|cron_log.log|, ogni scrittura nel file è preceduta dal timestamp e dallo script che la genera.
 
-Per evitare di memorizzare questi dati all'infinito e generare un file di testo gigantesco,
-ho utilizzato il sistema \textbf{Logrotate}, una utility Linux il cui scopo è la rotazione,
-compressione e rimozione di file di log automatici.
+% Per evitare di memorizzare questi dati all'infinito e generare un file di testo gigantesco,
+% ho utilizzato il sistema \textbf{Logrotate}, una utility Linux il cui scopo è la rotazione,
+% compressione e rimozione di file di log automatici.
 
-In questo caso il file contenente le configurazioni per il job logrotate del file \lstinline|cron_log.log| è accessibile tramite: \inlinecode{nano /etc/logrotate.d/zabbix_scripts}.
-Al suo interno troviamo:
-\begin{lstlisting}[language=python, caption=Configurazione logrotate per \lstinline|cron_log.log|]
-#path of logfile to manage
-/home/administrator/zabbixHostsScripts/cron_log.log {
-    #user privileges
-    su administrator administrator
-    #time period of rotation
-    weekly
-    #how many rotated and compressed files to keep
-    rotate 12
-    #add date to filename
-    dateext
-    dateformat -%Y-%m-%d
-    #where to archive rotated logs
-    olddir /home/administrator/zabbixHostsScripts/storico_log
-    #compress the files but wait one cycle
-    compress
-    delaycompress
-    #ignore errors if logfile is missing
-    missingok
-    #don't rotate if logfile is 0 bytes
-    notifempty
-    #create - permission - user ownership
-    create 0644 administrator administrator
-}
-\end{lstlisting}
+% In questo caso il file contenente le configurazioni per il job logrotate del file \lstinline|cron_log.log| è accessibile tramite: \inlinecode{nano /etc/logrotate.d/zabbix_scripts}.
+% Al suo interno troviamo:
+% \begin{lstlisting}[language=python, caption=Configurazione logrotate per \lstinline|cron_log.log|]
+% #path of logfile to manage
+% /home/administrator/zabbixHostsScripts/cron_log.log {
+%     #user privileges
+%     su administrator administrator
+%     #time period of rotation
+%     weekly
+%     #how many rotated and compressed files to keep
+%     rotate 12
+%     #add date to filename
+%     dateext
+%     dateformat -%Y-%m-%d
+%     #where to archive rotated logs
+%     olddir /home/administrator/zabbixHostsScripts/storico_log
+%     #compress the files but wait one cycle
+%     compress
+%     delaycompress
+%     #ignore errors if logfile is missing
+%     missingok
+%     #don't rotate if logfile is 0 bytes
+%     notifempty
+%     #create - permission - user ownership
+%     create 0644 administrator administrator
+% }
+% \end{lstlisting}
 
-\chapter{Estrazione Dati Host tramite Template Zabbix}
+% \chapter{Estrazione Dati Host tramite Template Zabbix}
 
-\section{Acquisizione informazioni sugli host}
-Oltre alle informazioni riguardanti la posizione fisica dell'host
-è necessario associare ai singoli host informazioni sulla loro natura hardware e software.
-Le modalità per acquisire queste informazioni sono varie e differenziate tra tipologia di host.
-Questo è un limite; per ora solo la maggior parte degli host appartiene a una categoria abbastanza
-numerosa da giustificare un sistema automatico per acquisire queste informazioni.
+% \section{Acquisizione informazioni sugli host}
+% Oltre alle informazioni riguardanti la posizione fisica dell'host
+% è necessario associare ai singoli host informazioni sulla loro natura hardware e software.
+% Le modalità per acquisire queste informazioni sono varie e differenziate tra tipologia di host.
+% Questo è un limite; per ora solo la maggior parte degli host appartiene a una categoria abbastanza
+% numerosa da giustificare un sistema automatico per acquisire queste informazioni.
 
-I metodi utilizzati sono:
-\begin{itemize}
-    \item  \textbf{template con chiamata HTTP} per le telecamere di marca Hikvision.
-    \item  \textbf{template con richiesta SNMP} per gli AP e gli SW.
-\end{itemize}
-Per ogni categoria:
-\begin{itemize}
-    \item Creazione di un nuova \emph{discovery rule} per ogni sottorete coinvolta
-          (che possa contenere host da cui estrarre dati). Con determinati \emph{Checks} per filtrare preventivamente
-          gli host.
-    \item Creazione di un nuovo \emph{template} che possa comunicare e leggere dagli host le informazioni che espongono.
-    \item Creazione di un nuova \emph{discovery action} per ogni categoria di acquisizione dati,
-          che assegni l'host appena scoperto dalla discovery rule allo specifico template
-          relativo alla categoria di host per l'acquisizione dati a cui appartiene.
-\end{itemize}
+% I metodi utilizzati sono:
+% \begin{itemize}
+%     \item  \textbf{template con chiamata HTTP} per le telecamere di marca Hikvision.
+%     \item  \textbf{template con richiesta SNMP} per gli AP e gli SW.
+% \end{itemize}
+% Per ogni categoria:
+% \begin{itemize}
+%     \item Creazione di un nuova \emph{discovery rule} per ogni sottorete coinvolta
+%           (che possa contenere host da cui estrarre dati). Con determinati \emph{Checks} per filtrare preventivamente
+%           gli host.
+%     \item Creazione di un nuovo \emph{template} che possa comunicare e leggere dagli host le informazioni che espongono.
+%     \item Creazione di un nuova \emph{discovery action} per ogni categoria di acquisizione dati,
+%           che assegni l'host appena scoperto dalla discovery rule allo specifico template
+%           relativo alla categoria di host per l'acquisizione dati a cui appartiene.
+% \end{itemize}
 
-\section{Configurazione dell'host Inventory}
-Siccome le informazioni estratte dai template devono essere memorizzate sugli host,
-in modo automatico, l'inventory degli host deve essere impostato sull'\texttt{Inventory mode} \textbf{Automatic}.
-Questo viene specificato nelle \emph{discovery action} nel menu \emph{operations} creando una operazione: \texttt{Set host inventory mode: Automatic}.
+% \section{Configurazione dell'host Inventory}
+% Siccome le informazioni estratte dai template devono essere memorizzate sugli host,
+% in modo automatico, l'inventory degli host deve essere impostato sull'\texttt{Inventory mode} \textbf{Automatic}.
+% Questo viene specificato nelle \emph{discovery action} nel menu \emph{operations} creando una operazione: \texttt{Set host inventory mode: Automatic}.
 
-All'interno dei Template preconfigurati che sono stati adattati allo scopo, alcuni item
-sono configurati per riversare il dato raccolto in uno specifico
-campo dell'inventory tramite l'opzione \emph{Populates host inventory field},
-mappando il valore su campi come \texttt{Model}, \texttt{Software} o \texttt{Serial number A}.
-I meccanismi esatti di estrazione variano in base alla tipologia e al brand dell'apparato.
+% All'interno dei Template preconfigurati che sono stati adattati allo scopo, alcuni item
+% sono configurati per riversare il dato raccolto in uno specifico
+% campo dell'inventory tramite l'opzione \emph{Populates host inventory field},
+% mappando il valore su campi come \texttt{Model}, \texttt{Software} o \texttt{Serial number A}.
+% I meccanismi esatti di estrazione variano in base alla tipologia e al brand dell'apparato.
 
-\section{Template telecamere Hikvision}
-Per gli host che sono telecamere hikvision (tutte modello: DS-2CD3666G2-IZS)
-sono state create automaticamente le discovery rules (con script \texttt{/home/administrator\\/usefulFilesForZabbix/DiscoveryRuleCreationForHikvison\\/createDiscoveryRulesForHikvisions.py})\\
-seguendo questa schema per il nome delle discovery rules, ad esempio: \\\lstinline|Discovery - smartCity_HikvisionCameras_AGNOSINE_LTE-AGNO|.
+% \section{Template telecamere Hikvision}
+% Per gli host che sono telecamere hikvision (tutte modello: DS-2CD3666G2-IZS)
+% sono state create automaticamente le discovery rules (con script \texttt{/home/administrator\\/usefulFilesForZabbix/DiscoveryRuleCreationForHikvison\\/createDiscoveryRulesForHikvisions.py})\\
+% seguendo questa schema per il nome delle discovery rules, ad esempio: \\\lstinline|Discovery - smartCity_HikvisionCameras_AGNOSINE_LTE-AGNO|.
 
-Esse implementano sulle sottoreti \textbf{TVCC} e \textbf{LTE}, identificate da subnet/subnetmask, 2 checks:
-collegamento HTTP port 80 e collegamento TCP port range 8443 (che solo queste telecamere espongono).
-In questo modo vengono filtrati gli host di altro tipo,
-come switch e server che risiedono sulle stesse sottoreti.
+% Esse implementano sulle sottoreti \textbf{TVCC} e \textbf{LTE}, identificate da subnet/subnetmask, 2 checks:
+% collegamento HTTP port 80 e collegamento TCP port range 8443 (che solo queste telecamere espongono).
+% In questo modo vengono filtrati gli host di altro tipo,
+% come switch e server che risiedono sulle stesse sottoreti.
 
-Queste discovery rules vengono eseguite ogni ora e le loro risposte vengono elaborate dalla discovery action
-\lstinline|smartCity_Auto-Configurazione_Hikvision| che applica il template e setta l'inventory mode su automatic.
+% Queste discovery rules vengono eseguite ogni ora e le loro risposte vengono elaborate dalla discovery action
+% \lstinline|smartCity_Auto-Configurazione_Hikvision| che applica il template e setta l'inventory mode su automatic.
 
-Per ottenere il template ne è stato modificato uno dedicato (\lstinline|Hikvision camera by HTTP|)
-ottenendo \lstinline|templateSC_configurazione_hikvision|, che interroga tramite API HTTP con autenticazione le telecamere,
-e si occupa di leggere le informazioni e inserirle negli appropriati campi dell'inventory.
-Lo username e password sono standard per tutte le telecamere, e sono contenuti in delle macro all'interno del template: {\$PASSWORD} e {\$USER}.
+% Per ottenere il template ne è stato modificato uno dedicato (\lstinline|Hikvision camera by HTTP|)
+% ottenendo \lstinline|templateSC_configurazione_hikvision|, che interroga tramite API HTTP con autenticazione le telecamere,
+% e si occupa di leggere le informazioni e inserirle negli appropriati campi dell'inventory.
+% Lo username e password sono standard per tutte le telecamere, e sono contenuti in delle macro all'interno del template: {\$PASSWORD} e {\$USER}.
 
-\section{Apparati standard (switch, access point, LTE)}
-Per gli apparati che supportano facilmente l'utilizzo di SNMP come Switch e Access Point si è scelta
-quella tecnologia, anche se non è possibile estrarre un set molto ampio di informazioni.
+% \section{Apparati standard (switch, access point, LTE)}
+% Per gli apparati che supportano facilmente l'utilizzo di SNMP come Switch e Access Point si è scelta
+% quella tecnologia, anche se non è possibile estrarre un set molto ampio di informazioni.
 
-Per questi host sono state create automaticamente le discovery rules (con script \texttt{/home/administrator\\/usefulFilesForZabbix/DiscoveryRuleCreationForHikvison\\/apCreateDiscoveryRules.py e /swCreateDiscoveryRules.py})\\
-seguendo questa schema per il nome delle relative discovery rules, ad esempio: \\\lstinline|Discovery - smartCity_APcambium_CAPOVALLE_AP-CAPO|
-e \\\lstinline|Discovery - smartCity_SWsenzaMarca_MAZZANO_SW-MAZZ|.
+% Per questi host sono state create automaticamente le discovery rules (con script \texttt{/home/administrator\\/usefulFilesForZabbix/DiscoveryRuleCreationForHikvison\\/apCreateDiscoveryRules.py e /swCreateDiscoveryRules.py})\\
+% seguendo questa schema per il nome delle relative discovery rules, ad esempio: \\\lstinline|Discovery - smartCity_APcambium_CAPOVALLE_AP-CAPO|
+% e \\\lstinline|Discovery - smartCity_SWsenzaMarca_MAZZANO_SW-MAZZ|.
 
-Esse implementano sulle sottoreti \textbf{SW} e \textbf{AP} un Check per filtrare gli host di altro tipo:
-collegamento SNMPv2 agent port 161 con SNMP community public e SNMP OID 1.3.6.1.2.1.1.1.0 (OID System Description, all'interno del MIB-II standard).
+% Esse implementano sulle sottoreti \textbf{SW} e \textbf{AP} un Check per filtrare gli host di altro tipo:
+% collegamento SNMPv2 agent port 161 con SNMP community public e SNMP OID 1.3.6.1.2.1.1.1.0 (OID System Description, all'interno del MIB-II standard).
 
-Queste discovery rules vengono eseguite ogni ora e le loro risposte vengono elaborate dalle discovery action
-\lstinline|smartCity_Auto-smartCity_Auto-Configurazione_APcambium| e \lstinline|smartCity_Auto-Configurazione_SWsenzaMarca|
-che applicano il template adatto e settano l'inventory mode su automatic.
+% Queste discovery rules vengono eseguite ogni ora e le loro risposte vengono elaborate dalle discovery action
+% \lstinline|smartCity_Auto-smartCity_Auto-Configurazione_APcambium| e \lstinline|smartCity_Auto-Configurazione_SWsenzaMarca|
+% che applicano il template adatto e settano l'inventory mode su automatic.
 
-Per ottenere i template ne è stato modificato uno dedicato (\lstinline|Generic by SNMP|) ottenendo
-\lstinline|templateSC_Generic by SNMP_AP| per gli AP e \lstinline|templateSC_Generic by SNMP_SW| per gli SW.
-Essi interrogano tramite SNMP gli host, leggono le informazioni e le inseriscono negli appropriati campi dell'inventory.
+% Per ottenere i template ne è stato modificato uno dedicato (\lstinline|Generic by SNMP|) ottenendo
+% \lstinline|templateSC_Generic by SNMP_AP| per gli AP e \lstinline|templateSC_Generic by SNMP_SW| per gli SW.
+% Essi interrogano tramite SNMP gli host, leggono le informazioni e le inseriscono negli appropriati campi dell'inventory.
 
-Per l'esplorazione dei campi raggiungibili in SNMP ho usato questo strumento CLI:
+% Per l'esplorazione dei campi raggiungibili in SNMP ho usato questo strumento CLI:
 
-\begin{lstlisting}[language=bash, caption=Esempio di discovery manuale dei MIB via CLI]
-snmpwalk -v2c -c public 10.0.50.5
-\end{lstlisting}
-%corretto fino a qui
+% \begin{lstlisting}[language=bash, caption=Esempio di discovery manuale dei MIB via CLI]
+% snmpwalk -v2c -c public 10.0.50.5
+% \end{lstlisting}
+% %corretto fino a qui
 
-% ====================================================================
-% CAPITOLO 5: INTEGRAZIONE CRITTOGRAFICA CON TICKETING
-% ====================================================================
-\chapter{Integrazione con il Sistema di Ticketing Interacta}
-\section{Sicurezza e Autenticazione Server-to-Server}
+% % ====================================================================
+% % CAPITOLO 5: INTEGRAZIONE CRITTOGRAFICA CON TICKETING
+% % ====================================================================
 
-L'implementazione di un sistema di monitoraggio avanzato rappresenta solo il primo passo verso l'automazione dei processi IT aziendali. In Secoval, rilevare tempestivamente un guasto tramite Zabbix (ad esempio, l'oscuramento di una telecamera o la caduta di un Access Point) è inutile se l'informazione non raggiunge in modo strutturato la squadra tecnica incaricata della manutenzione. La piattaforma cloud aziendale utilizzata per coordinare questi interventi sul campo è \textbf{Interacta}.
+\chapter{Integrazione con il sistema di ticketing Interacta}
+\section{Scopo e architettura dell'integrazione}
 
-L'integrazione tra Zabbix e Interacta nasce quindi dall'esigenza di colmare il divario tra la fase di \textit{rilevamento} (Fault Detection) e la fase di \textit{risoluzione} (Incident Management).
+L'implementazione di un sistema di monitoraggi rappresenta solo il primo passo verso l'automazione dei processi IT aziendali. In Secoval, rilevare tempestivamente un guasto tramite Zabbix (ad esempio, l'oscuramento di una telecamera o la caduta di un Access Point) è inutile se l'informazione non raggiunge la squadra tecnica incaricata della manutenzione.
 
-\subsection*{Obiettivi e Sfide dell'Integrazione}
-La costruzione di un ponte comunicativo tra l'infrastruttura di monitoraggio (on-premise) e il sistema di ticketing (in cloud) ha richiesto la definizione di obiettivi rigorosi:
-\begin{itemize}
-    \item \textbf{Apertura "Zero-Touch":} Al verificarsi di un trigger critico, il sistema deve generare un ticket su Interacta senza alcun intervento umano, abbattendo drasticamente i tempi di latenza e, di conseguenza, il \textit{Mean Time To Resolution} (MTTR).
-    \item \textbf{Iniezione di Contesto:} Il ticket non deve essere generico, ma deve contenere metadati vitali per il tecnico sul campo (es. l'indirizzo IP, l'ID dell'Host, l'ID del Palo fisico e la descrizione esatta del problema rilevato).
-    \item \textbf{Allineamento di Stato (Auto-Recovery):} Se il problema rientra autonomamente (es. sbalzo di tensione temporaneo), Zabbix deve comunicare a Interacta di risolvere il ticket, evitando alle squadre tecniche uscite a vuoto.
-\end{itemize}
+Quindi per garantire l'integrazione con il sistema già presente e il tracciamento della gestione e degli interventi fisici
+sugli apparati della Smart City,
+si è resa necessaria un'integrazione tra il sistema di monitoraggio Zabbix
+e il portale (IT Service Management) \textbf{Interacta}.
 
-Le sfide principali per raggiungere questi obiettivi non sono state unicamente di natura logica, ma soprattutto di natura architetturale e legata alla sicurezza informatica. Il traffico dati, infatti, deve attraversare la rete pubblica per raggiungere il cloud di Interacta, esponendo il sistema a potenziali attacchi (come il \textit{Man-in-the-Middle} o il \textit{Replay Attack}).
+L'obiettivo dell'integrazione è automatizzare l'apertura di un ticket di assistenza
+(con tutti i dettagli dell'host, le coordinate e il tipo di guasto)
+nel momento in cui un trigger di Zabbix entra in stato \texttt{PROBLEM},
+e chiuderlo in automatico quando lo stato torna a \texttt{RESOLVED}.
+
+L'architettura si basa su tre pilastri: un'\textbf{autenticazione} \textit{Server-to-Server} verso le API di Interacta tramite Service Account (Service Account Authentication è un metodo che consente ad applicazioni, script o macchine virtuali di verificare in modo sicuro la propria identità e interagire con API o servizi cloud senza intervento umano) e firma crittografica asimmetrica (RSA). Uno \textbf{script Python} (\texttt{interactaCreateTicket.py}) operante in \\\texttt{/usr/lib/zabbix/alertscripts/}, incaricato di elaborare i dati e comunicare con le API di Interacta e un \textbf{Media Type} di tipo "Script" configurato su Zabbix per inoltrare i parametri formattati allo script in tempo reale.
+
+I ticket creati non devono essere generici, ma devono contenere metadati utili per i tecnici sul campo (es. l'indirizzo IP, l'ID dell'Host, l'ID del Palo fisico e la descrizione problema).
+Se il problema rientra autonomamente, Zabbix deve comunicare a Interacta di risolvere il ticket, evitando alle squadre tecniche uscite a vuoto.
+
+% \subsection*{Obiettivi e Sfide dell'Integrazione}
+% La costruzione di un ponte comunicativo tra l'infrastruttura di monitoraggio (on-premise) e il sistema di ticketing (in cloud) ha richiesto la definizione di obiettivi rigorosi:
+% \begin{itemize}
+%     \item \textbf{Apertura "Zero-Touch":} Al verificarsi di un trigger critico, il sistema deve generare un ticket su Interacta senza alcun intervento umano, abbattendo drasticamente i tempi di latenza e, di conseguenza, il \textit{Mean Time To Resolution} (MTTR).
+%     \item \textbf{Iniezione di Contesto:} Il ticket non deve essere generico, ma deve contenere metadati vitali per il tecnico sul campo (es. l'indirizzo IP, l'ID dell'Host, l'ID del Palo fisico e la descrizione esatta del problema rilevato).
+%     \item \textbf{Allineamento di Stato (Auto-Recovery):} Se il problema rientra autonomamente (es. sbalzo di tensione temporaneo), Zabbix deve comunicare a Interacta di risolvere il ticket, evitando alle squadre tecniche uscite a vuoto.
+% \end{itemize}
+
+% Le sfide principali per raggiungere questi obiettivi non sono state unicamente di natura logica, ma soprattutto di natura architetturale e legata alla sicurezza informatica. Il traffico dati, infatti, deve attraversare la rete pubblica per raggiungere il cloud di Interacta, esponendo il sistema a potenziali attacchi (come il \textit{Man-in-the-Middle} o il \textit{Replay Attack}).
 
 \subsection*{Il Cuore dell'Integrazione: Autenticazione Server-to-Server}
-In un'applicazione web tradizionale, l'autenticazione si basa su interazioni umane (es. inserimento di username e password) e sul mantenimento di una sessione tramite cookie. Nel nostro scenario, un server Linux (Zabbix) deve dialogare autonomamente con un altro server (Interacta). Questo paradigma, noto come comunicazione \textbf{Machine-to-Machine (M2M)} o \textbf{Server-to-Server}, richiede standard di sicurezza profondamente diversi.
+In un'applicazione web tradizionale, l'autenticazione si basa su interazioni umane (es. inserimento di username e password) e sul mantenimento di una sessione tramite cookie. Nel caso di questo progetto, un server Linux (Zabbix) deve dialogare autonomamente con un altro server (Interacta). Questa modalità \textbf{Server-to-Server}, richiede standard di sicurezza diversi.
 
-Inizialmente, l'approccio più banale avrebbe potuto prevedere l'uso di una semplice API Key statica o di una Basic Authentication. Tuttavia, le linee guida di sicurezza di Interacta consigliano caldamente (e spesso impongono per gli ambienti enterprise) l'adozione di un'autenticazione basata su token crittografici dinamici, specificamente lo standard \textbf{JSON Web Token (JWT)}.
+Le linee guida di sicurezza di Interacta consigliano l'adozione di un'autenticazione basata su token crittografici, specificamente lo standard \textbf{JSON Web Token (JWT)}.
 
 Le ragioni che hanno portato alla scelta di questo framework crittografico sono fondamentalmente tre:
 \begin{enumerate}
