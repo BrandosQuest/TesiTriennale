@@ -7,9 +7,24 @@ Obiettivi:
 
 
 
+SLIDE 1
+Buongiorno sono Brando Calderara e oggi vi illustrerò il contenuto del mio tirocino in azienda che è stato anche il tema del mio elaborato finale.
 
-Ciao sono Brando Calderara e oggi vi parlo della mia tesi triennale:
-il mio elaborato tratta l'attività da me svolta durante il mio tirocinio esterno nell'azienda Secoval.
+
+SLIDE 2
+Il mio elaborato tratta l'attività da me svolta durante il mio tirocinio esterno nell'azienda Secoval.
+Questa azienda é una società a capitale pubblico partecipata dalla Comunità Montana di Valle Sabbia e da numerosi comuni non solo della Valle Sabbia.
+Si occupa di supportare la trasformazione digitale dei Comuni, com-
+presi quelli più periferici, fornendo servizi amministrativi, informatici e gestionali.
+(Infrastrutture IT e cloud, Sistemi informativi territoriali, Servizi sovracomunali e gestionali)
+
+Secoval ha la necessità di gestire una rete eterogenea distribuita sul territorio, comprendente: telecamere per la videosorveglianza, access poits per il wifi pubblico, lettori targa e di switch di supporto oltre che alcuni device(host) delle precedenti categorie che si avvalgono della connettività LTE(long term evolution).
+Questi device sono indicizzati su delle specifiche sottoreti IPv4 in base alla loro natura e al comune di appartenenza; tranne le sottoreti LTE che divise per comune, contengono ogni tipo di device se esso fa uso di connettività LTE e non cablata.
+
+Il problema di Secoval legato a questa premessa è l'assenza di uno strumento centralizzato per rilevare guasti o manomissioni, per il monitoraggio, e per tracciare le operazioni di manutenzione. Di conseguenza gli obiettivi del mio tirocinio sono stati lo sviluppo del monitoraggio di rete, integrazione con un sistema GIS e connessione al servizio di ticketing aziendale
+
+
+/*
 All'interno di questa azienda compartecipata da vari comuni della comunità montana della valle sabbia, oltre ad attività riguardanti il catasto, la trasformazione digitale, l'assistenza tecnica ecc ecc si sono trovati a dover gestire una rete distribuita sul territorio di telecamere access poits, lettori targa e di switch per gestire il tutto oltre che alcuni device o host delle precedenti categorie che si avvalgono della connettività LTE( long term evolution). Questi device o host di dividono in 4 tipologie di sottoreti: 
 TVCC  Subnet mask:(x.x.241.0/25)
 SW    Subnet mask:(x.x.241.128/25)
@@ -17,7 +32,7 @@ AP    Subnet mask:(x.x.242.0/25)
 LTE   Subnet mask:(x.x.242.128/25)
 Questa/e reti comprendono degli host utili ai comuni per furti o vandalismo o atti illeciti, ma sia ai comuni che a Secoval mancava uno strumento per capire quando questi device avessero un guasto o per qualche motivo fossero andati in arresto. 
 Il mio tirocinio aveva come principale obiettivo creare questo strumento, e successivamente espandere su questa idea con gis (geographic information system) e ticket Interacta.
-
+*/
 
 
 
