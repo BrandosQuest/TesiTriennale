@@ -51,32 +51,47 @@ automatizzata basata su Zabbix}
     %\end{center}
     % [inserisci immagine qui: Logo dell'Università o un'immagine rappresentativa del Cocktail Party Problem ]
 \end{frame}
-\section{Nome Sezione}
+%\section{Nome Sezione}
 % --- SLIDE : CONTESTO E PROBLEMA ---
 \begin{frame}{Secoval e il problema reale}
-    \framesubtitle{Infrastruttura distribuita della Comunità Montana Valle Sabbia}
+    %\framesubtitle{Infrastruttura distribuita della Comunità Montana Valle Sabbia}
     \begin{columns}
         \begin{column}{0.5\textwidth}
-            \textbf{L'Infrastruttura (Secoval S.r.l.):}
-            \begin{itemize}
-                \item Rete eterogenea distribuita sul territorio.
-                \item Dispositivi IoT, Sicurezza e Networking.
-            \end{itemize}
-            \vspace{0.3cm}
-            \textbf{Classi di Sottoreti:}
-            \begin{itemize}
-                \item \texttt{TVCC} (x.x.241.0/25) - Telecamere
-                \item \texttt{SW} \ \ \ (x.x.241.128/25) - Switch
-                \item \texttt{AP} \ \ \ (x.x.242.0/25) - Access Point
-                \item \texttt{LTE} \ (x.x.242.128/25) - Connettività
-            \end{itemize}
+            \begin{columns}
+                \begin{column}{0.3\textwidth}
+                    \ \ \includegraphics[width=0.8\linewidth]{Secoval_Logo.png}
+                \end{column}
+                \begin{column}{0.7\textwidth}
+                    \textbf{L'infrastruttura (Secoval S.r.l.):}\\
+                    Rete eterogenea distribuita sul territorio:
+                    telecamere, lettori targa, access point e switch
+                \end{column}
+            \end{columns}
+
+            %{\small questo è piccolo},
+            % {\footnotesize questo è ancora più piccolo} e {\tiny questo è minuscolo}.
+            % \begin{figure}[]
+            %     %\centering
+            %     \includegraphics[width=0.1\linewidth]{Secoval_Logo.png}
+            %     %\caption{Caption Example}
+            %     %\%label{fig:SystemArchSchema}
+            % \end{figure}
+            \vspace{1cm}
+            {\small
+            \textbf{Categorie di sottoreti:}
+            \\\texttt{TVCC} {\footnotesize(x.x.241.0/25)} - Telecamere
+            \\\texttt{SW} \ \ \ {\footnotesize(x.x.241.128/25)} - Switch
+            \\\texttt{AP} \ \ \ {\footnotesize(x.x.242.0/25)} - Access Point
+            \\\texttt{LTE} \ {\footnotesize(x.x.242.128/25)} - Connettività
+            }
         \end{column}
         \begin{column}{0.5\textwidth}
-            \begin{alertblock}{Il Problema (As-Is)}
-                Totale assenza di uno strumento centralizzato per rilevare \textbf{guasti o manomissioni} in tempo reale.
+            \begin{alertblock}{Il problema}
+                Assenza di uno strumento centralizzato per rilevare \textbf{guasti o manomissioni}
             \end{alertblock}
-            \begin{exampleblock}{Obiettivo del Tirocinio (To-Be)}
-                Progettare un'architettura di monitoraggio integrata, basata su mappa geografica (GIS) e connessa al sistema di ticketing aziendale.
+            \vspace{1cm}
+            \begin{exampleblock}{Obiettivo del tirocinio}
+                Sviluppo del monitoraggio di rete, integrazione con un sistema GIS (geographic information system) e connessione al servizio di ticketing aziendale
             \end{exampleblock}
         \end{column}
     \end{columns}
