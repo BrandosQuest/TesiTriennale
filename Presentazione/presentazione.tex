@@ -141,11 +141,7 @@ automatizzata basata su Zabbix}
     \centering
     Esempio di GIS in Zabbix con icone colorate per lo stato degli host
 \end{frame}
-\begin{frame}{Placeholder}
-    \centering
-    % Centra l'immagine orizzontalmente nel foglio.
-    \includegraphics[width=0.5\linewidth]{SystemArchSchema-2026-06-28-074223.pdf}
-\end{frame}
+
 
 % --- SLIDE : LOGICHE DI POLLING E REPORTISTICA ---
 \begin{frame}{Funzionalità base del sistema}
@@ -178,29 +174,75 @@ automatizzata basata su Zabbix}
     \end{block}
 \end{frame}
 
+\begin{frame}{Edge AI e tamper detection}
+    %\framesubtitle{Gestione asincrona degli oscuramenti fisici}
+
+    \begin{columns}
+        % Colonna Sinistra: Il Contesto (Il Perché)
+        \begin{column}{0.45\textwidth}
+            \begin{itemize}
+                \item Sfruttare l'intelligenza a bordo telecamera
+                \item Rilevare oscuramenti volontari o accidentali
+            \end{itemize}
+
+            \vspace{0.4cm}
+            \begin{alertblock}{Cambio di paradigma}
+                Dal \textit{polling} ciclico ad un sistema (\textit{event-driven})
+            \end{alertblock}
+        \end{column}
+
+        % Colonna Destra: L'Implementazione (Il Come)
+        \begin{column}{0.55\textwidth}
+            %\textbf{Il flusso:}
+            \begin{center}
+                \textbf{Stream HTTP (ISAPI):} lo script Python apre e mantiene una connessione persistente verso la telecamera\\[-0.1cm]
+                $\downarrow$\\[-0.1cm]
+                \textbf{Analisi:} dei frammenti XML inviati al verificarsi di un'anomalia\\[-0.1cm]
+                % $\downarrow$\\[-0.1cm]
+                % Macro e Argomenti\\[-0.1cm]
+                $\downarrow$\\[-0.1cm]
+                \textbf{Zabbix Sender:} utility CLI per l'ivio dei dati verso il server Zabbix\\[-0.1cm]
+                $\downarrow$\\[-0.1cm]
+                \textbf{Trapper items:} ricezione passiva dell'allarme
+            \end{center}
+            % \textbf{Architettura del Flusso:}
+            % \vspace{0.1cm}
+            % \begin{enumerate}
+            %     \item \textbf{Stream HTTP (ISAPI):} Il middleware Python apre e mantiene una connessione persistente verso la telecamera.
+            %     \item \textbf{Parsing Real-Time:} Analisi immediata dei frammenti XML inviati al verificarsi di un'anomalia.
+            %     \item \textbf{Zabbix Sender:} Utilizzo dell'utility a riga di comando per il \textit{push} ad alte prestazioni dei dati verso il server.
+            %     \item \textbf{Trapper Items:} Zabbix riceve passivamente l'allarme (\texttt{PROBLEM/OK}), azzerando i tempi di latenza.
+            % \end{enumerate}
+        \end{column}
+    \end{columns}
+\end{frame}
 % --- SLIDE : SFIDA TECNICA - TAMPER DETECTION ---
-\begin{frame}{Monitoraggio Avanzato: Edge AI e Tamper Detection}
-    \framesubtitle{Intercettare le intelligenze a bordo camera}
-    Oltre al guasto di rete, l'azienda necessitava di rilevare gli \textbf{oscuramenti fisici} delle telecamere (vernice, rami, atti vandalici).
-    \vspace{0.3cm}
-    \begin{itemize}
-        \item Le telecamere Hikvision dispongono di logiche Edge AI (Tamper Detection).
-        \item \textbf{Gestione Configurazioni:} Script periodico in Polling per validare l'attivazione dei servizi XML a bordo camera.
-        \item \textbf{Inversione del Paradigma:} Non più Polling, ma \textbf{Streaming asincrono}.
-    \end{itemize}
-\end{frame}
+% \begin{frame}{Monitoraggio Avanzato: Edge AI e Tamper Detection}
+%     \framesubtitle{Intercettare le intelligenze a bordo camera}
+%     Oltre al guasto di rete, l'azienda necessitava di rilevare gli \textbf{oscuramenti fisici} delle telecamere (vernice, rami, atti vandalici).
+%     \vspace{0.3cm}
+%     \begin{itemize}
+%         \item Le telecamere Hikvision dispongono di logiche Edge AI (Tamper Detection).
+%         \item \textbf{Gestione Configurazioni:} Script periodico in Polling per validare l'attivazione dei servizi XML a bordo camera.
+%         \item \textbf{Inversione del Paradigma:} Non più Polling, ma \textbf{Streaming asincrono}.
+%     \end{itemize}
+% \end{frame}
 
-% --- SLIDE : FLUSSO ASINCRONO E ZABBIX SENDER ---
-\begin{frame}{Architettura del Flusso Event-Driven}
-    \framesubtitle{Gestione delle connessioni HTTP persistenti}
-    \begin{enumerate}
-        \item \textbf{Middleware Python:} Apre una connessione HTTP persistente (\textit{Stream}) verso l'endpoint \texttt{ISAPI} delle telecamere.
-        \item \textbf{Parsing in Real-Time:} La telecamera invia frammenti XML solo quando si verifica un'anomalia. Lo script li intercetta e li analizza istantaneamente.
-        \item \textbf{Push verso Zabbix (Trapping):} I dati vengono iniettati in Zabbix tramite \texttt{zabbix\_sender}, utility a riga di comando ad altissime prestazioni.
-        \item \textbf{Zabbix Trapper Items:} Item specifici nel template ricevono passivamente il dato, generando i trigger di allarme oscuramento.
-    \end{enumerate}
+% % --- SLIDE : FLUSSO ASINCRONO E ZABBIX SENDER ---
+% \begin{frame}{Architettura del Flusso Event-Driven}
+%     \framesubtitle{Gestione delle connessioni HTTP persistenti}
+%     \begin{enumerate}
+%         \item \textbf{Middleware Python:} Apre una connessione HTTP persistente (\textit{Stream}) verso l'endpoint \texttt{ISAPI} delle telecamere.
+%         \item \textbf{Parsing in Real-Time:} La telecamera invia frammenti XML solo quando si verifica un'anomalia. Lo script li intercetta e li analizza istantaneamente.
+%         \item \textbf{Push verso Zabbix (Trapping):} I dati vengono iniettati in Zabbix tramite \texttt{zabbix\_sender}, utility a riga di comando ad altissime prestazioni.
+%         \item \textbf{Zabbix Trapper Items:} Item specifici nel template ricevono passivamente il dato, generando i trigger di allarme oscuramento.
+%     \end{enumerate}
+% \end{frame}
+\begin{frame}{Visualizzazione architettura(DA CONTROLLARE)}
+    \centering
+    % Centra l'immagine orizzontalmente nel foglio.
+    \includegraphics[width=0.5\linewidth]{SystemArchSchema-2026-06-28-074223.pdf}
 \end{frame}
-
 % --- SLIDE : INTEGRAZIONE BUSINESS - INTERACTA ---
 \begin{frame}{Automazione ticketing}
     %\framesubtitle{Dal rilevamento tecnico all'azione operativa}

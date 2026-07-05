@@ -427,11 +427,6 @@ INPUT ./GIS.png
 INPUT ./GIS.png
 INPUT ./GIS.png
 INPUT ./GIS.png
-INPUT ./SystemArchSchema-2026-06-28-074223.pdf
-INPUT ./SystemArchSchema-2026-06-28-074223.pdf
-INPUT ./SystemArchSchema-2026-06-28-074223.pdf
-INPUT ./SystemArchSchema-2026-06-28-074223.pdf
-INPUT ./SystemArchSchema-2026-06-28-074223.pdf
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/ts1cmss.fd
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/ts1cmss.fd
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/ts1cmss.fd
@@ -441,6 +436,11 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcss0900.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmssbx10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmtt9.tfm
 INPUT /usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc
+INPUT ./SystemArchSchema-2026-06-28-074223.pdf
+INPUT ./SystemArchSchema-2026-06-28-074223.pdf
+INPUT ./SystemArchSchema-2026-06-28-074223.pdf
+INPUT ./SystemArchSchema-2026-06-28-074223.pdf
+INPUT ./SystemArchSchema-2026-06-28-074223.pdf
 OUTPUT presentazione.vrb
 INPUT ./presentazione.vrb
 INPUT ./presentazione.vrb
