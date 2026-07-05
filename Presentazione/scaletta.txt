@@ -90,3 +90,37 @@ Il contentuto del tiket non è criptato dall'algoritmo RS512, esso si occupa di 
 
 
 DA DARE UN FLUSSO alla presentazione in modo che sia almeno leggermente narrativamente accattivante
+
+
+
+Scaletta presentazione Brando Calderara
+
+SLIDE: 1
+Titolo e frontespizio
+
+SLIDE: 2
+Presentazione azienda Secoval, della problematica che ho affrontato e gli obiettivi da raggiungere
+
+SLIDE: 3
+Presentazione del tool Zabbix, descrizione del processo di associazione dei metadati agli host, conseguenze e risultati.
+
+SLIDE: 4
+Geographic Information System: mappa interattiva e utilizzo
+
+SLIDE: 5
+Funzionamento del sistema Zabbix e come ho implementato il sistema di reportistica
+
+SLIDE: 6
+Sistema di rilevazione delle manomissioni e dell'oscuramento e come si integra in Zabbix e i suoi avvisi
+
+SLIDE: 7
+Slide di riepilogo, per avere una visione panoramica e supportare l'introduzione al sistema di ticketing
+
+SLIDE: 8
+Generica presentazione del funzionamento dell'interazione tra Zabbix e la piattaforma Interacta
+
+SLIDE: 9
+Come si svolge l'autenticazione tra il servizio di Interacta e la macchina Ubuntu su cui è in esecuzione il sistema Zabbix
+
+SLIDE: 10
+Ringraziamenti e saluti finali
