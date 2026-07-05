@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1783268210.85921 "/home/brando/Documents/TesiTriennale/Presentazione/presentazione.tex" "presentazione.pdf" "presentazione" 1783268211.95754 0
+["pdflatex"] 1783269192.68652 "/home/brando/Documents/TesiTriennale/Presentazione/presentazione.tex" "presentazione.pdf" "presentazione" 1783269193.75838 0
   "/etc/texmf/web2c/texmf.cnf" 1781877153.96915 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/brando/Documents/TesiTriennale/Presentazione/presentazione.tex" 1783268210.64854 14152 20ca83cada090986d464764d22102259 ""
+  "/home/brando/Documents/TesiTriennale/Presentazione/presentazione.tex" 1783269192.43808 14167 7839a280bbba0b8c0da0ffbb9f576173 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcss0900.tfm" 1136768653 1536 ba0169ee8bc017972775b933313cbbb0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcss1095.tfm" 1136768653 1536 f0fa079cdc83a6ffeda21e42352cf1ea ""
@@ -231,11 +231,11 @@
   "SystemArchSchema-2026-06-28-074223.pdf" 1783254097.91001 819904 6d4f2ced6930bcf920fa80641ef729a5 ""
   "Zabbix_logo.png" 1783251270.25143 21843 9823214cfc195b65f9fd406e8bdf02c7 ""
   "logoUnibsScreennato.png" 1783066197.05891 291868 01e8a6da43cbfa109de94cc4ea635afb ""
-  "presentazione.aux" 1783268211.90217 1722 20e91bfaba50c3806d05ddd6b6b8b67e "pdflatex"
-  "presentazione.nav" 1783268211.90268 1109 07396102f9d82bf25877ba7d82798efb "pdflatex"
-  "presentazione.out" 1783268211.3504 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
-  "presentazione.tex" 1783268210.64854 14152 20ca83cada090986d464764d22102259 ""
-  "presentazione.vrb" 1783268211.87763 655 cae690f4dbdc4a02e378839a47a7d0ac "pdflatex"
+  "presentazione.aux" 1783269193.70532 1722 20e91bfaba50c3806d05ddd6b6b8b67e "pdflatex"
+  "presentazione.nav" 1783269193.70579 1109 07396102f9d82bf25877ba7d82798efb "pdflatex"
+  "presentazione.out" 1783269193.16609 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "presentazione.tex" 1783269192.43808 14167 7839a280bbba0b8c0da0ffbb9f576173 ""
+  "presentazione.vrb" 1783269193.68164 654 a132244dc8e677b9918fea367c229355 "pdflatex"
   (generated)
   "presentazione.aux"
   "presentazione.log"

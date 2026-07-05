@@ -165,11 +165,11 @@ automatizzata basata su Zabbix}
     \vspace{0.3cm}
     \begin{block}{Soluzione: logs}
         {\footnotesize
-            Zabbix rileva i cambi di stato %(\texttt{PROBLEM/RESOLVED})(da tenere?) 
+            Zabbix rileva i cambi di stato per ogni host %(\texttt{PROBLEM/RESOLVED})(da tenere?) 
             e i metadati ralativi all'host in questione vengono salvati nella VM Ubuntu come righe di un file CSV.\\Questo abilita la generazione di:
             \begin{itemize}
-                \item \textbf{Report giornalieri:} numero di \texttt{PROBLEM} rilevati, quali non si sono risolti automaticamente e gli host che mostrano oscillazioni
-                \item \textbf{Report mensili:} numero di host attivi, la classifica degli host più problematici, e una analisi sulla frequenza dei guasti
+                \item \textbf{Report giornalieri:} numero di \texttt{PROBLEM} rilevati, quali non si sono risolti automaticamente e quali host mostrano oscillazioni
+                \item \textbf{Report mensili:} numero di host attivi, la classifica degli host più problematici e una analisi sulla frequenza dei guasti
             \end{itemize}}
     \end{block}
 \end{frame}
@@ -187,7 +187,7 @@ automatizzata basata su Zabbix}
 
             \vspace{0.4cm}
             \begin{alertblock}{Cambio di paradigma}
-                Dal \textit{polling} ciclico ad un sistema (\textit{event-driven})
+                Dal \textit{polling} ciclico ad un sistema \textit{event-driven}
             \end{alertblock}
         \end{column}
 
@@ -266,10 +266,10 @@ automatizzata basata su Zabbix}
         \end{column}
         \begin{column}{0.6\textwidth}
             \begin{block}{Logica}
-                Grazie agli argomenti passati dal media type: script, lo script può distinguere tra un problema e una risoluzione.\\
+                Grazie agli argomenti passati dal \textit{media type: script}, lo script può distinguere tra un problema e una risoluzione.\\
                 Successivamente tramite le API REST di Interacta:\\
-                $\rightarrow$ \textbf{PROBLEM:} apre un nuovo ticket.\\
-                $\rightarrow$ \textbf{RESOLVED:} chiude il ticket associato.
+                $\rightarrow$ \textbf{PROBLEM:} apre un nuovo ticket\\
+                $\rightarrow$ \textbf{RESOLVED:} chiude il ticket associato
             \end{block}
         \end{column}
     \end{columns}
@@ -285,7 +285,7 @@ automatizzata basata su Zabbix}
     \end{itemize}
     \begin{exampleblock}{Codice di firma (Python)}
         \begin{verbatim}
-signed_jwt = f"{b64_header}.{b64_payload}.{b64url_encode(signature)}"
+ signed_jwt=f"{b64_header}.{b64_payload}.{b64url_encode(signature)}"
         \end{verbatim}
     \end{exampleblock}
     \textit{Nota:} RS512 garantisce integrità autenticazione e non ripudio. La confidenzialità del payload è demandata al canale \textit{HTTPS (TLS)}.
