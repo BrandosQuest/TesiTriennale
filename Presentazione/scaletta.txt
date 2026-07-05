@@ -16,7 +16,7 @@ SW    Subnet mask:(x.x.241.128/25)
 AP    Subnet mask:(x.x.242.0/25)
 LTE   Subnet mask:(x.x.242.128/25)
 Questa/e reti comprendono deigli host utili ai cumuni per furti o vandalismo o atti illeciti, ma sia ai comuni che a secoval mancava uno strumento per capire quando questi device avessero un guasto o per qulche motivo sossero andati in arresto. 
-Il mio tirocinio aveva come pricipale obiettivo creare questo stumento, e successivamente espandere su questa idea con gis e icket interacta.
+Il mio tirocinio aveva come pricipale obiettivo creare questo stumento, e successivamente espandere su questa idea con gis (geographic information system) e icket interacta.
 
 
 

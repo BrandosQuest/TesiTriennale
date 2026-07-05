@@ -37,9 +37,9 @@ automatizzata basata su Zabbix}
 % }
 % \institute{Università degli Studi di Brescia}
 \date{Anno Accademico 2025/2026}
-% \institute[UniBs]{%DA CONTROLLARE
-%     Ingegneria delle Tecnologie per l'Impresa Digitale
-% }
+\institute[UniBs]{%DA CONTROLLARE
+    Ingegneria delle Tecnologie per l'Impresa Digitale
+}
 
 \begin{document}
 
@@ -99,7 +99,7 @@ automatizzata basata su Zabbix}
             \end{columns}
             \vspace{0.3cm}
             \begin{exampleblock}{Obiettivo del tirocinio}
-                Sviluppo del monitoraggio di rete, integrazione con un sistema GIS (geographic information system) e connessione al servizio di ticketing aziendale
+                Sviluppo del monitoraggio di rete, integrazione con un sistema GIS e connessione al servizio di ticketing aziendale
             \end{exampleblock}
         \end{column}
     \end{columns}
@@ -150,12 +150,12 @@ automatizzata basata su Zabbix}
 % --- SLIDE : LOGICHE DI POLLING E REPORTISTICA ---
 \begin{frame}{Funzionalità base del sistema}
     %\framesubtitle{Superare il limite delle Dashboard real-time}
-    \begin{columns}
-        \begin{column}{0.5\textwidth}
+    \begin{columns}[T]
+        \begin{column}[T]{0.5\textwidth}
             \textbf{Polling sugli host}
 
             \begin{itemize}
-                \item Template \textbf{ICMP Ping} in Zabbix\\ \texttt{PROBLEM} $\longrightarrow$ \texttt{OK}
+                \item Template \textbf{ICMP Ping} in Zabbix\\ \texttt{PROBLEM} $\longrightarrow$ \texttt{RESOLVED}
             \end{itemize}
         \end{column}
         \begin{column}{0.5\textwidth}
@@ -167,12 +167,14 @@ automatizzata basata su Zabbix}
         \end{column}
     \end{columns}
     \vspace{0.3cm}
-    \begin{block}{Soluzione: Data Logging e Reportistica}
-        Un \textit{Custom Script} intercetta ogni cambio di stato (\texttt{PROBLEM/OK}) e lo storicizza su un server Ubuntu. Questo abilita la generazione di:
-        \begin{itemize}
-            \item \textbf{Report Giornalieri:} Allarmi attivi, fluttuazioni di rete, focus su TVCC.
-            \item \textbf{Report Mensili:} Uptime percentuale, classificazione host critici, analisi guasti per fascia oraria.
-        \end{itemize}
+    \begin{block}{Soluzione: logs}
+        {\footnotesize
+            Zabbix rileva i cambi di stato %(\texttt{PROBLEM/RESOLVED})(da tenere?) 
+            e i metadati ralativi all'host in questione vengono salvati nella VM Ubuntu come righe di un file CSV.\\Questo abilita la generazione di:
+            \begin{itemize}
+                \item \textbf{Report giornalieri:} numero di \texttt{PROBLEM} rilevati, quali non si sono risolti automaticamente e gli host che mostrano oscillazioni
+                \item \textbf{Report mensili:} numero di host attivi, la classifica degli host più problematici, e una analisi sulla frequenza dei guasti
+            \end{itemize}}
     \end{block}
 \end{frame}
 
@@ -200,46 +202,63 @@ automatizzata basata su Zabbix}
 \end{frame}
 
 % --- SLIDE : INTEGRAZIONE BUSINESS - INTERACTA ---
-\begin{frame}{Chiusura del Ciclo: Automazione Ticketing}
-    \framesubtitle{Dal rilevamento tecnico all'azione operativa}
-    L'ultimo step del progetto è l'interfacciamento con \textbf{Interacta}, la piattaforma cloud aziendale per la gestione dei task.
+\begin{frame}{Automazione ticketing}
+    %\framesubtitle{Dal rilevamento tecnico all'azione operativa}
+    L'obiettivo è integrare il sistema creato alla piattaforma cloud aziendale per la gestione dei ticket, \textbf{Interacta}
     \vspace{0.3cm}
     \begin{columns}
         \begin{column}{0.4\textwidth}
-            \textbf{Il Flusso (Custom Media Type):}
-            Zabbix esegue uno script locale passando le "Macro" dell'evento:
-            \begin{itemize}
-                \item \texttt{status} (PROBLEM / RESOLVED)
-                \item \texttt{IP}, \texttt{ID\_palo}, \texttt{lat}, \texttt{lon}
-                \item \texttt{problem\_ID}
-            \end{itemize}
+            \textbf{Il flusso:}\\
+            \begin{center}
+                \textbf{evento}\\[-0.1cm]
+                $\downarrow$\\[-0.1cm]
+                Zabbix media type: script\\[-0.1cm]
+                % $\downarrow$\\[-0.1cm]
+                % Macro e Argomenti\\[-0.1cm]
+                $\downarrow$\\[-0.1cm]
+                elaborazione\\[-0.1cm]
+                $\downarrow$\\[-0.1cm]
+                \textbf{apertura/chiusura ticket}
+            \end{center}
+            % Evento - media type script - macro e argomenti - elaborazione - invio richiesta di apertura ticket
         \end{column}
         \begin{column}{0.6\textwidth}
-            \begin{block}{Logica di Business}
-                Lo stato dell'evento (\texttt{status}) viene valutato dallo script Python per invocare le API REST di Interacta:\\
-                $\rightarrow$ \textbf{PROBLEM:} Apre un nuovo Ticket.\\
-                $\rightarrow$ \textbf{RESOLVED:} Chiude il Ticket associato.
+            \begin{block}{Logica}
+                Grazie agli argomenti passati dal media type: script, lo script può distinguere tra un problema e una risoluzione.\\
+                Successivamente tramite le API REST di Interacta:\\
+                $\rightarrow$ \textbf{PROBLEM:} apre un nuovo ticket.\\
+                $\rightarrow$ \textbf{RESOLVED:} chiude il ticket associato.
             \end{block}
         \end{column}
     \end{columns}
 \end{frame}
 
 % --- SLIDE : SICUREZZA E CRITTOGRAFIA (JWT) ---
-\begin{frame}[fragile]{Sicurezza Server-to-Server: JWT e RS512}
-    \framesubtitle{Protezione delle transazioni API verso il Cloud}
-    L'autenticazione verso Interacta è garantita dallo standard \textbf{JSON Web Token (JWT Assertion)}.
+\begin{frame}[fragile]{Autenticazione server to server}
+    %\framesubtitle{Protezione delle transazioni API verso il Cloud}
+    L'autenticazione verso Interacta è garantita con \textbf{JWT Assertion} e firmata con algoritmo \textbf{RS512}
     \begin{itemize}
-        \item \textbf{Firma asimmetrica (RS512):} Chiave privata locale (JSON), chiave pubblica sul cloud.
-        \item \textbf{Libreria \texttt{cryptography}:} Struttura Header + Payload, firma RSA + Hash SHA512.
+        \item \textit{Firma asimmetrica:} chiave privata locale, chiave pubblica conservata sul server Interacta
+
     \end{itemize}
     \begin{exampleblock}{Codice di firma (Python)}
         \begin{verbatim}
-signature = private_key.sign(
-    signing_input, padding.PKCS1v15(), hashes.SHA512()
-)
 signed_jwt = f"{b64_header}.{b64_payload}.{b64url_encode(signature)}"
-\end{verbatim}
+        \end{verbatim}
     \end{exampleblock}
-    \textit{Nota architetturale:} RS512 garantisce l'Autenticazione e l'Integrità. La confidenzialità del payload è demandata al canale \textbf{HTTPS (TLS)}.
+    \textit{Nota:} RS512 garantisce integrità autenticazione e non ripudio. La confidenzialità del payload è demandata al canale \textit{HTTPS (TLS)}.
+\end{frame}
+\begin{frame}[plain]
+    \centering
+    \vspace{1cm}
+
+    {\Large \textbf{Grazie per l'attenzione}}
+
+    \vspace{0.5cm}
+    \rule{0.5\textwidth}{1pt}
+    \vspace{0.5cm}
+
+    {\large Discussione elaborato finale\\Brando Calderara}
+
 \end{frame}
 \end{document}
