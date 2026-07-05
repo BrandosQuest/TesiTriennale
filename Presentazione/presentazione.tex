@@ -55,9 +55,9 @@ automatizzata basata su Zabbix}
 % --- SLIDE : CONTESTO E PROBLEMA ---
 \begin{frame}{Secoval e il problema reale}
     %\framesubtitle{Infrastruttura distribuita della Comunità Montana Valle Sabbia}
-    \begin{columns}
+    \begin{columns}[T]
         \begin{column}{0.5\textwidth}
-            \begin{columns}
+            \begin{columns}[T]
                 \begin{column}{0.3\textwidth}
                     \ \ \includegraphics[width=0.8\linewidth]{Secoval_Logo.png}
                 \end{column}
@@ -85,17 +85,26 @@ automatizzata basata su Zabbix}
             \\\texttt{LTE} \ {\footnotesize(x.x.242.128/25)} - Connettività
             }
         \end{column}
-        \begin{column}{0.5\textwidth}
-            \begin{alertblock}{Il problema}
-                Assenza di uno strumento centralizzato per rilevare \textbf{guasti o manomissioni}
-            \end{alertblock}
-            \vspace{1cm}
+        \begin{column}[T]{0.5\textwidth}
+            % Use native Beamer columns to create the indent safely
+            \begin{columns}[T]
+                \begin{column}{0.01\linewidth}
+                    % This empty column acts as an invisible push to the right
+                \end{column}
+                \begin{column}{0.85\linewidth}
+                    \begin{alertblock}{Il problema}
+                        Assenza di uno strumento centralizzato per rilevare \textbf{guasti o manomissioni}
+                    \end{alertblock}
+                \end{column}
+            \end{columns}
+            \vspace{0.3cm}
             \begin{exampleblock}{Obiettivo del tirocinio}
                 Sviluppo del monitoraggio di rete, integrazione con un sistema GIS (geographic information system) e connessione al servizio di ticketing aziendale
             \end{exampleblock}
         \end{column}
     \end{columns}
 \end{frame}
+
 
 % --- SLIDE : ZABBIX E DATA INGESTION ---
 \begin{frame}{Il Core del Sistema: Zabbix e CMDB}

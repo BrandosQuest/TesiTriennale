@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1783244432.13332 "/home/brando/Documents/TesiTriennale/Presentazione/presentazione.tex" "presentazione.pdf" "presentazione" 1783244432.95046 0
+["pdflatex"] 1783245610.59621 "/home/brando/Documents/TesiTriennale/Presentazione/presentazione.tex" "presentazione.pdf" "presentazione" 1783245611.43578 0
   "/etc/texmf/web2c/texmf.cnf" 1781877153.96915 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/brando/Documents/TesiTriennale/Presentazione/presentazione.tex" 1783244431.89982 10358 df7d7d2dd885480f81e3318f54344580 ""
+  "/home/brando/Documents/TesiTriennale/Presentazione/presentazione.tex" 1783245610.3798 10750 4faec18ddb566a844c31a6ff186623f0 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcss1000.tfm" 1136768653 1536 293044035fd171bb1d18cf655049b101 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcss1095.tfm" 1136768653 1536 f0fa079cdc83a6ffeda21e42352cf1ea ""
@@ -225,11 +225,11 @@
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1781877246 8212789 067713bffb547f22100fa0f5b46fe3f6 ""
   "Secoval_Logo.png" 1783242424.08896 4273 df1b88dcea011adc240a17688c9f6a96 ""
   "logoUnibsScreennato.png" 1783066197.05891 291868 01e8a6da43cbfa109de94cc4ea635afb ""
-  "presentazione.aux" 1783244432.89853 1463 6bec2ce22dafd22d70eecba9d3a39594 "pdflatex"
-  "presentazione.nav" 1783244432.89979 923 02772eacdfe77d67b79e45a640fd18ab "pdflatex"
-  "presentazione.out" 1783244432.59238 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
-  "presentazione.tex" 1783244431.89982 10358 df7d7d2dd885480f81e3318f54344580 ""
-  "presentazione.vrb" 1783244432.8803 908 ab69e6f603444ac3b339e211ebedda44 "pdflatex"
+  "presentazione.aux" 1783245611.38273 1463 6bec2ce22dafd22d70eecba9d3a39594 "pdflatex"
+  "presentazione.nav" 1783245611.38319 923 02772eacdfe77d67b79e45a640fd18ab "pdflatex"
+  "presentazione.out" 1783245611.06873 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "presentazione.tex" 1783245610.3798 10750 4faec18ddb566a844c31a6ff186623f0 ""
+  "presentazione.vrb" 1783245611.36272 908 ab69e6f603444ac3b339e211ebedda44 "pdflatex"
   (generated)
   "presentazione.aux"
   "presentazione.log"
