@@ -1,6 +1,10 @@
 Ciao sono Brando Calderara e oggi vi parlo della mia tesi triennale:
 il mio elaborato tratta l'attività da me svolta durante il mio tirocinio esterno nell'azienda Secoval.
-All'interno di questa azienda compartecipata da vari comuni della comunità montana della valle sabbia, oltre ad attività riguardanti il catasto, la trasformazione digitale, l'assistenza tecnica ecc ecc si sono trovati a dover gestire una rete distribuita sul territorio di telecamere access poits, lettori targa e diswitch per gestire il tutto oltre che alcuni device o host delle precedenti categorie che si avvalgono della connettività LTE( long term evolution).
+All'interno di questa azienda compartecipata da vari comuni della comunità montana della valle sabbia, oltre ad attività riguardanti il catasto, la trasformazione digitale, l'assistenza tecnica ecc ecc si sono trovati a dover gestire una rete distribuita sul territorio di telecamere access poits, lettori targa e diswitch per gestire il tutto oltre che alcuni device o host delle precedenti categorie che si avvalgono della connettività LTE( long term evolution). Questi devide o host di dividono in 4 tipologie di sottoreti: 
+TVCC  Subnet mask:(x.x.241.0/25)
+SW    Subnet mask:(x.x.241.128/25)
+AP    Subnet mask:(x.x.242.0/25)
+LTE   Subnet mask:(x.x.242.128/25)
 Questa/e reti comprendono deigli host utili ai cumuni per furti o vandalismo o atti illeciti, ma sia ai comuni che a secoval mancava uno strumento per capire quando questi device avessero un guasto o per qulche motivo sossero andati in arresto. 
 Il mio tirocinio aveva come pricipale obiettivo creare questo stumento, e successivamente espandere su questa idea con gis e icket interacta.
 
@@ -10,7 +14,9 @@ Queste informazioni erano presenti in 2 diversi file excel che attraverso script
 
 Da questo momento in poi il sistema ha cominciato a acere un output significativo attraverso il tplate di monitoraggio incluso in zabbix ICMP ping(Internet Control Message Protocol) è un protocollo di livello di rete utilizzato dai dispositivi (come router e computer) per diagnosticare problemi di comunicazione e inviare messaggi di stato). questo template viene assegnato automaticament agli host ed dopo opportune modifiche di tempistiche per la sua attivazione(l'azienda richeide tempistiche lasce come 1h di attesa prima di lanciare un problema) esso permette di attivare su quell'host un problem che contiene il riferimento all'host ed ai suoi metadati.
 
-spesso gli host ritornano online dopo manutenzioni ecc ecc e questo permette alla dashboard di liberarsi ma impedisce di costruire un sistema per raccogliere trend e dati sui guasti passati. per questo ad ogni passaggio di stato di un host da problem a ok e eda ok a problem viene attibvato un media tipye di tispo script che sulla macchina ubuntu salva il contentuto di questo evento, orario e problem id e host coinvolto. questo permette di costuire dei report giornalieri e anche dei report mesili e su misura.
+spesso gli host ritornano online dopo manutenzioni ecc ecc e questo permette alla dashboard di liberarsi ma impedisce di costruire un sistema per raccogliere trend e dati sui guasti passati. per questo ad ogni passaggio di stato di un host da problem a ok e eda ok a problem viene attibvato un media tipye di tispo script che sulla macchina ubuntu salva il contentuto di questo evento, orario e problem id e host coinvolto. questo permette di costuire dei report giornalieri e anche dei report mesili e su misura. Per esempio dei report giornalieri con: il totale dei problemi rilevati il giorno precedente, come si dividono nelle 4 tipologie di sottoreti, i problemi non ancora risoltosi automaticamente che necessitano di attenzione, gli host con oscillazioni, e gli allarmi di oscurazione degli obiettivi.
+Per esempio dei report mensili con: il numero di host attivi sul sistema, in che percentuale di problemi vengono da qualce tipologia di sottoreti, la classifica degli host più problematici, e una analisi temporale della frequenza dei guasti per fascia oraria e per settimana.
+ 
 
 Le telecamere del sistema sono abbastanza moderne ed hanno a bosrdo dei sistemi di intelligenza artificiale come il motion detectio e il tamper detection. specialmente l'ultimo è interessante per secoval per sapere quando una telecamera è stata oscurata volontariamente o onvolontariamente, da una bomboletta di vernicie o da foglie o detriti.
 Per implementare questo mi sono affiato alla comunicazione HTTP tra la telecamere e e un middleware costruito su misura. Per supprtare questo le telecamere devono sapere che devono avere acceso il loro servizio di tamper detection e la comunicazione stream al servizio di monitoraggio. questo lo ho ottenuto tramite un polling ogni oora delle configurazioni in formato XML ad ogni telecamera sul sistema.
@@ -19,9 +25,45 @@ Questi frammmenti vengono analizzati e se sono degli avvisi di oscuramento vengo
 Zabbix, progettato specificamente per inviare dati ad alte prestazioni a Zabbix. A qusto punto su zabbix sono stati inseriti Nel template templateSC_configurazione_hikvision nuovi Item di tipo Zabbix trapper  Essi sono aggiornati solo da zabbix_sender. Essi permettono di avere i PROBLEM e OK driguardo all'oiscuramtento.
 
 L'ultimo passaggio è stato l'integrazione con il sistema di ticketing aziendale Interacata. In azienda il desiderio era di avere un sistema integrato con quello che viene già utilizzato per gestire i ticket tecnici, in modo che vengano tracciati e che tutto rimanga documentato. 
-Il sistema di basa su l'autenticazione server to server tra la macchina di zabbix e il server interacta. quando zabbix 
-JWT
-RSA
+Il sistema di basa sull'utilizzo di custom media types di tipo script in Zabix. Esso come nel caso delle informazioni sui vari problemi è in grado di eseguire script sulla macchina che hosta Zabbix passandogli gli argomenti definiti a priori tramite macro, nel nostro caso in secoval si sono definiti utili questi argomenti: 
+"status"
+"progetto"
+"nome_host"
+"IP"
+"ID_palo"
+"tipo_problema"
+"coordinate_lat"
+"coordinate_lon"
+"via"
+"problem_ID"
+Lo status si divide in "PROBLEM" e "RESOLVED" e questo permette di distinguere per un determinato "problem_ID" se bisogna aprire o chiudere un ticket.
+
+L'autenticazione server to server tra la macchina di zabbix e il server interacta si sviluppa utilizzando JWT Assertion(Json Web Token) firmata con algoritmo RS512 utilizzando
+una chiave privata fornita in formato JSON. 
+Lo script python che ho svipuppato utilizza il modulo "cryptography" e costruisce un file json con header e pauload poi firmato con RSA.
+# 4. Firma Crittografica Manuale con RS512
+        private_key_obj = load_pem_private_key(private_key_pem.encode('utf-8'), password=None)
+        signature = private_key_obj.sign(
+            signing_input,
+            padding.PKCS1v15(),
+            hashes.SHA512()
+        )
+
+        # 5. Assemblaggio del Token Finale
+        signed_jwt = f"{b64_header}.{b64_payload}.{b64url_encode(signature)}"
+
+Questo signed_jwt viene poi inviuato con una richiesta POST HTTP al server (POST viene utilizzato per inviare dati a un server web)
+La risposta del server viene spacchettata dal suo formato json e l'access token memorizzato.
+
+Una volta autenticati con il server utilizzeremo questo access token per creare L'header con il nostro token nel campi authorization, e il pauload con le informazioni per il tiket o per la chiusura.
+Il server ci risponderà qindi con uno status code 400 OK se la scrittura del tiket nella sua memoria o la cencellazione sono andate a buon fine.
+Il contentuto del tiket non è criptato dall'algoritmo RS512, esso si occupa di garantire: L'integrità del messaggio, L'autenticazione del mittente, il non ripudio del contenuto. Ma esso non garantisce la confidenzialità della comunicazione, essa è garantita dal HTTPS TLS (Transport Layer Security) che opera a livello di trasporto ed è nativamente implementato negli URL con https.
+
+
+
+
+
+
 
 
 DA DARE UN FLUSSO CON DEFINIZIONE DEGLI OBIETTIVI E COME SONO ARRIVATO A SODDISFARLI
