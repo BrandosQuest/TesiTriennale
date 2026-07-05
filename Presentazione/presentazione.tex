@@ -107,20 +107,44 @@ automatizzata basata su Zabbix}
 
 
 % --- SLIDE : ZABBIX E DATA INGESTION ---
-\begin{frame}{Il Core del Sistema: Zabbix e CMDB}
-    \framesubtitle{Dall'inventario statico al provisioning dinamico}
-    \begin{itemize}
-        \item \textbf{La Piattaforma:} Adozione di \textbf{Zabbix} (Open-Source) per il monitoraggio IT tramite processi di \textit{Auto-discovery} della rete.
-        \item \textbf{Estrazione della Conoscenza (Data Ingestion):}
-              \begin{itemize}
-                  \item I metadati fisici (ID Palo, Coordinate GPS) risiedevano su archivi Excel statici.
-                  \item Sviluppo di uno script \textbf{Python} (librerie \texttt{pandas} e \texttt{openpyxl}).
-                  \item Utilizzo delle \textbf{API JSON-RPC} di Zabbix per associare automaticamente i metadati agli host scoperti sulla rete.
-              \end{itemize}
-    \end{itemize}
-    \begin{block}{Risultato: Integrazione GIS}
+\begin{frame}{Zabbix}
+    %\framesubtitle{Dall'inventario statico al provisioning dinamico}
+    \begin{columns}[T]
+        \begin{column}{0.7\textwidth}
+            \hspace*{0.3cm}Software Open-Source per il monitoraggio IT, con capacità \\\hspace*{0.3cm}di \textit{Auto-discovery} della rete e gestione degli eventi
+        \end{column}
+        \begin{column}{0.3\textwidth}
+            \includegraphics[width=0.6\linewidth]{Zabbix_Logo.png}
+        \end{column}
+    \end{columns}
+
+    % \begin{itemize}
+    %     \item I metadati fisici (ID Palo, Coordinate GPS) risiedevano su archivi Excel statici.
+    %     \item Sviluppo di uno script \textbf{Python} (librerie \texttt{pandas} e \texttt{openpyxl}).
+    %     \item Utilizzo delle \textbf{API JSON-RPC} di Zabbix per associare automaticamente i metadati agli host scoperti sulla rete.
+    % \end{itemize}
+    \vspace{0.6cm}
+    \textbf{Metadati aziendali} $\longrightarrow$ \textbf{Zabbix API} {\footnotesize Python}  $\longrightarrow$ \textbf{Host Zabbix aggiornati}
+    \vspace{0.6cm}
+    \begin{block}{Risultato: integrazione GIS}
         Le coordinate iniettate via API hanno permesso di abilitare la \textbf{Geomap} nativa (su base OpenStreetMap). L'azienda può ora visualizzare istantaneamente lo stato e la posizione esatta di un guasto sul territorio.
     \end{block}
+\end{frame}
+\begin{frame}{Mappa GIS}
+    %\framesubtitle{Visualizzazione Geografica dei Guasti}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\linewidth]{GIS.png}
+        %\caption{Esempio di GIS in Zabbix con icone colorate per lo stato degli host.}
+        %\label{fig:Geomap_Zabbix}
+    \end{figure}
+    \centering
+    Esempio di GIS in Zabbix con icone colorate per lo stato degli host
+\end{frame}
+\begin{frame}{Placeholder}
+    \centering
+    % Centra l'immagine orizzontalmente nel foglio.
+    \includegraphics[width=0.5\linewidth]{SystemArchSchema-2026-06-28-074223.pdf}
 \end{frame}
 
 % --- SLIDE : LOGICHE DI POLLING E REPORTISTICA ---
