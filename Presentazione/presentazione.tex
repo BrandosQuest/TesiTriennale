@@ -30,7 +30,7 @@ automatizzata basata su Zabbix}
     Relatore: Chiar.mo Prof. Francesco Gringoli
 }
 \date{Anno Accademico 2025/2026}
-\institute[UniBs]{%DA CONTROLLARE
+\institute[UniBs]{
     Ingegneria delle Tecnologie per l'Impresa Digitale
 }
 
@@ -136,7 +136,7 @@ automatizzata basata su Zabbix}
     \begin{block}{Soluzione: logs}
         {\footnotesize
             Zabbix rileva i cambi di stato per ogni host %(\texttt{PROBLEM/RESOLVED})(da tenere?) 
-            e i metadati ralativi all'host in questione vengono salvati nella VM Ubuntu come righe di un file CSV.\\Questo abilita la generazione di:
+            e i metadati relativi all'host in questione vengono salvati nella VM Ubuntu come righe di un file CSV.\\Questo abilita la generazione di:
             \begin{itemize}
                 \item \textbf{Report giornalieri:} numero di \texttt{PROBLEM} rilevati, quali non si sono risolti automaticamente e quali host mostrano oscillazioni
                 \item \textbf{Report mensili:} numero di host attivi, la classifica degli host più problematici e una analisi sulla frequenza dei guasti
@@ -168,7 +168,7 @@ automatizzata basata su Zabbix}
                 $\downarrow$\\[-0.1cm]
                 \textbf{Analisi:} dei frammenti XML inviati al verificarsi di un'anomalia\\[-0.1cm]
                 $\downarrow$\\[-0.1cm]
-                \textbf{Zabbix Sender:} utility CLI per l'ivio dei dati verso il server Zabbix\\[-0.1cm]
+                \textbf{Zabbix Sender:} utility CLI per l'invio dei dati verso il server Zabbix\\[-0.1cm]
                 $\downarrow$\\[-0.1cm]
                 \textbf{Trapper items:} ricezione passiva dell'allarme
             \end{center}
@@ -177,7 +177,7 @@ automatizzata basata su Zabbix}
 \end{frame}
 
 % Slide 7
-\begin{frame}{Visualizzazione architettura(DA CONTROLLARE)}
+\begin{frame}{Panoramica del sistema}
     \centering
     % Centra l'immagine orizzontalmente nel foglio.
     \includegraphics[width=0.5\linewidth]{SystemArchSchema-2026-06-28-074223.pdf}
