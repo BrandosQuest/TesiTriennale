@@ -127,7 +127,7 @@ automatizzata basata su Zabbix}
     \textbf{Metadati aziendali} $\longrightarrow$ \textbf{Zabbix API} {\footnotesize Python}  $\longrightarrow$ \textbf{Host Zabbix aggiornati}
     \vspace{0.6cm}
     \begin{block}{Risultato: integrazione GIS}
-        Le coordinate iniettate via API hanno permesso di abilitare la \textbf{Geomap} nativa (su base OpenStreetMap). L'azienda può ora visualizzare istantaneamente lo stato e la posizione esatta di un guasto sul territorio.
+        Le coordinate inserite via API hanno permesso di abilitare il widget \textbf{Geomap} nativo (base OpenStreetMap). Gli operatori possono ora visualizzare lo stato e la posizione esatta e i dati di un guasto sul territorio
     \end{block}
 \end{frame}
 \begin{frame}{Mappa GIS}
@@ -148,20 +148,21 @@ automatizzata basata su Zabbix}
 \end{frame}
 
 % --- SLIDE : LOGICHE DI POLLING E REPORTISTICA ---
-\begin{frame}{Rilevamento Guasti e Analisi Storica}
-    \framesubtitle{Superare il limite delle Dashboard real-time}
+\begin{frame}{Funzionalità base del sistema}
+    %\framesubtitle{Superare il limite delle Dashboard real-time}
     \begin{columns}
         \begin{column}{0.5\textwidth}
-            \textbf{Logica di Rilevamento (Polling)}
+            \textbf{Polling sugli host}
+
             \begin{itemize}
-                \item Utilizzo del protocollo \textbf{ICMP} (Ping).
-                \item \textit{Business Rule:} Tolleranza di 1 ora prima di generare l'evento \texttt{PROBLEM} (evita falsi positivi per riavvii fisiologici).
+                \item Template \textbf{ICMP Ping} in Zabbix\\ \texttt{PROBLEM} $\longrightarrow$ \texttt{OK}
             \end{itemize}
         \end{column}
         \begin{column}{0.5\textwidth}
-            \textbf{Il limite del Real-Time}
+            \textbf{Limite}
             \begin{itemize}
-                \item Al rientro del guasto (\texttt{OK}), la dashboard si pulisce, perdendo lo storico per le analisi direzionali.
+                \item Mancanza dell'associazione: \\
+                      \textit{problema $\longleftrightarrow$ metadati dell'host}
             \end{itemize}
         \end{column}
     \end{columns}
