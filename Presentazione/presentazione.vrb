@@ -1,0 +1,16 @@
+\frametitle{Sicurezza Server-to-Server: JWT e RS512}
+\framesubtitle{Protezione delle transazioni API verso il Cloud}
+    L'autenticazione verso Interacta è garantita dallo standard \textbf{JSON Web Token (JWT Assertion)}.
+    \begin{itemize}
+        \item \textbf{Firma asimmetrica (RS512):} Chiave privata locale (JSON), chiave pubblica sul cloud.
+        \item \textbf{Libreria \texttt{cryptography}:} Struttura Header + Payload, firma RSA + Hash SHA512.
+    \end{itemize}
+    \begin{exampleblock}{Codice di firma (Python)}
+        \begin{verbatim}
+signature = private_key.sign(
+    signing_input, padding.PKCS1v15(), hashes.SHA512()
+)
+signed_jwt = f"{b64_header}.{b64_payload}.{b64url_encode(signature)}"
+\end{verbatim}
+    \end{exampleblock}
+    \textit{Nota architetturale:} RS512 garantisce l'Autenticazione e l'Integrità. La confidenzialità del payload è demandata al canale \textbf{HTTPS (TLS)}.
