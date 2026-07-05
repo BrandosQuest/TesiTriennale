@@ -24,18 +24,11 @@
 sicurezza per smart city: dalla gestione
 manuale ad un’architettura
 automatizzata basata su Zabbix}
-% \subtitle{Dalle Tecniche Tradizionali al Deep Learning}
 \author[Brando Calderara]{
     Laureando: Brando Calderara (Mat. 746352) \\
     \vspace{0.3cm}
     Relatore: Chiar.mo Prof. Francesco Gringoli
 }
-% \institute[UniBs]{
-%     Università degli Studi di Brescia \\
-%     Dipartimento di Ingegneria dell'Informazione \\
-%     Corso di Laurea in Ingegneria delle Tecnologie per l'Impresa Digitale
-% }
-% \institute{Università degli Studi di Brescia}
 \date{Anno Accademico 2025/2026}
 \institute[UniBs]{%DA CONTROLLARE
     Ingegneria delle Tecnologie per l'Impresa Digitale
@@ -43,18 +36,12 @@ automatizzata basata su Zabbix}
 
 \begin{document}
 
-% Slide 1: Titolo e Introduzione
+% Slide 1
 \begin{frame}
     \titlepage
-    %\begin{center}
-    %    \textit{Progetto finale per il processamento dei cybermedia} [cite: 155]
-    %\end{center}
-    % [inserisci immagine qui: Logo dell'Università o un'immagine rappresentativa del Cocktail Party Problem ]
 \end{frame}
-%\section{Nome Sezione}
-% --- SLIDE : CONTESTO E PROBLEMA ---
+% Slide 2
 \begin{frame}{Secoval e il problema reale}
-    %\framesubtitle{Infrastruttura distribuita della Comunità Montana Valle Sabbia}
     \begin{columns}[T]
         \begin{column}{0.5\textwidth}
             \begin{columns}[T]
@@ -67,15 +54,6 @@ automatizzata basata su Zabbix}
                     telecamere, lettori targa, access point e switch
                 \end{column}
             \end{columns}
-
-            %{\small questo è piccolo},
-            % {\footnotesize questo è ancora più piccolo} e {\tiny questo è minuscolo}.
-            % \begin{figure}[]
-            %     %\centering
-            %     \includegraphics[width=0.1\linewidth]{Secoval_Logo.png}
-            %     %\caption{Caption Example}
-            %     %\%label{fig:SystemArchSchema}
-            % \end{figure}
             \vspace{1cm}
             {\small
             \textbf{Categorie di sottoreti:}
@@ -105,10 +83,8 @@ automatizzata basata su Zabbix}
     \end{columns}
 \end{frame}
 
-
-% --- SLIDE : ZABBIX E DATA INGESTION ---
+% Slide 3
 \begin{frame}{Zabbix}
-    %\framesubtitle{Dall'inventario statico al provisioning dinamico}
     \begin{columns}[T]
         \begin{column}{0.7\textwidth}
             \hspace*{0.3cm}Software Open-Source per il monitoraggio IT, con capacità \\\hspace*{0.3cm}di \textit{Auto-discovery} della rete e gestione degli eventi
@@ -118,11 +94,6 @@ automatizzata basata su Zabbix}
         \end{column}
     \end{columns}
 
-    % \begin{itemize}
-    %     \item I metadati fisici (ID Palo, Coordinate GPS) risiedevano su archivi Excel statici.
-    %     \item Sviluppo di uno script \textbf{Python} (librerie \texttt{pandas} e \texttt{openpyxl}).
-    %     \item Utilizzo delle \textbf{API JSON-RPC} di Zabbix per associare automaticamente i metadati agli host scoperti sulla rete.
-    % \end{itemize}
     \vspace{0.6cm}
     \textbf{Metadati aziendali} $\longrightarrow$ \textbf{Zabbix API} {\footnotesize Python}  $\longrightarrow$ \textbf{Host Zabbix aggiornati}
     \vspace{0.6cm}
@@ -130,22 +101,21 @@ automatizzata basata su Zabbix}
         Le coordinate inserite via API hanno permesso di abilitare il widget \textbf{Geomap} nativo (base OpenStreetMap). Gli operatori possono ora visualizzare lo stato e la posizione esatta e i dati di un guasto sul territorio
     \end{block}
 \end{frame}
+
+% Slide 4
 \begin{frame}{Mappa GIS}
-    %\framesubtitle{Visualizzazione Geografica dei Guasti}
     \begin{figure}
         \centering
         \includegraphics[width=0.9\linewidth]{GIS.png}
-        %\caption{Esempio di GIS in Zabbix con icone colorate per lo stato degli host.}
-        %\label{fig:Geomap_Zabbix}
+
     \end{figure}
     \centering
     Esempio di GIS in Zabbix con icone colorate per lo stato degli host
 \end{frame}
 
 
-% --- SLIDE : LOGICHE DI POLLING E REPORTISTICA ---
+% Slide 5
 \begin{frame}{Funzionalità base del sistema}
-    %\framesubtitle{Superare il limite delle Dashboard real-time}
     \begin{columns}[T]
         \begin{column}[T]{0.5\textwidth}
             \textbf{Polling sugli host}
@@ -174,9 +144,8 @@ automatizzata basata su Zabbix}
     \end{block}
 \end{frame}
 
+% Slide 6
 \begin{frame}{Edge AI e tamper detection}
-    %\framesubtitle{Gestione asincrona degli oscuramenti fisici}
-
     \begin{columns}
         % Colonna Sinistra: Il Contesto (Il Perché)
         \begin{column}{0.45\textwidth}
@@ -198,54 +167,24 @@ automatizzata basata su Zabbix}
                 \textbf{Stream HTTP (ISAPI):} lo script Python apre e mantiene una connessione persistente verso la telecamera\\[-0.1cm]
                 $\downarrow$\\[-0.1cm]
                 \textbf{Analisi:} dei frammenti XML inviati al verificarsi di un'anomalia\\[-0.1cm]
-                % $\downarrow$\\[-0.1cm]
-                % Macro e Argomenti\\[-0.1cm]
                 $\downarrow$\\[-0.1cm]
                 \textbf{Zabbix Sender:} utility CLI per l'ivio dei dati verso il server Zabbix\\[-0.1cm]
                 $\downarrow$\\[-0.1cm]
                 \textbf{Trapper items:} ricezione passiva dell'allarme
             \end{center}
-            % \textbf{Architettura del Flusso:}
-            % \vspace{0.1cm}
-            % \begin{enumerate}
-            %     \item \textbf{Stream HTTP (ISAPI):} Il middleware Python apre e mantiene una connessione persistente verso la telecamera.
-            %     \item \textbf{Parsing Real-Time:} Analisi immediata dei frammenti XML inviati al verificarsi di un'anomalia.
-            %     \item \textbf{Zabbix Sender:} Utilizzo dell'utility a riga di comando per il \textit{push} ad alte prestazioni dei dati verso il server.
-            %     \item \textbf{Trapper Items:} Zabbix riceve passivamente l'allarme (\texttt{PROBLEM/OK}), azzerando i tempi di latenza.
-            % \end{enumerate}
         \end{column}
     \end{columns}
 \end{frame}
-% --- SLIDE : SFIDA TECNICA - TAMPER DETECTION ---
-% \begin{frame}{Monitoraggio Avanzato: Edge AI e Tamper Detection}
-%     \framesubtitle{Intercettare le intelligenze a bordo camera}
-%     Oltre al guasto di rete, l'azienda necessitava di rilevare gli \textbf{oscuramenti fisici} delle telecamere (vernice, rami, atti vandalici).
-%     \vspace{0.3cm}
-%     \begin{itemize}
-%         \item Le telecamere Hikvision dispongono di logiche Edge AI (Tamper Detection).
-%         \item \textbf{Gestione Configurazioni:} Script periodico in Polling per validare l'attivazione dei servizi XML a bordo camera.
-%         \item \textbf{Inversione del Paradigma:} Non più Polling, ma \textbf{Streaming asincrono}.
-%     \end{itemize}
-% \end{frame}
 
-% % --- SLIDE : FLUSSO ASINCRONO E ZABBIX SENDER ---
-% \begin{frame}{Architettura del Flusso Event-Driven}
-%     \framesubtitle{Gestione delle connessioni HTTP persistenti}
-%     \begin{enumerate}
-%         \item \textbf{Middleware Python:} Apre una connessione HTTP persistente (\textit{Stream}) verso l'endpoint \texttt{ISAPI} delle telecamere.
-%         \item \textbf{Parsing in Real-Time:} La telecamera invia frammenti XML solo quando si verifica un'anomalia. Lo script li intercetta e li analizza istantaneamente.
-%         \item \textbf{Push verso Zabbix (Trapping):} I dati vengono iniettati in Zabbix tramite \texttt{zabbix\_sender}, utility a riga di comando ad altissime prestazioni.
-%         \item \textbf{Zabbix Trapper Items:} Item specifici nel template ricevono passivamente il dato, generando i trigger di allarme oscuramento.
-%     \end{enumerate}
-% \end{frame}
+% Slide 7
 \begin{frame}{Visualizzazione architettura(DA CONTROLLARE)}
     \centering
     % Centra l'immagine orizzontalmente nel foglio.
     \includegraphics[width=0.5\linewidth]{SystemArchSchema-2026-06-28-074223.pdf}
 \end{frame}
-% --- SLIDE : INTEGRAZIONE BUSINESS - INTERACTA ---
+
+% Slide 8
 \begin{frame}{Automazione ticketing}
-    %\framesubtitle{Dal rilevamento tecnico all'azione operativa}
     L'obiettivo è integrare il sistema creato alla piattaforma cloud aziendale per la gestione dei ticket, \textbf{Interacta}
     \vspace{0.3cm}
     \begin{columns}
@@ -255,14 +194,11 @@ automatizzata basata su Zabbix}
                 \textbf{evento}\\[-0.1cm]
                 $\downarrow$\\[-0.1cm]
                 Zabbix media type: script\\[-0.1cm]
-                % $\downarrow$\\[-0.1cm]
-                % Macro e Argomenti\\[-0.1cm]
                 $\downarrow$\\[-0.1cm]
                 elaborazione\\[-0.1cm]
                 $\downarrow$\\[-0.1cm]
                 \textbf{apertura/chiusura ticket}
             \end{center}
-            % Evento - media type script - macro e argomenti - elaborazione - invio richiesta di apertura ticket
         \end{column}
         \begin{column}{0.6\textwidth}
             \begin{block}{Logica}
@@ -275,9 +211,8 @@ automatizzata basata su Zabbix}
     \end{columns}
 \end{frame}
 
-% --- SLIDE : SICUREZZA E CRITTOGRAFIA (JWT) ---
+% Slide 9
 \begin{frame}[fragile]{Autenticazione server to server}
-    %\framesubtitle{Protezione delle transazioni API verso il Cloud}
     L'autenticazione verso Interacta è garantita con \textbf{JWT Assertion} e firmata con algoritmo \textbf{RS512}
     \begin{itemize}
         \item \textit{Firma asimmetrica:} chiave privata locale, chiave pubblica conservata sul server Interacta
@@ -290,6 +225,7 @@ automatizzata basata su Zabbix}
     \end{exampleblock}
     \textit{Nota:} RS512 garantisce integrità autenticazione e non ripudio. La confidenzialità del payload è demandata al canale \textit{HTTPS (TLS)}.
 \end{frame}
+% Slide 10
 \begin{frame}[plain]
     \centering
     \vspace{1cm}
