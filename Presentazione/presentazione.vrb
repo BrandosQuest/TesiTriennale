@@ -9,4 +9,4 @@ L'autenticazione verso Interacta è garantita con \textbf{JWT Assertion} e firma
  signed_jwt=f"{b64_header}.{b64_payload}.{b64url_encode(signature)}"
         \end{verbatim}
     \end{exampleblock}
-    \textit{Nota:} RS512 garantisce integrità autenticazione e non ripudio. La confidenzialità del payload è demandata al canale \textit{HTTPS (TLS)}.
+    \textit{Nota:} RS512 garantisce integrità, autenticazione e non ripudio. La confidenzialità del payload è demandata al canale di comunicazione \textit{HTTPS (TLS)}.

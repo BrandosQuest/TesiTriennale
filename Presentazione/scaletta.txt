@@ -3,20 +3,20 @@ Obiettivi:
 -GIS degli host
 -Farsi dire il tamper detection
 -Comunicare con interacta
--Reports per suppostare le decisioni in azienda
+-Reports per supportare le decisioni in azienda
 
 
 
 
 Ciao sono Brando Calderara e oggi vi parlo della mia tesi triennale:
 il mio elaborato tratta l'attività da me svolta durante il mio tirocinio esterno nell'azienda Secoval.
-All'interno di questa azienda compartecipata da vari comuni della comunità montana della valle sabbia, oltre ad attività riguardanti il catasto, la trasformazione digitale, l'assistenza tecnica ecc ecc si sono trovati a dover gestire una rete distribuita sul territorio di telecamere access poits, lettori targa e diswitch per gestire il tutto oltre che alcuni device o host delle precedenti categorie che si avvalgono della connettività LTE( long term evolution). Questi devide o host di dividono in 4 tipologie di sottoreti: 
+All'interno di questa azienda compartecipata da vari comuni della comunità montana della valle sabbia, oltre ad attività riguardanti il catasto, la trasformazione digitale, l'assistenza tecnica ecc ecc si sono trovati a dover gestire una rete distribuita sul territorio di telecamere access poits, lettori targa e di switch per gestire il tutto oltre che alcuni device o host delle precedenti categorie che si avvalgono della connettività LTE( long term evolution). Questi device o host di dividono in 4 tipologie di sottoreti: 
 TVCC  Subnet mask:(x.x.241.0/25)
 SW    Subnet mask:(x.x.241.128/25)
 AP    Subnet mask:(x.x.242.0/25)
 LTE   Subnet mask:(x.x.242.128/25)
-Questa/e reti comprendono deigli host utili ai cumuni per furti o vandalismo o atti illeciti, ma sia ai comuni che a secoval mancava uno strumento per capire quando questi device avessero un guasto o per qulche motivo sossero andati in arresto. 
-Il mio tirocinio aveva come pricipale obiettivo creare questo stumento, e successivamente espandere su questa idea con gis (geographic information system) e icket interacta.
+Questa/e reti comprendono degli host utili ai comuni per furti o vandalismo o atti illeciti, ma sia ai comuni che a Secoval mancava uno strumento per capire quando questi device avessero un guasto o per qualche motivo fossero andati in arresto. 
+Il mio tirocinio aveva come principale obiettivo creare questo strumento, e successivamente espandere su questa idea con gis (geographic information system) e ticket Interacta.
 
 
 
@@ -33,7 +33,7 @@ Da questo momento in poi il sistema ha cominciato a acere un output significativ
 
 spesso gli host ritornano online dopo manutenzioni ecc ecc e questo permette alla dashboard di liberarsi ma il sitema di memorizzazione in zabbix degli host impedisce di costruire un sistema per raccogliere trend e dati sui guasti passati. per questo ad ogni passaggio di stato di un host da problem a ok e eda ok a problem viene attibvato un media tipye di tispo script che sulla macchina ubuntu salva il contentuto di questo evento, orario e problem id e host coinvolto in un file CSV.  questo permette di costuire dei report giornalieri e anche dei report mesili e su misura. Per esempio dei report giornalieri con: il totale dei problemi rilevati il giorno precedente, come si dividono nelle 4 tipologie di sottoreti, i problemi non ancora risoltosi automaticamente che necessitano di attenzione, gli host con oscillazioni, e gli allarmi di oscurazione degli obiettivi.
 Per esempio dei report mensili con: il numero di host attivi sul sistema, in che percentuale di problemi vengono da qualce tipologia di sottoreti, la classifica degli host più problematici, e una analisi temporale della frequenza dei guasti per fascia oraria e per settimana.
-Uso un file CSV perchè: vincoli di tempo del tirocinio e con la flessibilità di ingestione diretta dei CSV tramite le librerie Python
+Uso un file CSV perchè: vincoli di tempo del tirocinio e con la flessibilità di elaborazione diretta dei CSV tramite le librerie Python
 
 
 

@@ -150,7 +150,7 @@ automatizzata basata su Zabbix}
         % Colonna Sinistra: Il Contesto (Il Perché)
         \begin{column}{0.45\textwidth}
             \begin{itemize}
-                \item Sfruttare l'intelligenza a bordo telecamera
+                \item Sfruttare l'intelligenza a bordo delle telecamere
                 \item Rilevare oscuramenti volontari o accidentali
             \end{itemize}
 
@@ -185,19 +185,19 @@ automatizzata basata su Zabbix}
 
 % Slide 8
 \begin{frame}{Automazione ticketing}
-    L'obiettivo è integrare il sistema creato alla piattaforma cloud aziendale per la gestione dei ticket, \textbf{Interacta}
+    L'obiettivo è integrare il sistema sviluppato alla piattaforma \textbf{Interacta}: il cloud aziendale per la gestione dei ticket
     \vspace{0.3cm}
     \begin{columns}
         \begin{column}{0.4\textwidth}
             \textbf{Il flusso:}\\
             \begin{center}
-                \textbf{evento}\\[-0.1cm]
+                \textbf{Evento}\\[-0.1cm]
                 $\downarrow$\\[-0.1cm]
                 Zabbix media type: script\\[-0.1cm]
                 $\downarrow$\\[-0.1cm]
-                elaborazione\\[-0.1cm]
+                Elaborazione\\[-0.1cm]
                 $\downarrow$\\[-0.1cm]
-                \textbf{apertura/chiusura ticket}
+                \textbf{Apertura/chiusura ticket}
             \end{center}
         \end{column}
         \begin{column}{0.6\textwidth}
@@ -223,7 +223,7 @@ automatizzata basata su Zabbix}
  signed_jwt=f"{b64_header}.{b64_payload}.{b64url_encode(signature)}"
         \end{verbatim}
     \end{exampleblock}
-    \textit{Nota:} RS512 garantisce integrità autenticazione e non ripudio. La confidenzialità del payload è demandata al canale \textit{HTTPS (TLS)}.
+    \textit{Nota:} RS512 garantisce integrità, autenticazione e non ripudio. La confidenzialità del payload è demandata al canale di comunicazione \textit{HTTPS (TLS)}.
 \end{frame}
 % Slide 10
 \begin{frame}[plain]
