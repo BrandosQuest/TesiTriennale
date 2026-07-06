@@ -1,0 +1,40 @@
+%%{init: {"flowchart": {"defaultRenderer": "",, "nodeSpacing": 10, "rankSpacing": 20, "padding": 10}} }%%
+flowchart LR
+    %% Definizione degli stili
+    classDef nodo fill:#ffffff,stroke:#343a40,stroke-width:1px,color:#212529,rx:8px,ry:8px,shadow:true;
+    classDef periferia fill:#f8f9fa,stroke:#ced4da,stroke-width:2px,rx:10px,ry:10px;
+    classDef vm fill:#e7f1ff,stroke:#0d6efd,stroke-width:2px,rx:10px,ry:10px;
+    classDef cloud fill:#fff3cd,stroke:#ffc107,stroke-width:2px,rx:10px,ry:10px;
+
+    %% 1. Livello Periferia
+    subgraph PERIFERIA ["SMART CITY"]
+        subgraph AP ["<br>AP, TVCC, SW, LTE"]
+            CAM["fa:fa-video Telecamere<br> Hikvision"]:::nodo
+        end
+    end
+
+    %% 2. Livello Server
+    subgraph VM ["VM SECOVAL"]
+        MID["Middleware <br>Python"]:::nodo
+        ZAB["fa:fa-server Zabbix 7.0 Server"]:::nodo
+        ALR["Custom <br>Ticketing <br>Script"]:::nodo
+
+        MID -- "zabbix_sender" --> ZAB
+        ZAB -. "Trigger<br> PROBLEM/OK" .-> ALR
+    end
+
+    %% 3. Livello Cloud
+    subgraph CLOUD ["INTERACTA CLOUD"]
+        INT["fa:fa-ticket Piattaforma <br>Ticketing"]:::nodo
+    end
+
+    %% Relazioni tra i livelli
+    CAM -- "HTTP Stream " --> MID
+    AP <-->|"Polling<br>(ping)"| ZAB
+    ALR == "JWT RS512<br>(HTTPS)" ==> INT
+
+    %% Assegnazione classi ai sottografi (ripristinate)
+    class PERIFERIA periferia;
+    class VM vm;
+    class CLOUD cloud;
+    class AP nodo;
