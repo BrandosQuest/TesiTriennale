@@ -1,12 +1,12 @@
 \frametitle{Autenticazione server to server}
 L'autenticazione verso Interacta è garantita con \textbf{JWT Assertion} e firmata con algoritmo \textbf{RS512}
     \begin{itemize}
-        \item \textit{Firma asimmetrica:} chiave privata locale, chiave pubblica conservata sul server Interacta
-
+        \item \textbf{Firma asimmetrica}
     \end{itemize}
+    \vspace{0.3cm}
     \begin{exampleblock}{Codice di firma (Python)}
         \begin{verbatim}
  signed_jwt=f"{b64_header}.{b64_payload}.{b64url_encode(signature)}"
         \end{verbatim}
     \end{exampleblock}
-    \textit{Nota:} RS512 garantisce integrità, autenticazione e non ripudio. La confidenzialità del payload è demandata al canale di comunicazione \textit{HTTPS (TLS)}.
+    \textit{Nota:} RS512 garantisce integrità, autenticazione e non ripudio. La confidenzialità del payload è demandata al canale di comunicazione \textit{HTTPS (TLS)}

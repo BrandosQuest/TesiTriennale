@@ -41,44 +41,83 @@ automatizzata basata su Zabbix}
     \titlepage
 \end{frame}
 % Slide 2
-\begin{frame}{Secoval e il problema reale}
+% \begin{frame}{Secoval e il problema reale}
+%     \begin{columns}[T]
+%         \begin{column}{0.5\textwidth}
+%             \begin{columns}[T]
+%                 \begin{column}{0.3\textwidth}
+%                     \ \ \includegraphics[width=0.8\linewidth]{Secoval_Logo.png}
+%                 \end{column}
+%                 \begin{column}{0.7\textwidth}
+%                     \textbf{L'infrastruttura (Secoval S.r.l.):}\\
+%                     Rete eterogenea distribuita sul territorio:
+%                     telecamere, lettori targa, access point e switch
+%                 \end{column}
+%             \end{columns}
+%             \vspace{1cm}
+%             {\small
+%             \textbf{Categorie di sottoreti:}
+%             \\\texttt{TVCC} {\footnotesize(x.x.241.0/25)} - Telecamere
+%             \\\texttt{SW} \ \ \ {\footnotesize(x.x.241.128/25)} - Switch
+%             \\\texttt{AP} \ \ \ {\footnotesize(x.x.242.0/25)} - Access Point
+%             \\\texttt{LTE} \ {\footnotesize(x.x.242.128/25)} - Connettività
+%             }
+%         \end{column}
+%         \begin{column}[T]{0.5\textwidth}
+%             % Use native Beamer columns to create the indent safely
+%             \begin{columns}[T]
+%                 \begin{column}{0.01\linewidth}
+%                     % This empty column acts as an invisible push to the right
+%                 \end{column}
+%                 \begin{column}{0.85\linewidth}
+%                     \begin{alertblock}{Il problema}
+%                         Assenza di uno strumento centralizzato per rilevare \textbf{guasti o manomissioni}
+%                     \end{alertblock}
+%                 \end{column}
+%             \end{columns}
+%             \vspace{0.3cm}
+%             \begin{exampleblock}{Obiettivo del tirocinio}
+%                 Sviluppo del monitoraggio di rete, integrazione con un sistema GIS e connessione al servizio di ticketing aziendale
+%             \end{exampleblock}
+%         \end{column}
+%     \end{columns}
+% \end{frame}
+\begin{frame}{Secoval e l'infrastruttura}
     \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \begin{columns}[T]
-                \begin{column}{0.3\textwidth}
-                    \ \ \includegraphics[width=0.8\linewidth]{Secoval_Logo.png}
-                \end{column}
-                \begin{column}{0.7\textwidth}
-                    \textbf{L'infrastruttura (Secoval S.r.l.):}\\
-                    Rete eterogenea distribuita sul territorio:
-                    telecamere, lettori targa, access point e switch
-                \end{column}
-            \end{columns}
-            \vspace{1cm}
-            {\small
-            \textbf{Categorie di sottoreti:}
+        \begin{column}[T]{0.5\textwidth}
+            \textbf{L'infrastruttura (Secoval S.r.l.):}\\
+            Rete eterogenea distribuita sul territorio:
+            telecamere, lettori targa, access point e switch
+
+        \end{column}
+        \begin{column}[T]{0.4\textwidth}
+            \includegraphics[width=0.3\linewidth]{Secoval_Logo.png}
+            \vspace{0.5cm}
+            \\\textbf{Categorie di sottoreti:}
             \\\texttt{TVCC} {\footnotesize(x.x.241.0/25)} - Telecamere
             \\\texttt{SW} \ \ \ {\footnotesize(x.x.241.128/25)} - Switch
             \\\texttt{AP} \ \ \ {\footnotesize(x.x.242.0/25)} - Access Point
             \\\texttt{LTE} \ {\footnotesize(x.x.242.128/25)} - Connettività
-            }
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Il problema reale}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \vspace{2.5cm}
+            \begin{exampleblock}{Obiettivo del tirocinio}
+                Sviluppo del monitoraggio di rete, integrazione con un sistema GIS e connessione al servizio di ticketing aziendale.\\Stesura tesi%Documentazione del processo per successiva tesi
+            \end{exampleblock}
         \end{column}
         \begin{column}[T]{0.5\textwidth}
             % Use native Beamer columns to create the indent safely
-            \begin{columns}[T]
-                \begin{column}{0.01\linewidth}
-                    % This empty column acts as an invisible push to the right
-                \end{column}
-                \begin{column}{0.85\linewidth}
-                    \begin{alertblock}{Il problema}
-                        Assenza di uno strumento centralizzato per rilevare \textbf{guasti o manomissioni}
-                    \end{alertblock}
-                \end{column}
-            \end{columns}
-            \vspace{0.3cm}
-            \begin{exampleblock}{Obiettivo del tirocinio}
-                Sviluppo del monitoraggio di rete, integrazione con un sistema GIS e connessione al servizio di ticketing aziendale
-            \end{exampleblock}
+            \vspace{0.5cm}
+            \begin{alertblock}{Il problema}
+                Assenza di uno strumento centralizzato per rilevare \textbf{guasti o manomissioni}
+            \end{alertblock}
+
         \end{column}
     \end{columns}
 \end{frame}
@@ -97,8 +136,12 @@ automatizzata basata su Zabbix}
     \vspace{0.6cm}
     \textbf{Metadati aziendali} $\longrightarrow$ \textbf{Zabbix API} {\footnotesize Python}  $\longrightarrow$ \textbf{Host Zabbix aggiornati}
     \vspace{0.6cm}
-    \begin{block}{Risultato: integrazione GIS}
-        Le coordinate inserite via API hanno permesso di abilitare il widget \textbf{Geomap} nativo (base OpenStreetMap). Gli operatori possono ora visualizzare lo stato e la posizione esatta e i dati di un guasto sul territorio
+    \begin{block}{Risultato}
+        \vspace{0.1cm}
+        Messaggi e alert con \textbf{significato utile}\\
+        \vspace{0.1cm}
+        Integrazione \textbf{GIS} con widget nativo \textit{Geomap} nativo
+        \vspace{0.1cm}
     \end{block}
 \end{frame}
 
@@ -134,13 +177,14 @@ automatizzata basata su Zabbix}
     \end{columns}
     \vspace{0.3cm}
     \begin{block}{Soluzione: logs}
-        {\footnotesize
-            Zabbix rileva i cambi di stato per ogni host %(\texttt{PROBLEM/RESOLVED})(da tenere?) 
-            e i metadati relativi all'host in questione vengono salvati nella VM Ubuntu come righe di un file CSV.\\Questo abilita la generazione di:
-            \begin{itemize}
-                \item \textbf{Report giornalieri:} numero di \texttt{PROBLEM} rilevati, quali non si sono risolti automaticamente e quali host mostrano oscillazioni
-                \item \textbf{Report mensili:} numero di host attivi, la classifica degli host più problematici e una analisi sulla frequenza dei guasti
-            \end{itemize}}
+        \vspace{0.2cm}
+        Cambiamento di stato host $\longrightarrow$ Zabbix trigger action $\longrightarrow$ metadati host in file CSV\\
+        \vspace{0.5cm}
+        Questo abilita:
+        \begin{itemize}
+            \item \textbf{Report giornalieri}
+            \item \textbf{Report mensili}
+        \end{itemize}
     \end{block}
 \end{frame}
 
@@ -163,17 +207,21 @@ automatizzata basata su Zabbix}
         % Colonna Destra: L'Implementazione (Il Come)
         \begin{column}{0.55\textwidth}
             %\textbf{Il flusso:}
-            \begin{center}
-                \textbf{Stream HTTP (ISAPI):} lo script Python apre e mantiene una connessione persistente verso la telecamera\\[-0.1cm]
-                $\downarrow$\\[-0.1cm]
-                \textbf{Analisi:} dei frammenti XML inviati al verificarsi di un'anomalia\\[-0.1cm]
-                $\downarrow$\\[-0.1cm]
-                \textbf{Zabbix Sender:} utility CLI per l'invio dei dati verso il server Zabbix\\[-0.1cm]
-                $\downarrow$\\[-0.1cm]
-                \textbf{Trapper items:} ricezione passiva dell'allarme
-            \end{center}
+            \centering
+            \includegraphics[width=1\linewidth]{GIS.png}
+            immagine temporanea, sostituire con clipart
+
         \end{column}
     \end{columns}
+    \begin{center}
+        \textbf{Stream HTTP (ISAPI)}
+        $\rightarrow$
+        \textbf{analisi}
+        $\rightarrow$
+        \textbf{Zabbix Sender}
+        $\rightarrow$
+        \textbf{trapper items}
+    \end{center}
 \end{frame}
 
 % Slide 7
@@ -201,11 +249,13 @@ automatizzata basata su Zabbix}
             \end{center}
         \end{column}
         \begin{column}{0.6\textwidth}
-            \begin{block}{Logica}
-                Grazie agli argomenti passati dal \textit{media type: script}, lo script può distinguere tra un problema e una risoluzione.\\
-                Successivamente tramite le API REST di Interacta:\\
+            \begin{block}{Chiave primaria: \texttt{"problem\_ID"}}
+                \vspace{0.3cm}
                 $\rightarrow$ \textbf{PROBLEM:} apre un nuovo ticket\\
+                \vspace{0.3cm}
                 $\rightarrow$ \textbf{RESOLVED:} chiude il ticket associato
+                \vspace{0.3cm}
+
             \end{block}
         \end{column}
     \end{columns}
@@ -215,15 +265,15 @@ automatizzata basata su Zabbix}
 \begin{frame}[fragile]{Autenticazione server to server}
     L'autenticazione verso Interacta è garantita con \textbf{JWT Assertion} e firmata con algoritmo \textbf{RS512}
     \begin{itemize}
-        \item \textit{Firma asimmetrica:} chiave privata locale, chiave pubblica conservata sul server Interacta
-
+        \item \textbf{Firma asimmetrica}
     \end{itemize}
+    \vspace{0.3cm}
     \begin{exampleblock}{Codice di firma (Python)}
         \begin{verbatim}
  signed_jwt=f"{b64_header}.{b64_payload}.{b64url_encode(signature)}"
         \end{verbatim}
     \end{exampleblock}
-    \textit{Nota:} RS512 garantisce integrità, autenticazione e non ripudio. La confidenzialità del payload è demandata al canale di comunicazione \textit{HTTPS (TLS)}.
+    \textit{Nota:} RS512 garantisce integrità, autenticazione e non ripudio. La confidenzialità del payload è demandata al canale di comunicazione \textit{HTTPS (TLS)}
 \end{frame}
 % Slide 10
 \begin{frame}[plain]
