@@ -20,7 +20,7 @@
 \usepackage{fancyhdr}
 \usepackage{float}
 \usepackage{pdfpages}
-
+\usepackage{listings}
 
 %alt+Z per fare andare a capo lelinne lunghe
 
@@ -186,6 +186,11 @@ frontend
 \listoftables
 \addcontentsline{toc}{chapter}{\listtablename}
 
+%DA CONTROLLARE se tenere
+\clearpage
+\lstlistoflistings
+\addcontentsline{toc}{chapter}{\lstlistlistingname}
+
 \clearpage
 
 % ====================================================================
@@ -206,7 +211,7 @@ Le principali aree di operatività dell'azienda includono:
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{figures/organigramma.png}
-    \caption{Caption Example \parencite{organigrammaSecoval}}
+    \caption{Organigramma Secoval \parencite{organigrammaSecoval}}
     \label{fig:organigramma}
 \end{figure}
 %ADD smart city definitions: https://ec.europa.eu/programmes/erasmus-plus/project-result-content/b3c8cbaf-a161-4a99-aaa0-b46a21b1135f/SMACC_Definitions_of_a_Smart_City.pdf
@@ -262,13 +267,13 @@ Il lavoro ha previsto l'automazione del discovery e dell'assegnazione dei metada
 \section{Il progetto di stage}
 %\textit{[Descrizione ad alto livello del progetto: l'esigenza di monitorare TVCC, AP, Switch e LTE. Integrazione con script esterni per implementare funzionalità e per fare analisi dei dati. Integrazione con Interacta].}
 
-Il progetto di stage ha come obiettivo la progettazione e l'implementazione di un'architettura di monitoraggio centralizzata basata su Zabbix 7.0. Esso sarà destinato alla gestione di una delle infrastrutture di rete per smart city che Secoval si trova a gestire. L'esigenza primaria è migliorare e superare i limiti dei sistemi di monitoraggio precedenti, come PRTG (Paessler Router Traffic Grapher), software proprietario con un sostanziale costo per la gestione di reti di certe dimensioni (1350,00€/month per 1000 devices \parencite{PaesslerPricing}) e con un'elevata gestione manuale nella implementazione precedente al tirocinio.
+Il progetto di stage ha come obiettivo la progettazione e l'implementazione di un'architettura di monitoraggio centralizzata basata su Zabbix 7.0. Esso sarà destinato alla gestione di una delle infrastrutture di rete per smart city che Secoval si trova a gestire. L'esigenza primaria è migliorare e superare i limiti dei sistemi di monitoraggio precedenti, come PRTG (Paessler Router Traffic Grapher), software proprietario con un sostanziale costo per la gestione di reti di certe dimensioni \parencite{PaesslerPricing} e con un'elevata gestione manuale nella implementazione precedente al tirocinio.
 
 L'infrastruttura monitorata è eterogenea e distribuita sul territorio. I dispositivi principali comprendono e si dividono in:
 \begin{itemize}
     \item \textbf{Telecamere di videosorveglianza (TVCC):} principalmente telecamere di marca Hikvision, che richiedono il controllo di raggiungibilità e dell'integrità del flusso video.
     \item \textbf{Access Point (AP):} nodi per l'erogazione di connettività pubblica.
-    \item \textbf{Switch di distribuzione:} switch industriali, e non, per l'aggregazione del traffico periferico.
+    \item \textbf{Switch:} switch industriali, e non, per l'aggregazione del traffico periferico.
     \item \textbf{Dispositivi LTE:} dispositivi delle precedenti 3 tipologie che si basano sull'utilizzo di gateway per l'uplink in aree remote non coperte da fibra ottica.
 \end{itemize}
 
@@ -422,10 +427,10 @@ Infine, è stata affrontata la gestione dello spazio su disco. Un'sistema sempre
 \end{figure}
 %https://it.wikipedia.org/wiki/File:Zabbix_logo.svg
 
-Zabbix è una piattaforma open-source progettata per il monitoraggio, anche distribuito, e in tempo reale di metriche di rete, apparati, server e applicativi. L'architettura del sistema si fonda su un modello client-server altamente scalabile, composto dai seguenti moduli principali:
+\hyperlink{glo:Zabbix}{Zabbix} è una piattaforma open-source progettata per il monitoraggio, anche distribuito, e in tempo reale di metriche di rete, apparati, server e applicativi. L'architettura del sistema si fonda su un modello client-server altamente scalabile, composto dai seguenti moduli principali:
 
 \begin{itemize}
-    \item \textbf{Zabbix server:} il motore centrale sviluppato in linguaggio C. Si occupa della raccolta dei dati, della valutazione dei \textit{Trigger} (soglie di allarme) e delle \textit{Actions}.
+    \item \textbf{Zabbix server:} il motore centrale sviluppato in linguaggio C. Si occupa della raccolta dei dati, della valutazione dei \hyperlink{glo:trigger}{\textit{Trigger}} (soglie di allarme) e delle \hyperlink{glo:action}{\textit{Actions}}.
     \item \textbf{Database relazionale:} il livello di persistenza dei dati, tipicamente basato su PostgreSQL o MySQL(MySQL in questo progetto), in cui si archiviano le configurazioni e le serie temporali.
     \item \textbf{Web frontend:} l'interfaccia utente sviluppata in PHP, utilizzata per l'amministrazione del sistema, la configurazione visuale e la generazione di dashboard analitiche. \emph{Apache2} è il web server impiegato in questo progetto.
     \item \textbf{Zabbix Proxy e Agent:} demoni impiegati sugli host periferici limitando il carico sul server centrale e dando la possibilità di distribuire il sistema. Non utilizzati in questo progetto.
@@ -441,7 +446,7 @@ Per questo progetto è stata adottata la versione 7.0 LTS (Long Term Support) \p
 \end{itemize}
 \subsection{Terminologia parziale per Zabbix}
 Per facilitare la lettura e la comprensione di questo elaborato a personale non strettamente sistemistico,
-di seguito vengono definiti i termini tecnici principali, riguardo Zabbix, utilizzati nel progetto.
+di seguito vengono definiti i termini tecnici principali, riguardo Zabbix, utilizzati nel progetto ripresi dal glossario.
 
 % Unlike itemize (bullets) or enumerate (numbers),
 %the description environment allows for custom, text-based labels for each
@@ -808,7 +813,7 @@ Il sistema opera secondo una logica basata su due fasi:
 %     Tabelle: Una tabella anonimizzata che mostra la struttura dei file Excel aziendali. Colonne suggerite: Indirizzo IP, Hostname, Modello, ID Palo, Coordinate. Serve per far capire immediatamente al lettore quale sia l'input del tuo motore.
 
 %     Immagini: Un diagramma a blocchi del processo ETL (Extract, Transform, Load).
-\section{Implementazione dell'aggiornamento degli \\host}
+\section{Implementazione dell'aggiornamento degli host}
 
 Ogni host in Zabbix viene identificato con un attributo "name" che contiene l'IP con cui è stato scoperto.
 Inoltre possiede anche un attributo "visible name" che lo rappresenta nel sistema. L'obiettivo è andare a estrarre
@@ -1025,7 +1030,8 @@ All'interno del widget \emph{GeoMap}, nativamente disponibile nelle dashboard di
 
 % \chapter{Implementazione: Controlli Attivi ed Eventi TVCC}
 \chapter{Rilevamento manomissioni TVCC(ISAPI)}
-Essendo questo un progetto di gestione di telecamere di sicurezza abbastanza moderne è stato valutato come utile l'utilizzo dei sistemi di
+%Sistema di rilevazione delle manomissioni e dell'oscuramento e come si integra in Zabbix e i suoi avvisi
+Essendo le telecamere di sicurezza oggetto del progetto abbastanza moderne è stato valutato come utile l'utilizzo dei sistemi di
 intelligenza artificiale implementati a bordo per rilevare diversi tipi di eventi che accadono alla singola telecamera.
 Tra questi troviamo la possibilità di rilevare l'oscuramento dell'obiettivo della telecamera.
 Per sfruttare questa funzionalità è stato creato un sistema di raccoglimento e invio automatico di avvisi, integrandolo con Zabbix.
@@ -1043,14 +1049,13 @@ Il workflow che viene eseguito per garantire la corretta gestione di queste info
 \begin{itemize}
     \item Estrazione degli IP delle telecamere Hikvision presenti in Zabbix con uno script python.
     \item Ogni IP estratto è utilizzato per lanciare verso la telecamera le configurazioni dei loro servizi tamperdetection e motiondetection tramite configurazioni in formato XML.
-    \item Si apre una connessione http con ogni telecamera mantenuta perpetuamente aperta in modo asincrono, attraverso uno script python. Su queste connessioni le telecamere comunicano i loro avvisi
-          ed essi vengono comunicati a Zabbix sugli appositi Item dei trigger tramite un API CLI di Zabbix.
+    \item Si apre una connessione http con ogni telecamera mantenuta perpetuamente aperta in modo asincrono, attraverso uno script python. Su queste connessioni le telecamere comunicano i loro avvisi ed essi vengono comunicati a Zabbix sugli appositi Item dei trigger tramite un API CLI di Zabbix: zabbix\_sender.
     \item All'interno del template relativo alle telecamere Hikvision abbiamo 2 trigger per motiondetection e oscuramento con le loro impostazioni.
     \item I log di questi script vengono gestiti da logrotate salvandoli fino a 3 mesi.
 \end{itemize}
 \textbf{Bottleneck}: se molti allarmi si attivano contemporaneamente,
 lo script python lancia altrettanti script bash e ciò sovraccaricherebbe la CPU.
-Se l'utilizzo rimane per il tamperdetection e solo saltuariamente per motiondetection non è un problema.
+Se l'utilizzo rimane per il tamperdetection e solo saltuariamente per motiondetection questo non è un problema.
 
 %come deve succedere
 % \section{Logiche di Polling vs Trapping in Zabbix}
@@ -1124,7 +1129,7 @@ Esse gestiscono l'attivazione e l'impostazione dell'area dell'immagine in cui la
 sensibile all'oscuramento o al motion detection e la comunicazione dell'evento triggerato all'\texttt{EventTriggerNotification center} (lancia la comunicazione http).
 
 
-\section{Sviluppo del Middleware e Ascolto degli Stream Hikvision ISAPI}
+\section{Sviluppo del middleware e ascolto degli stream Hikvision ISAPI}
 
 % Il monitoraggio tradizionale basato sul protocollo ICMP (Ping) è in grado di certificare la presenza in rete di un dispositivo, ma risulta cieco di fronte a guasti di natura applicativa o fisica. Nel contesto della videosorveglianza urbana (TVCC), una telecamera potrebbe rispondere regolarmente al ping ma risultare oscurata, manomessa o ruotata. Per ottenere una visibilità reale sullo stato di salute degli apparati, è stato necessario spostare il monitoraggio dal livello di rete (L3) al livello applicativo (L7).
 
@@ -1158,7 +1163,7 @@ sensibile all'oscuramento o al motion detection e la comunicazione dell'evento t
 % \end{lstlisting}
 
 % Nella prima iterazione del progetto, l'invio di queste configurazioni è stato demandato a script Bash ausiliari (come \texttt{configura\_telecamere.sh}) orchestrati da Python tramite la libreria \texttt{subprocess}. Tuttavia, come evidenziato nell'analisi prestazionale, questo approccio introduce un overhead di sistema. Un'evoluzione architetturale futura prevede l'implementazione di chiamate native asincrone tramite \texttt{aiohttp} per eliminare i colli di bottiglia legati all'apertura continua di nuovi processi shell.
-\section{Ricezione degli eventi e invio a Zabbix}
+%\section{Ricezione degli eventi e invio a Zabbix}
 È stato creato uno script python in \\\inlinecode{/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts}\\\inlinecode{/hikvision_listener_multiplehosts.py}
 che si comporta come middleware. Il suo scopo principale è fare da ponte tra le telecamere di videosorveglianza Hikvision e il server di monitoraggio Zabbix,
 intercettando gli allarmi in tempo reale e convertendoli valori di item nel sistema Zabbix.
@@ -1169,120 +1174,118 @@ catturando istantaneamente anomalie come il rilevamento del movimento (VMD)
 o l'oscuramento della telecamera (Tampering/Shelter alarm).
 
 \subsection{Implementazione del listener}
-Lo script si collega tramite API token a Zabbix, utilizzando la libreria pyzabbix,
-estrae tutti gli host, con il relativo campo "contact" dell'inventory, per filtrarli, e salva l'indirizzo IP solo
-se nel "contact" abbiamo una stringa corrispondente a "Hikvision.China".
+Lo script si collega tramite API token a Zabbix e, utilizzando la libreria pyzabbix,
+estrae tutti gli host e ne salva l'indirizzo IP solo
+se l'host in questione è una telecamera di marca Hikvision.
 Questo rende il sistema altamente scalabile: se aggiungi una nuova telecamera su Zabbix,
 il riavvio successivo dello script la includerà automaticamente.
 
-Per ogni telecamera trovata, viene avviato un "task" indipendente grazie alla libreria asyncio(Funzione ascolta\_telecamera).
+Per ogni telecamera trovata, viene avviato un "task" indipendente grazie alla libreria asyncio.
 Questo permette di gestire decine di telecamere contemporaneamente usando un solo processo leggero,
 senza che l'attesa di dati da una telecamera blocchi le altre.
-Lo script utilizza http per aprire una connessione HTTP persistente (Stream) verso l'endpoint ISAPI delle telecamere (/ISAPI/Event/notification/alertStream).
-In questo flusso continuo, la telecamera invia frammenti in formato XML ogni volta che accade qualcosa.
-Lo script legge il flusso riga per riga, isola i blocchi XML (<EventNotificationAlert>) e li analizza in tempo reale.
+Lo script apre una connessione HTTP persistente (Stream) verso l'endpoint ISAPI della telecamera (/ISAPI/Event/notification/alertStream).
+In questo canale, la telecamera invia frammenti in formato XML ogni volta che accade qualcosa.
+Lo script legge il flusso riga per riga, isola i blocchi XML significativi(<EventNotificationAlert>) e li analizza in tempo reale.
 Estrae il tipo di evento (eventType) e il suo stato (eventState, se attivo o rientrato).
 Quando viene rilevato un evento valido (es. movimento o telecamera coperta), lo script deve avvisare Zabbix.
 Per farlo lo script esegue un comando di sistema: zabbix\_sender.
 Questo è uno strumento a riga di comando nativo di Zabbix,
-progettato specificamente per inviare dati ad alte prestazioni a Zabbix.
-Il comando comunica l'hostname esatto della telecamera, la chiave dell'allarme
+progettato specificamente per inviare dati a Zabbix.
+Il comando comunica a zabbix l'hostname esatto della telecamera, la chiave dell'allarme
 (es. hikvision.motionDetection) e il valore (1 per allarme attivo, 0 per allarme rientrato).
 
 \subsubsection{Items in Zabbix}
-Nel template \texttt{templateSC\_configurazione\_hikvision} sono stati creati 2 nuovi Item di tipo \emph{Zabbix trapper}:
-AllarmeItemOscuramentoProva(key: hikvision.oscuration) e AllarmeItemMotionDetectionProva(hikvision.motionDetection). %valutare se togliere prova
-Essi sono aggiornati solo da zabbix\_sender.
+Nel template \texttt{templateSC\_configurazione\_hikvision} sono presenti 2 nuovi Item di tipo \emph{Zabbix trapper}:
+AllarmeItemOscuramento(key: hikvision.oscuration) e AllarmeItemMotionDetection(key: hikvision.motionDetection). %valutare se togliere prova
+Essi sono aggiornati solo dallo script listener con zabbix\_sender.
 
 \subsection{Esecuzione continuativa e log}
 
 Lo script viene configurato come servizio systemd, garantendo che si avvii automaticamente all'accensione del server.
-Il file con le configurazioni è \\\inlinecode{/etc/systemd/system/hikvision-monitor.service}.
 Se lo script dovesse bloccarsi per un errore critico, il sistema operativo lo riavvierà automaticamente entro 10 secondi.
 È stata inserita una regola che "uccide" e riavvia il servizio ogni 24 ore in modo controllato.
-Questo è un ottimo accorgimento tecnico per evitare accumuli di memoria
-dovuti alle connessioni in streaming prolungate e per forzare il sistema a riscaricare la lista aggiornata delle telecamere da Zabbix ogni giorno.
-Tutto l'output standard viene reindirizzato in un file di log \inlinecode{hikvision_listener_log.log} su disco per permettere il monitoraggio del corretto funzionamento.
+Questo è un mezzo per forzare il sistema a riscaricare la lista aggiornata delle telecamere da Zabbix ogni giorno.
+Tutto l'output viene reindirizzato in un file di log gestito da \textbf{Logrotate} su disco per permettere il monitoraggio del corretto funzionamento.
 
 
-\begin{lstlisting}[language=bash, caption=Configurazione Systemd per hikvision\_listener\_multiplehosts.py]
-[Unit]
-Description=Monitoraggio Eventi Hikvision (Tampering e VMD) verso Zabbix
-After=network.target
+% \begin{lstlisting}[language=bash, caption=Configurazione Systemd per hikvision\_listener\_multiplehosts.py]
+% [Unit]
+% Description=Monitoraggio Eventi Hikvision (Tampering e VMD) verso Zabbix
+% After=network.target
 
-[Service]
-# Esegue Python in modalita' "unbuffered" (-u) per scrivere subito i print nel log
-ExecStart=/home/administrator/zabbixHostsScripts/venv/bin/python3 -u /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/hikvision_listener_multiplehosts.py
-WorkingDirectory=/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts
+% [Service]
+% # Esegue Python in modalita' "unbuffered" (-u) per scrivere subito i print nel log
+% ExecStart=/home/administrator/zabbixHostsScripts/venv/bin/python3 -u /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/hikvision_listener_multiplehosts.py
+% WorkingDirectory=/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts
 
-# Politiche di riavvio in caso di crash
-Restart=always
-RestartSec=10
+% # Politiche di riavvio in caso di crash
+% Restart=always
+% RestartSec=10
 
-# metodo per l'aggiornamento quotidiano:
-# Forza il riavvio del servizio ogni 86400 secondi (24 ore)
-RuntimeMaxSec=86400
+% # metodo per l'aggiornamento quotidiano:
+% # Forza il riavvio del servizio ogni 86400 secondi (24 ore)
+% RuntimeMaxSec=86400
 
-# Gestione dei Log
-StandardOutput=append:/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/hikvision_listener_log.log
-StandardError=inherit
+% # Gestione dei Log
+% StandardOutput=append:/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/hikvision_listener_log.log
+% StandardError=inherit
 
-[Install]
-WantedBy=multi-user.target
+% [Install]
+% WantedBy=multi-user.target
 
-#Per controllare se lo script sta girando correttamente, chiedere lo stato a systemd:
-#sudo systemctl status hikvision-monitor.service
+% #Per controllare se lo script sta girando correttamente, chiedere lo stato a systemd:
+% #sudo systemctl status hikvision-monitor.service
 
-#E per vedere l'output in tempo reale, usare il comando tail:
-#tail -f /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/hikvision_listener_log.log
-\end{lstlisting}
+% #E per vedere l'output in tempo reale, usare il comando tail:
+% #tail -f /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/hikvision_listener_log.log
+% \end{lstlisting}
 
-\section{Gestione dei log relativi al rilevamento manomissioni}
-Gli script visti fino a ora generano degli output testuali, che andrebbero
-nello standard output, ma vengono reindirizzati dai job crontab e systemd in specifici file di log:
-ipHik\_log.log, config\_telecamere\_log.log e hikvision\_listener\_log.log.
-Ogni scrittura nei file è preceduta dal timestamp.
-Come visto in precedenza per evitare di memorizzare questi dati all'infinito e generare un file di testo
-gigantesco, ho utilizzato il sistema Logrotate, una utility linux il cui scopo è la
-rotazione, compressione e rimozione di file di log automatici.
-In questo caso il file contenente le configurazioni per il job logrotate
-é accessibile tramite: \inlinecode{nano /etc/logrotate.d/hikvision_scripts}. Al
-suo interno troviamo:
+% \section{Gestione dei log relativi al rilevamento manomissioni}
+% Gli script visti fino a ora generano degli output testuali, che andrebbero
+% nello standard output, ma vengono reindirizzati dai job crontab e systemd in specifici file di log:
+% ipHik\_log.log, config\_telecamere\_log.log e hikvision\_listener\_log.log.
+% Ogni scrittura nei file è preceduta dal timestamp.
+% Come visto in precedenza per evitare di memorizzare questi dati all'infinito e generare un file di testo
+% gigantesco, ho utilizzato il sistema Logrotate, una utility linux il cui scopo è la
+% rotazione, compressione e rimozione di file di log automatici.
+% In questo caso il file contenente le configurazioni per il job logrotate
+% é accessibile tramite: \inlinecode{nano /etc/logrotate.d/hikvision_scripts}. Al
+% suo interno troviamo:
 
-\begin{lstlisting}[language=bash, caption=Cronjob log relativi al rilevamento manomissioni]
-# Blocco 1: Per gli script periodici (crontab)
-/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/config_telecamere_log.log
-/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/ipHik_log.log {
-    su administrator administrator
-    weekly
-    maxsize 30M
-    rotate 12
-    dateext
-    dateformat -%Y-%m-%d
-    olddir /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/storico_log
-    compress
-    delaycompress
-    missingok
-    notifempty
-    create 0644 administrator administrator
-}
+% \begin{lstlisting}[language=bash, caption=Cronjob log relativi al rilevamento manomissioni]
+% # Blocco 1: Per gli script periodici (crontab)
+% /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/config_telecamere_log.log
+% /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/ipHik_log.log {
+%     su administrator administrator
+%     weekly
+%     maxsize 30M
+%     rotate 12
+%     dateext
+%     dateformat -%Y-%m-%d
+%     olddir /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/storico_log
+%     compress
+%     delaycompress
+%     missingok
+%     notifempty
+%     create 0644 administrator administrator
+% }
 
-# Blocco 2: Per lo script Python in ascolto continuo (systemd)
-/home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/hikvision_listener_log.log {
-    su administrator administrator
-    weekly
-    maxsize 15M
-    rotate 12
-    dateext
-    dateformat -%Y-%m-%d
-    olddir /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/storico_log
-    compress
-    delaycompress
-    missingok
-    notifempty
-    copytruncate
-}
-\end{lstlisting}
+% # Blocco 2: Per lo script Python in ascolto continuo (systemd)
+% /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/hikvision_listener_log.log {
+%     su administrator administrator
+%     weekly
+%     maxsize 15M
+%     rotate 12
+%     dateext
+%     dateformat -%Y-%m-%d
+%     olddir /home/administrator/zabbixHostsScripts/hikvisionOscuramentoScripts/storico_log
+%     compress
+%     delaycompress
+%     missingok
+%     notifempty
+%     copytruncate
+% }
+% \end{lstlisting}
 
 % \subsection*{Il Middleware Python e l'ascolto dell'Alert Stream}
 % Una volta configurate, le telecamere sono pronte a generare allarmi. Invece di interrogare continuamente la telecamera per chiedere se ci siano novità (\textit{Polling}), abbiamo optato per un approccio \textit{Event-Driven} (basato su \textit{Trapping}). Questo azzera la latenza di rilevamento e minimizza il traffico di rete.
@@ -1402,17 +1405,17 @@ suo interno troviamo:
 % \end{center}
 % Inoltre, per prevenire falsi allarmi dovuti a micro-disconnessioni del flusso video, è stata implementata la funzione \texttt{nodata()} all'interno del Trigger. Se il middleware Python smette di inviare dati per un tempo predefinito (es. 5 minuti), il Trigger scatta per segnalare non una manomissione, ma l'irreperibilità del servizio di ascolto stesso.
 
-\subsection*{Trigger Actions e Integrazione con Interacta}
-Quando un Trigger cambia stato (da \texttt{OK} a \texttt{PROBLEM} o viceversa), entra in gioco il sistema di \textbf{Actions}. Invece di configurare un'Action per inviare una semplice notifica e-mail, il sistema è stato istruito per eseguire un'operazione di tipo "Remote Command", puntando al \textit{Custom AlertScript} denominato \texttt{interactaCreateOrSolveTicket}.
+\subsection*{Trigger actions e integrazione con Interacta}
+Quando un Trigger cambia stato (da \texttt{OK} a \texttt{PROBLEM} o viceversa), entra in gioco il sistema delle  \textbf{Trigger Actions} native. Invece di configurare un'Action per inviare una semplice notifica e-mail, il sistema è statoconfigurato per eseguire un'operazione esecuzione remota di script, puntando al \textit{Custom AlertScript} denominato \\\texttt{interactaCreateOrSolveTicket}.
 
-La motivazione per utilizzare questo paradigma è la possibilità di iniettare dinamicamente il contesto del guasto all'interno dello script Bash/Python. L'Action è configurata per passare allo script degli argomenti tramite le Macro di Zabbix, tra cui:
+La motivazione per utilizzare questo paradigma è la possibilità di iniettare dinamicamente il contesto del guasto all'interno dello script Python. L'Action è configurata per passare allo script degli argomenti tramite le Macro di Zabbix, tra cui:
 \begin{itemize}
-    \item \texttt{\{EVENT.ID\}}: L'identificativo univoco del guasto, essenziale per correlare la futura risoluzione allo stesso ticket aperto in Interacta.
-    \item \texttt{\{HOST.NAME\}} e \texttt{\{INVENTORY.LOCATION\}}: Per comunicare alla piattaforma l'ID dell'host e il palo fisico su cui i tecnici dovranno intervenire.
-    \item \texttt{\{TRIGGER.STATUS\}}: Il valore che indica allo script se inviare alla piattaforma un payload per la "Creazione" (PROBLEM) o per la "Risoluzione" (OK) del ticket.
+    \item \texttt{\{EVENT.ID\}}: l'identificativo univoco del guasto, essenziale per correlare la futura risoluzione allo stesso ticket aperto in Interacta in cui sarà chiamato \textit{problem\_ID}.
+    \item \texttt{\{HOST.NAME\}} e \texttt{\{INVENTORY.LOCATION\}}: per comunicare alla piattaforma l'ID dell'host e il palo fisico su cui i tecnici dovranno intervenire.
+    \item \texttt{\{TRIGGER.STATUS\}}: Il valore che indica allo script se inviare alla piattaforma un payload per la creazione (PROBLEM) o per la risoluzione (RESOLVED) del ticket.
 \end{itemize}
 
-Questa catena di configurazioni (Item Trapper $\rightarrow$ Trigger con isteresi $\rightarrow$ Action con passaggio di Macro) rappresenta il core logico che ha permesso di azzerare l'intervento umano nella gestione degli incidenti dell'infrastruttura smart city.
+% Questa catena di configurazioni (Item Trapper $\rightarrow$ Trigger con isteresi $\rightarrow$ Action con passaggio di Macro) rappresenta il core logico che ha permesso di azzerare l'intervento umano nella gestione degli incidenti dell'infrastruttura smart city.
 
 % Citazioni e Bibliografia:
 
@@ -1633,11 +1636,13 @@ Questa catena di configurazioni (Item Trapper $\rightarrow$ Trigger con isteresi
 % % ====================================================================
 % % CAPITOLO 5: INTEGRAZIONE CRITTOGRAFICA CON TICKETING
 % % ====================================================================
+%Trattandosi di una comunicazione \textit{Server-to-Server} tra una macchina virtuale (\textit{on-premise} - \textit{in sede}) e un servizio esterno ospitato sul cloud, l'attenzione si è spostata sulla sicurezza: bisognava impedire a soggetti terzi non autorizzati di poter iniettare finte richieste nel portale di ticketing aziendale. Per risolvere questa criticità, il progetto adotta lo standard \textbf{JSON Web Token (JWT)} \Parencite{JWT}. Un token JWT funziona come un "badge digitale" temporaneo e a prova di manomissione, che accompagna ogni singola chiamata HTTP inviata da Zabbix per dimostrare a Interacta l'assoluta autenticità della comunicazione.
 
+% Per blindare questi certificati digitali, l'infrastruttura sfrutta la crittografia asimmetrica basata sull'algoritmo \textbf{RS512} (chiavi RSA combinate a una funzione di hash SHA-512). Il principio di funzionamento si fonda sulla separazione delle responsabilità: una chiave privata viene custodita gelosamente all'interno del server Linux locale, protetta da permessi rigorosi, mentre la corrispondente chiave pubblica viene depositata sul cloud di Interacta. Al verificarsi di un'anomalia, uno script Python impacchetta i metadati dell'evento, genera un token con una validità temporale di pochi minuti e lo firma digitalmente usando la chiave privata. Quando il pacchetto raggiunge il cloud, Interacta applica la chiave pubblica: se la verifica matematica ha successo, l'identità del mittente è confermata e il ticket viene istanziato sul portale.
 \chapter{Integrazione con il sistema di ticketing Interacta}
 \section{Scopo e architettura dell'integrazione}
 
-L'implementazione di un sistema di monitoraggi rappresenta solo il primo passo verso l'automazione dei processi IT aziendali. In Secoval, rilevare tempestivamente un guasto tramite Zabbix (ad esempio, l'oscuramento di una telecamera o la caduta di un Access Point) è inutile se l'informazione non raggiunge la squadra tecnica incaricata della manutenzione.
+L'implementazione di un sistema di monitoraggio rappresenta solo il primo passo verso l'automazione dei processi IT aziendali. In Secoval, rilevare tempestivamente un guasto tramite Zabbix (ad esempio, l'oscuramento di una telecamera o la caduta di un Access Point) è inutile se l'informazione non raggiunge la squadra tecnica incaricata della manutenzione.
 
 Quindi per garantire l'integrazione con il sistema già presente e il tracciamento della gestione e degli interventi fisici
 sugli apparati della Smart City,
@@ -2148,7 +2153,13 @@ Infine, l'aver condotto in prima persona l'intero ciclo di vita di questa transi
 
 Per facilitare la lettura di seguito vengono definiti i termini tecnici principali,
 i protocolli e i concetti architetturali utilizzati nel progetto.
-
+\begin{description}
+    \item[\hypertarget{glo:action}Action:] (Zabbix) l'azione automatica che il sistema intraprende quando qualche evento soddisfa alcune condizioni.
+          Può essere relativa ai trigger o alla scoperta di un nuovo host.
+    \item[\hypertarget{glo:trigger}Trigger:] (Zabbix) una regola logica associata a un Item.
+          Es. la telecamera non risponde al ping per 3 minuti, il Trigger "scatta" e genera un allarme (Problem).
+    \item[\hypertarget{glo:Zabbix}Zabbix:] è una piattaforma software open-source per il monitoraggio proattivo di infrastrutture IT, reti, server, macchine virtuali e servizi cloud. Consente di raccogliere, visualizzare e analizzare metriche in tempo reale (come utilizzo CPU, RAM, rete e spazio disco), inviando avvisi immediati in caso di anomalie.
+\end{description}
 
 \begin{description}
     \item[Zabbix:] è una piattaforma software open-source per il monitoraggio proattivo
@@ -2372,6 +2383,187 @@ i protocolli e i concetti architetturali utilizzati nel progetto.
 
     \item[Site Reliability Engineering (SRE):] Disciplina ingegneristica introdotta da Google che applica i principi dello sviluppo software alla gestione delle operazioni IT, con l'obiettivo di creare sistemi software ultra-scalabili, stabili e altamente affidabili.
 \end{description}
+
+% \begin{description}
+%     \item[ACL (Access Control List):] Meccanismo di sicurezza dei file system che definisce permessi granulari di accesso a file e directory per utenti e gruppi specifici.
+
+%     \item[Action:] L'azione automatica che il sistema (es. Zabbix) intraprende quando un evento soddisfa determinate condizioni, come la reazione a un trigger o la scoperta di un nuovo host.
+
+%     \item[AP (Access Point):] Dispositivo di rete che permette la connessione wireless dei dispositivi client all'infrastruttura cablata.
+
+%     \item[API (Application Programming Interface):] Interfaccia o "ponte" software che permette a due sistemi o applicazioni diverse di comunicare, passarsi comandi e scambiarsi dati in modo sicuro e automatizzato.
+
+%     \item[Asyncio / Coroutine:] Modulo nativo di Python per la scrittura di codice concorrente e asincrono single-thread. Le \textit{coroutine} sono speciali funzioni che possono mettere in pausa la propria esecuzione per restituire il controllo al ciclo principale (\textit{event loop}), senza bloccare il programma.
+
+%     \item[Base64URL:] Variante della codifica Base64, progettata specificamente per essere "URL-safe" e sicura per i nomi dei file, sostituendo i caratteri `+` e `/` con `-` e `\_`, e rimuovendo i caratteri di padding `=`.
+
+%     \item[Bash / Shell:] Interprete di comandi testuale predefinito nei sistemi operativi Unix e Linux, utilizzato per interagire con il sistema operativo ed eseguire script.
+
+%     \item[Batch Processing:] Esecuzione di programmi o task in background in modo automatizzato e sequenziale, senza necessità di interazione diretta con l'utente.
+
+%     \item[Chunked Transfer Encoding:] Meccanismo di trasferimento dati del protocollo HTTP che consente a un server di inviare informazioni in modo continuo (stream) dividendo il payload in una serie di blocchi o frammenti (chunk).
+
+%     \item[CMDB (Configuration Management Database):] Database utilizzato dalle organizzazioni IT per archiviare e gestire in modo centralizzato le informazioni sui Configuration Item (CI), ovvero gli asset hardware e software. Nel progetto, tale ruolo è ricoperto dai file Excel comunali.
+
+%     \item[Comunicazione asincrona:] Comunicazione che non richiede la presenza contemporanea degli interlocutori (es. email, ticket, protocollo MQTT). Consente di gestire i messaggi e l'elaborazione dei task in modo indipendente.
+
+%     \item[Comunicazione sincrona:] Comunicazione che avviene in tempo reale (es. protocollo HTTP classico, chiamate). Prevede che i sistemi o gli interlocutori gestiscano i messaggi e forniscano risposte immediate.
+
+%     \item[Context Switching:] Operazione computazionalmente dispendiosa attraverso la quale il sistema operativo salva lo stato del processo in esecuzione per caricare e avviare quello di un altro processo (es. l'avvio continuo di script Bash tramite subprocess).
+
+%     \item[Crittografia Asimmetrica:] Sistema crittografico che impiega una coppia di chiavi distinte (una pubblica per la verifica/cifratura e una privata per la firma/decifratura) per garantire la sicurezza delle comunicazioni.
+
+%     \item[Crontab:] Demone di sistema nei sistemi operativi Unix-like utilizzato per pianificare l'esecuzione di comandi e script a intervalli o orari predefiniti.
+
+%     \item[CSV (Comma-Separated Values):] Formato testuale aperto (RFC 4180) utilizzato per l'importazione ed esportazione di dati in forma tabellare, dove ogni riga rappresenta un record e i campi sono separati da un delimitatore.
+
+%     \item[CWD (Current Working Directory):] In un sistema operativo, è la directory in cui un processo o un utente sta attualmente operando.
+
+%     \item[Data Cleansing (Pulizia dei Dati):] Processo informatico di identificazione e correzione di dati corrotti, inaccurati o non formattati correttamente all'interno di un dataset, fondamentale prima dell'importazione in sistemi di produzione.
+
+%     \item[DataFrame:] Struttura dati bidimensionale fornita dalla libreria Python \texttt{pandas}, che rappresenta il formato standard per la manipolazione, il filtraggio e l'analisi di dati tabulari.
+
+%     \item[Debito Tecnico (Technical Debt):] Metafora dello sviluppo software che indica il costo implicito e il lavoro extra che si renderà necessario in futuro a causa di scelte implementative provvisorie adottate nel presente per rispettare scadenze stringenti.
+
+%     \item[Decoupling (Disaccoppiamento):] Principio di ingegneria del software per cui due o più componenti vengono progettati per operare in modo indipendente l'uno dall'altro, rendendo il sistema più resiliente.
+
+%     \item[Demone (Daemon):] Programma eseguito costantemente in background nei sistemi operativi Unix-like, progettato per fornire servizi di sistema o applicativi continui.
+
+%     \item[Dependency Hell:] Situazione problematica in cui l'installazione o l'esecuzione di un software fallisce a causa di conflitti complessi tra le versioni delle librerie necessarie al sistema.
+
+%     \item[Disaster Recovery:] Insieme di policy, procedure e strumenti atti a garantire il ripristino dell'infrastruttura IT e dei dati vitali di un'azienda a seguito di eventi catastrofici o guasti hardware critici.
+
+%     \item[ETL (Extract, Transform, Load):] Processo di integrazione che prevede l'estrazione dei dati da una sorgente (es. Excel), la loro trasformazione (normalizzazione) e il successivo caricamento in un sistema di destinazione (es. Zabbix).
+
+%     \item[Event-Driven Architecture:] Paradigma architetturale del software in cui il flusso del programma è determinato dal verificarsi di eventi esterni (come l'output di un sensore) piuttosto che da un'esecuzione lineare.
+
+%     \item[Exponential Backoff:] Algoritmo di gestione degli errori di rete per cui un client, a seguito di una richiesta fallita, riprova a connettersi aumentando il tempo di attesa in modo esponenziale per non sovraccaricare il server.
+
+%     \item[Fire-and-forget:] Pattern di comunicazione asincrona in cui il mittente lancia un processo o invia un messaggio senza attendere alcun acknowledgement (conferma) di ritorno.
+
+%     \item[Flapping:] Cambiamento frequente e rapido di stato di un host (da UP a DOWN), spesso sintomo di instabilità della connessione o del dispositivo.
+
+%     \item[Flat File:] Database a "file piatto", ovvero un file di testo semplice (come un CSV) che memorizza i dati senza relazioni strutturali complesse, tipiche dei database relazionali (SQL).
+
+%     \item[GIS (Geographic Information System):] Sistemi informatici progettati per acquisire, memorizzare e analizzare dati georeferenziati. In Zabbix, permettono di visualizzare gli apparati direttamente su una mappa cartografica.
+
+%     \item[Git / Version Control System (VCS):] Sistema software progettato per tenere traccia delle modifiche apportate al codice sorgente nel tempo, permettendo di collaborare e ripristinare versioni precedenti.
+
+%     \item[Hardcoding (Codifica fissa):] Pratica di sviluppo (anti-pattern) che consiste nell'inserire dati variabili, come password o indirizzi IP, direttamente nel codice sorgente anziché in file di configurazione esterni.
+
+%     \item[HashiCorp Vault:] Strumento enterprise per la gestione sicura, la conservazione e il controllo degli accessi a segreti, password e token crittografici.
+
+%     \item[Headless (Esecuzione):] Termine utilizzato per descrivere processi o script eseguiti in sistemi privi di interfaccia utente grafica (GUI) o terminale interattivo connesso.
+
+%     \item[Host:] Qualsiasi dispositivo fisico o virtuale monitorato dal sistema. Nel caso di Secoval: telecamere, switch, Access Point o gateway LTE.
+
+%     \item[I/O Non Bloccante (Asincrono):] Modalità in cui un programma può avviare un task di input/output e continuare immediatamente la propria esecuzione senza rimanere in attesa del completamento dello stesso.
+
+%     \item[ICMP e ICMP Ping:] L'ICMP (Internet Control Message Protocol) è un protocollo di livello di rete per lo scambio di informazioni diagnostiche. Il Ping è lo strumento basato su ICMP che invia una richiesta (Echo Request) per verificare la connettività di un host.
+
+%     \item[Idempotenza:] Proprietà di operazioni informatiche che garantisce che l'esecuzione ripetuta della stessa azione produca sempre il medesimo risultato, senza creare duplicati.
+
+%     \item[Infrastructure as Code (IaC):] Pratica di provisioning dell'infrastruttura IT attraverso script eseguiti in modo automatico, sostituendo le configurazioni manuali sui sistemi operativi.
+
+%     \item[IoT (Internet of Things):] Rete di oggetti fisici ("cose") dotati di sensori e software allo scopo di connettersi e scambiare dati su Internet.
+
+%     \item[ISAPI (Intelligent Security API):] Protocollo specifico basato su HTTP/REST sviluppato da Hikvision. Permette di interrogare le telecamere e ricevere flussi continui di avvisi di sicurezza.
+
+%     \item[Isteresi (Hysteresis):] Tecnica logica che prevede l'uso di soglie differenti per l'attivazione e la disattivazione di un allarme, utile a prevenire il flapping.
+
+%     \item[Item:] La singola metrica raccolta da un Host in Zabbix (es. il tempo di risposta di un ping o il valore di un sensore).
+
+%     \item[ITIL (Information Technology Infrastructure Library):] Insieme di best practice internazionalmente riconosciute per la gestione dei servizi IT (IT Service Management).
+
+%     \item[JSON-RPC:] Protocollo di chiamata di procedura remota (RPC) leggero che utilizza il formato JSON. È lo standard utilizzato nativamente dalle API web di Zabbix per esporre le proprie funzioni.
+
+%     \item[JWT (JSON Web Token):] Standard aperto (RFC 7519) che definisce un modo compatto e autonomo per trasmettere in modo sicuro informazioni tra le parti come oggetto JSON, validato tramite firma digitale.
+
+%     \item[KPI (Key Performance Indicator):] Indicatore chiave di prestazione utilizzato per valutare l'efficienza con cui un sistema IT o un'azienda sta raggiungendo i propri obiettivi operativi.
+
+%     \item[Logrotate:] Utility di sistema Linux progettata per amministrare i log ruotandoli e comprimendoli periodicamente, prevenendo la saturazione del disco.
+
+%     \item[M2M (Machine-to-Machine):] Paradigma in cui dispositivi hardware o server scambiano informazioni e avviano azioni in modo autonomo, senza intervento umano.
+
+%     \item[Macro (Zabbix):] Variabili integrate e dinamiche scritte tra parentesi graffe (es. \texttt{\{HOST.NAME\}}) che Zabbix risolve a runtime inserendo il valore reale (es. l'IP in un'email di allarme).
+
+%     \item[Man-in-the-Middle (MitM):] Attacco informatico in cui un'entità malevola intercetta e altera la comunicazione segreta tra due parti all'insaputa di queste ultime.
+
+%     \item[MIB e OID:] Il MIB (Management Information Base) è il dizionario che descrive la struttura dei dati di un dispositivo SNMP. L'OID (Object Identifier) è l'indirizzo numerico specifico all'interno di quella mappa.
+
+%     \item[Middleware:] Componente software (spesso script custom) che funge da intermediario tra sistemi o protocolli diversi, traducendo e facilitando lo scambio di dati.
+
+%     \item[MIME (Multipurpose Internet Mail Extensions):] Standard internet (RFC 2045) che estende il formato delle email per supportare allegati e contenuti HTML.
+
+%     \item[MTTR (Mean Time To Resolution):] Metrica fondamentale nell'Incident Management che indica il tempo medio impiegato per riparare un guasto e ripristinare il servizio.
+
+%     \item[NOC (Network Operations Center):] Struttura centralizzata da cui gli amministratori supervisionano e mantengono operativa l'infrastruttura di rete (es. le squadre tecniche Secoval).
+
+%     \item[Non-ripudio (Non-repudiation):] Concetto della sicurezza informatica che garantisce che il mittente di un messaggio non possa negare in un secondo momento di averlo inviato (ottenuto tramite firme asimmetriche).
+
+%     \item[Overhead:] Risorse accessorie di calcolo (CPU, RAM) richieste per compiere un'operazione di sistema che non contribuiscono direttamente al risultato dell'applicazione.
+
+%     \item[Parsing:] Processo di analisi sintattica di una sequenza di dati (es. frammenti XML) per estrarne informazioni strutturate e metadati.
+
+%     \item[Payload e Claim:] In un pacchetto dati o in un JWT, il payload è il corpo utile del messaggio. I claim sono le singole dichiarazioni codificate al suo interno (es. scadenza, emittente).
+
+%     \item[PEM (Privacy Enhanced Mail):] Formato di file standard utilizzato per memorizzare chiavi crittografiche (come le chiavi RSA) e certificati digitali, codificato in Base64.
+
+%     \item[Polling:] Meccanismo di monitoraggio attivo in cui un server (Zabbix) interroga ciclicamente e a intervalli regolari i dispositivi periferici per ottenerne lo stato.
+
+%     \item[Processo Figlio (Subprocess):] Nei sistemi operativi, un processo informatico avviato da un altro processo preesistente ("padre"), usato per delegare l'esecuzione di comandi.
+
+%     \item[Push / Pull:] Paradigmi di trasferimento dati. Nel modello Pull (Polling), il client interroga il server. Nel modello Push (Trapping), il nodo sorgente invia i dati proattivamente.
+
+%     \item[RBAC (Role-Based Access Control):] Metodo di regolamentazione dell'accesso ai sistemi informatici basato sui ruoli, limitando i privilegi degli utenti allo stretto necessario.
+
+%     \item[Regex (Espressioni Regolari):] Sequenza di caratteri che definisce un pattern formale di ricerca, utilizzata per manipolare stringhe di testo complesse.
+
+%     \item[Replay Attack:] Attacco di rete in cui una trasmissione sicura (es. un token) viene intercettata e ritrasmessa dall'attaccante per ottenere accessi non autorizzati.
+
+%     \item[Resilienza (Resilience):] Capacità di un'architettura IT di resistere a condizioni anomale, assorbire guasti hardware/software e continuare a fornire un livello di servizio accettabile.
+
+%     \item[REST (Representational State Transfer) / API REST:] Stile architetturale per lo sviluppo di API nei sistemi distribuiti, basato sull'utilizzo standardizzato dei metodi del protocollo HTTP (GET, POST, PUT, DELETE). Consente una comunicazione semplice e scalabile tra i sistemi.
+
+%     \item[RSA / RS512 (e SHA-512):] L'RSA è uno standard di crittografia asimmetrica. L'RS512 è lo specifico algoritmo che utilizza chiavi RSA combinate alla funzione di hash SHA-512 per generare firme digitali ad altissima sicurezza.
+
+%     \item[Silent Failure:] Fallimento di un programma che si verifica senza generare messaggi di errore evidenti o log, rendendo il troubleshooting estremamente complesso.
+
+%     \item[Single Source of Truth (SSoT):] Principio per cui ogni elemento di dato è archiviato in un unico luogo primario (es. il CMDB) a cui tutti gli altri sistemi devono allinearsi.
+
+%     \item[Site Reliability Engineering (SRE):] Disciplina ingegneristica introdotta da Google che applica i principi dello sviluppo software alla gestione delle operazioni IT.
+
+%     \item[SLA (Service Level Agreement):] Accordo sul Livello di Servizio tra fornitore IT e clienti, che definisce formalmente le prestazioni attese (es. uptime del 99.9\%).
+
+%     \item[SMTP (Simple Mail Transfer Protocol):] Protocollo standard di Internet (RFC 5321) impiegato per l'instradamento di messaggi di posta elettronica.
+
+%     \item[SNMP (Simple Network Management Protocol):] Protocollo standard utilizzato dai dispositivi di rete per comunicare il proprio stato di salute e la configurazione a un server di monitoraggio centrale.
+
+%     \item[Symlink (Link Simbolico):] File speciale all'interno del file system Unix che contiene un riferimento diretto a un altro file o directory, funzionando come un alias.
+
+%     \item[Template:] Modello preconfigurato in Zabbix che contiene un insieme logico di Item, Trigger e regole, applicabile a più dispositivi contemporaneamente.
+
+%     \item[Trapping:] Meccanismo di monitoraggio passivo o asincrono, in cui è il dispositivo periferico a spingere proattivamente i dati verso il server al verificarsi di un evento.
+
+%     \item[Trigger:] Espressione logica che valuta il valore di un Item per stabilire se il sistema si trova in uno stato di allarme (generando un evento Problem).
+
+%     \item[Troubleshooting:] Processo logico e sistematico di ricerca, identificazione e risoluzione delle cause profonde di un problema all'interno di una rete o sistema.
+
+%     \item[TVCC (TeleVisione a Circuito Chiuso):] Sistema di telecamere utilizzato specificamente per compiti di videosorveglianza del territorio.
+
+%     \item[Venv (Virtual Environment):] Modulo nativo di Python utilizzato per creare ambienti isolati, garantendo che i pacchetti di un progetto non interferiscano con le librerie di sistema.
+
+%     \item[WGS 84 (World Geodetic System 1984):] Sistema di coordinate geografiche standardizzato a livello globale, utilizzato come base di riferimento per il GPS.
+
+%     \item[XML (eXtensible Markup Language):] Linguaggio di marcatura flessibile basato su tag testuali, utilizzato per definire strutture di dati gerarchiche.
+
+%     \item[Zabbix:] Piattaforma software open-source per il monitoraggio proattivo di infrastrutture IT. Consente di raccogliere e analizzare metriche in tempo reale, inviando avvisi immediati in caso di anomalie.
+
+%     \item[Zabbix Sender:] Utility a riga di comando che permette di inviare valori, dati e allarmi direttamente all'istanza Zabbix Server in modalità asincrona e ad alte prestazioni.
+
+%     \item[Zero-Touch (Provisioning):] Metodologia di gestione dei sistemi in cui la configurazione dei dispositivi avviene automaticamente, annullando la necessità di inserimento dati manuale.
+% \end{description}
+
 
 \clearpage
 \addcontentsline{toc}{chapter}{Bibliografia}
