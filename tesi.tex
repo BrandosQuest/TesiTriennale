@@ -546,12 +546,14 @@ La gestione dei pacchetti e delle librerie è stata effettuata tramite \texttt{p
     \caption{Logo Interacta}
     \label{fig:interacta_logo}
 \end{figure}
-DA CONTROLLARE
-Interacta è la piattaforma cloud aziendale adottata da Secoval per la gestione dei processi azindali e del ticketing\parencite{Interacta}. Nel contesto operativo del progetto, questo software rappresenta il punto di arrivo degli allarmi: quando un apparato sul territorio subisce un guasto o perde la connettività, gli operatori assegnati alla manutenzione ricevono una segnalazione sulla piattaforma Interacta, che potrà tradursi in un intervento. Durante il tirocinio uno degli obiettivi è stato quello di realizzare l'integrazione, collegando Zabbix direttamente alle API REST di Interacta affinché i ticket di guasto (e i rispettivi rientri) vengano aperti e risolti in tempo reale dall'infrastruttura software, rendendo più facile agli operatori la gestione dei guasti.
 
-Trattandosi di una comunicazione \textit{Server-to-Server} tra una macchina virtuale (\textit{on-premise} - \textit{in sede}) e un servizio esterno ospitato sul cloud, l'attenzione si è spostata sulla sicurezza: bisognava impedire a soggetti terzi non autorizzati di poter iniettare finte richieste nel portale di ticketing aziendale. Per risolvere questa criticità, il progetto adotta lo standard \textbf{JSON Web Token (JWT)} \Parencite{JWT}. Un token JWT funziona come un "badge digitale" temporaneo e a prova di manomissione, che accompagna ogni singola chiamata HTTP inviata da Zabbix per dimostrare a Interacta l'assoluta autenticità della comunicazione.
+Interacta è la piattaforma cloud aziendale adottata da Secoval per la gestione dei processi azindali e del ticketing\parencite{Interacta}. Nel contesto operativo del progetto, questo software rappresenta il punto di arrivo degli allarmi: quando un apparato sul territorio subisce un guasto o perde la connettività, gli operatori assegnati alla manutenzione ricevono una segnalazione sulla piattaforma Interacta, che potrà tradursi in un intervento di cui ogni step sarà tracciato secondo gli usi aziendali. Durante il tirocinio uno degli obiettivi è stato quello di realizzare l'integrazione, collegando Zabbix direttamente alle API REST di Interacta affinché i ticket di guasto (e i rispettivi rientri) vengano aperti e eventualmente risolti dall'infrastruttura software, rendendo più facile agli operatori la gestione dei guasti.
 
-Per blindare questi certificati digitali, l'infrastruttura sfrutta la crittografia asimmetrica basata sull'algoritmo \textbf{RS512} (chiavi RSA combinate a una funzione di hash SHA-512). Il principio di funzionamento si fonda sulla separazione delle responsabilità: una chiave privata viene custodita gelosamente all'interno del server Linux locale, protetta da permessi rigorosi, mentre la corrispondente chiave pubblica viene depositata sul cloud di Interacta. Al verificarsi di un'anomalia, uno script Python impacchetta i metadati dell'evento, genera un token con una validità temporale di pochi minuti e lo firma digitalmente usando la chiave privata. Quando il pacchetto raggiunge il cloud, Interacta applica la chiave pubblica: se la verifica matematica ha successo, l'identità del mittente è confermata e il ticket viene istanziato sul portale.
+
+%DA CONTROLLARE DOVE METTERE QUESTA ROBA
+% Trattandosi di una comunicazione \textit{Server-to-Server} tra una macchina virtuale (\textit{on-premise} - \textit{in sede}) e un servizio esterno ospitato sul cloud, l'attenzione si è spostata sulla sicurezza: bisognava impedire a soggetti terzi non autorizzati di poter iniettare finte richieste nel portale di ticketing aziendale. Per risolvere questa criticità, il progetto adotta lo standard \textbf{JSON Web Token (JWT)} \Parencite{JWT}. Un token JWT funziona come un "badge digitale" temporaneo e a prova di manomissione, che accompagna ogni singola chiamata HTTP inviata da Zabbix per dimostrare a Interacta l'assoluta autenticità della comunicazione.
+
+% Per blindare questi certificati digitali, l'infrastruttura sfrutta la crittografia asimmetrica basata sull'algoritmo \textbf{RS512} (chiavi RSA combinate a una funzione di hash SHA-512). Il principio di funzionamento si fonda sulla separazione delle responsabilità: una chiave privata viene custodita gelosamente all'interno del server Linux locale, protetta da permessi rigorosi, mentre la corrispondente chiave pubblica viene depositata sul cloud di Interacta. Al verificarsi di un'anomalia, uno script Python impacchetta i metadati dell'evento, genera un token con una validità temporale di pochi minuti e lo firma digitalmente usando la chiave privata. Quando il pacchetto raggiunge il cloud, Interacta applica la chiave pubblica: se la verifica matematica ha successo, l'identità del mittente è confermata e il ticket viene istanziato sul portale.
 
 
 
@@ -950,7 +952,7 @@ Al suo interno troviamo:
 % % CAPITOLO 4: IMPLEMENTAZIONE: MONITORAGGIO E EVENTI
 % % ====================================================================
 \section{Georeferenziazione e GIS integrato in Zabbix}
-I metadati associati agli host in Zabbix, come longitudine e latitudine, vengono utilizzati nativamente dal software GIS(geographic information system) integrato.
+I metadati associati agli host in Zabbix, come longitudine e latitudine, vengono utilizzati nativamente dal software \hyperlink{glo:GIS}{GIS}(geographic information system) integrato.
 Le coordinate geografiche degli apparati vengono estratte dai campi \texttt{location\_lat} (Latitudine) e \texttt{location\_lon} (Longitudine) dell'inventory degli host.
 All'interno del widget \emph{GeoMap}, nativamente disponibile nelle dashboard di Zabbix grazie allo stumento OpenStreetMap \parencite{OpenStreetMap}, si possono visualizzare gli host su di una cartina, codificati tramite colore per la gravità dei problemi che eventualmente riscontrano. Essi mantangono l'integraaione con il sistema di monitoraggio, quindi un host con un problema visualizzato in rosso sulla mappa permette di risalire al suo nome e caratteristice e, se risolto, diventa verde in tempo reale.
 %DA CONTROLLARE LE FOTO
@@ -2144,9 +2146,7 @@ Infine, l'aver condotto in prima persona l'intero ciclo di vita di questa transi
 %     Immagini e Tabelle: In questa specifica sezione è caldamente sconsigliato inserire tabelle tecniche o schemi, in quanto si tratta di un testo riflessivo e discorsivo. Al massimo, se il tuo relatore lo gradisce, potresti inserire una "Timeline" grafica o un Diagramma di Gantt a consuntivo che mostri le fasi temporali del tuo stage (Studio, Prototipazione, Sviluppo, Messa in produzione).
 \chapter*{Glossario}
 
-\section{Terminologia}
-Per facilitare la lettura e la comprensione del presente manuale anche a personale non strettamente sistemistico,
-di seguito vengono definiti i termini tecnici principali,
+Per facilitare la lettura di seguito vengono definiti i termini tecnici principali,
 i protocolli e i concetti architetturali utilizzati nel progetto.
 
 
@@ -2196,7 +2196,7 @@ i protocolli e i concetti architetturali utilizzati nel progetto.
     \item[API JSON-RPC (Zabbix):]
           L'API web di Zabbix si basa integralmente sul protocollo JSON-RPC 2.0. Qualsiasi operazione eseguibile dall'interfaccia grafica (creazione host, assegnazione template, update dell'inventario) è esposta tramite questo protocollo. Il popolamento dell'Host Inventory tramite script Python è un caso d'uso da manuale.
     \item[ICMP e ICMP Ping:] DA CONTROLLARE... L'ICMP (Internet Control Message Protocol) è un protocollo di livello di rete utilizzato dai dispositivi per scambiare informazioni di diagnostica e notifica degli errori . L'ICMP Ping è lo strumento diagnostico principale basato su ICMP che invia una richiesta (Echo Request) e attende una risposta (Echo Reply) per verificare la connettività
-    \item[GIS (Geographic Information System):] sistemi informatici (come QGIS)
+    \item[\hypertarget{glo:GIS}GIS (Geographic Information System):] sistemi informatici (come QGIS)
           progettati per acquisire, memorizzare, analizzare e gestire dati georeferenziati.
           Nel caso di Zabbix permettono di visualizzare gli apparati guasti direttamente su una mappa cartografica.
           % \item[Payload:] in informatica, è il "carico utile" di un pacchetto di dati.
@@ -2204,21 +2204,13 @@ i protocolli e i concetti architetturali utilizzati nel progetto.
           %  che contiene le vere e proprie informazioni da modificare (es. nome e coordinate dell'host).
 \end{description}
 
-
 \vspace{2cm}
 \begin{description}
     \item[Comunicazione sincrona:] la comunicazione sincrona avviene in tempo reale (es. chiamate, riunioni su Panopto o Zoom, protocollo HTTP). Le decisioni e la gestione dei messaggi devono essere rapide.
     \item[Comunicazione asincrona:] la comunicazione asincrona non richiede la presenza contemporanea degli interlocutori (es. email, ticket o messaggi su Slack e Dropbox, protocollo MQTT). Consente di gestire i messaggi senza interruzioni e di gestire il proprio tempo.
 \end{description}
 \vspace{2cm}
-%DA ASSICURARSI CHE CI SIANO I 4 QUI SOTTO
-% \begin{description}
-%     \item[API] Application Programming Interface: Interfaccia che consente la comunicazione e lo scambio di dati...
-%     \item[CMDB] Configuration Management Database...
-%     \item[JWT] JSON Web Token...
-%     \item[KPI] Key Performance Indicator...
-% \end{description}
-% \vspace{2cm}
+
 %Cap 1
 \begin{description}
     \item[AP (Access Point):] Dispositivo di rete che permette la connessione wireless.

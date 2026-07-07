@@ -48,35 +48,6 @@
       \verb https://ubuntu.com/download/server
       \endverb
     \endentry
-    \entry{JWT}{manual}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=8156eae38e17275f0d4e90ae1051c2ab}{%
-           family={{IETF}},
-           familyi={I\bibinitperiod}}}%
-      }
-      \strng{namehash}{8156eae38e17275f0d4e90ae1051c2ab}
-      \strng{fullhash}{8156eae38e17275f0d4e90ae1051c2ab}
-      \strng{bibnamehash}{8156eae38e17275f0d4e90ae1051c2ab}
-      \strng{authorbibnamehash}{8156eae38e17275f0d4e90ae1051c2ab}
-      \strng{authornamehash}{8156eae38e17275f0d4e90ae1051c2ab}
-      \strng{authorfullhash}{8156eae38e17275f0d4e90ae1051c2ab}
-      \field{sortinit}{I}
-      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{note}{Ultimo accesso: 29 Giugno 2026}
-      \field{title}{JSON Web Token (JWT)}
-      \field{year}{2026}
-      \verb{urlraw}
-      \verb https://datatracker.ietf.org/doc/html/rfc7519
-      \endverb
-      \verb{url}
-      \verb https://datatracker.ietf.org/doc/html/rfc7519
-      \endverb
-    \endentry
     \entry{Interacta}{manual}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=95da935e2a82bfb5cc23fde6167fde52}{%
@@ -334,35 +305,6 @@
       \endverb
       \verb{url}
       \verb https://ubuntu.com/download/server
-      \endverb
-    \endentry
-    \entry{JWT}{manual}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=8156eae38e17275f0d4e90ae1051c2ab}{%
-           family={{IETF}},
-           familyi={I\bibinitperiod}}}%
-      }
-      \strng{namehash}{8156eae38e17275f0d4e90ae1051c2ab}
-      \strng{fullhash}{8156eae38e17275f0d4e90ae1051c2ab}
-      \strng{bibnamehash}{8156eae38e17275f0d4e90ae1051c2ab}
-      \strng{authorbibnamehash}{8156eae38e17275f0d4e90ae1051c2ab}
-      \strng{authornamehash}{8156eae38e17275f0d4e90ae1051c2ab}
-      \strng{authorfullhash}{8156eae38e17275f0d4e90ae1051c2ab}
-      \field{sortinit}{I}
-      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{note}{Ultimo accesso: 29 Giugno 2026}
-      \field{title}{JSON Web Token (JWT)}
-      \field{year}{2026}
-      \verb{urlraw}
-      \verb https://datatracker.ietf.org/doc/html/rfc7519
-      \endverb
-      \verb{url}
-      \verb https://datatracker.ietf.org/doc/html/rfc7519
       \endverb
     \endentry
     \entry{Interacta}{manual}{}
