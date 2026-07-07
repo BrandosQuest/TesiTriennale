@@ -2154,87 +2154,59 @@ Infine, l'aver condotto in prima persona l'intero ciclo di vita di questa transi
 Per facilitare la lettura di seguito vengono definiti i termini tecnici principali,
 i protocolli e i concetti architetturali utilizzati nel progetto.
 \begin{description}
-    \item[\hypertarget{glo:action}Action:] (Zabbix) l'azione automatica che il sistema intraprende quando qualche evento soddisfa alcune condizioni.
-          Può essere relativa ai trigger o alla scoperta di un nuovo host.
-    \item[\hypertarget{glo:trigger}Trigger:] (Zabbix) una regola logica associata a un Item.
-          Es. la telecamera non risponde al ping per 3 minuti, il Trigger "scatta" e genera un allarme (Problem).
-    \item[\hypertarget{glo:Zabbix}Zabbix:] è una piattaforma software open-source per il monitoraggio proattivo di infrastrutture IT, reti, server, macchine virtuali e servizi cloud. Consente di raccogliere, visualizzare e analizzare metriche in tempo reale (come utilizzo CPU, RAM, rete e spazio disco), inviando avvisi immediati in caso di anomalie.
-\end{description}
-
-\begin{description}
-    \item[Zabbix:] è una piattaforma software open-source per il monitoraggio proattivo
-          di infrastrutture IT, reti, server, macchine virtuali e servizi cloud.
-          Consente di raccogliere, visualizzare e analizzare metriche in tempo reale
-          (come utilizzo CPU, RAM, rete e spazio disco), inviando avvisi immediati in caso di anomalie.
-    \item[Host:] qualsiasi dispositivo fisico o virtuale monitorato dal sistema.
-          Nel nostro caso, una telecamera, uno switch, un Access Point o un router.
-    \item[Item:] la singola metrica o il singolo dato raccolto da un Host.
-          Esempi di item sono: la risposta di un comando ping a un host o il tempo di risposta,
-          la risposta ricevuta da un comando, il valore di un sensore fisico o virtuale.
-    \item[Trigger:] una regola logica associata a un Item.
-          Es. la telecamera non risponde al ping per 3 minuti, il Trigger "scatta" e genera un allarme (Problem).
-    \item[Action:] l'azione automatica che il sistema intraprende quando qualche evento soddisfa alcune condizioni.
-          Può essere relativa ai trigger o alla scoperta di un nuovo host.
-    \item[Template:] un modello preconfigurato che contiene un insieme logico di
-          Item, Trigger e regole. Viene applicato a più dispositivi per evitare di configurarli manualmente.
-    \item[Macro:] variabili integrate in Zabbix (scritte tra parentesi graffe,
-          es. \texttt{\{HOST.NAME\}}) che permettono di inserire dinamicamente il nome,
-          l'IP o altri dati all'interno di svariati campi, per esempio le mail di allarme.
-\end{description}
-
-\begin{description}
-    %\item[CMDB (Configuration Management Database):] Il database che contiene le informazioni autoritative sui componenti informatici di un'organizzazione. Nel nostro progetto, il ruolo di CMDB è ricoperto dai file Excel comunali.
-    %\item[Source of Truth (Sorgente della Verità):] Un concetto architetturale per cui esiste un unico punto di riferimento (il CMDB) considerato come il dato ufficiale e corretto, a cui tutti gli altri sistemi (incluso Zabbix) devono allinearsi.
-    \item[SNMP (Simple Network Management Protocol):]
-          il linguaggio standard universale utilizzato dai dispositivi di rete per comunicare
-          il proprio stato di salute e la propria configurazione a un server di monitoraggio centrale.
-    \item[MIB e OID:] Il \textbf{MIB} (Management Information Base) è un dizionario o "mappa"
-          che descrive la struttura dei dati di un dispositivo.
-          L'\textbf{OID} (Object Identifier) è l'indirizzo numerico specifico all'interno di quella mappa
-          (es. \texttt{1.3.6.1.4.1.39165.1.1.0}) che identifica un singolo valore, come il numero seriale.
-    \item[API (Application Programming Interface):] un'interfaccia o "ponte" software che \\
-          permette a due sistemi o applicazioni diverse (es. il nostro script Python e Zabbix)
-          di parlarsi, passarsi comandi e scambiarsi dati in modo sicuro e automatizzato.
-    \item[ISAPI:] un set di API specifico e proprietario sviluppato da Hikvision.
-          Permette di interrogare e comandare le telecamere tramite protocollo HTTP
-          e di ricevere flussi continui di avvisi di sicurezza.
+    \item[\hypertarget{glo:action}Action:] (Zabbix) l'azione automatica che il sistema intraprende quando qualche evento soddisfa alcune condizioni. Può essere relativa ai trigger o alla scoperta di un nuovo host.
+    \item[\hypertarget{glo:api}API (Application Programming Interface):] un'interfaccia o "ponte" software che \\permette a due sistemi o applicazioni diverse (es. script Python e Zabbix) di parlarsi, passarsi comandi e scambiarsi dati in modo sicuro e automatizzato.
+    \item[\hypertarget{glo:apijsonrpc}API JSON-RPC :] (Zabbix) l'API web di Zabbix si basa integralmente sul protocollo JSON-RPC. Qualsiasi operazione eseguibile dall'interfaccia grafica (creazione host, assegnazione template, update dell'inventario) è esposta tramite questo protocollo. Es. il popolamento dell'Host Inventory tramite script Python.
+    \item[\hypertarget{glo:comunicazioneasincrona}Comunicazione asincrona:] la comunicazione asincrona non richiede la presenza contemporanea degli interlocutori (es. email, ticket o messaggi su Slack e Dropbox, protocollo MQTT). Consente di gestire i messaggi senza interruzioni e di gestire il proprio tempo.
+    \item[\hypertarget{glo:comunicazionesincrona}Comunicazione sincrona:] la comunicazione sincrona avviene in tempo reale (es. chiamate, riunioni su Panopto o Zoom, protocollo HTTP). Le decisioni e la gestione dei messaggi devono essere rapide.
+          % \item[CMDB (Configuration Management Database):] database utilizzato da \\un'organizzazione per memorizzare informazioni su hardware e software.
+    \item[\hypertarget{glo:GIS}GIS (Geographic Information System):] sistemi informatici (come QGIS) progettati per acquisire, memorizzare, analizzare e gestire dati georeferenziati. Nel caso di Zabbix permettono di visualizzare gli host(apparati) e il loro stato direttamente su una mappa cartografica.
+    \item[\hypertarget{glo:host}Host:] (Zabbix) qualsiasi dispositivo fisico o virtuale monitorato dal sistema. Nel nostro caso, una telecamera, uno switch, un Access Point o un router.
+    \item[\hypertarget{glo:icmpping}ICMP Ping:] ICMP (Internet Control Message Protocol) è un protocollo di livello di rete utilizzato dai dispositivi per scambiare informazioni di diagnostica e notifica degli errori. L'ICMP Ping è lo strumento diagnostico principale basato su ICMP che invia una richiesta (Echo Request) e attende una risposta (Echo Reply) per verificare la connettività.
+    \item[\hypertarget{glo:isapi}ISAPI:] Intelligent Security API, un set di API specifico e proprietario sviluppato da Hikvision. Permette di interrogare e comandare le telecamere in modo diretto tramite protocollo HTTP e di ricevere flussi continui di avvisi di sicurezza.
           %In Hikvision cameras, ISAPI stands for Intelligent Security Application Programming Interface. It is a standardized, HTTP-based communication protocol that allows software, apps, and third-party systems (like Home Assistant or Blue Iris) to interact directly with your camera or NVR.
           %ISAPI utilizes a RESTful (Representational State Transfer) architecture, which is standard across modern web development. Developers send commands using standard HTTP methods (like GET for fetching data, or PUT for saving new settings) accompanied by XML or JSON payloads.
           % \item[Script / Middleware:] un programma (in questo progetto scritto in linguaggio Python)
           %  che funge da intermediario. Si occupa di tradurre, filtrare o trasportare dati da un punto A
           %   (es. file Excel o telecamera) a un punto B (Zabbix).
-    \item[API REST e RESTful... DA CONTROLLARE:] API che seguono il paradigma REST (Representational State Transfer), consentendo una comunicazione più semplice e scalabile tra i sistemi.
-    \item[API JSON-RPC (Zabbix):]
-          L'API web di Zabbix si basa integralmente sul protocollo JSON-RPC 2.0. Qualsiasi operazione eseguibile dall'interfaccia grafica (creazione host, assegnazione template, update dell'inventario) è esposta tramite questo protocollo. Il popolamento dell'Host Inventory tramite script Python è un caso d'uso da manuale.
-    \item[ICMP e ICMP Ping:] DA CONTROLLARE... L'ICMP (Internet Control Message Protocol) è un protocollo di livello di rete utilizzato dai dispositivi per scambiare informazioni di diagnostica e notifica degli errori . L'ICMP Ping è lo strumento diagnostico principale basato su ICMP che invia una richiesta (Echo Request) e attende una risposta (Echo Reply) per verificare la connettività
-    \item[\hypertarget{glo:GIS}GIS (Geographic Information System):] sistemi informatici (come QGIS)
-          progettati per acquisire, memorizzare, analizzare e gestire dati georeferenziati.
-          Nel caso di Zabbix permettono di visualizzare gli apparati guasti direttamente su una mappa cartografica.
-          % \item[Payload:] in informatica, è il "carico utile" di un pacchetto di dati.
-          % Quando lo script aggiorna Zabbix, il payload è il blocco di testo (solitamente in formato JSON)
-          %  che contiene le vere e proprie informazioni da modificare (es. nome e coordinate dell'host).
+    \item[\hypertarget{glo:item}Item:] (Zabbix) la singola metrica o il singolo dato raccolto da un Host. Esempi di item sono: la risposta di un comando ping a un host o il tempo di risposta, la risposta ricevuta da un comando, il valore di un sensore fisico o virtuale.
+    \item[\hypertarget{glo:macro}Macro:] (Zabbix) variabili integrate in Zabbix (scritte tra parentesi graffe, es. \\\texttt{\{HOST.NAME\}}) che permettono di inserire dinamicamente il nome, l'IP o altri dati all'interno di svariati campi, per esempio le mail di allarme.
+    \item[\hypertarget{glo:snmp}SNMP (Simple Network Management Protocol):] il linguaggio standard universale utilizzato dai dispositivi di rete per comunicare il proprio stato di salute e la propria configurazione a un server di monitoraggio centrale.
+    \item[\hypertarget{glo:template}Template:] (Zabbix) un modello preconfigurato che contiene un insieme logico di Item, Trigger e regole. Viene applicato a più dispositivi per evitare di configurarli manualmente.
+    \item[\hypertarget{glo:trigger}Trigger:] (Zabbix) una regola logica associata a un Item. Es. la telecamera non risponde al ping per 3 minuti, il Trigger "scatta" e genera un allarme (Problem).
+    \item[\hypertarget{glo:Zabbix}Zabbix:] è una piattaforma software open-source per il monitoraggio proattivo di infrastrutture IT, reti, server, macchine virtuali e servizi cloud. Consente di raccogliere, visualizzare e analizzare metriche in tempo reale (come utilizzo CPU, RAM, rete e spazio disco), inviando avvisi immediati in caso di anomalie.
+
 \end{description}
 
-\vspace{2cm}
 \begin{description}
-    \item[Comunicazione sincrona:] la comunicazione sincrona avviene in tempo reale (es. chiamate, riunioni su Panopto o Zoom, protocollo HTTP). Le decisioni e la gestione dei messaggi devono essere rapide.
-    \item[Comunicazione asincrona:] la comunicazione asincrona non richiede la presenza contemporanea degli interlocutori (es. email, ticket o messaggi su Slack e Dropbox, protocollo MQTT). Consente di gestire i messaggi senza interruzioni e di gestire il proprio tempo.
+    % \item[MIB e OID:] Il \textbf{MIB} (Management Information Base) è un dizionario o "mappa"
+    %       che descrive la struttura dei dati di un dispositivo.
+    %       L'\textbf{OID} (Object Identifier) è l'indirizzo numerico specifico all'interno di quella mappa
+    %       (es. \texttt{1.3.6.1.4.1.39165.1.1.0}) che identifica un singolo valore, come il numero seriale.
+
+
+    % \item[API REST e RESTful... DA CONTROLLARE:] API che seguono il paradigma REST (Representational State Transfer), consentendo una comunicazione più semplice e scalabile tra i sistemi.
+
+
+
+    % \item[Payload:] in informatica, è il "carico utile" di un pacchetto di dati.
+    % Quando lo script aggiorna Zabbix, il payload è il blocco di testo (solitamente in formato JSON)
+    %  che contiene le vere e proprie informazioni da modificare (es. nome e coordinate dell'host).
 \end{description}
-\vspace{2cm}
+
+
 
 %Cap 1
 \begin{description}
     \item[AP (Access Point):] Dispositivo di rete che permette la connessione wireless.
-    \item[CMDB (Configuration Management Database):] Database utilizzato da un'organizzazione per memorizzare informazioni su hardware e software.
+    \item[TVCC (TeleVisione a Circuito Chiuso):] Sistema di telecamere per la videosorveglianza.
     \item[Crontab:] Demone di sistema nei sistemi operativi Unix-like utilizzato per pianificare l'esecuzione di comandi.
     \item[Flapping:] Cambiamento frequente e rapido di stato di un host o di una porta di rete, sintomo di instabilità.
-    \item[GIS (Geographic Information System):] Sistema progettato per acquisire, memorizzare, manipolare e analizzare dati spaziali o geografici.
-    \item[ISAPI (Intelligent Security API):] Protocollo basato su HTTP/REST utilizzato dalle telecamere Hikvision per l'integrazione di terze parti.
+
     \item[JWT (JSON Web Token):] Standard aperto (RFC 7519) per la trasmissione sicura di informazioni tra due parti come oggetto JSON.
     \item[Logrotate:] Utility di sistema Linux progettata per amministrare sistemi che generano un gran numero di file di log, ruotandoli e comprimendoli.
     \item[MTTR (Mean Time To Resolution):] Metrica che indica il tempo medio necessario per riparare un guasto e ripristinare il servizio.
     \item[RSA / RS512:] Algoritmo di crittografia asimmetrica; RS512 utilizza RSA combinato con la funzione di hash SHA-512 per la firma digitale.
-    \item[TVCC (TeleVisione a Circuito Chiuso):] Sistema di telecamere per la videosorveglianza.
     \item[Zabbix Sender:] Utility a riga di comando utilizzata per inviare dati di performance o eventi direttamente al server Zabbix in modo asincrono.
 \end{description}
 \vspace{2cm}
