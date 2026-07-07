@@ -18,11 +18,10 @@
 \contentsline {section}{\numberline {3.2}Zabbix nella funzione di monitoraggio della smart city}{16}{section.3.2}%
 \contentsline {subsection}{\numberline {3.2.1}Architettura generale dell'infrastruttura}{16}{subsection.3.2.1}%
 \contentsline {subsection}{\numberline {3.2.2}L'autodiscovery degli host da parte di Zabbix}{17}{subsection.3.2.2}%
-\contentsline {section}{\numberline {3.3}I fogli di calcolo aziendali (Excel) come Source of Truth}{18}{section.3.3}%
+\contentsline {section}{\numberline {3.3}I fogli di calcolo aziendali}{18}{section.3.3}%
 \contentsline {section}{\numberline {3.4}Implementazione dell'aggiornamento degli \\host}{19}{section.3.4}%
-\contentsline {subsection}{\numberline {3.4.1}Associazione host name e IDpalo}{19}{subsection.3.4.1}%
-\contentsline {subsection}{\numberline {3.4.2}Associazione coordinate, indirizzo e tecnologia}{20}{subsection.3.4.2}%
-\contentsline {subsection}{\numberline {3.4.3}Memorizzazione dei messaggi di log}{20}{subsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.4.1}Associazione dei metadati agli host}{20}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Memorizzazione dei messaggi di log}{20}{subsection.3.4.2}%
 \contentsline {section}{\numberline {3.5}Georeferenziazione e GIS integrato in Zabbix}{21}{section.3.5}%
 \contentsline {chapter}{\numberline {4}Rilevamento manomissioni TVCC(ISAPI)}{23}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Logiche di Polling vs Trapping in Zabbix}{23}{section.4.1}%

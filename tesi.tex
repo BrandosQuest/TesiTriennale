@@ -597,13 +597,13 @@ Per blindare questi certificati digitali, l'infrastruttura sfrutta la crittograf
 Per realizzare l'integazione tra i dati Excel e il server Zabbix è stato necessario progettare un ambiente di esecuzione dedicato. L'architettura prevede l'impiego di una Macchina Virtuale (VM) basata su sistema operativo Ubuntu Linux, ospitata sull'infrastruttura di virtualizzazione aziendale (Nutanix). La scelta di Ubuntu Server garantisce stabilità, e  compatibilità con software open-source come Zabbix.
 
 \subsection*{Setup della VM Ubuntu}
-L'applicativo Zabbix viene eseguito su una virtual machine gestita da Nutanix, sui server Secoval, chiamata
+L'applicativo Zabbix viene eseguito su una virtual machine sui server Secoval, chiamata
 "SECZABBIX-TLC". Il sistema operativo utilizzato è Ubuntu Server (Ubuntu 24.04).
 
 Nella VM a livello di sistema operativo, sono stati definiti contesti di esecuzione separati per necessità tecniche:
 \begin{itemize}
-    \item l'utente \texttt{administrator}: impiegato per le fasi di sviluppo, utilizzo di SSH e per l'aggiornamento dei file Excel di input. La maggior parte della \textit{codebase} risiede all'interno della sua directory di lavoro, specificamente nel percorso \\\texttt{/home/administrator/zabbixHostsScript/}.
-    \item l'utente di sistema \texttt{zabbix}: utilizzato dal demone del server di monitoraggio per l'esecuzione in background (\textit{headless}) degli script di alert e di integrazione.
+    \item l'utente \texttt{administrator}: impiegato per le fasi di sviluppo, l'utilizzo di SSH e per l'aggiornamento dei file Excel di input. La maggior parte della \textit{codebase} risiede all'interno della sua directory di lavoro, specificamente nel percorso \\\texttt{/home/administrator/zabbixHostsScript/}.
+    \item l'utente di sistema \texttt{zabbix}: utilizzato dal demone del server di monitoraggio per l'esecuzione in background degli script di alert e di integrazione.
 \end{itemize}
 % Un vincolo ingegneristico fondamentale per far coesistere i due utenti ed evitare fallimenti critici è stato l'utilizzo esclusivo di percorsi assoluti (\textit{Absolute Paths}) all'interno del codice Python. Questa scelta ovvia all'imprevedibilità della \textit{Current Working Directory} (CWD) quando i task vengono scatenati in background dal motore Zabbix.
 
@@ -677,33 +677,32 @@ Nella VM a livello di sistema operativo, sono stati definiti contesti di esecuzi
 %     Immagini: Uno schema dell'architettura della macchina virtuale. Mostra i confini tra l'utente administrator (dove risiede il codice e il venv) e l'utente zabbix (il demone che esegue i processi in background).
 \section{Zabbix nella funzione di monitoraggio della smart city}
 \subsection{Architettura generale dell'infrastruttura}
-L'infrastruttura che necessita di monitoraggio nel progetto di \emph{smart city} a cui L'azienda Secoval Srl
+L'infrastruttura che necessita di monitoraggio nel progetto di \emph{smart city}
 è costituita da una serie di sottoreti virtuali \emph{VLAN} che si sviluppano sul territorio. In esse sono collegati diversi host, di natura eterogenea,
 per oltre 1000 dispositivi attivi.
 
 Come già discusso in precedenza, il monitoraggio delle sottoreti era affidato a Paessler PRTG Network Monitor.
-La migrazione a Zabbix è stata una scelta dettata da fattori di costo dovuti alle licenze a numero limitato
-di host monitorabili di PRTG e da fattori di automatizzazione: le API di Zabbix sono
+La migrazione a Zabbix è stata una scelta dettata da fattori di costo e anche di automatizzazione: le API di Zabbix sono
 più facilmente utilizzabili e meglio documentate, per la loro natura open-source.
 
-Per ogni comune posso avere 4 sottoreti, per esempio nel comune di \lstinline|Lavenone|:
+Per ogni comune si possono avere 4 sottoreti, per esempio nel comune di \lstinline|Lavenone|:
 \begin{description}
-    \item [TVCC-LAVE:] ne fanno parte le telecamere principalmente di marca Hikvision, un gateway e un possibile server di gestione delle telecamere daparte del comune.
+    \item [TVCC-LAVE:] ne fanno parte le telecamere principalmente di marca Hikvision, un gateway e un possibile server di gestione delle telecamere da parte del comune.
     \item [SW-LAVE: ]ne fanno parte gli switch, un gateway e un possibile server.
     \item [AP-LAVE: ]ne fanno parte gli access point e un gateway.
     \item [LTE-LAVE:] sottorete facoltativa che contiene host di ogni tipo che si basano su
           tecnologia LTE o satellitare per comunicare da aree remote non coperte dai normali servizi.
 \end{description}
 
-La \textbf{funzionalità principale del sistema} consiste nell'applicare il template \emph{ICMP ping}
-per ogni host presente nelle VLAN del progetto.
-Questo template permette di applicare a tutti gli host un comando \emph{ping}, ogni minuto, e misurare,
+La \textbf{funzionalità principale del sistema} consiste nell'applicare in Zabbix il template \emph{ICMP ping}
+ad ogni host presente nelle VLAN del progetto.
+Questo template permette lanciare verso tutti gli host un comando \emph{ping} ogni minuto e misurare,
 tra 3 diversi item, l'accessibilità dell'host sulla rete. In caso di comunicazione interrotta
 il relativo trigger lancia un problem con \lstinline|Severity: high|.
 \subsection{L'autodiscovery degli host da parte di Zabbix}
 Essendo le sottoreti da monitorare già presenti nel sistema di monitoraggio precedente, PRTG, con il nome desiderato, è stato esportato
 un file \emph{json} contenente un array di oggetti così strutturati:
-\begin{lstlisting}[language=c, caption=Struttura della sottorete estratta da PRTG]
+\begin{lstlisting}[language=c, caption=Struttura della singola sottorete estratta da PRTG]
     {
         "PRTG_ID":  4591,
         "Full_Path":  "smartCity/LAVENONE/TVCC-LAVE",
@@ -729,19 +728,18 @@ I compiti svolti da questo script sono stati:
           l'host appena scoperto dalla discovery rule al suo host group
           e allo specifico template \emph{ICMP ping}, citato in precedenza( 3.2.1).
 \end{itemize}
-\section{I fogli di calcolo aziendali (Excel) come Source of Truth}
-Una volta scoperti gli host e memorizzati nel database di Zabbix essi sono quasi inutili,
-perché non contengono alcuna informazione che li riguarda.
+\section{I fogli di calcolo aziendali}
+Una volta scoperti gli host e memorizzati nel database di Zabbix essi sono operativamente funzionanti, ma non contengono alcuna informazione che li riguarda.
 Molte delle loro caratteristiche, come nome e l'ID del palo a cui sono montati, non
-sono rilevabili dallo stumento softtware Zabbix perchè non sono stati memorizzati sui singoli host.
+sono rilevabili dallo stumento software Zabbix perchè non sono state memorizzati sui singoli host.
 
 Per abilitare un'architettura di monitoraggio automatizzata, è stato necessario identificare una \textbf{sorgente della verità}, ovvero un'entità a cui il sistema potesse attingere per allineare il suo stato con lo stato fisico degli asset sul territorio.
 
-Nel contesto della smart city gestita da Secoval Srl, il Source of Truth riguardo gli asset hardware e software che compongono l'infrastruttura della smart city e la configurazione e la mappatura dei dispositivi dislocati sul territorio (telecamere IP, Access Point, gateway LTE, switch di rete) è rappresentato da 2 fogli di calcolo: uno fondamentale come archivio e uno di supporto.
+Nel contesto della smart city gestita da Secoval Srl, il Source of Truth riguardo gli asset hardware e software che compongono l'infrastruttura della smart city e la configurazione e mappatura dei dispositivi dislocati sul territorio (telecamere IP, Access Point, gateway LTE, switch di rete) è rappresentato da 2 fogli di calcolo Excel: uno fondamentale come archivio e uno di supporto.
 
 
 \subsection*{Struttura e ruolo dei due file Excel aziendali}
-Secoval, e le aziende che hanni implemetato fisicamente la rete di telecamere sul territorio, gestisce la conoscenza della propria infrastruttura smart city attraverso \textbf{due file Excel principali}:
+Secoval, e le aziende che hanno implemetato fisicamente la rete di telecamere sul territorio, gestiscono la conoscenza della propria infrastruttura smart city attraverso \textbf{due file Excel principali}:
 \begin{enumerate}
     \item \textbf{Excel degli asset:} questo documento contiene l'inventario di tutti gli asset hardware (come le telecamere, prevalentemente di marca Hikvision) installati nei vari comuni aderenti al progetto. Per ogni apparato sono mappati dati cruciali quali l'indirizzo IP statico, l'univoco \texttt{ID Host} aziendale, il costruttore, il modello e, dato fondamentale per la manutenzione fisica, l'\texttt{ID Palo} che identifica e da un nome alla posizione di istallazione del dispositivo.
           \begin{table}[ht]
@@ -789,11 +787,11 @@ Questi due file sono depositati all'interno del file system della macchina virtu
 
 
 \subsection*{L'estrazione dei dati}
-Purtroppo Zabbix non è in grado di leggere nativamente un file \texttt{.xlsx} per configurare i propri host. Per risolvere questo problema e automatizzare il flusso di informazioni verso Zabbix, è stata ideata un'architettura software in linguaggio Python.
+Purtroppo Zabbix non è in grado di leggere nativamente un file \texttt{.xlsx} per configurare i propri host. Per risolvere questo problema e automatizzare il flusso di informazioni verso Zabbix, è stato scritto uno sript Python.
 
 Il sistema opera secondo una logica basata su due fasi:
 \begin{itemize}
-    \item \textbf{Estrazione:} lo script Python, sfruttando  librerie dedicate alla manipolazione dati come \texttt{pandas} e \texttt{openpyxl}, accede ai percorsi assoluti dei due file Excel e ne legge le righe. Questa operazione permette di estrarre la conoscenza testuale racchiusa nelle celle (indirizzi IP, ID Palo, denominazione del Comune). I dati grezzi estratti dagli Excel vengono mappati all'interno di dizionari Python. %In questa fase, ad esempio, lo script associa a ciascun dispositivo il corretto \textbf{Host Group} di Zabbix (es. separando logicamente il gruppo \texttt{SmartCity/TVCC} dal gruppo \texttt{SmartCity/Connectivity}) e determina quale \textbf{Template} di monitoraggio applicare in base al modello hardware rilevato nel foglio elettronico.
+    \item \textbf{Estrazione:} lo script Python, sfruttando  librerie dedicate alla manipolazione dati come \texttt{pandas}, accede ai percorsi assoluti dei due file Excel e ne legge le righe. Questa operazione permette di estrarre la conoscenza testuale racchiusa nelle celle (indirizzi IP, ID Palo, denominazione del Comune). I dati grezzi estratti dagli Excel vengono mappati all'interno di dizionari Python. %In questa fase, ad esempio, lo script associa a ciascun dispositivo il corretto \textbf{Host Group} di Zabbix (es. separando logicamente il gruppo \texttt{SmartCity/TVCC} dal gruppo \texttt{SmartCity/Connectivity}) e determina quale \textbf{Template} di monitoraggio applicare in base al modello hardware rilevato nel foglio elettronico.
     \item \textbf{Caricamento via API):} i dati vengono inseriti all'interno del server Zabbix. Lo script Python effettua chiamate al server zabbix attraverso la libreria \emph{pyzabbix}. Il sistema esegue un confronto tra le informazioni presenti negli Excel e quelle su Zabbix; per esempio se l'IP di un asset non è presente su Zabbix allora non viene forzata la sua creazione, se invece è presente si associano ad esso i relativi metadati(nome, ID palo, coordinate...).
 \end{itemize}
 
@@ -812,60 +810,67 @@ Il sistema opera secondo una logica basata su due fasi:
 
 Ogni host in Zabbix viene identificato con un attributo "name" che contiene l'IP con cui è stato scoperto.
 Inoltre possiede anche un attributo "visible name" che lo rappresenta nel sistema. L'obiettivo è andare a estrarre
-dal file Excel degli asset l'informazione del loro nome, da inserire nell'attributo "visible name"
+dal file Excel degli asset l'informazione del loro identificativo aziendale, da inserire nell'attributo "visible name"
 e l'informazione sull'id del palo su cui sono montati, da inserire le campo "location" del loro attributo
 "inventory" (ogni host possiede un ampio elenco di campi da compilare nell'attributo "inventory").
 
-Nel file Excel delle coordinate geografiche: viene associata all'IDpalo anche le coordinate geografica.
-Quindi per ogni host con uno specifico IDpalo gli si deve associare anche le coordinate geografiche.
+Oltre a queste informazioni, per ogni host è necessario associare anche le coordinate geografiche del palo su cui sono montati.
+% Nel file Excel delle coordinate geografiche: viene associata all'IDpalo anche le coordinate geografica.
+% Quindi per ogni host con uno specifico IDpalo gli si deve associare anche le coordinate geografiche.
 
 Siccome la quasi totalità delle sottoreti al momento del mio tirocinio
 presenta numerosi host con svariati problemi, che impediscono al sistema di scoprirli tramite
 ping, risulta impossibile assegnare i loro metadati in una sola volta.
 Quindi, mano a mano che essi andranno online, verranno scoperti dal sistema che dovrà associare
 a essi le informazioni contenute nei file Excel. Proprio come per gli host scoperti inizialmente.
+
 Questo implica che l'assegnazione di questi dati deve essere fatta periodicamente,
 con un periodo congruo. Per questo ho scelto di utilizzare script python, eseguiti periodicamente
-dal servizio \texttt{crontab} presente nativamente in Ubuntu.
+dal servizio \texttt{crontab} presente nativamente in Ubuntu. Il periodo scelto è di un'ora, in modo da non sovraccaricare il server Ubuntu ma di rendere possibile agli operatori vedere i cambiamenti nella stessa giornata lavorativa.
 
 Nella pratica vengono utilizzati degli script python eseguiti nella macchina virtuale che
 ospita Zabbix. Tutti gli script ausiliari vengono salvati nella directory
 \texttt{/home/administrator/zabbixHostsScripts} (con alcune eccezioni) e tutte le esecuzioni sono svolte nell'ambiente
 virtualizzato \texttt{venv} della stessa directory.
 
-\subsection{Associazione host name e IDpalo}
+\subsection{Associazione dei metadati agli host}
+Esistono due script python che si occupano di associare i metadati agli host, uno per l'associazione dei dati attinetni al singolo host proveniente dal file Excel degli asset e l'altro per l'associazione dei dati relativi alle coordinate geografiche del palo identficato con il proprio ID.
+%DA CONTROLLARE come citare i termini del glossario
+In entrambi i casi vengono estratti gli host dal sistema zabbix attraverso la libreria pyzabbix e le API JSON-RPC di Zabbix alla sua base. Gli host vengono confrontati con i dati presenti nei file Excel. Se ci sono incongruenze, gli host vengono aggiornati con le informazioni corrette altrimenti non avvengono modifiche agli host che posseggono già i metadati corretti.
 %aggiungere comune e progetto edison
-Per j l'hostname e l'IDpalo allo specifico host, identificato dall'IP, viene utilizzato uno script python: DA CONTROLLARE
-\lstinline|zabbix_HostName_IDpalo_updater.py|.
-Questo script utilizza \texttt{pandas} per la gestione del file .xlsx  che
-contiene il nome dell'host da inserire in "visible Name" e il nome del palo, "IDpalo", da inserire in
-"inventory>location".
-Viene creato un dizionario degli host in Zabbix, comparati tramite IP con le informazioni presenti
-in Excel e l'host viene aggiornato solo se c'è incongruenza.
+% Per associare l'hostname e l'IDpalo allo specifico host, identificato dall'IP, viene utilizzato uno script python: DA CONTROLLARE
+% \lstinline|zabbix_HostName_IDpalo_updater.py|.
+% Questo script utilizza \texttt{pandas} per la gestione del file .xlsx  che
+% contiene il nome dell'host da inserire in "visible Name" e il nome del palo, "IDpalo", da inserire in
+% "inventory>location".
+% Viene creato un dizionario degli host in Zabbix, comparati tramite IP con le informazioni presenti
+% in Excel e l'host viene aggiornato solo se c'è incongruenza.
 
-Questo script viene eseguito periodicamente ogni oratramite questo comando crontab: %inlineCode formatting
-\begin{lstlisting}[language=Python, caption=setup of periodic execution in Crontab]
+Questi script vengono eseguiti periodicamente ogni ora tramite questi comandi crontab: %inlineCode formatting
+\begin{lstlisting}[language=Python, caption=Setup dell'esecuzione periodica in Crontab]
 0 * * * * /home/administrator/zabbixHostsScripts/venv/bin/python3 /home/administrator/zabbixHostsScripts/zabbix_HostName_IDpalo_updater.py >> /home/administrator/zabbixHostsScripts/cron_log.log 2>&1
+
+10 * * * * /home/administrator/zabbixHostsScripts/venv/bin/python3 /home/administrator/zabbixHostsScripts/zabbix_palo_location_and_info_updater.py >> /home/administrator/zabbixHostsScripts/cron_log.log 2>&1
 \end{lstlisting}
 
-\subsection{Associazione coordinate, indirizzo e tecnologia}
+% \subsection{Associazione coordinate, indirizzo e tecnologia}
 
-Per associare le coordinate, l'indirizzo e la tecnologia a ogni host identificato dall'IDpalo
-viene utilizzato un altro script python: DA CONTROLLARE
-\inlinecode{zabbix_palo_location_and_info_updater.py}.
-Questo script utilizza \texttt{pandas} per la gestione del file xlsx, che
-contiene il nome del palo, "IDpalo", associato alle colonne
-"Tecnologia", "Indirizzo", "Dec. Latitudine" e "Dec. Longitudine" da inserire per ogni host in
-inventory>location nei vari campi: HW architecture, Site address A, Location latitude,
-Location longitude. Le informazioni di "Dec. Latitudine" e "Dec. Longitudine" devono essere aggiornate
-ogni volta che si inseriscono nuovi possibili pali nel sistema monitorato.
-Nello script viene creato un dizionario degli host in Zabbix, comparati tramite IDpalo con le informazioni presenti
-in Excel e l'host viene aggiornato solo se c'è incongruenza.
+% Per associare le coordinate, l'indirizzo e la tecnologia a ogni host identificato dall'IDpalo
+% viene utilizzato un altro script python: DA CONTROLLARE
+% \inlinecode{zabbix_palo_location_and_info_updater.py}.
+% Questo script utilizza \texttt{pandas} per la gestione del file xlsx, che
+% contiene il nome del palo, "IDpalo", associato alle colonne
+% "Tecnologia", "Indirizzo", "Dec. Latitudine" e "Dec. Longitudine" da inserire per ogni host in
+% inventory>location nei vari campi: HW architecture, Site address A, Location latitude,
+% Location longitude. Le informazioni di "Dec. Latitudine" e "Dec. Longitudine" devono essere aggiornate
+% ogni volta che si inseriscono nuovi possibili pali nel sistema monitorato.
+% Nello script viene creato un dizionario degli host in Zabbix, comparati tramite IDpalo con le informazioni presenti
+% in Excel e l'host viene aggiornato solo se c'è incongruenza.
 
-Questo script viene eseguito periodicamente tramite questo comando crontab:
-\begin{lstlisting}[language=Python, caption=crontab configuration per zabbix\_palo\_location\_and\_info\_updater.py]
-19 * * * * /home/administrator/zabbixHostsScripts/venv/bin/python3 /home/administrator/zabbixHostsScripts/zabbix_palo_location_and_info_updater.py >> /home/administrator/zabbixHostsScripts/cron_log.log 2>&1
-\end{lstlisting}
+% Questo script viene eseguito periodicamente tramite questo comando crontab:
+% \begin{lstlisting}[language=Python, caption=crontab configuration per zabbix\_palo\_location\_and\_info\_updater.py]
+% 19 * * * * /home/administrator/zabbixHostsScripts/venv/bin/python3 /home/administrator/zabbixHostsScripts/zabbix_palo_location_and_info_updater.py >> /home/administrator/zabbixHostsScripts/cron_log.log 2>&1
+% \end{lstlisting}
 
 \subsection{Memorizzazione dei messaggi di log}
 Gli script python visti fino a ora generano degli output testuali, che andrebbero nello standard output,
@@ -948,7 +953,7 @@ Al suo interno troviamo:
 I metadati associati agli host in Zabbix, come longitudine e latitudine, vengono utilizzati nativamente dal software GIS(geographic information system) integrato.
 Le coordinate geografiche degli apparati vengono estratte dai campi \texttt{location\_lat} (Latitudine) e \texttt{location\_lon} (Longitudine) dell'inventory degli host.
 All'interno del widget \emph{GeoMap}, nativamente disponibile nelle dashboard di Zabbix grazie allo stumento OpenStreetMap \parencite{OpenStreetMap}, si possono visualizzare gli host su di una cartina, codificati tramite colore per la gravità dei problemi che eventualmente riscontrano. Essi mantangono l'integraaione con il sistema di monitoraggio, quindi un host con un problema visualizzato in rosso sulla mappa permette di risalire al suo nome e caratteristice e, se risolto, diventa verde in tempo reale.
-DA CONTROLLARE LE FOTO
+%DA CONTROLLARE LE FOTO
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{figures/MapWithProblems.png} % Inserire il path corretto
@@ -958,8 +963,8 @@ DA CONTROLLARE LE FOTO
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{figures/MapCloseUp.png} % Inserire il path corretto
-    \caption{GIS integrato in Zabbix}
-    \label{fig:GIS_Zabbix}
+    \caption{GIS integrato in Zabbix - dettaglio di un'area}
+    \label{fig:GIS_Zabbix_dettaglio}
 \end{figure}
 % \section{Integrazione GIS: Estrazione coordinate tramite Excel e visualizzazione in Zabbix}
 
