@@ -54,5 +54,5 @@
 \contentsline {section}{\numberline {6.2}Limiti del sistema e sviluppi futuri}{36}{section.6.2}%
 \contentsline {section}{\numberline {6.3}Valutazione Personale}{36}{section.6.3}%
 \contentsline {chapter}{Glossario}{37}{section.6.3}%
-\contentsline {chapter}{Bibliografia}{46}{chapter*.9}%
-\contentsline {chapter}{Ringraziamenti}{47}{chapter*.10}%
+\contentsline {chapter}{Bibliografia}{39}{chapter*.9}%
+\contentsline {chapter}{Ringraziamenti}{40}{chapter*.10}%

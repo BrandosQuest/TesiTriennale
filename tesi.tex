@@ -364,7 +364,7 @@ Requisiti:
     % Tra le graffe metti il percorso.
     % TRUCCO PRO: Puoi anche omettere ".pdf" scrivendo solo {figures/SystemArchSchema...}, LaTeX troverà il file automaticamente!
     %\caption{Architettura concettuale del sistema di monitoraggio smart city e flussi di comunicazione.}
-    \caption{Caption Example}
+    \caption{Schema a blocchi come astrazione del sistema}
     % La didascalia che apparirà sotto l'immagine. Scrivi sempre una didascalia descrittiva in una tesi.
     \label{fig:SystemArchSchema}
     % Il "segnalibro" invisibile. Ti permette di citare l'immagine nel testo scrivendo: "Come visibile in Figura \ref{fig:SystemArchSchema}...".
@@ -415,7 +415,7 @@ Per orchestrare i flussi di dati e i vari script, il progetto ha sfruttato inten
 
 Il secondo strumento impiegato  è \textbf{Systemd}, ovvero il programma che gestisce i servizi del sistema operativo. Per garantire che lo script Python in ascolto sulle telecamere fosse sempre in funzione, è stato trasformato in un servizio di sistema (demone). Systemd lo avvia automaticamente all'accensione del server e lo riavvia in totale autonomia a seguito di eventuali errori imprevisti o cadute di rete o spegnimenti improvvisi.
 
-Infine, è stata affrontata la gestione dello spazio su disco. Un'sistema sempre attivo genera continuamente righe di log; tuttavia, se lasciate accumulare, questi file saturerebbero la memoria. Per prevenire questo rischio, è stato configurato \textbf{Logrotate}. Questa utility di sistema ogni settimana intercetta i file di log, li comprime per ridurne il peso e li archivia.
+Infine, è stata affrontata la gestione dello spazio su disco. Un sistema sempre attivo genera continuamente righe di log; tuttavia, se lasciate accumulare, questi file saturerebbero la memoria. Per prevenire questo rischio, è stato configurato \textbf{Logrotate}. Questa utility di sistema ogni settimana intercetta i file di log, li comprime per ridurne il peso e li archivia.
 
 % Immagini e Tabelle:
 
@@ -449,7 +449,7 @@ Infine, è stata affrontata la gestione dello spazio su disco. Un'sistema sempre
 %DA CONTROLLARE FINO A FINE SECTION
 Il funzionamento della piattaforma si basa su due metodi per l'acquisizione dei dati. Il primo è il \textit{polling}, in cui il server interroga ciclicamente i dispositivi tramite protocolli standard come ICMP o SNMP. Il secondo è il \textit{trapping}, che consente a sistemi esterni di spingere i dati verso il server Zabbix. Di questo secondo metodo si avvale l'utility a riga di comando \texttt{Zabbix Sender}.
 
-Per questo progetto è stata adottata la versione 7.0 LTS (Long Term Support) \parencite{zabbix7_Docs}. La scelta di una release LTS garantisce stabilità. Utili dap punto di vista delle attività del tirocinio questa versione include:
+Per questo progetto è stata adottata la versione 7.0 LTS (Long Term Support) \parencite{zabbix7_Docs}. La scelta di una release LTS garantisce stabilità. Utili dal punto di vista delle attività del tirocinio questa versione include:
 
 \begin{itemize}
     \item \textbf{API JSON-RPC:} l’API web di Zabbix, un'interfaccia strutturata che consente il controllo totale della piattaforma via codice. È stata utilizzata per popolare l'Host Inventory leggendo i metadati dal CMDB aziendale.
@@ -565,7 +565,7 @@ La gestione dei pacchetti e delle librerie è stata effettuata tramite \texttt{p
     \label{fig:interacta_logo}
 \end{figure}
 
-Interacta è la piattaforma cloud aziendale adottata da Secoval per la gestione dei processi azindali e del ticketing\parencite{Interacta}. Nel contesto operativo del progetto, questo software rappresenta il punto di arrivo degli allarmi: quando un apparato sul territorio subisce un guasto o perde la connettività, gli operatori assegnati alla manutenzione ricevono una segnalazione sulla piattaforma Interacta, che potrà tradursi in un intervento di cui ogni step sarà tracciato secondo gli usi aziendali. Durante il tirocinio uno degli obiettivi è stato quello di realizzare l'integrazione, collegando Zabbix direttamente alle API REST di Interacta affinché i ticket di guasto (e i rispettivi rientri) vengano aperti e eventualmente risolti dall'infrastruttura software, rendendo più facile agli operatori la gestione dei guasti.
+Interacta è la piattaforma cloud aziendale adottata da Secoval per la gestione dei processi aziendali e del ticketing\parencite{Interacta}. Nel contesto operativo del progetto, questo software rappresenta il punto di arrivo degli allarmi: quando un apparato sul territorio subisce un guasto o perde la connettività, gli operatori assegnati alla manutenzione ricevono una segnalazione sulla piattaforma Interacta, che potrà tradursi in un intervento di cui ogni step sarà tracciato secondo gli usi aziendali. Durante il tirocinio uno degli obiettivi è stato quello di realizzare l'integrazione, collegando Zabbix direttamente alle API REST di Interacta affinché i ticket di guasto (e i rispettivi rientri) vengano aperti e eventualmente risolti dall'infrastruttura software, rendendo più facile agli operatori la gestione dei guasti.
 
 
 %DA CONTROLLARE DOVE METTERE QUESTA ROBA
@@ -759,7 +759,7 @@ Nel contesto della smart city gestita da Secoval Srl, il Source of Truth riguard
 
 
 \subsection{Struttura e ruolo dei due file Excel aziendali}
-Secoval, e le aziende che hanno implemetato fisicamente la rete di telecamere sul territorio, gestiscono la conoscenza della propria infrastruttura smart city attraverso \textbf{due file Excel principali}:
+Secoval, e le aziende che hanno implementato fisicamente la rete di telecamere sul territorio, gestiscono la conoscenza della propria infrastruttura smart city attraverso \textbf{due file Excel principali}:
 \begin{enumerate}
     \item \textbf{Excel degli asset:} questo documento contiene l'inventario di tutti gli asset hardware (come le telecamere, prevalentemente di marca Hikvision) installati nei vari comuni aderenti al progetto. Per ogni apparato sono mappati dati cruciali quali l'indirizzo IP statico, l'univoco \texttt{ID Host} aziendale, il costruttore, il modello e, dato fondamentale per la manutenzione fisica, l'\texttt{ID Palo} che identifica e da un nome alla posizione di istallazione del dispositivo.
           \begin{table}[ht]
@@ -812,7 +812,7 @@ Purtroppo Zabbix non è in grado di leggere nativamente un file \texttt{.xlsx} p
 Il sistema opera secondo una logica basata su due fasi:
 \begin{itemize}
     \item \textbf{Estrazione:} lo script Python, sfruttando  librerie dedicate alla manipolazione dati come \texttt{pandas}, accede ai percorsi assoluti dei due file Excel e ne legge le righe. Questa operazione permette di estrarre la conoscenza testuale racchiusa nelle celle (indirizzi IP, ID Palo, denominazione del Comune). I dati grezzi estratti dagli Excel vengono mappati all'interno di dizionari Python. %In questa fase, ad esempio, lo script associa a ciascun dispositivo il corretto \textbf{Host Group} di Zabbix (es. separando logicamente il gruppo \texttt{SmartCity/TVCC} dal gruppo \texttt{SmartCity/Connectivity}) e determina quale \textbf{Template} di monitoraggio applicare in base al modello hardware rilevato nel foglio elettronico.
-    \item \textbf{Caricamento via API):} i dati vengono inseriti all'interno del server Zabbix. Lo script Python effettua chiamate al server zabbix attraverso la libreria \emph{pyzabbix}. Il sistema esegue un confronto tra le informazioni presenti negli Excel e quelle su Zabbix; per esempio se l'IP di un asset non è presente su Zabbix allora non viene forzata la sua creazione, se invece è presente si associano ad esso i relativi metadati(nome, ID palo, coordinate...).
+    \item \textbf{Caricamento via API:} i dati vengono inseriti all'interno del server Zabbix. Lo script Python effettua chiamate al server zabbix attraverso la libreria \emph{pyzabbix}. Il sistema esegue un confronto tra le informazioni presenti negli Excel e quelle su Zabbix; per esempio se l'IP di un asset non è presente su Zabbix allora non viene forzata la sua creazione, se invece è presente si associano ad esso i relativi metadati(nome, ID palo, coordinate...).
 \end{itemize}
 
 % Citazioni e Bibliografia:
@@ -1310,7 +1310,7 @@ Nel report sono presenti:
 Essendo le telecamere di sicurezza oggetto del progetto abbastanza moderne, è stato valutato come utile l'utilizzo dei sistemi di
 intelligenza artificiale implementati a bordo per rilevare diversi tipi di eventi che accadono alla singola telecamera.
 Tra questi troviamo la possibilità di rilevare l'oscuramento dell'obiettivo della telecamera.
-Per sfruttare questa funzionalità è stato creato un sistema di raccoglimento e invio automatico di avvisi, integrandolo con Zabbix.
+Per sfruttare questa funzionalità è stato creato un sistema di raccolta e invio automatico di avvisi, integrandolo con Zabbix.
 
 \section{Logiche di Polling vs Trapping in Zabbix}
 
@@ -1397,7 +1397,7 @@ Se l'utilizzo rimane per il tamperdetection e solo saltuariamente per motiondete
 % %     Immagini: Un diagramma architetturale a blocchi (creato da te, ad esempio con Draw.io o Lucidchart) che mostra visivamente il server Zabbix al centro. A sinistra il server "tira" i dati con il ping (Polling), a destra le telecamere "spingono" i dati verso il server (Trapping).
 \section{Configurazioni tamperdetection e motiondetection hikvision tramite XML}
 
-Le telecamere Hikvision espongono una API HTTP che permette di modificare le configurazioni e
+Le telecamere Hikvision espongono una API HTTP con autenticazione che permette di modificare le configurazioni e
 le impostazioni della telecamera tramite l'upload di file semi strutturati XML.
 Essi riguardano il setup delle impostazioni e della modalità di comunicazione per 2 eventi: tamperdetection e motiondetection.
 Dopo avere estratto gli IP delle telecamere da Zabbix, lo script python lancia verso ogni telecamera le configurazioni necessarie per abilitare questi eventi.
@@ -1461,8 +1461,8 @@ Questo permette di gestire decine di telecamere contemporaneamente usando un sol
 senza che l'attesa di dati da una telecamera blocchi le altre.
 Lo script apre una connessione HTTP persistente (Stream) verso l'endpoint ISAPI della telecamera (/ISAPI/Event/notification/alertStream).
 In questo canale, la telecamera invia frammenti in formato XML ogni volta che accade qualcosa.
-Lo script legge il flusso riga per riga, isola i blocchi XML significativi(<EventNotificationAlert>) e li analizza in tempo reale.
-Estrae il tipo di evento (eventType) e il suo stato (eventState, se attivo o rientrato).
+Lo script legge il flusso riga per riga, isola i blocchi XML significativi e li analizza in tempo reale.
+Estrae il tipo di evento e il suo stato (se attivo o rientrato).
 Quando viene rilevato un evento valido (es. movimento o telecamera coperta), lo script deve avvisare Zabbix.
 Per farlo lo script esegue un comando di sistema: zabbix\_sender.
 Questo è uno strumento a riga di comando nativo di Zabbix,
@@ -2099,7 +2099,7 @@ L'interazione tra Zabbix e lo script Python avviene tramite il passaggio di argo
 Lo script elabora i parametri ricevuti (tra cui \texttt{\{EVENT.ID\}}, \texttt{\{HOST.NAME\}}, e \texttt{\{TRIGGER.STATUS\}}) e implementa una logica condizionale per il ciclo di vita del ticket:
 \begin{itemize}
     \item \textbf{creazione:} se il \texttt{\{TRIGGER.STATUS\}} è pari a \texttt{PROBLEM}, lo script compila un payload destinato all'endpoint di "richiesta", inserendo nel corpo del messaggio i dettagli dell'host, l'ID Palo e la natura del guasto. L'\texttt{\{EVENT.ID\}} generato da Zabbix viene salvato all'interno del ticket come chiave univoca di correlazione.
-    \item \textbf{chiusura:} se il \texttt{\{TRIGGER.STATUS\}} passa a \texttt{RESOLVED}, lo script compila un payload destinato all'endpoint di "chiusura", inserendo nel corpo del messaggio solo l'\texttt{\{EVENT.ID\}} in modo che la piattaforma cloud di Interacta possa identidicare il ticketil cui stato deve passare a "Chiuso/Risolto".
+    \item \textbf{chiusura:} se il \texttt{\{TRIGGER.STATUS\}} passa a \texttt{RESOLVED}, lo script compila un payload destinato all'endpoint di "chiusura", inserendo nel corpo del messaggio solo l'\texttt{\{EVENT.ID\}} in modo che la piattaforma cloud di Interacta possa identificare il ticket il cui stato deve passare a "Chiuso/Risolto".
 \end{itemize}
 
 \begin{lstlisting}[language=Python, caption={Snippet Python per la apertura o chiusura di un ticket}]
@@ -2474,7 +2474,7 @@ Dal punto di vista implementativo manca un sistema di controllo di versione per 
 Inoltre non è presente un sistema di manuntenzione dell'ambiente Python.
 Le librerie installate non sono tracciate attraverso un file standard \textit{equirements.txt} sono indicato solamente nella documentazione da me redatta e fornita a Secoval.
 
-Il sistema è privo una sezione di trubleshooting: nella documentazione appena citata sono presenti i fixes più comuni a cui mi sono rivolto durante l'implementazione e che pensavo potessero esser utili in futuro. Al momento non è stata fatta una analisi dei tool e delle procedure necessarie in caso di guasti al sistema.
+Il sistema è privo una sezione di troubleshooting: nella documentazione appena citata sono presenti i fixes più comuni a cui mi sono rivolto durante l'implementazione e che pensavo potessero esser utili in futuro. Al momento non è stata fatta una analisi dei tool e delle procedure necessarie in caso di guasti al sistema.
 
 
 
@@ -2532,7 +2532,7 @@ Il passaggio dallo studio universitario alla pratica in azienda mi ha posto di f
 
 Ho toccato con mano come l'eterogeneità di questi sistemi renda molto complesso orchestrare il monitoraggio e richieda ad ogni passaggio dei compromessi tecnici e implementativi.
 
-Inoltre, il dialogo con il personale di Interacta, riguardo gli endpoint necessari per il corretto funzionamento del sistema di ticketing, è stato istruttivo. Ho realizzato come la creazione di sistemi, anche software, sia per la maggior parte discussione e confronto. La parte di interazione tra persone è molto importante per l'efficacie realizzazione di qualsiasi progetto.
+Inoltre, il dialogo con il personale di Interacta, riguardo gli endpoint necessari per il corretto funzionamento del sistema di ticketing, è stato istruttivo. Ho realizzato come la creazione di sistemi, anche software, sia per la maggior parte discussione e confronto. La parte di interazione tra persone è molto importante per l'efficace realizzazione di qualsiasi progetto.
 
 Infine, sono stato soddisfatto di aver condotto in prima persona l'intero ciclo di vita di questo progetto. È gratificante aver rilasciato un sistema attualmente in produzione e utile nell'immediato. Questa esperienza aziendale mi lascia con una consapevolezza delle mie capacità e sicuramente meno timore nell'affrontare nuove sfide.
 
@@ -2604,165 +2604,165 @@ i protocolli e i concetti architetturali utilizzati nel progetto.
 
 
 
-%Cap 1
-\begin{description}
-    \item[AP (Access Point):] Dispositivo di rete che permette la connessione wireless.
-    \item[TVCC (TeleVisione a Circuito Chiuso):] Sistema di telecamere per la videosorveglianza.
-    \item[Crontab:] Demone di sistema nei sistemi operativi Unix-like utilizzato per pianificare l'esecuzione di comandi.
-    \item[Flapping:] Cambiamento frequente e rapido di stato di un host o di una porta di rete, sintomo di instabilità.
+% %Cap 1
+% \begin{description}
+%     \item[AP (Access Point):] Dispositivo di rete che permette la connessione wireless.
+%     \item[TVCC (TeleVisione a Circuito Chiuso):] Sistema di telecamere per la videosorveglianza.
+%     \item[Crontab:] Demone di sistema nei sistemi operativi Unix-like utilizzato per pianificare l'esecuzione di comandi.
+%     \item[Flapping:] Cambiamento frequente e rapido di stato di un host o di una porta di rete, sintomo di instabilità.
 
-    \item[JWT (JSON Web Token):] Standard aperto (RFC 7519) per la trasmissione sicura di informazioni tra due parti come oggetto JSON.
-    \item[Logrotate:] Utility di sistema Linux progettata per amministrare sistemi che generano un gran numero di file di log, ruotandoli e comprimendoli.
-    \item[MTTR (Mean Time To Resolution):] Metrica che indica il tempo medio necessario per riparare un guasto e ripristinare il servizio.
-    \item[RSA / RS512:] Algoritmo di crittografia asimmetrica; RS512 utilizza RSA combinato con la funzione di hash SHA-512 per la firma digitale.
-    \item[Zabbix Sender:] Utility a riga di comando utilizzata per inviare dati di performance o eventi direttamente al server Zabbix in modo asincrono.
-\end{description}
-\vspace{2cm}
-%Cap 2
-\begin{description}
-    \item[ACL (Access Control List):] Meccanismo di sicurezza dei file system che definisce permessi granulari di accesso a file e directory per utenti e gruppi specifici.
-    \item[Bash / Shell:] Interprete di comandi testuale predefinito nei sistemi operativi Unix e Linux, utilizzato per interagire con il sistema operativo ed eseguire script.
-    \item[Batch Processing:] Esecuzione di programmi o task in background in modo automatizzato e sequenziale, senza necessità di interazione diretta con l'utente.
-    \item[Crittografia Asimmetrica:] Sistema crittografico che impiega una coppia di chiavi distinte (una pubblica per la verifica/cifratura e una privata per la firma/decifratura) per garantire la sicurezza delle comunicazioni.
-    \item[Demone (Daemon):] Programma eseguito costantemente in background nei sistemi operativi Unix-like, progettato per fornire servizi di sistema o applicativi (come l'ascolto di eventi di rete).
-    \item[Dependency Hell:] Situazione problematica in cui l'installazione o l'esecuzione di un software fallisce a causa di conflitti complessi tra le versioni delle librerie (dipendenze) necessarie.
-    \item[JSON-RPC:] Protocollo di chiamata di procedura remota (RPC) leggero e strutturato che utilizza il formato JSON per codificare le richieste e le risposte tra un client e un server.
-    \item[JWT (JSON Web Token):] Standard aperto (RFC 7519) che definisce un modo compatto e autonomo per trasmettere in modo sicuro informazioni tra le parti come oggetto JSON, validato tramite firma digitale.
-    \item[Middleware:] Componente software che funge da intermediario tra applicazioni, sistemi operativi o protocolli di rete diversi, traducendo e facilitando lo scambio di dati.
-    \item[Parsing:] Processo di analisi sintattica di una sequenza di dati (come un file di testo, XML, JSON o PDF) per estrarne informazioni strutturate e metadati.
-    \item[Payload e Claim:] In un token JWT, il \textit{payload} è il corpo centrale del messaggio. I \textit{claim} sono le singole dichiarazioni o informazioni (es. scadenza, emittente) codificate al suo interno.
-    \item[Polling:] Meccanismo di monitoraggio di tipo attivo in cui un server centrale interroga ciclicamente e a intervalli regolari i dispositivi periferici per ottenerne lo stato operativo.
-    \item[Regex (Espressioni Regolari):] Sequenza di caratteri che definisce un pattern formale di ricerca, ampiamente utilizzata per trovare, validare o manipolare stringhe di testo complesse.
-    \item[REST (Representational State Transfer):] Stile architetturale per lo sviluppo di API nei sistemi distribuiti, basato sull'utilizzo standardizzato dei metodi del protocollo HTTP (GET, POST, PUT, DELETE).
-    \item[RSA / SHA-512:] RSA è uno standard di crittografia asimmetrica; SHA-512 è una funzione di hash crittografico. La loro combinazione (algoritmo RS512) genera firme digitali ad altissima sicurezza.
-    \item[Symlink (Link Simbolico):] File speciale all'interno del file system di un sistema operativo che contiene un riferimento diretto a un altro file o directory, funzionando come un alias.
-    \item[Trapping:] Meccanismo di monitoraggio di tipo passivo, o asincrono, in cui è il dispositivo periferico (o uno script) a inviare proattivamente i dati di allarme al server centrale al verificarsi di un evento.
-    \item[Trigger / Action:] Nella terminologia Zabbix, il \textit{trigger} è l'espressione logica che valuta un parametro per stabilire se si è in uno stato di allarme; l'\textit{action} è l'operazione reattiva automatica scatenata (es. invio mail, avvio script).
-    \item[Venv (Virtual Environment):] Modulo nativo di Python utilizzato per creare ambienti di esecuzione isolati, garantendo che i pacchetti installati per un progetto non interferiscano con le librerie di sistema.
-    \item[Zabbix Sender:] Utility a riga di comando che permette di inviare valori e parametri prestazionali direttamente all'istanza Zabbix Server in modalità asincrona e tramite connessione TCP.
-\end{description}
-\vspace{2cm}
-%Cap 3
-\begin{description}
-    \item[CMDB (Configuration Management Database):] Database utilizzato dalle organizzazioni IT per archiviare e gestire in modo centralizzato le informazioni sui Configuration Item (CI), ovvero gli asset hardware, software e le loro relazioni all'interno dell'infrastruttura aziendale.
+%     \item[JWT (JSON Web Token):] Standard aperto (RFC 7519) per la trasmissione sicura di informazioni tra due parti come oggetto JSON.
+%     \item[Logrotate:] Utility di sistema Linux progettata per amministrare sistemi che generano un gran numero di file di log, ruotandoli e comprimendoli.
+%     \item[MTTR (Mean Time To Resolution):] Metrica che indica il tempo medio necessario per riparare un guasto e ripristinare il servizio.
+%     \item[RSA / RS512:] Algoritmo di crittografia asimmetrica; RS512 utilizza RSA combinato con la funzione di hash SHA-512 per la firma digitale.
+%     \item[Zabbix Sender:] Utility a riga di comando utilizzata per inviare dati di performance o eventi direttamente al server Zabbix in modo asincrono.
+% \end{description}
+% \vspace{2cm}
+% %Cap 2
+% \begin{description}
+%     \item[ACL (Access Control List):] Meccanismo di sicurezza dei file system che definisce permessi granulari di accesso a file e directory per utenti e gruppi specifici.
+%     \item[Bash / Shell:] Interprete di comandi testuale predefinito nei sistemi operativi Unix e Linux, utilizzato per interagire con il sistema operativo ed eseguire script.
+%     \item[Batch Processing:] Esecuzione di programmi o task in background in modo automatizzato e sequenziale, senza necessità di interazione diretta con l'utente.
+%     \item[Crittografia Asimmetrica:] Sistema crittografico che impiega una coppia di chiavi distinte (una pubblica per la verifica/cifratura e una privata per la firma/decifratura) per garantire la sicurezza delle comunicazioni.
+%     \item[Demone (Daemon):] Programma eseguito costantemente in background nei sistemi operativi Unix-like, progettato per fornire servizi di sistema o applicativi (come l'ascolto di eventi di rete).
+%     \item[Dependency Hell:] Situazione problematica in cui l'installazione o l'esecuzione di un software fallisce a causa di conflitti complessi tra le versioni delle librerie (dipendenze) necessarie.
+%     \item[JSON-RPC:] Protocollo di chiamata di procedura remota (RPC) leggero e strutturato che utilizza il formato JSON per codificare le richieste e le risposte tra un client e un server.
+%     \item[JWT (JSON Web Token):] Standard aperto (RFC 7519) che definisce un modo compatto e autonomo per trasmettere in modo sicuro informazioni tra le parti come oggetto JSON, validato tramite firma digitale.
+%     \item[Middleware:] Componente software che funge da intermediario tra applicazioni, sistemi operativi o protocolli di rete diversi, traducendo e facilitando lo scambio di dati.
+%     \item[Parsing:] Processo di analisi sintattica di una sequenza di dati (come un file di testo, XML, JSON o PDF) per estrarne informazioni strutturate e metadati.
+%     \item[Payload e Claim:] In un token JWT, il \textit{payload} è il corpo centrale del messaggio. I \textit{claim} sono le singole dichiarazioni o informazioni (es. scadenza, emittente) codificate al suo interno.
+%     \item[Polling:] Meccanismo di monitoraggio di tipo attivo in cui un server centrale interroga ciclicamente e a intervalli regolari i dispositivi periferici per ottenerne lo stato operativo.
+%     \item[Regex (Espressioni Regolari):] Sequenza di caratteri che definisce un pattern formale di ricerca, ampiamente utilizzata per trovare, validare o manipolare stringhe di testo complesse.
+%     \item[REST (Representational State Transfer):] Stile architetturale per lo sviluppo di API nei sistemi distribuiti, basato sull'utilizzo standardizzato dei metodi del protocollo HTTP (GET, POST, PUT, DELETE).
+%     \item[RSA / SHA-512:] RSA è uno standard di crittografia asimmetrica; SHA-512 è una funzione di hash crittografico. La loro combinazione (algoritmo RS512) genera firme digitali ad altissima sicurezza.
+%     \item[Symlink (Link Simbolico):] File speciale all'interno del file system di un sistema operativo che contiene un riferimento diretto a un altro file o directory, funzionando come un alias.
+%     \item[Trapping:] Meccanismo di monitoraggio di tipo passivo, o asincrono, in cui è il dispositivo periferico (o uno script) a inviare proattivamente i dati di allarme al server centrale al verificarsi di un evento.
+%     \item[Trigger / Action:] Nella terminologia Zabbix, il \textit{trigger} è l'espressione logica che valuta un parametro per stabilire se si è in uno stato di allarme; l'\textit{action} è l'operazione reattiva automatica scatenata (es. invio mail, avvio script).
+%     \item[Venv (Virtual Environment):] Modulo nativo di Python utilizzato per creare ambienti di esecuzione isolati, garantendo che i pacchetti installati per un progetto non interferiscano con le librerie di sistema.
+%     \item[Zabbix Sender:] Utility a riga di comando che permette di inviare valori e parametri prestazionali direttamente all'istanza Zabbix Server in modalità asincrona e tramite connessione TCP.
+% \end{description}
+% \vspace{2cm}
+% %Cap 3
+% \begin{description}
+%     \item[CMDB (Configuration Management Database):] Database utilizzato dalle organizzazioni IT per archiviare e gestire in modo centralizzato le informazioni sui Configuration Item (CI), ovvero gli asset hardware, software e le loro relazioni all'interno dell'infrastruttura aziendale.
 
-    \item[Data Cleansing (Pulizia dei Dati):] Processo informatico di identificazione e correzione (o rimozione) di dati corrotti, inaccurati o non formattati correttamente all'interno di un dataset, fondamentale prima dell'importazione in sistemi di produzione.
+%     \item[Data Cleansing (Pulizia dei Dati):] Processo informatico di identificazione e correzione (o rimozione) di dati corrotti, inaccurati o non formattati correttamente all'interno di un dataset, fondamentale prima dell'importazione in sistemi di produzione.
 
-    \item[ETL (Extract, Transform, Load):] Processo di integrazione dei dati che prevede l'estrazione da una o più sorgenti (es. file Excel), la loro trasformazione (normalizzazione e pulizia) e il successivo caricamento in un sistema di destinazione (es. server Zabbix).
+%     \item[ETL (Extract, Transform, Load):] Processo di integrazione dei dati che prevede l'estrazione da una o più sorgenti (es. file Excel), la loro trasformazione (normalizzazione e pulizia) e il successivo caricamento in un sistema di destinazione (es. server Zabbix).
 
-    \item[Idempotenza:] Proprietà di alcune operazioni informatiche (o chiamate API) che garantisce che l'esecuzione ripetuta della stessa operazione produca il medesimo risultato della prima esecuzione, senza alterare ulteriormente lo stato del sistema o creare duplicati.
+%     \item[Idempotenza:] Proprietà di alcune operazioni informatiche (o chiamate API) che garantisce che l'esecuzione ripetuta della stessa operazione produca il medesimo risultato della prima esecuzione, senza alterare ulteriormente lo stato del sistema o creare duplicati.
 
-    \item[Infrastructure as Code (IaC):] Pratica di gestione e provisioning dell'infrastruttura informatica attraverso file di definizione o script eseguibili in modo automatico, sostituendo le configurazioni manuali e interattive sui sistemi operativi o sui pannelli web.
+%     \item[Infrastructure as Code (IaC):] Pratica di gestione e provisioning dell'infrastruttura informatica attraverso file di definizione o script eseguibili in modo automatico, sostituendo le configurazioni manuali e interattive sui sistemi operativi o sui pannelli web.
 
-    \item[JSON-RPC:] Protocollo di Remote Procedure Call (RPC) leggero e senza stato, che utilizza il formato JSON (JavaScript Object Notation) per codificare le chiamate tra client e server. È lo standard utilizzato nativamente dalle API di Zabbix.
+%     \item[JSON-RPC:] Protocollo di Remote Procedure Call (RPC) leggero e senza stato, che utilizza il formato JSON (JavaScript Object Notation) per codificare le chiamate tra client e server. È lo standard utilizzato nativamente dalle API di Zabbix.
 
-    \item[RBAC (Role-Based Access Control):] Metodo di regolamentazione dell'accesso a reti e sistemi informatici basato sui ruoli assegnati ai singoli utenti all'interno di un'organizzazione, limitando i privilegi allo stretto necessario (Principio del Minimo Privilegio).
+%     \item[RBAC (Role-Based Access Control):] Metodo di regolamentazione dell'accesso a reti e sistemi informatici basato sui ruoli assegnati ai singoli utenti all'interno di un'organizzazione, limitando i privilegi allo stretto necessario (Principio del Minimo Privilegio).
 
-    \item[Single Source of Truth (SSoT):] Principio di architettura dei sistemi informativi in cui ogni elemento di dato è archiviato e gestito in un unico luogo primario. Qualsiasi altra applicazione che necessita di quel dato lo interroga dalla sorgente autoritativa, evitando disallineamenti.
+%     \item[Single Source of Truth (SSoT):] Principio di architettura dei sistemi informativi in cui ogni elemento di dato è archiviato e gestito in un unico luogo primario. Qualsiasi altra applicazione che necessita di quel dato lo interroga dalla sorgente autoritativa, evitando disallineamenti.
 
-    \item[Virtual Environment (venv):] Strumento nativo di Python utilizzato per creare ambienti di esecuzione isolati. Permette di installare librerie e dipendenze specifiche per un singolo progetto senza interferire con l'installazione globale del sistema operativo.
+%     \item[Virtual Environment (venv):] Strumento nativo di Python utilizzato per creare ambienti di esecuzione isolati. Permette di installare librerie e dipendenze specifiche per un singolo progetto senza interferire con l'installazione globale del sistema operativo.
 
-    \item[WGS 84 (World Geodetic System 1984):] Sistema di coordinate geografiche standardizzato a livello globale, utilizzato come base di riferimento per il sistema di posizionamento satellitare GPS e per le applicazioni di mappatura digitale (GIS).
-\end{description}
-\vspace{2cm}
-%Cap 4
-\begin{description}
-    \item[Polling:]
-    \item[Chunked Transfer Encoding:] Meccanismo di trasferimento dati del protocollo HTTP che consente a un server di inviare informazioni in modo continuo (stream) dividendo il payload in una serie di blocchi o frammenti (chunk).
+%     \item[WGS 84 (World Geodetic System 1984):] Sistema di coordinate geografiche standardizzato a livello globale, utilizzato come base di riferimento per il sistema di posizionamento satellitare GPS e per le applicazioni di mappatura digitale (GIS).
+% \end{description}
+% \vspace{2cm}
+% %Cap 4
+% \begin{description}
+%     \item[Polling:]
+%     \item[Chunked Transfer Encoding:] Meccanismo di trasferimento dati del protocollo HTTP che consente a un server di inviare informazioni in modo continuo (stream) dividendo il payload in una serie di blocchi o frammenti (chunk).
 
-    \item[Event-Driven Architecture:] Paradigma architetturale del software in cui il flusso del programma è determinato dal verificarsi di eventi esterni (come l'output di un sensore o l'azione di un utente) piuttosto che da un'esecuzione lineare.
+%     \item[Event-Driven Architecture:] Paradigma architetturale del software in cui il flusso del programma è determinato dal verificarsi di eventi esterni (come l'output di un sensore o l'azione di un utente) piuttosto che da un'esecuzione lineare.
 
-    \item[Fire-and-forget:] Pattern di comunicazione asincrona in cui il mittente invia un messaggio o lancia un processo senza attendere alcun acknowledgement (conferma di ricezione) o risposta da parte del destinatario.
+%     \item[Fire-and-forget:] Pattern di comunicazione asincrona in cui il mittente invia un messaggio o lancia un processo senza attendere alcun acknowledgement (conferma di ricezione) o risposta da parte del destinatario.
 
-    \item[I/O Non Bloccante (Asincrono):] Modalità di gestione delle operazioni di input/output in cui un programma, o un processo, può avviare un task e continuare immediatamente la propria esecuzione senza rimanere in attesa del completamento del task stesso.
+%     \item[I/O Non Bloccante (Asincrono):] Modalità di gestione delle operazioni di input/output in cui un programma, o un processo, può avviare un task e continuare immediatamente la propria esecuzione senza rimanere in attesa del completamento del task stesso.
 
-    \item[Isteresi (Hysteresis):] In ambito di monitoraggio, tecnica logica che prevede l'utilizzo di soglie differenti per l'attivazione e la disattivazione di un allarme, utile a prevenire ripetute e inutili transizioni di stato (Flapping) in presenza di metriche instabili.
+%     \item[Isteresi (Hysteresis):] In ambito di monitoraggio, tecnica logica che prevede l'utilizzo di soglie differenti per l'attivazione e la disattivazione di un allarme, utile a prevenire ripetute e inutili transizioni di stato (Flapping) in presenza di metriche instabili.
 
-    \item[Macro (Zabbix):] Variabili dinamiche di sistema (\textit{built-in} o \textit{user-defined}) impiegate in Zabbix per inserire riferimenti a entità logiche, eventi, trigger o proprietà degli host, che vengono risolte a runtime con i valori reali.
+%     \item[Macro (Zabbix):] Variabili dinamiche di sistema (\textit{built-in} o \textit{user-defined}) impiegate in Zabbix per inserire riferimenti a entità logiche, eventi, trigger o proprietà degli host, che vengono risolte a runtime con i valori reali.
 
-    \item[Processo Figlio (Subprocess):] Nei sistemi operativi, un processo informatico creato e avviato da un altro processo preesistente, denominato "padre". Viene spesso utilizzato per delegare l'esecuzione di specifici comandi esterni.
+%     \item[Processo Figlio (Subprocess):] Nei sistemi operativi, un processo informatico creato e avviato da un altro processo preesistente, denominato "padre". Viene spesso utilizzato per delegare l'esecuzione di specifici comandi esterni.
 
-    \item[Push / Pull:] Paradigmi architetturali di trasferimento dati sulla rete. Nel modello \textit{Pull} (es. Polling), il client interroga ciclicamente il server per ottenere i dati. Nel modello \textit{Push} (es. Trapping), il nodo sorgente invia i dati proattivamente appena si verifica l'evento.
+%     \item[Push / Pull:] Paradigmi architetturali di trasferimento dati sulla rete. Nel modello \textit{Pull} (es. Polling), il client interroga ciclicamente il server per ottenere i dati. Nel modello \textit{Push} (es. Trapping), il nodo sorgente invia i dati proattivamente appena si verifica l'evento.
 
-    \item[XML (eXtensible Markup Language):] Linguaggio di marcatura flessibile e standardizzato, basato su tag testuali, ampiamente utilizzato per definire strutture gerarchiche di dati e per lo scambio di informazioni tra sistemi eterogenei.
-\end{description}
-\vspace{2cm}
-%Cap 5
-\begin{description}
-    \item[Base64URL:] Variante della codifica Base64, progettata specificamente per essere "URL-safe" e sicura per i nomi dei file, sostituendo i caratteri `+` e `/` (problematici nelle URL) con `-` e `\_`, e rimuovendo i caratteri di padding `=`.
+%     \item[XML (eXtensible Markup Language):] Linguaggio di marcatura flessibile e standardizzato, basato su tag testuali, ampiamente utilizzato per definire strutture gerarchiche di dati e per lo scambio di informazioni tra sistemi eterogenei.
+% \end{description}
+% \vspace{2cm}
+% %Cap 5
+% \begin{description}
+%     \item[Base64URL:] Variante della codifica Base64, progettata specificamente per essere "URL-safe" e sicura per i nomi dei file, sostituendo i caratteri `+` e `/` (problematici nelle URL) con `-` e `\_`, e rimuovendo i caratteri di padding `=`.
 
-    \item[CWD (Current Working Directory):] In un sistema operativo, è la directory (o cartella) in cui un processo o un utente sta attualmente operando. Gli script eseguiti in background spesso hanno una CWD imprevedibile, rendendo necessario l'uso di percorsi assoluti.
+%     \item[CWD (Current Working Directory):] In un sistema operativo, è la directory (o cartella) in cui un processo o un utente sta attualmente operando. Gli script eseguiti in background spesso hanno una CWD imprevedibile, rendendo necessario l'uso di percorsi assoluti.
 
-    \item[Headless (Esecuzione):] Termine utilizzato per descrivere software, processi o script eseguiti in sistemi privi di interfaccia utente grafica (GUI) o di un terminale interattivo connesso, rendendo invisibile l'output standard (stdout).
+%     \item[Headless (Esecuzione):] Termine utilizzato per descrivere software, processi o script eseguiti in sistemi privi di interfaccia utente grafica (GUI) o di un terminale interattivo connesso, rendendo invisibile l'output standard (stdout).
 
-    \item[M2M (Machine-to-Machine):] Paradigma di comunicazione in cui dispositivi hardware, sensori o server scambiano informazioni e avviano azioni in modo autonomo e bidirezionale, senza alcun intervento manuale umano.
+%     \item[M2M (Machine-to-Machine):] Paradigma di comunicazione in cui dispositivi hardware, sensori o server scambiano informazioni e avviano azioni in modo autonomo e bidirezionale, senza alcun intervento manuale umano.
 
-    \item[Man-in-the-Middle (MitM):] Tipologia di attacco informatico in cui un'entità malevola intercetta, e potenzialmente altera, la comunicazione segreta tra due parti (es. tra il server Zabbix e il cloud Interacta) all'insaputa di queste ultime.
+%     \item[Man-in-the-Middle (MitM):] Tipologia di attacco informatico in cui un'entità malevola intercetta, e potenzialmente altera, la comunicazione segreta tra due parti (es. tra il server Zabbix e il cloud Interacta) all'insaputa di queste ultime.
 
-    \item[Non-ripudio (Non-repudiation):] Concetto fondamentale della sicurezza informatica (e crittografia) che garantisce che il mittente di un messaggio non possa negare in un secondo momento di averlo inviato, solitamente ottenuto tramite l'uso di firme digitali asimmetriche.
+%     \item[Non-ripudio (Non-repudiation):] Concetto fondamentale della sicurezza informatica (e crittografia) che garantisce che il mittente di un messaggio non possa negare in un secondo momento di averlo inviato, solitamente ottenuto tramite l'uso di firme digitali asimmetriche.
 
-    \item[PEM (Privacy Enhanced Mail):] Formato di file standard ampiamente utilizzato per memorizzare chiavi crittografiche e certificati digitali (es. chiavi RSA private). Si presenta come file di testo codificato in Base64 e racchiuso tra delimitatori come `-----BEGIN PRIVATE KEY-----`.
+%     \item[PEM (Privacy Enhanced Mail):] Formato di file standard ampiamente utilizzato per memorizzare chiavi crittografiche e certificati digitali (es. chiavi RSA private). Si presenta come file di testo codificato in Base64 e racchiuso tra delimitatori come `-----BEGIN PRIVATE KEY-----`.
 
-    \item[Replay Attack:] Attacco di rete in cui una trasmissione di dati valida e sicura (come un token di autenticazione) viene intercettata fraudolentemente o registrata, per poi essere ritrasmessa dall'attaccante per ottenere accessi non autorizzati.
+%     \item[Replay Attack:] Attacco di rete in cui una trasmissione di dati valida e sicura (come un token di autenticazione) viene intercettata fraudolentemente o registrata, per poi essere ritrasmessa dall'attaccante per ottenere accessi non autorizzati.
 
-    \item[Silent Failure:] Fallimento di un programma o di un sistema che si verifica senza generare messaggi di errore evidenti, notifiche o log, rendendo il *troubleshooting* e la diagnosi estremamente complessi per l'amministratore di sistema.
+%     \item[Silent Failure:] Fallimento di un programma o di un sistema che si verifica senza generare messaggi di errore evidenti, notifiche o log, rendendo il *troubleshooting* e la diagnosi estremamente complessi per l'amministratore di sistema.
 
-    \item[Zero-Touch (Provisioning/Automation):] Metodologia di gestione dei sistemi IT in cui i dispositivi o le procedure (come l'apertura di un ticket) vengono configurati ed eseguiti automaticamente dal sistema centrale, riducendo a zero la necessità di inserimento dati manuale da parte di un operatore.
-\end{description}
-\vspace{2cm}
-%Cap 6
-\begin{description}
-    \item[CSV (Comma-Separated Values):] Formato testuale aperto (RFC 4180) utilizzato per l'importazione ed esportazione di dati in forma tabellare. Ogni riga rappresenta un record e i campi sono separati da un delimitatore (spesso la virgola o il punto e virgola).
+%     \item[Zero-Touch (Provisioning/Automation):] Metodologia di gestione dei sistemi IT in cui i dispositivi o le procedure (come l'apertura di un ticket) vengono configurati ed eseguiti automaticamente dal sistema centrale, riducendo a zero la necessità di inserimento dati manuale da parte di un operatore.
+% \end{description}
+% \vspace{2cm}
+% %Cap 6
+% \begin{description}
+%     \item[CSV (Comma-Separated Values):] Formato testuale aperto (RFC 4180) utilizzato per l'importazione ed esportazione di dati in forma tabellare. Ogni riga rappresenta un record e i campi sono separati da un delimitatore (spesso la virgola o il punto e virgola).
 
-    \item[DataFrame:] Struttura dati bidimensionale, mutabile e potenzialmente eterogenea, fornita dalla libreria Python \texttt{pandas}. Rappresenta il formato standard per la manipolazione, il filtraggio e l'analisi di dati tabulari.
+%     \item[DataFrame:] Struttura dati bidimensionale, mutabile e potenzialmente eterogenea, fornita dalla libreria Python \texttt{pandas}. Rappresenta il formato standard per la manipolazione, il filtraggio e l'analisi di dati tabulari.
 
-    \item[Decoupling (Disaccoppiamento):] Principio di ingegneria del software e dei sistemi per cui due o più componenti vengono progettati per operare in modo indipendente l'uno dall'altro. Rende il sistema più resiliente e facile da manutenere.
+%     \item[Decoupling (Disaccoppiamento):] Principio di ingegneria del software e dei sistemi per cui due o più componenti vengono progettati per operare in modo indipendente l'uno dall'altro. Rende il sistema più resiliente e facile da manutenere.
 
-    \item[Flat File:] Un database a "file piatto", ovvero un file di testo semplice (come un log o un CSV) che memorizza i dati senza relazioni strutturali complesse, a differenza dei database relazionali (SQL).
+%     \item[Flat File:] Un database a "file piatto", ovvero un file di testo semplice (come un log o un CSV) che memorizza i dati senza relazioni strutturali complesse, a differenza dei database relazionali (SQL).
 
-    \item[ITIL (Information Technology Infrastructure Library):] Insieme di best practice internazionalmente riconosciute per la gestione dei servizi IT (IT Service Management), focalizzato sull'allineamento dei servizi informatici con le esigenze di business aziendali.
+%     \item[ITIL (Information Technology Infrastructure Library):] Insieme di best practice internazionalmente riconosciute per la gestione dei servizi IT (IT Service Management), focalizzato sull'allineamento dei servizi informatici con le esigenze di business aziendali.
 
-    \item[KPI (Key Performance Indicator):] Indicatore chiave di prestazione. È una metrica quantificabile utilizzata per valutare l'efficienza e l'efficacia con cui un'azienda (o un sistema IT) sta raggiungendo i propri obiettivi operativi strategici.
+%     \item[KPI (Key Performance Indicator):] Indicatore chiave di prestazione. È una metrica quantificabile utilizzata per valutare l'efficienza e l'efficacia con cui un'azienda (o un sistema IT) sta raggiungendo i propri obiettivi operativi strategici.
 
-    \item[MIME (Multipurpose Internet Mail Extensions):] Standard internet (RFC 2045) che estende il formato dei messaggi di posta elettronica per supportare testi con codifiche diverse dall'ASCII, allegati (file, immagini) e contenuti multi-parte (es. email in HTML).
+%     \item[MIME (Multipurpose Internet Mail Extensions):] Standard internet (RFC 2045) che estende il formato dei messaggi di posta elettronica per supportare testi con codifiche diverse dall'ASCII, allegati (file, immagini) e contenuti multi-parte (es. email in HTML).
 
-    \item[MTTR (Mean Time To Resolution):] Tempo medio di risoluzione. Metrica fondamentale nell'Incident Management che calcola il tempo medio impiegato per riparare un guasto e ripristinare la piena funzionalità di un servizio.
+%     \item[MTTR (Mean Time To Resolution):] Tempo medio di risoluzione. Metrica fondamentale nell'Incident Management che calcola il tempo medio impiegato per riparare un guasto e ripristinare la piena funzionalità di un servizio.
 
-    \item[NOC (Network Operations Center):] Struttura centralizzata da cui gli amministratori di rete supervisionano, monitorano e mantengono operativa l'infrastruttura di telecomunicazioni di un'organizzazione (es. i tecnici Secoval).
+%     \item[NOC (Network Operations Center):] Struttura centralizzata da cui gli amministratori di rete supervisionano, monitorano e mantengono operativa l'infrastruttura di telecomunicazioni di un'organizzazione (es. i tecnici Secoval).
 
-    \item[Overhead:] In informatica, indica le risorse accessorie di calcolo (tempo di CPU, memoria, banda di rete) richieste per compiere un'operazione, che non contribuiscono direttamente al risultato finale dell'applicazione.
+%     \item[Overhead:] In informatica, indica le risorse accessorie di calcolo (tempo di CPU, memoria, banda di rete) richieste per compiere un'operazione, che non contribuiscono direttamente al risultato finale dell'applicazione.
 
-    \item[SLA (Service Level Agreement):] Accordo sul Livello di Servizio. Contratto (o patto interno) tra un fornitore di servizi IT e i propri clienti che definisce formalmente il livello di prestazione atteso (es. uptime del 99.9\%, MTTR inferiore a 4 ore).
+%     \item[SLA (Service Level Agreement):] Accordo sul Livello di Servizio. Contratto (o patto interno) tra un fornitore di servizi IT e i propri clienti che definisce formalmente il livello di prestazione atteso (es. uptime del 99.9\%, MTTR inferiore a 4 ore).
 
-    \item[SMTP (Simple Mail Transfer Protocol):] Protocollo standard di Internet (RFC 5321) impiegato per la trasmissione e l'instradamento di messaggi di posta elettronica tra server.
+%     \item[SMTP (Simple Mail Transfer Protocol):] Protocollo standard di Internet (RFC 5321) impiegato per la trasmissione e l'instradamento di messaggi di posta elettronica tra server.
 
-    \item[Troubleshooting:] Processo logico e sistematico di ricerca, identificazione e risoluzione delle cause profonde di un problema all'interno di un sistema informatico o di una rete.
-\end{description}
-\vspace{2cm}
-%Cap 7
-\begin{description}
-    \item[Asyncio / Coroutine:] Modulo nativo di Python per la scrittura di codice concorrente e asincrono single-thread. Le \textit{coroutine} sono speciali funzioni che possono mettere in pausa la propria esecuzione (ad esempio in attesa di una risposta di rete) per restituire il controllo al ciclo principale (\textit{event loop}), senza bloccare il programma.
+%     \item[Troubleshooting:] Processo logico e sistematico di ricerca, identificazione e risoluzione delle cause profonde di un problema all'interno di un sistema informatico o di una rete.
+% \end{description}
+% \vspace{2cm}
+% %Cap 7
+% \begin{description}
+%     \item[Asyncio / Coroutine:] Modulo nativo di Python per la scrittura di codice concorrente e asincrono single-thread. Le \textit{coroutine} sono speciali funzioni che possono mettere in pausa la propria esecuzione (ad esempio in attesa di una risposta di rete) per restituire il controllo al ciclo principale (\textit{event loop}), senza bloccare il programma.
 
-    \item[Context Switching:] Operazione computazionalmente dispendiosa attraverso la quale il sistema operativo salva lo stato del processo o thread attualmente in esecuzione per caricare e avviare quello di un altro processo (come nel caso dell'avvio continuo di script Bash tramite subprocess).
+%     \item[Context Switching:] Operazione computazionalmente dispendiosa attraverso la quale il sistema operativo salva lo stato del processo o thread attualmente in esecuzione per caricare e avviare quello di un altro processo (come nel caso dell'avvio continuo di script Bash tramite subprocess).
 
-    \item[Debito Tecnico (Technical Debt):] Metafora dello sviluppo software che indica il costo implicito e il lavoro extra che si renderà necessario in futuro a causa di scelte implementative rapide o provvisorie adottate nel presente per rispettare scadenze stringenti.
+%     \item[Debito Tecnico (Technical Debt):] Metafora dello sviluppo software che indica il costo implicito e il lavoro extra che si renderà necessario in futuro a causa di scelte implementative rapide o provvisorie adottate nel presente per rispettare scadenze stringenti.
 
-    \item[Disaster Recovery:] Insieme di policy, procedure e strumenti tecnologici atti a garantire il ripristino dell'infrastruttura IT e dei dati vitali di un'azienda a seguito di eventi catastrofici, guasti hardware critici o attacchi informatici.
+%     \item[Disaster Recovery:] Insieme di policy, procedure e strumenti tecnologici atti a garantire il ripristino dell'infrastruttura IT e dei dati vitali di un'azienda a seguito di eventi catastrofici, guasti hardware critici o attacchi informatici.
 
-    \item[Exponential Backoff:] Algoritmo di gestione degli errori di rete in base al quale un client, a seguito di una richiesta fallita (es. server irraggiungibile), riprova a connettersi aumentando il tempo di attesa in modo esponenziale tra un tentativo e l'altro, per non sovraccaricare ulteriormente il server in difficoltà.
+%     \item[Exponential Backoff:] Algoritmo di gestione degli errori di rete in base al quale un client, a seguito di una richiesta fallita (es. server irraggiungibile), riprova a connettersi aumentando il tempo di attesa in modo esponenziale tra un tentativo e l'altro, per non sovraccaricare ulteriormente il server in difficoltà.
 
-    \item[Git / Version Control System (VCS):] Sistema software progettato per tenere traccia delle modifiche apportate ai file (in particolare codice sorgente) nel tempo, permettendo di ripristinare versioni precedenti, collaborare in team e gestire le release in modo strutturato.
+%     \item[Git / Version Control System (VCS):] Sistema software progettato per tenere traccia delle modifiche apportate ai file (in particolare codice sorgente) nel tempo, permettendo di ripristinare versioni precedenti, collaborare in team e gestire le release in modo strutturato.
 
-    \item[Hardcoding (Codifica fissa):] Pratica di sviluppo, generalmente considerata una cattiva abitudine (anti-pattern), che consiste nell'inserire dati variabili (come password, percorsi di file o indirizzi IP) direttamente nel codice sorgente anziché ricavarli da file di configurazione esterni.
+%     \item[Hardcoding (Codifica fissa):] Pratica di sviluppo, generalmente considerata una cattiva abitudine (anti-pattern), che consiste nell'inserire dati variabili (come password, percorsi di file o indirizzi IP) direttamente nel codice sorgente anziché ricavarli da file di configurazione esterni.
 
-    \item[HashiCorp Vault:] Strumento software enterprise per la gestione sicura, la conservazione e il controllo degli accessi a segreti, certificati, password e token crittografici utilizzati all'interno di infrastrutture IT moderne.
+%     \item[HashiCorp Vault:] Strumento software enterprise per la gestione sicura, la conservazione e il controllo degli accessi a segreti, certificati, password e token crittografici utilizzati all'interno di infrastrutture IT moderne.
 
-    \item[IoT (Internet of Things):] Rete di oggetti fisici ("cose") dotati di sensori, software e altre tecnologie allo scopo di connettersi e scambiare dati con altri dispositivi e sistemi su Internet (es. sensori ambientali smart city).
+%     \item[IoT (Internet of Things):] Rete di oggetti fisici ("cose") dotati di sensori, software e altre tecnologie allo scopo di connettersi e scambiare dati con altri dispositivi e sistemi su Internet (es. sensori ambientali smart city).
 
-    \item[Resilienza (Resilience):] In ingegneria informatica, la capacità di un sistema, un'architettura o una rete di resistere a condizioni anomale, assorbire guasti hardware o software imprevisti e continuare a fornire un livello di servizio accettabile senza interruzioni totali.
+%     \item[Resilienza (Resilience):] In ingegneria informatica, la capacità di un sistema, un'architettura o una rete di resistere a condizioni anomale, assorbire guasti hardware o software imprevisti e continuare a fornire un livello di servizio accettabile senza interruzioni totali.
 
-    \item[Site Reliability Engineering (SRE):] Disciplina ingegneristica introdotta da Google che applica i principi dello sviluppo software alla gestione delle operazioni IT, con l'obiettivo di creare sistemi software ultra-scalabili, stabili e altamente affidabili.
-\end{description}
+%     \item[Site Reliability Engineering (SRE):] Disciplina ingegneristica introdotta da Google che applica i principi dello sviluppo software alla gestione delle operazioni IT, con l'obiettivo di creare sistemi software ultra-scalabili, stabili e altamente affidabili.
+% \end{description}
 
 % \begin{description}
 %     \item[ACL (Access Control List):] Meccanismo di sicurezza dei file system che definisce permessi granulari di accesso a file e directory per utenti e gruppi specifici.
