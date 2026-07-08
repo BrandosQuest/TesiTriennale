@@ -21,6 +21,10 @@
 \usepackage{float}
 \usepackage{pdfpages}
 \usepackage{listings}
+\usepackage[table]{xcolor}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{makecell}
 
 %alt+Z per fare andare a capo lelinne lunghe
 
@@ -311,7 +315,7 @@ L'infrastruttura monitorata è eterogenea e distribuita sul territorio. I dispos
 Il progetto formativo mira a trasformare l'infrastruttura di rete (videosorveglianza, Wi-Fi pubblico) che serve 31 Comuni in un sistema smart city che possa essere monitorato e possa scalare facilmente, lavorando su tre pilastri:
 \begin{itemize}
     \item Sviluppo e miglioramento del monitoraggio di rete.
-    \item Integrazione degli apparati (telecamere, switch, AP) con la Cartografia GIS per creare uno strumento di gestione georeferenziato(parzialmente raggiunto).
+    \item Integrazione degli apparati (telecamere, switch, AP) con la Cartografia GIS per creare uno strumento di gestione georeferenziato.
     \item Integrazione con la piattaforma cloud di ticketing aziendale Interacta, garantendo la sicurezza delle comunicazioni machine-to-machine.
 \end{itemize}
 \begin{figure}[H]
@@ -1820,49 +1824,64 @@ Lo script elabora i parametri ricevuti (tra cui \texttt{\{EVENT.ID\}}, \texttt{\
     \item \textbf{chiusura:} se il \texttt{\{TRIGGER.STATUS\}} passa a \texttt{RESOLVED}, lo script compila un payload destinato all'endpoint di "chiusura", inserendo nel corpo del messaggio solo l'\texttt{\{EVENT.ID\}} in modo che la piattaforma cloud di Interacta possa identidicare il ticketil cui stato deve passare a "Chiuso/Risolto".
 \end{itemize}
 
-\begin{lstlisting}[language=Python, caption={Estrazione semplificata della gestione parametri e logging nello script Python}]
-import sys
-import logging
-import requests
+\begin{lstlisting}[language=Python, caption={Snippet Python per la apertura o chiusura di un ticket}]
+def manage_ticket(ticket_data):
+    status = ticket_data["status"]
+    event_id = ticket_data["problem_ID"]
+    
+    token = authentication()
 
-# Configurazione del file di log con percorsi assoluti
-LOG_FILE = "/usr/lib/zabbix/alertscripts/interactaCreateOrSolveTicket_log.log"
-logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": f"Bearer {token}"
+    }
 
-def main():
-    try:
-        # Lettura degli argomenti passati dall'Action di Zabbix
-        trigger_status = sys.argv[1] # es. "PROBLEM" o "OK"
-        event_id = sys.argv[2]       # es. "123456"
-        host_name = sys.argv[3]      # es. "TVCC-ComuneA-01"
+    # apertura di un ticket
+    if status == "PROBLEM":
+        url = f"{API_BASE}/extensions/SmartCity/richiesta" 
 
-        logging.info(f"Ricevuto evento {event_id} per host {host_name} con stato {trigger_status}")
+        payload = {
+            "fields": {
+                "progetto": ticket_data["progetto"],
+                "nome_host": ticket_data["nome_host"],
+                "IP": ticket_data["IP"],
+                "IDpalo": ticket_data["ID_palo"],
+                "tipo_problema": ticket_data["tipo_problema"],
+                "coordinate": f"{ticket_data["coordinate_lat"]} {ticket_data["coordinate_lon"]}",
+                "via": ticket_data["via"],
+                "PROBLEM ID": int(ticket_data["problem_ID"]),
+                "comune": findComuneID(ticket_data["nome_host"])
+            }
+        }
 
-        # Generazione JWT (omessa)
-        # jwt_token = generate_jwt(...)
+        r = requests.post(url, headers=headers, json=payload, allow_redirects=True)
+        r.raise_for_status()
 
-        if trigger_status == "PROBLEM":
-            create_ticket(event_id, host_name, jwt_token)
-        elif trigger_status == "OK":
-            resolve_ticket(event_id, jwt_token)
+    # chiusura di un ticket
+    elif status == "RESOLVED":
+        url = f"{API_BASE}/extensions/SmartCity/richiesta/chiusura" 
+        
+        payload = {
+            "clientUid": int(ticket_data["problem_ID"])
+        }
 
-    except Exception as e:
-        logging.error(f"Errore fatale durante l'esecuzione: {e}")
+        r = requests.post(url, headers=headers, json=payload, allow_redirects=True)
+        r.raise_for_status()
 
-if __name__ == "__main__":
-    main()
+    else:
+        print(f"Unknown status received: {status}. Expected PROBLEM or RESOLVED.")
 \end{lstlisting}
 
-\subsection*{Esecuzione in Background, Logging e Troubleshooting}
-Una delle sfide ingegneristiche maggiori nell'implementazione di Custom AlertScripts in Zabbix è la gestione del contesto di esecuzione. Zabbix esegue lo script in un processo \textit{background} completamente cieco (\textit{headless}), tramite l'utente di sistema \texttt{zabbix}. In caso di errore (es. un'eccezione Python, un timeout di rete o un token JWT malformato), l'output non viene mostrato su alcun terminale e il fallimento risulta invisibile (\textit{silent failure}).
 
-Per rendere il sistema affidabile e mantenibile (\textit{troubleshooting}), è stato sviluppato un sistema di tracciamento rigoroso:
-\begin{enumerate}
-    \item \textbf{Percorsi Assoluti:} Poiché la directory di lavoro corrente (CWD) del processo di Zabbix non è prevedibile, all'interno dello script Python è stato obbligatorio dichiarare esclusivamente percorsi assoluti (es. per il caricamento delle chiavi RSA e per i file di log) per evitare errori bloccanti di \texttt{FileNotFound}.
-    \item \textbf{File di Log Dedicato:} Tutte le transazioni HTTP, inclusi i codici di risposta di Interacta (es. HTTP 200 OK, HTTP 500 Server Error) e le eventuali eccezioni, vengono scritte in append nel file \texttt{interactaCreateOrSolveTicket\_log.log}.
-    \item \textbf{Logrotate:} Dato l'elevato volume di eventi intercettati nella rete smart city, un file di log non gestito porterebbe rapidamente all'esaurimento dello spazio su disco della macchina virtuale. Per scongiurare questo rischio, è stata definita una direttiva \texttt{Logrotate} di sistema che, settimanalmente, comprime e archivia lo storico, mantenendo un tetto massimo dimensionale (es. 30MB) e applicando correttamente la direttiva \texttt{su zabbix zabbix} per non alterare i permessi di scrittura sul file appena ruotato.
-\end{enumerate}
+% Una delle sfide ingegneristiche maggiori nell'implementazione di Custom AlertScripts in Zabbix è la gestione del contesto di esecuzione. Zabbix esegue lo script in un processo \textit{background} completamente cieco (\textit{headless}), tramite l'utente di sistema \texttt{zabbix}. In caso di errore (es. un'eccezione Python, un timeout di rete o un token JWT malformato), l'output non viene mostrato su alcun terminale e il fallimento risulta invisibile (\textit{silent failure}).
+
+% Per rendere il sistema affidabile e mantenibile (\textit{troubleshooting}), è stato sviluppato un sistema di tracciamento rigoroso:
+% \begin{enumerate}
+%     \item \textbf{Percorsi Assoluti:} Poiché la directory di lavoro corrente (CWD) del processo di Zabbix non è prevedibile, all'interno dello script Python è stato obbligatorio dichiarare esclusivamente percorsi assoluti (es. per il caricamento delle chiavi RSA e per i file di log) per evitare errori bloccanti di \texttt{FileNotFound}.
+%     \item \textbf{File di Log Dedicato:} Tutte le transazioni HTTP, inclusi i codici di risposta di Interacta (es. HTTP 200 OK, HTTP 500 Server Error) e le eventuali eccezioni, vengono scritte in append nel file \texttt{interactaCreateOrSolveTicket\_log.log}.
+%     \item \textbf{Logrotate:} Dato l'elevato volume di eventi intercettati nella rete smart city, un file di log non gestito porterebbe rapidamente all'esaurimento dello spazio su disco della macchina virtuale. Per scongiurare questo rischio, è stata definita una direttiva \texttt{Logrotate} di sistema che, settimanalmente, comprime e archivia lo storico, mantenendo un tetto massimo dimensionale (es. 30MB) e applicando correttamente la direttiva \texttt{su zabbix zabbix} per non alterare i permessi di scrittura sul file appena ruotato.
+% \end{enumerate}
 
 % Citazioni e Bibliografia:
 % Scientifiche: Testi sui Sistemi Operativi (es. Silberschatz) per citare i concetti di processi in background, stream di input/output standard (stdout, stderr) e gerarchia del file system (permessi Unix/Linux).
@@ -2098,17 +2117,49 @@ Grazie a questa ingegnerizzazione della reportistica e della manutenzione log, i
 % CAPITOLO 7: CONCLUSIONI
 % ====================================================================
 \chapter{Conclusioni}
-\section{Raggiungimento degli Obiettivi}
+In questo capitolo vengono presentate le conclusioni del progetto, evidenziando i risultati ottenuti, il livello di soddisfacimento dei requisiti
+iniziali e le principali considerazioni maturate durante l'esperienza di
+sviluppo.
 
-Il progetto di stage ha perseguito e completato con successo l'obiettivo primario delineato nel patto formativo: la trasformazione dell'infrastruttura di rete periferica (videosorveglianza, access point pubblici e nodi LTE) in un ecosistema smart city integrato, automatizzato e centralizzato. La migrazione tecnologica dal precedente sistema statico (PRTG) alla piattaforma open-source Zabbix 7.0 ha permesso di superare le criticità legate all'inserimento manuale degli host e alla latenza nella rilevazione dei guasti.
+\section{Raggiungimento degli obiettivi}
 
-Analizzando i requisiti funzionali stabiliti in fase di analisi, è possibile confermare il pieno raggiungimento dei seguenti traguardi ingegneristici:
+Durante lo svolgimento del progetto di stage sono stati completati tutti gli obiettivi stabiliti nella fase di analisi dei requisiti. L'introduzione del sistema di monitoraggio dell'infrastruttura di rete preesistente è entrata in produzione durante gli ultimi giorni della mia permanenza in Secoval. Questo mi ha dato l'opportunità di vedere i primi frutti del mio lavoro ed anche affinare il sistema per essere più adatto all'utilizzo reale.
 
-\begin{itemize}
-    \item \textbf{Automazione dell'Inventario e Integrazione GIS:} L'inserimento dei dispositivi non richiede più operazioni manuali. Lo script Python sviluppato è in grado di interrogare il CMDB aziendale (Excel) e di automatizzare il provisioning tramite le API JSON-RPC di Zabbix. Parallelamente, l'obiettivo di mappare la rete sul territorio è stato raggiunto sviluppando un modulo per l'estrazione delle coordinate GPS dalle relazioni in formato PDF, popolando automaticamente la Geomap del sistema.
-    \item \textbf{Monitoraggio Proattivo degli Eventi (L7):} Si è passati con successo da un monitoraggio passivo di livello 3 (ICMP Ping) a un controllo applicativo in tempo reale. Il middleware Python in ascolto sugli stream ISAPI delle telecamere Hikvision garantisce ora l'intercettazione istantanea di eventi critici come il \textit{Video Tampering}.
-    \item \textbf{Orchestrazione e Ticketing "Zero-Touch":} L'integrazione con la piattaforma cloud aziendale Interacta è pienamente operativa. L'implementazione di un'architettura Server-to-Server basata su token crittografici JWT (RS512) garantisce l'apertura e la risoluzione automatica e sicura dei ticket, azzerando il carico di lavoro manuale per gli operatori della centrale operativa.
-\end{itemize}
+%tabella
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.8} % Aumenta l'altezza delle celle per maggiore leggibilità
+    \setlength{\arrayrulewidth}{1pt}  % Spessore dei bordi simile all'immagine
+
+    % tabularx con larghezza pari al testo.
+    % La colonna X adatta la larghezza automaticamente e va a capo.
+    % >{\raggedright\arraybackslash}X allinea il testo a sinistra nelle colonne larghe.
+    \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{4cm}|c|>{\raggedright\arraybackslash}X|}
+        \hline
+        \rowcolor{gray!20}
+        \multicolumn{1}{|c|}{\textbf{Obiettivo}}                            & \textbf{Valutazione}   & \multicolumn{1}{c|}{\textbf{Commento}}                                                                                              \\
+        \hline
+        Sviluppo e miglioramento del monitoraggio di rete                   & Raggiunto              & Transizione verso un'architettura automatizzata e centralizzata basata su Zabbix 7.0, configurata per scalare facilmente in futuro. \\
+        \hline
+        \rowcolor{gray!20}
+        Integrazione degli apparati con Cartografia GIS                     & \makecell{Parzialmente                                                                                                                                       \\ raggiunto} & Lo strumento di gestione e monitoraggio georeferenziato è operativo ma all'interno del sistema Zabbix senza avere l'opportunità di un integrazione con programmi più avanzati come QGIS utilizzati in azienda. \\
+        \hline
+        Integrazione con la piattaforma cloud ticketing aziendale Interacta & Raggiunto              & Implementati script Python per gestire in sicurezza l'apertura e chiusura automatica dei ticket in modalità server-to-server..      \\
+        \hline
+    \end{tabularx}
+
+    \caption{Riepilogo dei requisiti soddisfatti}
+    \label{tab:valutazione_obiettivi}
+\end{table}
+
+
+% Analizzando i requisiti funzionali stabiliti in fase di analisi, è possibile confermare il pieno raggiungimento dei seguenti traguardi ingegneristici:
+
+% \begin{itemize}
+%     \item \textbf{Automazione dell'Inventario e Integrazione GIS:} L'inserimento dei dispositivi non richiede più operazioni manuali. Lo script Python sviluppato è in grado di interrogare il CMDB aziendale (Excel) e di automatizzare il provisioning tramite le API JSON-RPC di Zabbix. Parallelamente, l'obiettivo di mappare la rete sul territorio è stato raggiunto sviluppando un modulo per l'estrazione delle coordinate GPS dalle relazioni in formato PDF, popolando automaticamente la Geomap del sistema.
+%     \item \textbf{Monitoraggio Proattivo degli Eventi (L7):} Si è passati con successo da un monitoraggio passivo di livello 3 (ICMP Ping) a un controllo applicativo in tempo reale. Il middleware Python in ascolto sugli stream ISAPI delle telecamere Hikvision garantisce ora l'intercettazione istantanea di eventi critici come il \textit{Video Tampering}.
+%     \item \textbf{Orchestrazione e Ticketing "Zero-Touch":} L'integrazione con la piattaforma cloud aziendale Interacta è pienamente operativa. L'implementazione di un'architettura Server-to-Server basata su token crittografici JWT (RS512) garantisce l'apertura e la risoluzione automatica e sicura dei ticket, azzerando il carico di lavoro manuale per gli operatori della centrale operativa.
+% \end{itemize}
 
 \subsection*{Implementazioni Aggiuntive (Plusvalore del Progetto)}
 Oltre a soddisfare pienamente i requisiti iniziali, il progetto ha introdotto funzionalità analitiche non previste originariamente, spostando il focus dal semplice "monitoraggio" alla "Business Intelligence" applicata alle infrastrutture, un aspetto centrale nel percorso di Ingegneria delle Tecnologie per l'Impresa Digitale (ITID).
