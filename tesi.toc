@@ -24,22 +24,27 @@
 \contentsline {subsection}{\numberline {3.4.1}Associazione dei metadati agli host}{21}{subsection.3.4.1}%
 \contentsline {subsection}{\numberline {3.4.2}Memorizzazione dei messaggi di log}{21}{subsection.3.4.2}%
 \contentsline {section}{\numberline {3.5}Georeferenziazione e GIS integrato in Zabbix}{22}{section.3.5}%
-\contentsline {chapter}{\numberline {4}Rilevamento manomissioni TVCC(ISAPI)}{24}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Logiche di Polling vs Trapping in Zabbix}{24}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Descrizione dell'implementazione}{24}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Configurazioni tamperdetection e motiondetection hikvision tramite XML}{25}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Sviluppo del middleware e ascolto degli stream Hikvision ISAPI}{25}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Implementazione del listener}{26}{subsection.4.4.1}%
-\contentsline {subsubsection}{Items in Zabbix}{26}{section*.10}%
-\contentsline {subsection}{\numberline {4.4.2}Esecuzione continuativa e log}{26}{subsection.4.4.2}%
-\contentsline {chapter}{\numberline {5}Integrazione con il sistema di ticketing Interacta}{28}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Scopo e architettura dell'integrazione}{28}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Generazione e firma del token JWT}{29}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Apertura o chiusura del ticket}{31}{section.5.3}%
-\contentsline {chapter}{\numberline {6}Conclusioni}{33}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Raggiungimento degli obiettivi}{33}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Limiti del sistema e sviluppi futuri}{34}{section.6.2}%
-\contentsline {section}{\numberline {6.3}Valutazione Personale}{34}{section.6.3}%
-\contentsline {chapter}{Glossario}{35}{section.6.3}%
-\contentsline {chapter}{Bibliografia}{44}{chapter*.15}%
-\contentsline {chapter}{Ringraziamenti}{45}{chapter*.16}%
+\contentsline {section}{\numberline {3.6}Reportistica e KPI}{23}{section.3.6}%
+\contentsline {subsection}{\numberline {3.6.1}Esportazione dati evento tramite custom AlertScript}{23}{subsection.3.6.1}%
+\contentsline {subsection}{\numberline {3.6.2}Elaborazione dati e report}{24}{subsection.3.6.2}%
+\contentsline {subsubsection}{Report giornaliero}{24}{section*.11}%
+\contentsline {subsubsection}{Report mensile}{25}{section*.12}%
+\contentsline {chapter}{\numberline {4}Rilevamento manomissioni TVCC(ISAPI)}{26}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Logiche di Polling vs Trapping in Zabbix}{26}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Descrizione dell'implementazione}{26}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Configurazioni tamperdetection e motiondetection hikvision tramite XML}{27}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Sviluppo del middleware e ascolto degli stream Hikvision ISAPI}{27}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Implementazione del listener}{28}{subsection.4.4.1}%
+\contentsline {subsubsection}{Items in Zabbix}{28}{section*.13}%
+\contentsline {subsection}{\numberline {4.4.2}Esecuzione continuativa e log}{28}{subsection.4.4.2}%
+\contentsline {chapter}{\numberline {5}Integrazione con il sistema di ticketing Interacta}{30}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Scopo e architettura dell'integrazione}{30}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Generazione e firma del token JWT}{31}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Apertura o chiusura del ticket}{33}{section.5.3}%
+\contentsline {chapter}{\numberline {6}Conclusioni}{35}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Raggiungimento degli obiettivi}{35}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Limiti del sistema e sviluppi futuri}{36}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Valutazione Personale}{36}{section.6.3}%
+\contentsline {chapter}{Glossario}{37}{section.6.3}%
+\contentsline {chapter}{Bibliografia}{46}{chapter*.18}%
+\contentsline {chapter}{Ringraziamenti}{47}{chapter*.19}%
