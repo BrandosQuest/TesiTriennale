@@ -1406,7 +1406,7 @@ Tutto l'output viene reindirizzato in un file di log gestito da \textbf{Logrotat
 % Inoltre, per prevenire falsi allarmi dovuti a micro-disconnessioni del flusso video, è stata implementata la funzione \texttt{nodata()} all'interno del Trigger. Se il middleware Python smette di inviare dati per un tempo predefinito (es. 5 minuti), il Trigger scatta per segnalare non una manomissione, ma l'irreperibilità del servizio di ascolto stesso.
 
 \subsection*{Trigger actions e integrazione con Interacta}
-Quando un Trigger cambia stato (da \texttt{OK} a \texttt{PROBLEM} o viceversa), entra in gioco il sistema delle  \textbf{Trigger Actions} native. Invece di configurare un'Action per inviare una semplice notifica e-mail, il sistema è statoconfigurato per eseguire un'operazione esecuzione remota di script, puntando al \textit{Custom AlertScript} denominato \\\texttt{interactaCreateOrSolveTicket}.
+Quando un Trigger cambia stato (da \texttt{OK} a \texttt{PROBLEM} o viceversa), entra in gioco il sistema delle  \textbf{Trigger Actions} native. Invece di configurare un'Action per inviare una semplice notifica e-mail, il sistema è statoconfigurato per eseguire un'operazione esecuzione remota di script, puntando al \textit{custom media type: script} denominato \\\texttt{interactaCreateOrSolveTicket}.
 
 La motivazione per utilizzare questo paradigma è la possibilità di iniettare dinamicamente il contesto del guasto all'interno dello script Python. L'Action è configurata per passare allo script degli argomenti tramite le Macro di Zabbix, tra cui:
 \begin{itemize}
@@ -1644,7 +1644,7 @@ La motivazione per utilizzare questo paradigma è la possibilità di iniettare d
 
 L'implementazione di un sistema di monitoraggio rappresenta solo il primo passo verso l'automazione dei processi IT aziendali. In Secoval, rilevare tempestivamente un guasto tramite Zabbix (ad esempio, l'oscuramento di una telecamera o la caduta di un Access Point) è inutile se l'informazione non raggiunge la squadra tecnica incaricata della manutenzione.
 
-Quindi per garantire l'integrazione con il sistema già presente e il tracciamento della gestione e degli interventi fisici
+Quindi per garantire l'integrazione con il sistema già presente e il tracciamento della gestione della manutenzione e degli interventi fisici
 sugli apparati della Smart City,
 si è resa necessaria un'integrazione tra il sistema di monitoraggio Zabbix
 e il portale (IT Service Management) \textbf{Interacta}.
@@ -1654,10 +1654,12 @@ L'obiettivo dell'integrazione è automatizzare l'apertura di un ticket di assist
 nel momento in cui un trigger di Zabbix entra in stato \texttt{PROBLEM},
 e chiuderlo in automatico quando lo stato torna a \texttt{RESOLVED}.
 
-L'architettura si basa su tre pilastri: un'\textbf{autenticazione} \textit{Server-to-Server} verso le API di Interacta tramite Service Account (Service Account Authentication è un metodo che consente ad applicazioni, script o macchine virtuali di verificare in modo sicuro la propria identità e interagire con API o servizi cloud senza intervento umano) e firma crittografica asimmetrica (RSA). Uno \textbf{script Python} (\texttt{interactaCreateTicket.py}) operante in \\\texttt{/usr/lib/zabbix/alertscripts/}, incaricato di elaborare i dati e comunicare con le API di Interacta e un \textbf{Media Type} di tipo "Script" configurato su Zabbix per inoltrare i parametri formattati allo script in tempo reale.
+L'architettura si basa di uno \textbf{script Python} operante in \\\texttt{/usr/lib/zabbix/alertscripts/}, incaricato di elaborare i dati e comunicare con le API di Interacta. I dati necessari vengono inoltrati a esso sotto forma di arguments da un \textbf{Media Type} di tipo "Script" configurato su Zabbix. L'\textbf{autenticazione} \textit{Server-to-Server} verso le API di Interacta viene eseuita tramite Service Account (Service Account Authentication è un metodo che consente ad applicazioni, script o macchine virtuali di verificare in modo sicuro la propria identità e interagire con API o servizi cloud senza intervento umano) e firma crittografica asimmetrica (RSA).
 
 I ticket creati non devono essere generici, ma devono contenere metadati utili per i tecnici sul campo (es. l'indirizzo IP, l'ID dell'Host, l'ID del Palo fisico e la descrizione problema).
 Se il problema rientra autonomamente, Zabbix deve comunicare a Interacta di risolvere il ticket, evitando alle squadre tecniche uscite a vuoto.
+
+%DA CONTROLLARE immagine di un tiket
 
 % \subsection*{Obiettivi e Sfide dell'Integrazione}
 % La costruzione di un ponte comunicativo tra l'infrastruttura di monitoraggio (on-premise) e il sistema di ticketing (in cloud) ha richiesto la definizione di obiettivi rigorosi:
@@ -1669,24 +1671,29 @@ Se il problema rientra autonomamente, Zabbix deve comunicare a Interacta di riso
 
 % Le sfide principali per raggiungere questi obiettivi non sono state unicamente di natura logica, ma soprattutto di natura architetturale e legata alla sicurezza informatica. Il traffico dati, infatti, deve attraversare la rete pubblica per raggiungere il cloud di Interacta, esponendo il sistema a potenziali attacchi (come il \textit{Man-in-the-Middle} o il \textit{Replay Attack}).
 
-\subsection*{Il Cuore dell'Integrazione: Autenticazione Server-to-Server}
+%DA CONTROLLARE tenere gli asterischi per nascondere i sottocapitoli?
+\subsection*{Autenticazione Server-to-Server}
 In un'applicazione web tradizionale, l'autenticazione si basa su interazioni umane (es. inserimento di username e password) e sul mantenimento di una sessione tramite cookie. Nel caso di questo progetto, un server Linux (Zabbix) deve dialogare autonomamente con un altro server (Interacta). Questa modalità \textbf{Server-to-Server}, richiede standard di sicurezza diversi.
 
-Le linee guida di sicurezza di Interacta consigliano l'adozione di un'autenticazione basata su token crittografici, specificamente lo standard \textbf{JSON Web Token (JWT)}.
+La documentazione fornita da Interacta e le linee guida consigliano l'adozione di un'autenticazione basata su token crittografici, specificamente la generazione di una \textit{JWT Assertion}(Json Web Token)
+firmata con algoritmo \textbf{RS512} utilizzando una chiave privata fornita in formato JSON.
 
-Le ragioni che hanno portato alla scelta di questo framework crittografico sono fondamentalmente tre:
-\begin{enumerate}
-    \item \textbf{Assenza di credenziali fisse in transito:} Un'API Key statica, se intercettata, garantisce l'accesso illimitato alle API fino alla sua revoca manuale. L'autenticazione Server-to-Server implementata nel nostro sistema genera un token JWT "usa e getta" per ogni singola chiamata HTTP. Il token ha una durata limitata (tipicamente pochi minuti, impostata tramite il claim \texttt{exp}), rendendolo inutile per un attaccante se rubato dopo la sua scadenza.
-    \item \textbf{Crittografia Asimmetrica e Non-Ripudio:} L'integrazione è stata blindata utilizzando l'algoritmo \textbf{RS512} (RSA combinato con SHA-512). Questo approccio si basa su una coppia di chiavi:
-          \begin{itemize}
-              \item \textit{Chiave Privata:} È custodita esclusivamente e segretamente a bordo del server Zabbix, limitata da permessi Linux rigorosi. Viene utilizzata dallo script Python per \textit{firmare} il payload del token.
-              \item \textit{Chiave Pubblica:} È stata caricata nel portale amministrativo di Interacta in fase di setup.
-          \end{itemize}
-          Quando Interacta riceve la richiesta di apertura di un ticket, utilizza la chiave pubblica per decifrare la firma. Se l'operazione ha successo, il server cloud ha la certezza matematica del \textbf{non-ripudio}: la richiesta non può che essere partita dal nostro server Zabbix, in quanto unico detentore della chiave privata.
-    \item \textbf{Integrità del Dato:} La firma digitale copre l'intero corpo del token (header e payload). Qualsiasi tentativo di alterazione del messaggio durante il transito (es. cambiare l'ID dell'host per aprire ticket falsi) invaliderebbe istantaneamente la firma, portando Interacta a scartare la richiesta con un errore \texttt{401 Unauthorized}.
-\end{enumerate}
+La scelta di questo framework permette di evitare che ci siano \textbf{ credenziali fisse in transito} tramite la generazione di un token JWT "usa e getta" per ogni singolo ticket e singola chiamata HTTPS.
+Inoltre permette di garantire lì'integrità, l'autenticazione e il non ripudio delle richieste HTTPS inviate dal sistema.
 
-L'adozione di questo modello Server-to-Server, oltre a soddisfare i requisiti di compliance e sicurezza aziendale, ha permesso di progettare uno script di integrazione robusto, in cui Zabbix non deve mai preoccuparsi di gestire sessioni o cookie, ma si limita a "firmare" le transazioni solo nel momento esatto in cui un disservizio richiede l'attenzione umana.
+% Le ragioni che hanno portato alla scelta di questo framework crittografico sono fondamentalmente tre:
+% \begin{enumerate}
+%     \item \textbf{Assenza di credenziali fisse in transito:} Un'API Key statica, se intercettata, garantisce l'accesso illimitato alle API fino alla sua revoca manuale. L'autenticazione Server-to-Server implementata nel nostro sistema genera un token JWT "usa e getta" per ogni singola chiamata HTTP. Il token ha una durata limitata (tipicamente pochi minuti, impostata tramite il claim \texttt{exp}), rendendolo inutile per un attaccante se rubato dopo la sua scadenza.
+%     \item \textbf{Crittografia Asimmetrica e Non-Ripudio:} L'integrazione è stata blindata utilizzando l'algoritmo \textbf{RS512} (RSA combinato con SHA-512). Questo approccio si basa su una coppia di chiavi:
+%           \begin{itemize}
+%               \item \textit{Chiave Privata:} È custodita esclusivamente e segretamente a bordo del server Zabbix, limitata da permessi Linux rigorosi. Viene utilizzata dallo script Python per \textit{firmare} il payload del token.
+%               \item \textit{Chiave Pubblica:} È stata caricata nel portale amministrativo di Interacta in fase di setup.
+%           \end{itemize}
+%           Quando Interacta riceve la richiesta di apertura di un ticket, utilizza la chiave pubblica per decifrare la firma. Se l'operazione ha successo, il server cloud ha la certezza matematica del \textbf{non-ripudio}: la richiesta non può che essere partita dal nostro server Zabbix, in quanto unico detentore della chiave privata.
+%     \item \textbf{Integrità del Dato:} La firma digitale copre l'intero corpo del token (header e payload). Qualsiasi tentativo di alterazione del messaggio durante il transito (es. cambiare l'ID dell'host per aprire ticket falsi) invaliderebbe istantaneamente la firma, portando Interacta a scartare la richiesta con un errore \texttt{401 Unauthorized}.
+% \end{enumerate}
+
+% L'adozione di questo modello Server-to-Server, oltre a soddisfare i requisiti di compliance e sicurezza aziendale, ha permesso di progettare uno script di integrazione robusto, in cui Zabbix non deve mai preoccuparsi di gestire sessioni o cookie, ma si limita a "firmare" le transazioni solo nel momento esatto in cui un disservizio richiede l'attenzione umana.
 % Citazioni e Bibliografia:
 
 %     Scientifiche: Testi universitari sulla sicurezza delle reti (es. "Cryptography and Network Security" di W. Stallings) per citare i concetti di Non-ripudio e vulnerabilità nei transiti su reti pubbliche (Man-in-the-Middle). Paper sulle architetture "Zero Trust" e sull'autenticazione Machine-to-Machine (M2M).
@@ -1695,86 +1702,122 @@ L'adozione di questo modello Server-to-Server, oltre a soddisfare i requisiti di
 % Immagini e Tabelle:
 %     Tabelle: Tabella comparativa tra API Key statica e JWT dinamico RS512. Colonne: Metodo, Scadenza (Illimitata vs Pochi minuti), Rischio in caso di intercettazione (Alto vs Nullo/Basso), Complessità implementativa, Garanzia di identità (Non-ripudio).
 %     Immagini: Un diagramma architetturale di rete (L3/L7) che mostri la separazione tra la LAN aziendale protetta (VM Zabbix) e la WAN/Internet pubblica (Interacta Cloud), con un "lucchetto" (icona crittografia) che rappresenta il tunnel logico messo in sicurezza dal token RS512.
-\section{Generazione e firma del token JWT (Algoritmo RS512)}
+\section{Generazione e firma del token JWT}
 
-Il cuore dell'autenticazione verso la piattaforma Interacta si basa sulla costruzione e sulla firma crittografica di un JSON Web Token (JWT). Questo standard (RFC 7519) permette di trasmettere informazioni sotto forma di oggetto JSON in modo sicuro e inequivocabile, eliminando la necessità di memorizzare credenziali fisse a bordo del sistema di monitoraggio.
+% Il cuore dell'autenticazione verso la piattaforma Interacta si basa sulla costruzione e sulla firma crittografica di un JSON Web Token (JWT). Questo standard (RFC 7519) permette di trasmettere informazioni sotto forma di oggetto JSON in modo sicuro e inequivocabile, eliminando la necessità di memorizzare credenziali fisse a bordo del sistema di monitoraggio.
 
 \subsection*{Struttura del Token e Scelta dell'Algoritmo}
 Un JWT standard è composto da tre parti codificate in Base64URL e separate da un punto (\texttt{.}): l'Header, il Payload e la Signature.
-L'Header definisce la tipologia di token e l'algoritmo impiegato. Il Payload contiene i \textit{Claim}, ovvero le asserzioni e le dichiarazioni sull'entità autorizzata (es. l'identificativo del client, l'istante di emissione e il momento di scadenza). Infine, la Signature costituisce la firma digitale, che garantisce l'integrità del dato in transito.
+L'Header definisce la tipologia di token e l'algoritmo impiegato. Il Payload contiene le asserzioni e le dichiarazioni sull'entità autorizzata (es. l'identificativo del client, l'istante di emissione e il momento di scadenza). Infine, la Signature costituisce la firma digitale, che garantisce l'integrità del dato in transito.
 
-Le specifiche di integrazione architetturale dettate da Interacta imponevano un elevato standard di sicurezza, richiedendo l'utilizzo dell'algoritmo \textbf{RS512} per la fase di firma. L'RS512 è un algoritmo asimmetrico che combina la robustezza della crittografia RSA (con chiavi da 2048 bit) e la resistenza alle collisioni della funzione di hash SHA-512.
-A differenza di algoritmi simmetrici come l'HS256 (che utilizzano una singola chiave segreta condivisa tra i due server), l'RS512 prevede l'uso di una coppia di chiavi:
-\begin{itemize}
-    \item Una \textbf{Chiave Privata}, mantenuta segreta a bordo della macchina virtuale Zabbix, utilizzata dal middleware per firmare il token in uscita.
-    \item Una \textbf{Chiave Pubblica}, caricata in precedenza sul pannello amministrativo cloud di Interacta, utilizzata dal provider per decifrare l'hash e verificare l'autenticità del token.
-\end{itemize}
+Le specifiche di integrazione dettate da Interacta imponevano l'utilizzo dell'algoritmo \textbf{RS512} per la fase di firma.
+A differenza di algoritmi simmetrici, l'RS512 prevede l'uso di una coppia di chiavi: una \textbf{chiave privata}, a bordo della macchina virtuale Zabbix, utilizzata dal middleware per firmare il token in uscita, e una \textbf{chiave pubblica}, caricata in precedenza nel cloud di Interacta, utilizzata dal provider per verificare l'autenticità del token.
 
-\subsection*{Implementazione Architetturale in Python}
-L'implementazione del sistema di firma è stata realizzata in linguaggio Python, sfruttando la libreria \texttt{PyJWT} in sinergia con il modulo \texttt{cryptography} per la gestione sicura delle chiavi RSA. Prima di effettuare la richiesta HTTP (POST) per l'apertura o la risoluzione di un ticket, l'AlertScript invoca una funzione dedicata che genera dinamicamente la stringa crittografata.
 
-Per minimizzare la finestra temporale di vulnerabilità a eventuali attacchi di tipo \textit{Replay Attack} (in cui un attaccante intercetta il token e tenta di riutilizzarlo), il payload è stato configurato in modo rigoroso, definendo un tempo di scadenza (\texttt{exp}) estremamente breve, solitamente impostato a 5 minuti dal momento dell'emissione (\texttt{iat}).
+\subsection*{Implementazione in Python}
+L'implementazione del sistema di firma è stata realizzata in linguaggio Python, sfruttando la libreria \texttt{requests} per gli scambi HTTPS in sinergia con il modulo \texttt{cryptography} per la gestione sicura delle chiavi RSA.
+
+Il payload è stato configurato, definendo un tempo di scadenza del token (\texttt{exp}) breve, solitamente impostato a 5 o 10 minuti dal momento dell'emissione (\texttt{iat}).
 
 \begin{lstlisting}[language=Python, caption={Snippet Python per la generazione e firma del JWT con algoritmo RS512}]
-import jwt
-import time
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.backends import default_backend
 
-def generate_interacta_jwt(private_key_path, issuer_id, subject_id):
-    # 1. Caricamento in memoria della chiave privata dal file PEM
-    with open(private_key_path, "rb") as key_file:
-        private_key = serialization.load_pem_private_key(
-            key_file.read(),
-            password=None,
-            backend=default_backend()
+import uuid      
+import jwt        
+import json
+import base64
+import requests
+from datetime import datetime
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives.serialization import load_pem_private_key
+
+
+def authentication():
+    # firma
+    try:
+        now = int(time.time())
+
+        header = {
+            "kid": key_id, 
+            "alg": "RS512"
+        }
+
+        payload = {
+            "jti": str(uuid.uuid4()), # ID: Universally Unique Identifier
+            "aud": "injenia/portal-authenticator", #audience: destinatario del token
+            "iss": str(client_id), # issuer 
+            "iat": now,       # issued at: time
+            "exp": now + 600       # expiry: time
+        }
+
+        # costruzione delle prime due parti del JWT
+        b64_header = b64url_encode(json.dumps(header).encode('utf-8'))
+        b64_payload = b64url_encode(json.dumps(payload).encode('utf-8'))
+
+        # la stringa da firmare
+        signing_input = f"{b64_header}.{b64_payload}".encode('utf-8')
+
+        # firma Crittografica  con RS512
+        private_key_obj = load_pem_private_key(private_key_pem.encode('utf-8'), password=None)
+        signature = private_key_obj.sign(
+            signing_input,
+            padding.PKCS1v15(),
+            hashes.SHA512()
         )
 
-    current_time = int(time.time())
+        # Token finale
+        signed_jwt = f"{b64_header}.{b64_payload}.{b64url_encode(signature)}"
+        
+    # API request
+    try:
 
-    # 2. Definizione del payload strutturato con i Claim obbligatori
-    payload = {
-        "iss": issuer_id,         # Issuer: identificativo di chi emette il token
-        "sub": subject_id,        # Subject: a chi si riferisce il token
-        "iat": current_time,      # Issued At: timestamp di emissione
-        "exp": current_time + 300 # Expiration Time: scadenza fissata a +5 minuti
-    }
-
-    # 3. Generazione e firma del token crittografico
-    encoded_jwt = jwt.encode(payload, private_key, algorithm="RS512")
-    return encoded_jwt
+        auth_url = f"{API_BASE}/core/auth/create-access-token-by-service-account"
+        response = requests.post(
+            auth_url,
+            headers={"Content-Type": "application/json", "Accept": "application/json"},
+            json={"jwtAssertion": signed_jwt}
+        )
+       
+        response.raise_for_status()
+        
+        data = response.json()
+        
+        access_token = data['accessToken']
+        
+        return access_token
 \end{lstlisting}
+\section{Apertura o chiusura del ticket}
+% \subsection*{Ostacoli Architetturali e Testing (Troubleshooting)}
+% La messa in opera di questo sistema crittografico ha richiesto il superamento di alcune sfide e "scogli" ingegneristici non banali.
 
-\subsection*{Ostacoli Architetturali e Testing (Troubleshooting)}
-La messa in opera di questo sistema crittografico ha richiesto il superamento di alcune sfide e "scogli" ingegneristici non banali.
+% Il primo aspetto critico ha riguardato la gestione e la sicurezza della chiave privata a livello di sistema operativo Linux. Affinché il \textit{Custom AlertScript} di Zabbix potesse accedere in lettura al file PEM senza esporlo a vulnerabilità, è stato necessario applicare politiche di gestione dei permessi stringenti, assegnando la proprietà del file esclusivamente all'utente di sistema \texttt{zabbix} (tramite \texttt{chown}) e impostando i permessi di lettura restrittivi (\texttt{chmod 400}). Configurazioni meno rigorose avrebbero comportato rischi critici per l'azienda o, viceversa, avrebbero bloccato l'esecuzione dello script restituendo errori del tipo \textit{Permission Denied}.
 
-Il primo aspetto critico ha riguardato la gestione e la sicurezza della chiave privata a livello di sistema operativo Linux. Affinché il \textit{Custom AlertScript} di Zabbix potesse accedere in lettura al file PEM senza esporlo a vulnerabilità, è stato necessario applicare politiche di gestione dei permessi stringenti, assegnando la proprietà del file esclusivamente all'utente di sistema \texttt{zabbix} (tramite \texttt{chown}) e impostando i permessi di lettura restrittivi (\texttt{chmod 400}). Configurazioni meno rigorose avrebbero comportato rischi critici per l'azienda o, viceversa, avrebbero bloccato l'esecuzione dello script restituendo errori del tipo \textit{Permission Denied}.
+% Un secondo ostacolo particolarmente ingannevole si è verificato durante la prima fase di interfacciamento con le API REST di Interacta. Nonostante la corretta formattazione del payload e la validazione crittografica della firma in ambiente di test locale, i tentativi di comunicazione con l'endpoint restituivano costantemente degli errori bloccanti lato server. In un primo momento, questo comportamento è stato imputato a una potenziale formattazione errata della firma o a una libreria non conforme agli standard Base64URL. Tuttavia, un'attenta analisi dei log di risposta e un confronto diretto con il provider hanno rivelato che l'errore risiedeva in un disservizio temporaneo e in un'anomalia di validazione sul loro backend, e non in un difetto logico dello script Python. Una volta che il servizio in cloud è stato regolarmente sistemato dai loro tecnici, la nostra architettura di autenticazione ha processato le chiamate con successo senza richiedere ulteriori modifiche al codice, confermando la robustezza dell'implementazione sviluppata.
+% % Citazioni e Bibliografia:
 
-Un secondo ostacolo particolarmente ingannevole si è verificato durante la prima fase di interfacciamento con le API REST di Interacta. Nonostante la corretta formattazione del payload e la validazione crittografica della firma in ambiente di test locale, i tentativi di comunicazione con l'endpoint restituivano costantemente degli errori bloccanti lato server. In un primo momento, questo comportamento è stato imputato a una potenziale formattazione errata della firma o a una libreria non conforme agli standard Base64URL. Tuttavia, un'attenta analisi dei log di risposta e un confronto diretto con il provider hanno rivelato che l'errore risiedeva in un disservizio temporaneo e in un'anomalia di validazione sul loro backend, e non in un difetto logico dello script Python. Una volta che il servizio in cloud è stato regolarmente sistemato dai loro tecnici, la nostra architettura di autenticazione ha processato le chiamate con successo senza richiedere ulteriori modifiche al codice, confermando la robustezza dell'implementazione sviluppata.
-% Citazioni e Bibliografia:
+% %     Scientifiche: Manuali di crittografia applicata per descrivere come funziona matematicamente l'hashing (SHA-512) applicato a chiavi asimmetriche (RSA a 2048 bit). Paper sulla mitigazione dei Replay Attack tramite timestamp stretti (exp, iat).
 
-%     Scientifiche: Manuali di crittografia applicata per descrivere come funziona matematicamente l'hashing (SHA-512) applicato a chiavi asimmetriche (RSA a 2048 bit). Paper sulla mitigazione dei Replay Attack tramite timestamp stretti (exp, iat).
+% %     Tecniche: RFC 7519 (Lo standard ufficiale JWT) e RFC 7518 (JSON Web Algorithms, in cui è definito formalmente l'RS512). Documentazione ufficiale delle librerie Python PyJWT e cryptography (in particolare il modulo hazmat.primitives per la lettura dei file PEM).
 
-%     Tecniche: RFC 7519 (Lo standard ufficiale JWT) e RFC 7518 (JSON Web Algorithms, in cui è definito formalmente l'RS512). Documentazione ufficiale delle librerie Python PyJWT e cryptography (in particolare il modulo hazmat.primitives per la lettura dei file PEM).
+% % Immagini e Tabelle:
 
-% Immagini e Tabelle:
+% %     Tabelle: Una tabella riassuntiva dei Claim JWT utilizzati. Colonne: Acronimo (es. iss, exp), Nome completo (Issuer, Expiration Time), Descrizione formale, Valore applicato nel progetto (es. "ID univoco Secoval", "Timestamp attuale + 300 secondi").
 
-%     Tabelle: Una tabella riassuntiva dei Claim JWT utilizzati. Colonne: Acronimo (es. iss, exp), Nome completo (Issuer, Expiration Time), Descrizione formale, Valore applicato nel progetto (es. "ID univoco Secoval", "Timestamp attuale + 300 secondi").
+% %     Immagini: La classica scomposizione visiva a colori di un JSON Web Token. Un'immagine in cui il token lungo cifrato è diviso in tre blocchi (Header rosso, Payload viola, Signature blu) con delle frecce che puntano ai rispettivi oggetti JSON in chiaro e decodificati (Base64URL decode).
+% \section{Sviluppo del Custom AlertScript in Zabbix}
 
-%     Immagini: La classica scomposizione visiva a colori di un JSON Web Token. Un'immagine in cui il token lungo cifrato è diviso in tre blocchi (Header rosso, Payload viola, Signature blu) con delle frecce che puntano ai rispettivi oggetti JSON in chiaro e decodificati (Base64URL decode).
-\section{Sviluppo del Custom AlertScript in Zabbix}
+% Il tassello architetturale che concretizza l'integrazione tra il sistema di monitoraggio e la piattaforma cloud è rappresentato dal motore esecutivo dell'azione: il \textit{Custom AlertScript}. In Zabbix, quando un'Action viene innescata da un Trigger, è possibile demandare la risposta all'esecuzione di uno script personalizzato, a condizione che questo risieda nella directory di sistema protetta, definita dal parametro \texttt{AlertScriptsPath} (di default \texttt{/usr/lib/zabbix/alertscripts/}).
 
-Il tassello architetturale che concretizza l'integrazione tra il sistema di monitoraggio e la piattaforma cloud è rappresentato dal motore esecutivo dell'azione: il \textit{Custom AlertScript}. In Zabbix, quando un'Action viene innescata da un Trigger, è possibile demandare la risposta all'esecuzione di uno script personalizzato, a condizione che questo risieda nella directory di sistema protetta, definita dal parametro \texttt{AlertScriptsPath} (di default \texttt{/usr/lib/zabbix/alertscripts/}).
+% Per questo progetto è stato sviluppato lo script Python \texttt{interactaCreateOrSolveTicket.py}. Il suo compito è fare da "traduttore" e "postino": riceve i dati dell'allarme generato da Zabbix, costruisce il payload JSON, genera il token JWT per l'autenticazione (come descritto nella sezione precedente) e invia la richiesta HTTP POST all'API REST di Interacta.
 
-Per questo progetto è stato sviluppato lo script Python \texttt{interactaCreateOrSolveTicket.py}. Il suo compito è fare da "traduttore" e "postino": riceve i dati dell'allarme generato da Zabbix, costruisce il payload JSON, genera il token JWT per l'autenticazione (come descritto nella sezione precedente) e invia la richiesta HTTP POST all'API REST di Interacta.
+% \subsection*{Gestione dei Parametri in Ingresso e Logica Condizionale}
+Una volta ottenuto l’access token il passaggio successivo è utilizzarlo per autenticarsi nell'apertura o chiusura dei ticket.
+L'interazione tra Zabbix e lo script Python avviene tramite il passaggio di argomenti a riga di comando. In Zabbix il media type: script lanciato dalle trigger actions è configurato per iniettare dinamicamente il valore delle Macro all'interno del comando di avvio dello script.
 
-\subsection*{Gestione dei Parametri in Ingresso e Logica Condizionale}
-L'interazione tra il demone Zabbix e lo script Python avviene tramite il passaggio di argomenti a riga di comando (\texttt{sys.argv}). L'Action di Zabbix è configurata per iniettare dinamicamente il valore delle Macro all'interno del comando di avvio.
-
-Lo script elabora i parametri ricevuti (tra cui \texttt{\{EVENT.ID\}}, \texttt{\{HOST.NAME\}}, e \texttt{\{TRIGGER.STATUS\}}) e implementa una logica condizionale fondamentale per il ciclo di vita del ticket:
+Lo script elabora i parametri ricevuti (tra cui \texttt{\{EVENT.ID\}}, \texttt{\{HOST.NAME\}}, e \texttt{\{TRIGGER.STATUS\}}) e implementa una logica condizionale per il ciclo di vita del ticket:
 \begin{itemize}
-    \item \textbf{Fase di Creazione:} Se il \texttt{\{TRIGGER.STATUS\}} è pari a \texttt{PROBLEM}, lo script compila un payload destinato all'endpoint di "Creazione Post", inserendo nel corpo del messaggio i dettagli dell'host, l'ID Palo e la natura del guasto. L'\texttt{\{EVENT.ID\}} generato da Zabbix viene salvato all'interno del ticket come chiave univoca di correlazione.
-    \item \textbf{Fase di Risoluzione:} Se il \texttt{\{TRIGGER.STATUS\}} passa a \texttt{OK} (o \texttt{RESOLVED}), lo script interroga le API di Interacta cercando il ticket che contiene quello specifico \texttt{\{EVENT.ID\}}. Una volta individuato, invia un nuovo payload per forzare la transizione di stato del ticket verso "Chiuso/Risolto", azzerando il carico di lavoro manuale per la centrale operativa.
+    \item \textbf{creazione:} se il \texttt{\{TRIGGER.STATUS\}} è pari a \texttt{PROBLEM}, lo script compila un payload destinato all'endpoint di "richiesta", inserendo nel corpo del messaggio i dettagli dell'host, l'ID Palo e la natura del guasto. L'\texttt{\{EVENT.ID\}} generato da Zabbix viene salvato all'interno del ticket come chiave univoca di correlazione.
+    \item \textbf{chiusura:} se il \texttt{\{TRIGGER.STATUS\}} passa a \texttt{RESOLVED}, lo script compila un payload destinato all'endpoint di "chiusura", inserendo nel corpo del messaggio solo l'\texttt{\{EVENT.ID\}} in modo che la piattaforma cloud di Interacta possa identidicare il ticketil cui stato deve passare a "Chiuso/Risolto".
 \end{itemize}
 
 \begin{lstlisting}[language=Python, caption={Estrazione semplificata della gestione parametri e logging nello script Python}]

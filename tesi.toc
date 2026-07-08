@@ -34,17 +34,17 @@
 \contentsline {subsection}{\numberline {4.4.2}Esecuzione continuativa e log}{25}{subsection.4.4.2}%
 \contentsline {chapter}{\numberline {5}Integrazione con il sistema di ticketing Interacta}{27}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Scopo e architettura dell'integrazione}{27}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Generazione e firma del token JWT (Algoritmo RS512)}{28}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Sviluppo del Custom AlertScript in Zabbix}{30}{section.5.3}%
-\contentsline {chapter}{\numberline {6}Analisi Dati, KPI e Manutenzione di Sistema}{33}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Esportazione degli eventi in formato strutturato (CSV)}{33}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Sviluppo del motore Python per il calcolo dei KPI}{35}{section.6.2}%
-\contentsline {section}{\numberline {6.3}Automazione reportistica tramite Crontab e SMTP}{36}{section.6.3}%
-\contentsline {section}{\numberline {6.4}Gestione dei log e manutenzione (Logrotate)}{38}{section.6.4}%
-\contentsline {chapter}{\numberline {7}Conclusioni}{41}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Raggiungimento degli Obiettivi}{41}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Limiti del sistema e Sviluppi Futuri}{42}{section.7.2}%
-\contentsline {section}{\numberline {7.3}Valutazione Personale}{43}{section.7.3}%
-\contentsline {chapter}{Glossario}{45}{section.7.3}%
-\contentsline {chapter}{Bibliografia}{54}{chapter*.32}%
-\contentsline {chapter}{Ringraziamenti}{55}{chapter*.33}%
+\contentsline {section}{\numberline {5.2}Generazione e firma del token JWT}{28}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Apertura o chiusura del ticket}{30}{section.5.3}%
+\contentsline {chapter}{\numberline {6}Analisi Dati, KPI e Manutenzione di Sistema}{32}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Esportazione degli eventi in formato strutturato (CSV)}{32}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Sviluppo del motore Python per il calcolo dei KPI}{34}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Automazione reportistica tramite Crontab e SMTP}{35}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Gestione dei log e manutenzione (Logrotate)}{37}{section.6.4}%
+\contentsline {chapter}{\numberline {7}Conclusioni}{40}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Raggiungimento degli Obiettivi}{40}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Limiti del sistema e Sviluppi Futuri}{41}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Valutazione Personale}{42}{section.7.3}%
+\contentsline {chapter}{Glossario}{44}{section.7.3}%
+\contentsline {chapter}{Bibliografia}{53}{chapter*.30}%
+\contentsline {chapter}{Ringraziamenti}{54}{chapter*.31}%
