@@ -154,7 +154,8 @@
 \clearpage
 \chapter*{Sommario}
 \addcontentsline{toc}{chapter}{Sommario}
-Il presente documento descrive il lavoro svolto durante il periodo di stage curricolare,  della durata di circa duecentoventicinque ore, dal laureando Brando Calderara presso l'azienda Secoval Srl. Il progetto ha avuto come obiettivo principale la realizzazione di un sistema di monitoraggio centralizzato e automatizzato per le infrastrutture smart city del territorio, superando i limiti dei precedenti sistemi.
+Il presente documento descrive il lavoro svolto durante il periodo di stage curricolare,  della durata di circa duecentoventicinque ore, dal laureando Brando Calderara presso l'azienda Secoval Srl. Il progetto ha avuto come obiettivo principale la realizzazione di un sistema di monitoraggio centralizzato e automatizzato per le infrastrutture smart city del territorio della Comunità Montana di Valle Sabbia, superando i limiti dei precedenti sistemi.
+%DA CONTROLLARE come terminarlo in modo più completo
 
 % Lo scopo è stato sviluppare e integrare un sistema di monitoraggio basato su Zabbix...
 
@@ -341,7 +342,7 @@ Il progetto formativo mira a trasformare l'infrastruttura di rete (videosorvegli
 %     \item \textbf{Cybersecurity e Compliance GDPR:} garantire la sicurezza delle comunicazioni machine-to-machine, verificare le configurazioni degli apparati per rispettare gli standard normativi e descrivere procedure operative rigorose per la gestione degli account e il logging degli eventi.
 % \end{enumerate}
 
-\subsection*{Classificazione dei requisiti}
+\subsection{Classificazione dei requisiti}
 L'analisi del contesto applicativo e dei vincoli imposti dall'infrastruttura e dall'azienda ha portato alla definizione dei seguenti requisiti tecnici e funzionali.
 
 \textbf{Requisiti}
@@ -531,19 +532,19 @@ La gestione dei pacchetti e delle librerie è stata effettuata tramite \texttt{p
 
 % L'intera infrastruttura di monitoraggio e i relativi script di automazione sono stati distribuiti e messi in produzione su una macchina virtuale basata su sistema operativo Ubuntu Linux. La scelta dell'ambiente Linux ha permesso di sfruttare nativamente potenti strumenti a riga di comando e demoni di sistema per orchestrare i flussi di dati e ottimizzare i processi eseguiti in background.
 
-% \subsection*{Scripting Bash e Gestione dei Permessi}
+% \subsection{Scripting Bash e Gestione dei Permessi}
 % Il linguaggio Bash è stato impiegato per la realizzazione di script leggeri, focalizzati sull'interazione diretta con il sistema operativo o per fare da ponte (wrapper) tra l'interfaccia di Zabbix e gli applicativi complessi scritti in Python. Un caso d'uso primario ha riguardato lo sviluppo dei \textit{Custom AlertScripts}, posizionati in specifiche directory di sistema come \texttt{/usr/lib/zabbix/alertscripts/}. Un esempio rilevante è lo script \texttt{ScriptCustomExportProblemsToCSV.sh}, progettato per intercettare i parametri degli allarmi che Zabbix passa come variabili d'ambiente (tramite le Macro come \texttt{\$1, \$2...}) e accodarli in un file CSV strutturato.
 
 % Un aspetto critico affrontato in ambiente server è stata la rigorosa gestione dei permessi: i processi automatizzati eseguiti dall'utente di sistema \texttt{zabbix} operano in un perimetro isolato per motivi di sicurezza. Per consentire al demone di scrivere l'output all'interno di una directory protetta dell'utente principale (come \texttt{/home/administrator/}), è stato necessario configurare dei link simbolici (Symlink) o applicare \textit{Access Control Lists} (ACL), aggirando l'errore di \textit{Permission Denied} senza compromettere le politiche di isolamento Linux.
 
-% \subsection*{Orchestrazione dei Flussi tramite Crontab e Systemd}
+% \subsection{Orchestrazione dei Flussi tramite Crontab e Systemd}
 % Per disaccoppiare i carichi di calcolo analitico e di reportistica dal ciclo di vita vitale del server Zabbix, le esecuzioni sono state delegate direttamente al sistema operativo tramite due approcci complementari:
 % \begin{itemize}
 %     \item \textbf{Crontab:} Impiegato per l'orchestrazione dei task in modalità batch (periodica). Ad esempio, l'invio automatizzato del report giornaliero dei KPI è stato schedulato alle ore 06:10 del mattino inserendo la direttiva \texttt{10 6 * * *} per richiamare lo script eseguendo esplicitamente l'interprete Python all'interno del suo \textit{virtual environment} (\texttt{venv}).
 %     \item \textbf{Systemd:} Utilizzato per trasformare i middleware di ascolto continuo (come lo script asincrono per gli eventi ISAPI delle telecamere Hikvision) in demoni nativi del sistema. Questo garantisce l'avvio automatico delle dipendenze al boot e l'applicazione di policy di \texttt{Restart=always}, essenziali per ripristinare autonomamente il servizio a seguito di crash inattesi della connessione.
 % \end{itemize}
 
-% \subsection*{Prevenzione della Saturazione e Manutenzione (Logrotate)}
+% \subsection{Prevenzione della Saturazione e Manutenzione (Logrotate)}
 % L'esecuzione parallela di interfacciamenti API, elaborazioni GIS e demoni in ascolto, genera un volume costante di log testuali a fini di \textit{troubleshooting}. Per scongiurare la saturazione dello spazio su disco e il conseguente stallo del server di produzione, la manutenzione (retention) dei log è stata automatizzata tramite l'utility \textbf{Logrotate}.
 
 % Sono stati creati file di configurazione dedicati nella directory \texttt{/etc/logrotate.d/} (come \texttt{hikvision\_scripts} e \texttt{zabbix-interacta-script}), applicando policy temporali (\texttt{weekly}) e dimensionali (es. \texttt{maxsize 10M} o \texttt{30M}) combinate a direttive di compressione \texttt{compress}.
@@ -613,7 +614,7 @@ Interacta è la piattaforma cloud aziendale adottata da Secoval per la gestione 
 
 Per realizzare l'integazione tra i dati Excel e il server Zabbix è stato necessario progettare un ambiente di esecuzione dedicato. L'architettura prevede l'impiego di una Macchina Virtuale (VM) basata su sistema operativo Ubuntu Linux, ospitata sull'infrastruttura di virtualizzazione aziendale (Nutanix). La scelta di Ubuntu Server garantisce stabilità, e  compatibilità con software open-source come Zabbix.
 
-\subsection*{Setup della VM Ubuntu}
+\subsection{Setup della VM Ubuntu}
 L'applicativo Zabbix viene eseguito su una virtual machine sui server Secoval, chiamata
 "SECZABBIX-TLC". Il sistema operativo utilizzato è Ubuntu Server (Ubuntu 24.04).
 
@@ -624,7 +625,7 @@ Nella VM a livello di sistema operativo, sono stati definiti contesti di esecuzi
 \end{itemize}
 % Un vincolo ingegneristico fondamentale per far coesistere i due utenti ed evitare fallimenti critici è stato l'utilizzo esclusivo di percorsi assoluti (\textit{Absolute Paths}) all'interno del codice Python. Questa scelta ovvia all'imprevedibilità della \textit{Current Working Directory} (CWD) quando i task vengono scatenati in background dal motore Zabbix.
 
-% \subsection*{Python e il Virtual Environment (venv)}
+% \subsection{Python e il Virtual Environment (venv)}
 % Il motore di automazione (provisioning) è stato interamente sviluppato in linguaggio Python 3. In un ambiente server di produzione, l'installazione di librerie esterne a livello globale (tramite \texttt{sudo pip}) è considerata una pratica da evitare (anti-pattern). Questa operazione rischia infatti di sovrascrivere moduli necessari al sistema operativo, generando conflitti noti come \textit{Dependency Hell}.
 
 % Per garantire l'isolamento e la futura scalabilità del sistema, è stato istanziato un \textit{Virtual Environment} (\texttt{venv}) dedicato. Come tracciato nella documentazione architetturale, al suo interno sono state installate le dipendenze essenziali:
@@ -633,7 +634,7 @@ Nella VM a livello di sistema operativo, sono stati definiti contesti di esecuzi
 %     \item \texttt{pyzabbix} (o, a livello più basso, la libreria \texttt{requests}), un wrapper Python fondamentale per astrarre la complessità delle chiamate HTTP e costruire agilmente le richieste verso le API.
 % \end{itemize}
 
-% \subsection*{Il Motore di Provisioning e l'Integrazione JSON-RPC}
+% \subsection{Il Motore di Provisioning e l'Integrazione JSON-RPC}
 % Il core del sistema è un modulo Python progettato con una logica di \textbf{Idempotenza}: la sua esecuzione, se ripetuta più volte senza che i dati in ingresso (il file Excel) siano mutati, non altera lo stato del sistema e non genera dispositivi duplicati.
 
 % La comunicazione bidirezionale con Zabbix avviene tramite le sue API native, che espongono metodi basati sul protocollo leggero \textbf{JSON-RPC}. L'autenticazione è demandata a un API Token univoco (Bearer Token) generato sul frontend, il quale garantisce l'autorizzazione alle chiamate HTTP senza necessità di trasmettere e validare le credenziali a ogni richiesta. L'evoluzione architetturale futura, descritta nei documenti di \textit{Troubleshooting}, prevede di disaccoppiare questo token dal codice sorgente, iniettandolo dinamicamente a runtime tramite variabili d'ambiente (file \texttt{.env}) o macro cifrate Zabbix Vault per mitigare i rischi legati all'hardcoding.
@@ -724,7 +725,7 @@ un file \emph{json} contenente un array di oggetti così strutturati:
         "PRTG_ID":  4591,
         "Full_Path":  "smartCity/LAVENONE/TVCC-LAVE",
         "GroupName":  "TVCC-LAVE",
-        "IPv4_Subnet":  "10.82.241.0/25"
+        "IPv4_Subnet":  "x.x.x.x/x"
     },
 \end{lstlisting}
 Questo file è stato utilizzato per inizializzare in Zabbix le stesse sottoreti,
@@ -755,7 +756,7 @@ Per abilitare un'architettura di monitoraggio automatizzata, è stato necessario
 Nel contesto della smart city gestita da Secoval Srl, il Source of Truth riguardo gli asset hardware e software che compongono l'infrastruttura della smart city e la configurazione e mappatura dei dispositivi dislocati sul territorio (telecamere IP, Access Point, gateway LTE, switch di rete) è rappresentato da 2 fogli di calcolo Excel: uno fondamentale come archivio e uno di supporto.
 
 
-\subsection*{Struttura e ruolo dei due file Excel aziendali}
+\subsection{Struttura e ruolo dei due file Excel aziendali}
 Secoval, e le aziende che hanno implemetato fisicamente la rete di telecamere sul territorio, gestiscono la conoscenza della propria infrastruttura smart city attraverso \textbf{due file Excel principali}:
 \begin{enumerate}
     \item \textbf{Excel degli asset:} questo documento contiene l'inventario di tutti gli asset hardware (come le telecamere, prevalentemente di marca Hikvision) installati nei vari comuni aderenti al progetto. Per ogni apparato sono mappati dati cruciali quali l'indirizzo IP statico, l'univoco \texttt{ID Host} aziendale, il costruttore, il modello e, dato fondamentale per la manutenzione fisica, l'\texttt{ID Palo} che identifica e da un nome alla posizione di istallazione del dispositivo.
@@ -803,7 +804,7 @@ Questi due file sono depositati all'interno del file system della macchina virtu
 
 
 
-\subsection*{L'estrazione dei dati}
+\subsection{L'estrazione dei dati}
 Purtroppo Zabbix non è in grado di leggere nativamente un file \texttt{.xlsx} per configurare i propri host. Per risolvere questo problema e automatizzare il flusso di informazioni verso Zabbix, è stato scritto uno sript Python.
 
 Il sistema opera secondo una logica basata su due fasi:
@@ -929,7 +930,7 @@ Al suo interno troviamo:
 
 % La gestione su larga scala di un'infrastruttura IoT e di rete distribuita sul territorio, come quella di una smart city, impone la necessità di adottare paradigmi di classificazione logica rigorosi. Un approccio "piatto" (\textit{flat}), in cui tutti i dispositivi (Configuration Item) risiedono in un unico contenitore logico o vengono raggruppati senza un criterio formale, rende impossibile l'analisi aggregata degli allarmi, complica l'assegnazione dei permessi e vanifica il calcolo di KPI specifici per singola area geografica.
 
-% \subsection*{Il Paradigma dei Nested Host Groups in Zabbix}
+% \subsection{Il Paradigma dei Nested Host Groups in Zabbix}
 % Per risolvere questa criticità architetturale, si è sfruttata la funzionalità nativa di Zabbix relativa ai \textbf{Nested Host Groups} (Gruppi di Host annidati). Questa feature permette di creare alberature gerarchiche e \textit{namespace} logici separando i livelli tramite il carattere \textit{slash} (\texttt{/}).
 
 % In fase di analisi e progettazione congiunta con i sistemisti di Secoval, è stata definita una tassonomia standardizzata basata su tre livelli gerarchici principali:
@@ -939,17 +940,17 @@ Al suo interno troviamo:
 %     \item \textbf{Dominio Geografico / Amministrativo:} Il nodo foglia, rappresentato dal \textbf{Codice Comunale} o dalla denominazione normalizzata del comune di pertinenza.
 % \end{enumerate}
 
-% \subsection*{Gestione dei Codici Comunali e Normalizzazione (Data Cleansing)}
+% \subsection{Gestione dei Codici Comunali e Normalizzazione (Data Cleansing)}
 % Poiché Secoval opera come partner tecnologico per molteplici amministrazioni comunali (territorio della Valle Sabbia e limitrofi), la separazione per ente è il requisito fondamentale per la reportistica direzionale e per la corretta fatturazione dei servizi legati agli SLA.
 
 % Tuttavia, l'inserimento manuale del nome del comune nei file Excel (che fungono da CMDB) espone il sistema a refusi o variazioni di nomenclatura (es. "Roè Volciano" contro "Roe' Volciano" o "Roe Volciano"). Per garantire l'integrità referenziale all'interno del database relazionale di Zabbix, lo script Python di \textit{provisioning} implementa una logica di normalizzazione (\textit{Data Cleansing}): mappa le stringhe testuali eterogenee lette dall'Excel in \textbf{Codici Comunali} univoci e standardizzati (ad esempio derivandoli dal codice catastale Belfiore o da codifiche interne prestabilite).
 
-% \subsection*{Automazione dell'Alberatura via API}
+% \subsection{Automazione dell'Alberatura via API}
 % Durante il ciclo di caricamento (\textit{Loading}) verso il server, il middleware Python non si limita ad assegnare l'host a un gruppo preesistente, ma gestisce dinamicamente l'intera alberatura del sistema.
 
 % Per ogni riga elaborata dal dataframe Pandas, lo script calcola la stringa del gruppo di destinazione, assemblandola dinamicamente (es. \texttt{SmartCity/TVCC/Vestone}). Successivamente, interroga il server tramite API JSON-RPC richiamando il metodo \texttt{hostgroup.get}. Se la risposta indica che il gruppo non esiste (uno scenario tipico quando si acquisisce la gestione di un nuovo comune), lo script invoca asincronamente \texttt{hostgroup.create} per generare il nuovo ramo gerarchico. Solo a seguito di questa validazione topologica, il dispositivo viene inglobato e associato all'\texttt{hostgroupid} corretto.
 
-% \subsection*{Vantaggi Operativi e Architetturali}
+% \subsection{Vantaggi Operativi e Architetturali}
 % L'ingegnerizzazione di questa struttura logica, abilitata dall'automazione Python, garantisce all'infrastruttura di Secoval tre vantaggi misurabili:
 % \begin{itemize}
 %     \item \textbf{Role-Based Access Control (RBAC) multi-tenant:} Sfruttando i permessi granulari del frontend web di Zabbix, è ora possibile generare account utente limitati (ad esempio per le forze di Polizia Locale di un determinato municipio) che godono di visibilità in sola lettura esclusivamente sul ramo gerarchico del proprio territorio (\texttt{SmartCity/TVCC/CodiceComune}), precludendo l'accesso agli asset di altri enti.
@@ -1004,7 +1005,7 @@ Zabbix passa allo script una stringa contenente tutte le \textbf{Macro} necessar
     \item \texttt{\{HOST.NAME\}} e \texttt{\{INVENTORY.LOCATION\}}: riferimenti al dispositivo e alla sua ubicazione fisica (es. ID Palo).
 \end{itemize}
 
-\subsection*{Salvataggio locale in CSV}
+\subsection{Salvataggio locale in CSV}
 Lo script Bash sulla VM Linux riceve l'intera stringa di parametri e provvede ad accodarla al file CSV di destinazione.
 
 \begin{lstlisting}[language=bash, caption=Custom bash script per l'esportazione in CSV]
@@ -1031,7 +1032,7 @@ echo "\"$1\",\"$2\",\"$3\",\"$4\",\"$5\",\"$6\",\"$7\",\"$8\",\"$9\",\"${10}\",\
 
 % L'implementazione di un'architettura di monitoraggio centralizzata risolve il problema della rilevazione in tempo reale, ma genera parallelamente una vasta mole di dati storici. Per trasformare questa raccolta di allarmi in informazioni utili al management aziendale (es. calcolo dell'MTTR, individuazione dei colli di bottiglia e analisi del Flapping), è necessario estrarre e analizzare le serie temporali.
 
-% \subsection*{Motivazioni e Scelte Architetturali}
+% \subsection{Motivazioni e Scelte Architetturali}
 % Zabbix immagazzina nativamente tutti gli eventi nel proprio database relazionale di produzione (tipicamente PostgreSQL o MySQL). In fase di progettazione, si è valutata la possibilità di far collegare il nostro motore di analisi Python direttamente al database SQL. Tuttavia, questa strada è stata scartata per due ragioni ingegneristiche fondamentali:
 % \begin{enumerate}
 %     \item \textbf{Impatto sulle Performance:} Eseguire query analitiche complesse e pesanti (come raggruppamenti su decine di migliaia di righe) sullo stesso database utilizzato dal motore di monitoraggio in tempo reale avrebbe introdotto un inutile e rischioso \textit{overhead} prestazionale.
@@ -1076,12 +1077,12 @@ Nel report sono presenti:
 
 % Una volta garantita l'esportazione continua degli eventi di allarme su file system tramite il Media Type personalizzato e lo script Bash, il passo successivo è l'elaborazione di questa mole di dati grezzi (\textit{Raw Data}). A tale scopo è stato sviluppato un motore di analisi ad-hoc in Python, sfruttando in particolare la libreria \texttt{pandas}, lo standard industriale per la manipolazione di dataset tabulari e l'analisi dei dati.
 
-% \subsection*{Logica di Elaborazione e Data Preprocessing}
+% \subsection{Logica di Elaborazione e Data Preprocessing}
 % Il motore di calcolo si compone di moduli script eseguiti all'interno del \textit{Virtual Environment} della macchina di produzione. Il primo modulo si occupa della fase cruciale di \textit{Data Preprocessing}: il file \texttt{export\_problems.csv} viene importato in un \textit{DataFrame} Pandas.
 
 % Poiché i dati provengono da un output Bash asincrono, è necessario pulire e normalizzare il dataset: si eliminano eventuali righe corrotte, si gestiscono i valori nulli (ad esempio, gli allarmi ancora attivi per i quali non esiste ancora un \textit{Recovery Time}) e si esegue il parsing dei campi data e ora. I campi \texttt{\{EVENT.DATE\}} e \texttt{\{EVENT.TIME\}} vengono concatenati e convertiti in oggetti \texttt{datetime} nativi di Python, requisito fondamentale per poter eseguire l'aritmetica temporale necessaria al calcolo dei KPI.
 
-% \subsection*{Estrazione dei Key Performance Indicators (KPI)}
+% \subsection{Estrazione dei Key Performance Indicators (KPI)}
 % L'obiettivo primario del motore Python è distillare il dataset per calcolare metriche operative (KPI) essenziali per valutare l'affidabilità dell'infrastruttura smart city e l'efficienza degli interventi di Secoval. Le logiche algoritmiche si concentrano su tre direttrici principali:
 
 % \begin{itemize}
@@ -1126,7 +1127,7 @@ Nel report sono presenti:
 
 % Il calcolo dei Key Performance Indicators (KPI), descritto nella sezione precedente, genera un valore intrinseco per l'azienda solo se queste informazioni vengono recapitate tempestivamente ai responsabili decisionali. Affinché il sistema passi da un modello reattivo (in cui l'operatore deve interrogare il database) a un modello proattivo, è stato necessario ingegnerizzare un meccanismo di orchestrazione automatica e di distribuzione della reportistica.
 
-% \subsection*{Orchestrazione dei Job tramite Crontab}
+% \subsection{Orchestrazione dei Job tramite Crontab}
 % A livello architetturale, l'elaborazione dei log e l'invio delle e-mail sono processi di tipo \textit{batch}. Per automatizzare questi task all'interno della macchina virtuale Ubuntu, ci si è affidati a \textbf{Cron}, il demone di sistema standard in ambiente Linux per la schedulazione dei processi.
 
 % L'inserimento delle direttive all'interno del file \texttt{crontab} dell'utente di sistema ha richiesto un'attenzione particolare alla gestione degli ambienti di esecuzione. Poiché il demone Cron esegue i comandi in una shell non interattiva e con un set di variabili d'ambiente (PATH) ridotto rispetto a un normale login utente, l'uso di comandi generici come \texttt{python3 script.py} avrebbe causato il fallimento dell'esecuzione per la mancata risoluzione delle dipendenze (come \texttt{pandas} o \texttt{requests}).
@@ -1140,7 +1141,7 @@ Nel report sono presenti:
 
 % Questa configurazione garantisce che ogni mattina, prima dell'inizio del turno operativo, il sistema prelevi l'ultimo file \texttt{export\_problems.csv}, elabori i dati e prepari il report, mantenendo traccia di eventuali errori di esecuzione nel file di log dedicato.
 
-% \subsection*{Integrazione SMTP e Distribuzione del Report}
+% \subsection{Integrazione SMTP e Distribuzione del Report}
 % Il modulo finale dello script Python si occupa della formattazione e dell'invio dei dati tramite e-mail. Per l'implementazione si è scelto di utilizzare le librerie standard di Python \texttt{smtplib} e \texttt{email.mime}, le quali permettono di dialogare nativamente con il server di posta interno di Secoval (Mail Relay) senza la necessità di installare agent esterni o tool a riga di comando complessi (come \texttt{sendmail} o \texttt{postfix}).
 
 % Una volta che il motore Pandas ha aggregato i dati (es. MTTR per comune, host instabili per Flapping), i risultati vengono convertiti in tabelle HTML strutturate. La libreria \texttt{MIMEMultipart} permette di assemblare l'e-mail combinando un corpo testuale (in formato HTML per una migliore resa visiva) ed eventuali allegati (es. un file Excel riassuntivo generato on-the-fly dallo script per analisi più approfondite da parte dei manager).
@@ -1187,7 +1188,7 @@ Nel report sono presenti:
 
 % L'implementazione di un'architettura automatizzata e distribuita, come quella sviluppata per Secoval, comporta l'esecuzione silente e continua di molteplici processi in background. Dal middleware Python in ascolto sugli stream ISAPI delle telecamere Hikvision, agli script Bash schedulati tramite Crontab, fino ai \textit{Custom AlertScripts} che dialogano con le API di Interacta, l'intera infrastruttura opera in modalità \textit{headless} (senza interfaccia grafica o terminale interattivo). In questo contesto, un'efficace gestione dei log non è solo una \textit{best practice}, ma l'unico strumento a disposizione dei sistemisti per garantire l'osservabilità e il \textit{troubleshooting} del sistema in caso di guasti (\textit{silent failures}).
 
-% \subsection*{Centralizzazione e Interrogazione dei Log}
+% \subsection{Centralizzazione e Interrogazione dei Log}
 % Ogni componente custom sviluppato durante il tirocinio è stato istruito per generare output di debug strutturati. Ad esempio, il modulo di integrazione con il ticketing registra ogni tentativo di apertura o risoluzione in un file dedicato: \texttt{/usr/lib/zabbix/alertscripts/interactaCreateOrSolveTicket\_log.log}. A causa dell'imprevedibilità della \textit{Current Working Directory} (CWD) del demone Zabbix, tutti gli script utilizzano rigorosamente percorsi assoluti all'interno del file system Ubuntu.
 
 % L'utilizzo di semplici file testuali sequenziali (\textit{flat files}) permette ai tecnici del NOC (Network Operations Center) di Secoval di interrogare il sistema in modo rapido, senza dover accedere a interfacce grafiche complesse o database. Tramite la riga di comando Linux, è possibile:
@@ -1196,7 +1197,7 @@ Nel report sono presenti:
 %     \item Sfruttare \texttt{grep} abbinato a espressioni regolari per filtrare e isolare rapidamente tutti i log relativi a uno specifico \texttt{\{EVENT.ID\}} o a un determinato indirizzo IP.
 % \end{itemize}
 
-% \subsection*{Prevenzione della Saturazione del Disco}
+% \subsection{Prevenzione della Saturazione del Disco}
 % Il rovescio della medaglia di un tracciamento così granulare è il consumo di memoria di massa. Una singola telecamera instabile (soggetta a flapping) o un disservizio prolungato delle API cloud possono generare decine di migliaia di righe di log in poche ore. Senza una politica di manutenzione attiva, il disco della macchina virtuale si saturerebbe (Errore \textit{No space left on device}), causando il blocco catastrofico dell'intero motore di monitoraggio Zabbix e del database sottostante.
 
 % Per mitigare questo rischio architetturale, l'intero ciclo di vita dei file di log è stato delegato a \textbf{Logrotate}, un'utility di sistema nativa in ambiente Linux progettata per ruotare, comprimere e rimuovere i file storici in modo automatizzato.
@@ -1220,7 +1221,7 @@ Nel report sono presenti:
 % }
 % \end{lstlisting}
 
-% \subsection*{Logiche Ingegneristiche della Configurazione}
+% \subsection{Logiche Ingegneristiche della Configurazione}
 % Le direttive impiegate in questa configurazione rispondono a specifiche esigenze operative e di sicurezza riscontrate durante la messa in opera:
 % \begin{itemize}
 %     \item \textbf{Retention e Compressione:} Le regole \texttt{weekly} e \texttt{rotate 12} indicano al sistema di conservare lo storico per circa tre mesi (12 settimane). I file vecchi vengono spostati nella cartella \texttt{olddir} e compressi tramite l'algoritmo \texttt{gzip} (\texttt{compress}), riducendo l'ingombro su disco di oltre il 90\%. Per evitare saturazioni improvvise, la direttiva \texttt{maxsize 30M} forza una rotazione immediata se il file supera i 30 Megabyte, indipendentemente dalla scadenza settimanale.
@@ -1250,7 +1251,7 @@ Nel report sono presenti:
 
 % Un elemento distintivo dei progetti in ambito smart city è la forte connotazione geografica degli asset. Nel contesto del territorio gestito da Secoval, conoscere lo stato logico di un apparato (es. \textit{UP} o \textit{DOWN}) è un'informazione incompleta se non è associata alla sua esatta ubicazione fisica. L'integrazione di logiche GIS (\textit{Geographic Information System}) all'interno del sistema di monitoraggio diventa quindi un requisito architetturale fondamentale per ottimizzare l'intervento sul campo delle squadre di manutenzione e abbattere il \textit{Mean Time To Resolution} (MTTR).
 
-% \subsection*{Il flusso dei dati spaziali: dal CMDB (Excel) all'API}
+% \subsection{Il flusso dei dati spaziali: dal CMDB (Excel) all'API}
 % La sorgente primaria per i dati spaziali è rappresentata dai file Excel aziendali (il CMDB descritto nella Sezione 3.1). Durante le fasi di installazione o censimento, gli operatori sul campo registrano le coordinate GPS (Latitudine e Longitudine) di ogni singolo palo, telecamera o Access Point all'interno di colonne dedicate nel foglio di calcolo.
 
 % Il motore di automazione Python è stato esteso per includere una pipeline di estrazione e normalizzazione di questi dati geografici. La fase di \textit{Data Cleansing} è cruciale: poiché l'inserimento umano su Excel è prono a errori di formattazione (es. l'utilizzo della virgola al posto del punto per i decimali, o la presenza di stringhe di testo accidentali), lo script Pandas intercetta questi campi, esegue il \textit{parsing} e forza la conversione dei valori in formato \textit{floating-point} aderente allo standard internazionale WGS 84.
@@ -1272,12 +1273,12 @@ Nel report sono presenti:
 %         print(f"Errore durante l'aggiornamento GIS per host {host_id}: {e}")
 % \end{lstlisting}
 
-% \subsection*{Gestione dinamica e Aggiornamento degli Host}
+% \subsection{Gestione dinamica e Aggiornamento degli Host}
 % Il sistema è progettato per essere tollerante ai cambiamenti (\textit{Idempotenza}). Quando viene aggiunto un nuovo host nell'Excel, lo script lo rileva e, contestualmente all'operazione di \texttt{host.create}, ne inietta le coordinate.
 
 % Tuttavia, il reale valore ingegneristico si manifesta nella gestione delle modifiche (es. una telecamera che viene ricollocata su un incrocio differente). Durante l'esecuzione schedulata, lo script effettua un \textit{diffing} (confronto) tra le coordinate correntemente salvate su Zabbix (ottenute tramite \texttt{host.get}) e quelle appena lette dall'Excel. Se viene rilevata una discrepanza (Delta $> 0$), il sistema lancia una chiamata \texttt{host.update} sovrascrivendo la vecchia posizione, garantendo che Zabbix sia sempre un "gemello digitale" perfettamente allineato con la realtà fisica.
 
-% \subsection*{Visualizzazione su Zabbix Geomap}
+% \subsection{Visualizzazione su Zabbix Geomap}
 % Per chiudere il cerchio e fornire un reale supporto operativo alla centrale di controllo, si è sfruttato il widget nativo \textbf{Geomap} introdotto nelle recenti versioni di Zabbix.
 
 % La Geomap non è una semplice mappa statica, ma una \textit{dashboard interattiva} che funge da aggregatore visivo. Il widget è configurato per appoggiarsi a \textit{Tile Providers} open-source (come OpenStreetMap), interrogando in tempo reale il database per estrarre l'elenco degli host (es. filtrando per Host Group "TVCC" o "Access Point") e i rispettivi campi \texttt{location\_lat} e \texttt{location\_lon}.
@@ -1302,7 +1303,7 @@ Nel report sono presenti:
 % %     Immagini: Assolutamente fondamentale uno screenshot della Geomap di Zabbix popolata con i dispositivi Secoval. Mostra chiaramente la differenza visiva tra i marker verdi (OK) e rossi/gialli (PROBLEM). È la prova visiva più forte del tuo lavoro.
 
 % \chapter{Implementazione: Controlli Attivi ed Eventi TVCC}
-\chapter{Rilevamento manomissioni TVCC(ISAPI)}
+\chapter{Rilevamento manomissioni TVCC}
 %Sistema di rilevazione delle manomissioni e dell'oscuramento e come si integra in Zabbix e i suoi avvisi
 Essendo le telecamere di sicurezza oggetto del progetto abbastanza moderne è stato valutato come utile l'utilizzo dei sistemi di
 intelligenza artificiale implementati a bordo per rilevare diversi tipi di eventi che accadono alla singola telecamera.
@@ -1335,7 +1336,7 @@ Se l'utilizzo rimane per il tamperdetection e solo saltuariamente per motiondete
 
 % Per comprendere le scelte architetturali adottate durante il tirocinio per il monitoraggio della rete smart city di Secoval, è fondamentale analizzare come il server Zabbix opera "sotto il cofano" (under the hood) per la raccolta e l'elaborazione delle metriche. Zabbix si basa sul concetto di \textit{Item}, ovvero la singola unità di dato raccolta da un host. L'acquisizione di questi Item può avvenire seguendo due paradigmi diametralmente opposti: il \textbf{Polling} (controllo attivo) e il \textbf{Trapping} (controllo asincrono o passivo).
 
-% \subsection*{Il Paradigma del Polling (Controllo Attivo e Network Discovery)}
+% \subsection{Il Paradigma del Polling (Controllo Attivo e Network Discovery)}
 % Nel modello di Polling, è il server Zabbix (tramite i suoi processi interni denominati \textit{poller}) a prendere l'iniziativa. A intervalli di tempo regolari e predefiniti (\textit{Update interval}), il server apre una connessione verso l'host target, interroga il dispositivo (tramite protocolli come ICMP, SNMP, o richieste HTTP) e attende una risposta.
 
 % Nella fase iniziale del progetto in Secoval, questa logica è stata sfruttata pesantemente per l'individuazione automatica degli apparati sul territorio tramite le \textbf{Discovery Rule}. Zabbix era configurato per lanciare un "ICMP Ping" orario su intere sottoreti (subnet) al fine di scovare nuovi nodi (TVCC, Access Point, Switch, Gateway LTE).
@@ -1350,7 +1351,7 @@ Se l'utilizzo rimane per il tamperdetection e solo saltuariamente per motiondete
 % \textbf{I limiti del Polling riscontrati nel progetto:}
 % Nonostante l'efficacia del Network Discovery nativo, abbiamo riscontrato due limiti architetturali critici. In primo luogo, il discovery basato su ICMP creava host nominati univocamente con il loro indirizzo IP (o DNS name generico), privandoli del contesto aziendale vitale (come l'\texttt{ID Host} o l'\texttt{ID Palo}). In secondo luogo, il polling introduce una latenza intrinseca: se l'update interval di un controllo è di 5 minuti, un guasto che si verifica al minuto 1 verrà rilevato solo al minuto 5. Per eventi di sicurezza critici (come l'oscuramento di una telecamera), questo ritardo non è accettabile.
 
-% \subsection*{Il Paradigma del Trapping (Controllo Asincrono e Zabbix Sender)}
+% \subsection{Il Paradigma del Trapping (Controllo Asincrono e Zabbix Sender)}
 % Per superare i limiti del polling sugli eventi critici, il progetto ha implementato il paradigma del \textbf{Trapping}. Nel trapping, il server Zabbix non interroga il dispositivo, ma rimane in ascolto passivo (tipicamente sulla porta TCP 10051 tramite i processi \textit{trapper}). È l'host periferico (o un middleware intermedio) a prendere l'iniziativa e a inviare (\textit{push}) proattivamente il dato al server nel momento esatto in cui l'evento si verifica.
 
 % In Zabbix, questo si traduce nell'utilizzo di Item di tipo \textbf{Zabbix Trapper}. Tali item non hanno un intervallo di aggiornamento; si limitano ad attendere che l'utility a riga di comando \texttt{zabbix\_sender} (o una libreria API equivalente) inietti un valore formattato con la tripla: \texttt{<Hostname> <Item Key> <Value>}.
@@ -1363,7 +1364,7 @@ Se l'utilizzo rimane per il tamperdetection e solo saltuariamente per motiondete
 % \end{itemize}
 % Il risultato è un monitoraggio in tempo reale a latenza zero, impossibile da ottenere con il solo Polling, riducendo peraltro il traffico di rete e il carico di calcolo della CPU sul server Zabbix (che non deve più ciclare richieste a vuoto su centinaia di host).
 
-% \subsection*{Trigger e Motore di Valutazione (History Cache e Alarms)}
+% \subsection{Trigger e Motore di Valutazione (History Cache e Alarms)}
 % Una volta che il dato raggiunge Zabbix, indipendentemente dal fatto che derivi da un Polling o da un Trapping, viene immagazzinato nella RAM (History Cache) per un'elaborazione ultra-rapida. È qui che entrano in gioco i \textbf{Trigger}.
 
 % Sotto il cofano, un Trigger è un'espressione logica e matematica che valuta lo storico recente dei dati di un Item per determinare se l'host si trova in uno stato di "OK" o "PROBLEM". Ad esempio, un trigger potrebbe avere una logica simile a:
@@ -1408,7 +1409,7 @@ sensibile all'oscuramento o al motion detection e la comunicazione dell'evento t
 
 % Le telecamere Hikvision in dotazione a Secoval S.r.l. espongono le proprie funzionalità tramite \textbf{ISAPI} (\textit{Intelligent Security API}), un'interfaccia RESTful basata su HTTP. L'obiettivo ingegneristico è stato quello di creare un \textit{middleware} in grado di configurare massivamente questi apparati e di restare in ascolto dei loro allarmi in tempo reale, traducendoli in metriche compatibili con Zabbix.
 
-% \subsection*{Setup e Configurazione tramite Payload XML}
+% \subsection{Setup e Configurazione tramite Payload XML}
 % Affinché una telecamera generi un evento, le funzioni di analisi video (\textit{Smart Events}) devono essere prima abilitate e configurate. La sfida principale consisteva nel superare la configurazione manuale tramite interfaccia web, impraticabile per centinaia di dispositivi.
 
 % È stato quindi sviluppato un meccanismo di \textit{provisioning} che, tramite richieste HTTP di tipo \texttt{PUT}, invia specifici payload in formato XML agli endpoint ISAPI della telecamera. Ad esempio, per abilitare l'allarme di manomissione (\textit{Video Tampering}), il sistema trasmette un documento strutturato al percorso \texttt{/ISAPI/Smart/VideoTampering/1}:
@@ -1560,7 +1561,7 @@ Tutto l'output viene reindirizzato in un file di log gestito da \textbf{Logrotat
 % }
 % \end{lstlisting}
 
-% \subsection*{Il Middleware Python e l'ascolto dell'Alert Stream}
+% \subsection{Il Middleware Python e l'ascolto dell'Alert Stream}
 % Una volta configurate, le telecamere sono pronte a generare allarmi. Invece di interrogare continuamente la telecamera per chiedere se ci siano novità (\textit{Polling}), abbiamo optato per un approccio \textit{Event-Driven} (basato su \textit{Trapping}). Questo azzera la latenza di rilevamento e minimizza il traffico di rete.
 
 % Il cuore di questa integrazione è uno script Python, eseguito come demone (\textit{systemd service}) in background sul server. Lo script instaura una connessione HTTP persistente in streaming verso l'endpoint \texttt{/ISAPI/Event/notification/alertStream}. Finché la connessione è aperta, la telecamera "spinge" proattivamente (push) pacchetti XML (o multipart) ogni volta che un sensore scatta.
@@ -1617,7 +1618,7 @@ Tutto l'output viene reindirizzato in un file di log gestito da \textbf{Logrotat
 %     subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 % \end{lstlisting}
 
-% \subsection*{Motivazioni Architetturali e Sicurezza}
+% \subsection{Motivazioni Architetturali e Sicurezza}
 % L'implementazione di questo listener continuo in Python ha rappresentato una svolta prestazionale. La scelta di utilizzare \texttt{subprocess.Popen} al posto di \texttt{subprocess.run} per l'invio del dato tramite \texttt{zabbix\_sender} è fondamentale: consente al processo Python di "sganciare" l'invio della notifica (modalità *fire-and-forget*), tornando immediatamente in ascolto sullo stream senza perdere eventuali eventi ravvicinati.
 
 % Inoltre, operando nel contesto di un ambiente di produzione Linux rigoroso, lo script è configurato per utilizzare percorsi assoluti ed è eseguito all'interno del proprio \textit{Virtual Environment} (\texttt{venv}). Come documentato internamente, l'eseguibile lavora senza elevare i privilegi (\texttt{su zabbix zabbix}), delegando la gestione degli errori e la rotazione dei log all'utility di sistema per prevenire saturazioni del disco causate dall'elevato \textit{throughput} dei messaggi XML elaborati.
@@ -1664,12 +1665,12 @@ Tutto l'output viene reindirizzato in un file di log gestito da \textbf{Logrotat
 
 % Avendo già analizzato le logiche di base del motore di valutazione di Zabbix (Sezione 4.1), in questa sezione ci si concentrerà sull'implementazione pratica degli Item, dei Trigger e delle Action configurate per orchestrare gli allarmi provenienti dalle telecamere e integrarli con la piattaforma Interacta.
 
-% \subsection*{Il superamento delle Discovery Rule tradizionali}
+% \subsection{Il superamento delle Discovery Rule tradizionali}
 % Nella fase di prototipazione del sistema, il popolamento degli host (le telecamere e gli AP) era stato affidato alle \textbf{Discovery Rule} native di Zabbix. Il sistema effettuava un ping (ICMP) su intere sottoreti; le \textbf{Discovery Action} intercettavano l'IP che rispondeva e applicavano automaticamente un Template predefinito.
 
 % Tuttavia, come documentato nelle specifiche di progetto, questo approccio è stato scartato. La motivazione architetturale risiede nel fatto che le Discovery Rule native nominavano gli host esclusivamente tramite il loro indirizzo IP o il nome DNS generico, perdendo tutto il contesto aziendale necessario (come l'\texttt{ID Host} e l'\texttt{ID Palo}). Per questo motivo, l'automazione tramite Discovery nativa è stata disabilitata e sostituita integralmente dallo script Python che agisce via API (JSON-RPC) leggendo i file Excel del CMDB aziendale, garantendo così un allineamento perfetto tra il sistema di monitoraggio e l'inventario fisico.
 
-% \subsection*{Item Trapper e Trigger per le Telecamere}
+% \subsection{Item Trapper e Trigger per le Telecamere}
 % Le telecamere importate dallo script API vengono associate a un Template specifico creato ad-hoc per i dispositivi Hikvision. All'interno di questo Template, per gestire gli eventi del middleware ISAPI, sono stati definiti degli \textbf{Item di tipo Zabbix Trapper} (es. con chiave \texttt{hikvision.event.tampering}).
 
 % Il \textbf{Trigger} associato a questo Item è il vero motore decisionale. Non si limita a valutare la presenza di un guasto, ma deve gestire la transizione di stato per l'apertura del ticket. L'espressione logica applicata è simile alla seguente:
@@ -1678,7 +1679,7 @@ Tutto l'output viene reindirizzato in un file di log gestito da \textbf{Logrotat
 % \end{center}
 % Inoltre, per prevenire falsi allarmi dovuti a micro-disconnessioni del flusso video, è stata implementata la funzione \texttt{nodata()} all'interno del Trigger. Se il middleware Python smette di inviare dati per un tempo predefinito (es. 5 minuti), il Trigger scatta per segnalare non una manomissione, ma l'irreperibilità del servizio di ascolto stesso.
 
-\subsection*{Trigger actions e integrazione con Interacta}
+\subsection{Trigger actions e integrazione con Interacta}
 Quando un Trigger cambia stato (da \texttt{OK} a \texttt{PROBLEM} o viceversa), entra in gioco il sistema delle  \textbf{Trigger Actions} native. Invece di configurare un'Action per inviare una semplice notifica e-mail, il sistema è statoconfigurato per eseguire un'operazione esecuzione remota di script, puntando al \textit{custom media type: script} denominato \\\texttt{interactaCreateOrSolveTicket}.
 
 La motivazione per utilizzare questo paradigma è la possibilità di iniettare dinamicamente il contesto del guasto all'interno dello script Python. L'Action è configurata per passare allo script degli argomenti tramite le Macro di Zabbix, tra cui:
@@ -1940,7 +1941,7 @@ Se il problema rientra autonomamente, Zabbix deve comunicare a Interacta di riso
     \label{fig:TicketInteracta}
 \end{figure}
 
-% \subsection*{Obiettivi e Sfide dell'Integrazione}
+% \subsection{Obiettivi e Sfide dell'Integrazione}
 % La costruzione di un ponte comunicativo tra l'infrastruttura di monitoraggio (on-premise) e il sistema di ticketing (in cloud) ha richiesto la definizione di obiettivi rigorosi:
 % \begin{itemize}
 %     \item \textbf{Apertura "Zero-Touch":} Al verificarsi di un trigger critico, il sistema deve generare un ticket su Interacta senza alcun intervento umano, abbattendo drasticamente i tempi di latenza e, di conseguenza, il \textit{Mean Time To Resolution} (MTTR).
@@ -1951,7 +1952,7 @@ Se il problema rientra autonomamente, Zabbix deve comunicare a Interacta di riso
 % Le sfide principali per raggiungere questi obiettivi non sono state unicamente di natura logica, ma soprattutto di natura architetturale e legata alla sicurezza informatica. Il traffico dati, infatti, deve attraversare la rete pubblica per raggiungere il cloud di Interacta, esponendo il sistema a potenziali attacchi (come il \textit{Man-in-the-Middle} o il \textit{Replay Attack}).
 
 %DA CONTROLLARE tenere gli asterischi per nascondere i sottocapitoli?
-\subsection*{Autenticazione Server-to-Server}
+\subsection{Autenticazione Server-to-Server}
 In un'applicazione web tradizionale, l'autenticazione si basa su interazioni umane (es. inserimento di username e password) e sul mantenimento di una sessione tramite cookie. Nel caso di questo progetto, un server Linux (Zabbix) deve dialogare autonomamente con un altro server (Interacta). Questa modalità \textbf{Server-to-Server}, richiede standard di sicurezza diversi.
 
 La documentazione fornita da Interacta e le linee guida consigliano l'adozione di un'autenticazione basata su token crittografici, specificamente la generazione di una \textit{JWT Assertion}(Json Web Token)
@@ -1985,7 +1986,7 @@ Inoltre permette di garantire lì'integrità, l'autenticazione e il non ripudio 
 
 % Il cuore dell'autenticazione verso la piattaforma Interacta si basa sulla costruzione e sulla firma crittografica di un JSON Web Token (JWT). Questo standard (RFC 7519) permette di trasmettere informazioni sotto forma di oggetto JSON in modo sicuro e inequivocabile, eliminando la necessità di memorizzare credenziali fisse a bordo del sistema di monitoraggio.
 
-\subsection*{Struttura del Token e Scelta dell'Algoritmo}
+\subsection{Struttura del Token e scelta dell'algoritmo}
 Un JWT standard è composto da tre parti codificate in Base64URL e separate da un punto (\texttt{.}): l'Header, il Payload e la Signature.
 L'Header definisce la tipologia di token e l'algoritmo impiegato. Il Payload contiene le asserzioni e le dichiarazioni sull'entità autorizzata (es. l'identificativo del client, l'istante di emissione e il momento di scadenza). Infine, la Signature costituisce la firma digitale, che garantisce l'integrità del dato in transito.
 
@@ -1993,7 +1994,7 @@ Le specifiche di integrazione dettate da Interacta imponevano l'utilizzo dell'al
 A differenza di algoritmi simmetrici, l'RS512 prevede l'uso di una coppia di chiavi: una \textbf{chiave privata}, a bordo della macchina virtuale Zabbix, utilizzata dal middleware per firmare il token in uscita, e una \textbf{chiave pubblica}, caricata in precedenza nel cloud di Interacta, utilizzata dal provider per verificare l'autenticità del token.
 
 
-\subsection*{Implementazione in Python}
+\subsection{Implementazione in Python}
 L'implementazione del sistema di firma è stata realizzata in linguaggio Python, sfruttando la libreria \texttt{requests} per gli scambi HTTPS in sinergia con il modulo \texttt{cryptography} per la gestione sicura delle chiavi RSA.
 
 Il payload è stato configurato, definendo un tempo di scadenza del token (\texttt{exp}) breve, solitamente impostato a 5 o 10 minuti dal momento dell'emissione (\texttt{iat}).
@@ -2066,7 +2067,7 @@ def authentication():
         return access_token
 \end{lstlisting}
 \section{Apertura o chiusura del ticket}
-% \subsection*{Ostacoli Architetturali e Testing (Troubleshooting)}
+% \subsection{Ostacoli Architetturali e Testing (Troubleshooting)}
 % La messa in opera di questo sistema crittografico ha richiesto il superamento di alcune sfide e "scogli" ingegneristici non banali.
 
 % Il primo aspetto critico ha riguardato la gestione e la sicurezza della chiave privata a livello di sistema operativo Linux. Affinché il \textit{Custom AlertScript} di Zabbix potesse accedere in lettura al file PEM senza esporlo a vulnerabilità, è stato necessario applicare politiche di gestione dei permessi stringenti, assegnando la proprietà del file esclusivamente all'utente di sistema \texttt{zabbix} (tramite \texttt{chown}) e impostando i permessi di lettura restrittivi (\texttt{chmod 400}). Configurazioni meno rigorose avrebbero comportato rischi critici per l'azienda o, viceversa, avrebbero bloccato l'esecuzione dello script restituendo errori del tipo \textit{Permission Denied}.
@@ -2089,7 +2090,7 @@ def authentication():
 
 % Per questo progetto è stato sviluppato lo script Python \texttt{interactaCreateOrSolveTicket.py}. Il suo compito è fare da "traduttore" e "postino": riceve i dati dell'allarme generato da Zabbix, costruisce il payload JSON, genera il token JWT per l'autenticazione (come descritto nella sezione precedente) e invia la richiesta HTTP POST all'API REST di Interacta.
 
-% \subsection*{Gestione dei Parametri in Ingresso e Logica Condizionale}
+% \subsection{Gestione dei Parametri in Ingresso e Logica Condizionale}
 Una volta ottenuto l’access token il passaggio successivo è utilizzarlo per autenticarsi nell'apertura o chiusura dei ticket.
 L'interazione tra Zabbix e lo script Python avviene tramite il passaggio di argomenti a riga di comando. In Zabbix il media type: script lanciato dalle trigger actions è configurato per iniettare dinamicamente il valore delle Macro all'interno del comando di avvio dello script.
 
@@ -2172,14 +2173,14 @@ def manage_ticket(ticket_data):
 
 % L'implementazione di un'architettura di monitoraggio centralizzata risolve il problema della rilevazione in tempo reale, ma genera parallelamente una vasta mole di dati storici. Per trasformare questa raccolta di allarmi in informazioni utili al management aziendale (es. calcolo dell'MTTR, individuazione dei colli di bottiglia e analisi del Flapping), è necessario estrarre e analizzare le serie temporali.
 
-% \subsection*{Motivazioni e Scelte Architetturali}
+% \subsection{Motivazioni e Scelte Architetturali}
 % Zabbix immagazzina nativamente tutti gli eventi nel proprio database relazionale di produzione (tipicamente PostgreSQL o MySQL). In fase di progettazione, si è valutata la possibilità di far collegare il nostro motore di analisi Python direttamente al database SQL. Tuttavia, questa strada è stata scartata per due ragioni ingegneristiche fondamentali:
 % \begin{enumerate}
 %     \item \textbf{Impatto sulle Performance:} Eseguire query analitiche complesse e pesanti (come raggruppamenti su decine di migliaia di righe) sullo stesso database utilizzato dal motore di monitoraggio in tempo reale avrebbe introdotto un inutile e rischioso \textit{overhead} prestazionale.
 %     \item \textbf{Disaccoppiamento (Decoupling):} Esportare i dati in un formato strutturato e agnostico come il CSV (Comma-Separated Values) disaccoppia il sistema di monitoraggio da quello di reportistica. Questo approccio a file piatto (\textit{flat file}) permette di utilizzare in modo estremamente efficiente librerie Python di data science (come Pandas), bypassando la complessità dello schema relazionale nativo di Zabbix e aggirando le logiche di \textit{retention} che il server applica per cancellare i log più vecchi al fine di risparmiare spazio.
 % \end{enumerate}
 
-% \subsection*{Implementazione tramite Custom Media Type}
+% \subsection{Implementazione tramite Custom Media Type}
 % Per ottenere l'esportazione continua e in tempo reale degli allarmi senza pesare sul database, si è deciso di sfruttare il sistema di \textit{Media Types} di Zabbix. Solitamente, un Media Type definisce il canale di consegna di una notifica (es. Email, SMS o Telegram). Nel nostro caso, è stato creato un Media Type personalizzato di tipo \textbf{Script}.
 
 % A questo Media Type è stata agganciata un'\textit{Action} configurata per scattare ogni volta che si verifica un problema critico sulla rete smart city. Invece di inviare una mail, Zabbix esegue lo script Bash \texttt{ScriptCustomExportProblemsToCSV.sh} depositato sulla macchina virtuale Ubuntu.
@@ -2193,7 +2194,7 @@ def manage_ticket(ticket_data):
 %     \item \texttt{\{TRIGGER.NAME\}} e \texttt{\{TRIGGER.SEVERITY\}}: La tipologia del problema e la sua criticità.
 % \end{itemize}
 
-% \subsection*{Logica di Scrittura del CSV}
+% \subsection{Logica di Scrittura del CSV}
 % Lo script Bash sulla VM Linux riceve l'intera stringa di parametri (generalmente racchiusa nel parametro \texttt{\$1}) e provvede ad accodarla al file CSV di destinazione. La logica dietro questo script è volutamente essenziale: si limita a garantire che la sintassi CSV non venga "rotta" da eventuali virgole o doppi apici presenti nei nomi degli host o dei trigger, utilizzando tecniche di \textit{quoting} appropriate.
 
 % \begin{lstlisting}[language=bash, caption={Snippet concettuale dello script di esportazione CSV (\texttt{ScriptCustomExportProblemsToCSV.sh})}]
@@ -2223,12 +2224,12 @@ def manage_ticket(ticket_data):
 
 % Una volta garantita l'esportazione continua degli eventi di allarme su file system tramite il Media Type personalizzato e lo script Bash, il passo successivo è l'elaborazione di questa mole di dati grezzi (\textit{Raw Data}). A tale scopo è stato sviluppato un motore di analisi ad-hoc in Python, sfruttando in particolare la libreria \texttt{pandas}, lo standard industriale per la manipolazione di dataset tabulari e l'analisi dei dati.
 
-% \subsection*{Logica di Elaborazione e Data Preprocessing}
+% \subsection{Logica di Elaborazione e Data Preprocessing}
 % Il motore di calcolo si compone di moduli script eseguiti all'interno del \textit{Virtual Environment} della macchina di produzione. Il primo modulo si occupa della fase cruciale di \textit{Data Preprocessing}: il file \texttt{export\_problems.csv} viene importato in un \textit{DataFrame} Pandas.
 
 % Poiché i dati provengono da un output Bash asincrono, è necessario pulire e normalizzare il dataset: si eliminano eventuali righe corrotte, si gestiscono i valori nulli (ad esempio, gli allarmi ancora attivi per i quali non esiste ancora un \textit{Recovery Time}) e si esegue il parsing dei campi data e ora. I campi \texttt{\{EVENT.DATE\}} e \texttt{\{EVENT.TIME\}} vengono concatenati e convertiti in oggetti \texttt{datetime} nativi di Python, requisito fondamentale per poter eseguire l'aritmetica temporale necessaria al calcolo dei KPI.
 
-% \subsection*{Estrazione dei Key Performance Indicators (KPI)}
+% \subsection{Estrazione dei Key Performance Indicators (KPI)}
 % L'obiettivo primario del motore Python è distillare il dataset per calcolare metriche operative (KPI) essenziali per valutare l'affidabilità dell'infrastruttura smart city e l'efficienza degli interventi di Secoval. Le logiche algoritmiche si concentrano su tre direttrici principali:
 
 % \begin{itemize}
@@ -2273,7 +2274,7 @@ def manage_ticket(ticket_data):
 
 % Il calcolo dei Key Performance Indicators (KPI), descritto nella sezione precedente, genera un valore intrinseco per l'azienda solo se queste informazioni vengono recapitate tempestivamente ai responsabili decisionali. Affinché il sistema passi da un modello reattivo (in cui l'operatore deve interrogare il database) a un modello proattivo, è stato necessario ingegnerizzare un meccanismo di orchestrazione automatica e di distribuzione della reportistica.
 
-% \subsection*{Orchestrazione dei Job tramite Crontab}
+% \subsection{Orchestrazione dei Job tramite Crontab}
 % A livello architetturale, l'elaborazione dei log e l'invio delle e-mail sono processi di tipo \textit{batch}. Per automatizzare questi task all'interno della macchina virtuale Ubuntu, ci si è affidati a \textbf{Cron}, il demone di sistema standard in ambiente Linux per la schedulazione dei processi.
 
 % L'inserimento delle direttive all'interno del file \texttt{crontab} dell'utente di sistema ha richiesto un'attenzione particolare alla gestione degli ambienti di esecuzione. Poiché il demone Cron esegue i comandi in una shell non interattiva e con un set di variabili d'ambiente (PATH) ridotto rispetto a un normale login utente, l'uso di comandi generici come \texttt{python3 script.py} avrebbe causato il fallimento dell'esecuzione per la mancata risoluzione delle dipendenze (come \texttt{pandas} o \texttt{requests}).
@@ -2287,7 +2288,7 @@ def manage_ticket(ticket_data):
 
 % Questa configurazione garantisce che ogni mattina, prima dell'inizio del turno operativo, il sistema prelevi l'ultimo file \texttt{export\_problems.csv}, elabori i dati e prepari il report, mantenendo traccia di eventuali errori di esecuzione nel file di log dedicato.
 
-% \subsection*{Integrazione SMTP e Distribuzione del Report}
+% \subsection{Integrazione SMTP e Distribuzione del Report}
 % Il modulo finale dello script Python si occupa della formattazione e dell'invio dei dati tramite e-mail. Per l'implementazione si è scelto di utilizzare le librerie standard di Python \texttt{smtplib} e \texttt{email.mime}, le quali permettono di dialogare nativamente con il server di posta interno di Secoval (Mail Relay) senza la necessità di installare agent esterni o tool a riga di comando complessi (come \texttt{sendmail} o \texttt{postfix}).
 
 % Una volta che il motore Pandas ha aggregato i dati (es. MTTR per comune, host instabili per Flapping), i risultati vengono convertiti in tabelle HTML strutturate. La libreria \texttt{MIMEMultipart} permette di assemblare l'e-mail combinando un corpo testuale (in formato HTML per una migliore resa visiva) ed eventuali allegati (es. un file Excel riassuntivo generato on-the-fly dallo script per analisi più approfondite da parte dei manager).
@@ -2334,7 +2335,7 @@ def manage_ticket(ticket_data):
 
 % L'implementazione di un'architettura automatizzata e distribuita, come quella sviluppata per Secoval, comporta l'esecuzione silente e continua di molteplici processi in background. Dal middleware Python in ascolto sugli stream ISAPI delle telecamere Hikvision, agli script Bash schedulati tramite Crontab, fino ai \textit{Custom AlertScripts} che dialogano con le API di Interacta, l'intera infrastruttura opera in modalità \textit{headless} (senza interfaccia grafica o terminale interattivo). In questo contesto, un'efficace gestione dei log non è solo una \textit{best practice}, ma l'unico strumento a disposizione dei sistemisti per garantire l'osservabilità e il \textit{troubleshooting} del sistema in caso di guasti (\textit{silent failures}).
 
-% \subsection*{Centralizzazione e Interrogazione dei Log}
+% \subsection{Centralizzazione e Interrogazione dei Log}
 % Ogni componente custom sviluppato durante il tirocinio è stato istruito per generare output di debug strutturati. Ad esempio, il modulo di integrazione con il ticketing registra ogni tentativo di apertura o risoluzione in un file dedicato: \texttt{/usr/lib/zabbix/alertscripts/interactaCreateOrSolveTicket\_log.log}. A causa dell'imprevedibilità della \textit{Current Working Directory} (CWD) del demone Zabbix, tutti gli script utilizzano rigorosamente percorsi assoluti all'interno del file system Ubuntu.
 
 % L'utilizzo di semplici file testuali sequenziali (\textit{flat files}) permette ai tecnici del NOC (Network Operations Center) di Secoval di interrogare il sistema in modo rapido, senza dover accedere a interfacce grafiche complesse o database. Tramite la riga di comando Linux, è possibile:
@@ -2343,7 +2344,7 @@ def manage_ticket(ticket_data):
 %     \item Sfruttare \texttt{grep} abbinato a espressioni regolari per filtrare e isolare rapidamente tutti i log relativi a uno specifico \texttt{\{EVENT.ID\}} o a un determinato indirizzo IP.
 % \end{itemize}
 
-% \subsection*{Prevenzione della Saturazione del Disco}
+% \subsection{Prevenzione della Saturazione del Disco}
 % Il rovescio della medaglia di un tracciamento così granulare è il consumo di memoria di massa. Una singola telecamera instabile (soggetta a flapping) o un disservizio prolungato delle API cloud possono generare decine di migliaia di righe di log in poche ore. Senza una politica di manutenzione attiva, il disco della macchina virtuale si saturerebbe (Errore \textit{No space left on device}), causando il blocco catastrofico dell'intero motore di monitoraggio Zabbix e del database sottostante.
 
 % Per mitigare questo rischio architetturale, l'intero ciclo di vita dei file di log è stato delegato a \textbf{Logrotate}, un'utility di sistema nativa in ambiente Linux progettata per ruotare, comprimere e rimuovere i file storici in modo automatizzato.
@@ -2367,7 +2368,7 @@ def manage_ticket(ticket_data):
 % }
 % \end{lstlisting}
 
-% \subsection*{Logiche Ingegneristiche della Configurazione}
+% \subsection{Logiche Ingegneristiche della Configurazione}
 % Le direttive impiegate in questa configurazione rispondono a specifiche esigenze operative e di sicurezza riscontrate durante la messa in opera:
 % \begin{itemize}
 %     \item \textbf{Retention e Compressione:} Le regole \texttt{weekly} e \texttt{rotate 12} indicano al sistema di conservare lo storico per circa tre mesi (12 settimane). I file vecchi vengono spostati nella cartella \texttt{olddir} e compressi tramite l'algoritmo \texttt{gzip} (\texttt{compress}), riducendo l'ingombro su disco di oltre il 90\%. Per evitare saturazioni improvvise, la direttiva \texttt{maxsize 30M} forza una rotazione immediata se il file supera i 30 Megabyte, indipendentemente dalla scadenza settimanale.
@@ -2421,9 +2422,9 @@ Durante lo svolgimento del progetto di stage sono stati completati tutti gli obi
         Sviluppo e miglioramento del monitoraggio di rete                   & Raggiunto              & Transizione verso un'architettura automatizzata e centralizzata basata su Zabbix 7.0, configurata per scalare facilmente in futuro. \\
         \hline
         \rowcolor{gray!20}
-        Integrazione degli apparati con Cartografia GIS                     & \makecell{Parzialmente                                                                                                                                       \\ raggiunto} & Lo strumento di gestione e monitoraggio georeferenziato è operativo ma all'interno del sistema Zabbix senza avere l'opportunità di un integrazione con programmi più avanzati come QGIS utilizzati in azienda. \\
+        Integrazione degli apparati con Cartografia GIS                     & \makecell{Parzialmente                                                                                                                                       \\ raggiunto} & Lo strumento di gestione e monitoraggio georeferenziato è operativo ma risiede all'interno del sistema Zabbix senza avere l'opportunità di un integrazione con programmi più avanzati come QGIS utilizzati in azienda. \\
         \hline
-        Integrazione con la piattaforma cloud ticketing aziendale Interacta & Raggiunto              & Implementati script Python per gestire in sicurezza l'apertura e chiusura automatica dei ticket in modalità server-to-server..      \\
+        Integrazione con la piattaforma cloud ticketing aziendale Interacta & Raggiunto              & Implementati script Python per gestire in sicurezza l'apertura e chiusura automatica dei ticket in modalità server-to-server.       \\
         \hline
     \end{tabularx}
 
@@ -2440,7 +2441,7 @@ Durante lo svolgimento del progetto di stage sono stati completati tutti gli obi
 %     \item \textbf{Orchestrazione e Ticketing "Zero-Touch":} L'integrazione con la piattaforma cloud aziendale Interacta è pienamente operativa. L'implementazione di un'architettura Server-to-Server basata su token crittografici JWT (RS512) garantisce l'apertura e la risoluzione automatica e sicura dei ticket, azzerando il carico di lavoro manuale per gli operatori della centrale operativa.
 % \end{itemize}
 
-% \subsection*{Implementazioni Aggiuntive (Plusvalore del Progetto)}
+% \subsection{Implementazioni Aggiuntive (Plusvalore del Progetto)}
 % Oltre a soddisfare pienamente i requisiti iniziali, il progetto ha introdotto funzionalità analitiche non previste originariamente, spostando il focus dal semplice "monitoraggio" alla "Business Intelligence" applicata alle infrastrutture, un aspetto centrale nel percorso di Ingegneria delle Tecnologie per l'Impresa Digitale (ITID).
 
 % Nello specifico, il sistema è stato esteso con un motore di calcolo KPI sviluppato in Python (sfruttando la libreria Pandas). Questa implementazione aggiuntiva preleva gli storici degli allarmi (esportati asincronamente in CSV) ed estrae metriche di livello enterprise, quali:
@@ -2463,14 +2464,15 @@ Durante lo svolgimento del progetto di stage sono stati completati tutti gli obi
 \section{Limiti del sistema e sviluppi futuri}
 
 Sebbene l'architettura implementata abbia raggiunto gli obiettivi prefissati, e quindi ha ridotto il carico di lavoro manuale per la gestione dell'infrastruttura, sono consapevole che rimangano alcuni aspetti critici sia a livello implementativo che architetturale.
-Spesso dovuti a inesperienza e limiti temporali.
+Spesso dovuti a inesperienza e a limiti temporali.
 
-Dal punto di vista imlementativo manca un sistema di controlla di versione per il codice. Purtroppo in Secoval non è comune gestire codice e l'importanza di sistemi come git e github non è stata oggetto di discussione. In futuro inserire il codice in una repository github potrebbe essere un buono strumento per garantire la tracciabilità e la resilienza del codice.
+Dal punto di vista implementativo manca un sistema di controllo di versione per il codice. Purtroppo in Secoval non è comune gestire codice e l'importanza di sistemi come git e github non è stata oggetto di discussione. In futuro inserire il codice in una repository github potrebbe essere un buono strumento per garantire la tracciabilità e la resilienza del codice.
+%DA CONTROLLARE inserire fonti con collegamenti git e github
 
-Inoltre manca un sistema di manuntenzione dell'ambiente Python,
-le librerie installate non sono tracciate oltre che nella documentazione da me redatta e fornita a Secoval.
+Inoltre non è presente un sistema di manuntenzione dell'ambiente Python.
+Le librerie installate non sono tracciate attraverso un file standard \textit{equirements.txt} sono indicato solamente nella documentazione da me redatta e fornita a Secoval.
 
-Dal punto di vista del sstema nel complesso manca una sezione di trubleshooting: nella documentazione appena citata sono presenti i fixes più comuni a cui mi sono rivolto durante l'implementazione e che pensavo possano esser utili in futuro, ma non è stata fatta una analisi dei tool e delle procedure necessarie in caso di guasti al sistema.
+Il sistema è privo una sezione di trubleshooting: nella documentazione appena citata sono presenti i fixes più comuni a cui mi sono rivolto durante l'implementazione e che pensavo potessero esser utili in futuro. Al momento non è stata fatta una analisi dei tool e delle procedure necessarie in caso di guasti al sistema.
 
 
 
@@ -2487,7 +2489,7 @@ Dal punto di vista del sstema nel complesso manca una sezione di trubleshooting:
 
 % Un'analisi critica del sistema, documentata anche nelle linee guida interne redatte per i tecnici aziendali, ha permesso di isolare le seguenti aree di miglioramento e di delineare i relativi sviluppi futuri.
 
-% \subsection*{Limiti Architetturali e di Sicurezza}
+% \subsection{Limiti Architetturali e di Sicurezza}
 % \begin{itemize}
 %     \item \textbf{Hardcoding delle Credenziali:} Attualmente, le password per l'accesso HTTP (Digest Auth) alle telecamere Hikvision e i path delle chiavi crittografiche per la generazione dei JWT verso Interacta sono inseriti in chiaro all'interno degli script Python (\textit{hardcoded}). Questa prassi espone a rischi di sicurezza nel caso in cui un utente non autorizzato ottenga accesso in lettura al file system.
 %           \textit{Sviluppo futuro:} Esternalizzare i segreti aziendali implementando un file di configurazione separato (\texttt{.env}) letto a runtime tramite la libreria \texttt{python-dotenv}, oppure, in un'ottica più \textit{enterprise}, sfruttare nativamente le \textbf{Zabbix Vault Macros} (es. integrazione con HashiCorp Vault) per iniettare i segreti in memoria solo al momento dell'esecuzione.
@@ -2499,14 +2501,14 @@ Dal punto di vista del sstema nel complesso manca una sezione di trubleshooting:
 %           \textit{Sviluppo futuro:} Implementare logiche di \textit{retry} asincrone con \textit{exponential backoff} nello script di apertura ticket, in modo da non perdere gli allarmi in caso di cloud irraggiungibile. Parallelamente, standardizzare il backup del database Zabbix e gli snapshot della Virtual Machine sull'infrastruttura di virtualizzazione (Nutanix).
 % \end{itemize}
 
-% \subsection*{Colli di Bottiglia Prestazionali (Performance Bottlenecks)}
+% \subsection{Colli di Bottiglia Prestazionali (Performance Bottlenecks)}
 % Dal punto di vista computazionale, il limite maggiore del middleware attuale riguarda l'orchestrazione dei processi secondari. Nello specifico, per inviare i dati a Zabbix o configurare l'ascolto XML delle telecamere, lo script Python si affida pesantemente al modulo \texttt{subprocess} per richiamare eseguibili esterni come \texttt{zabbix\_sender} o script ausiliari in Bash (es. \texttt{configura\_telecamere.sh}).
 
 % In una situazione di regolarità, questo approccio funziona in modo asincrono (\textit{fire-and-forget}) senza causare latenza. Tuttavia, in uno scenario di \textit{Alert Storm} (tempesta di allarmi) – ad esempio se un fulmine causa lo sbalzo di tensione su un intero comune facendo scattare simultaneamente decine di telecamere – il listener Python si troverebbe a lanciare contemporaneamente decine di processi figlio (sub-shell Bash). L'overhead derivante dal continuo \textit{context switching} a livello di sistema operativo comporterebbe un inevitabile picco di utilizzo della CPU della macchina virtuale.
 
 % \textit{Sviluppo futuro per l'ottimizzazione:} Il paradigma deve evolvere da un modello basato sull'invocazione di processi esterni (\textit{multiprocessing} indiretto) a un modello totalmente integrato e asincrono a livello applicativo (\textit{asyncio}). Eliminando gli script Bash di mezzo, le richieste HTTP verso le telecamere e le comunicazioni verso le API possono essere gestite direttamente dal codice Python impiegando la libreria \textbf{\texttt{aiohttp}}. L'uso di \textit{coroutine} e di un \textit{event loop} singolo permetterebbe di processare migliaia di eventi concorrenti consumando una frazione della RAM e della CPU attualmente impiegate.
 
-% \subsection*{Estensione Orizzontale del Monitoraggio}
+% \subsection{Estensione Orizzontale del Monitoraggio}
 % Dal punto di vista funzionale, avendo validato l'architettura su TVCC e Access Point, lo sviluppo futuro più naturale consiste nell'integrazione di nuove classi di sensori \textbf{IoT (Internet of Things)} in via di sviluppo presso i comuni serviti da Secoval. L'infrastruttura Zabbix, ora dotata di script di provisioning API e interfacciata con il ticketing aziendale, è pronta per accogliere nativamente sensori ambientali (qualità dell'aria, PM10), sensori di controllo dei livelli dei fiumi o sistemi di illuminazione intelligente (Smart Lighting), centralizzando ulteriormente il controllo del territorio in un'unica piattaforma ingegnerizzata.
 % Citazioni e Bibliografia:
 
@@ -2526,9 +2528,9 @@ Il periodo di tirocinio trascorso presso Secoval ha rappresentato una importante
 
 Il passaggio dallo studio universitario alla pratica in azienda mi ha posto di fronte a problematiche che non pensavo sarebbero state così preponderanti. Mentre all'università spesso si evidenzia la correttezza e gli standard dei processi, in azienda ho dovuto misurarmi con la natura imprevedibile del sistema distribuito ed eterogeneo della rete smart city gestita da Secoval.
 
-Ho toccato con mano come l'terogeneità di questi sistemi renda molto complesso orchestrare l monitoraggio e richieda ad ogni passaggio dei compromessi tecnici e implementativi.
+Ho toccato con mano come l'eterogeneità di questi sistemi renda molto complesso orchestrare il monitoraggio e richieda ad ogni passaggio dei compromessi tecnici e implementativi.
 
-Inoltre il dialogo con il personale di Interacta riguardo gli endpoint necessari per il corretto funzionamento del sistema di ticketing è stato istruttivo, nel senso che ho realizzato come la creazione di sistemi, anche software, è per la maggior parte discussione e confronto e la parte di interazione tra persone è ancora più importante per l'efficacie realizzazione di qualsiasi progetto.
+Inoltre, il dialogo con il personale di Interacta, riguardo gli endpoint necessari per il corretto funzionamento del sistema di ticketing, è stato istruttivo, nel senso che ho realizzato come la creazione di sistemi, anche software, è per la maggior parte discussione e confronto e la parte di interazione tra persone è ancora più importante per l'efficacie realizzazione di qualsiasi progetto.
 
 Infine, sono stato soddisfatto di aver condotto in prima persona l'intero ciclo di vita di questo progetto. È gratificante aver rilasciato un sistema attualmente in produzione e utile nell'immediato. Questa esperienza aziendale mi lascia con una consapevolezza delle mie capacità e sicuramente meno timore nell'affrontare nuove sfide. DA CONTROLLARE come imminente percorso di studi magistrale in ambito informatico.
 
@@ -2553,6 +2555,7 @@ Infine, sono stato soddisfatto di aver condotto in prima persona l'intero ciclo 
 
 %     Immagini e Tabelle: In questa specifica sezione è caldamente sconsigliato inserire tabelle tecniche o schemi, in quanto si tratta di un testo riflessivo e discorsivo. Al massimo, se il tuo relatore lo gradisce, potresti inserire una "Timeline" grafica o un Diagramma di Gantt a consuntivo che mostri le fasi temporali del tuo stage (Studio, Prototipazione, Sviluppo, Messa in produzione).
 \chapter*{Glossario}
+\markboth{GLOSSARIO}{GLOSSARIO}
 
 Per facilitare la lettura di seguito vengono definiti i termini tecnici principali,
 i protocolli e i concetti architetturali utilizzati nel progetto.
@@ -2970,15 +2973,20 @@ i protocolli e i concetti architetturali utilizzati nel progetto.
 \\
 \\
 \\
-\textit{Infine, un grazie speciale va ai compagni universitari che nel tempo sono
-    diventati amici, con cui ho condiviso momenti di studio e di svago, rendendo questa esperienza ancora più memorabile.}
+\textit{Infine, un grazie va ai compagni universitari che nel tempo sono
+    diventati amici, con cui ho condiviso momenti di studio e di svago.}
 \\
 \\
 \\
-\textit{Brescia, Luglio 2026}
+\textit{Brescia, 15 Luglio 2026}
 %\hspace{1cm}
 \hfill{}
 \textit{Brando Calderara}
 %\textit{[Spazio dedicato ai ringraziamenti: al Prof. Gringoli, al tutor aziendale in Secoval, famiglia e amici].}
+\clearpage
+\thispagestyle{empty} % Removes headers and page numbers
+\mbox{}               % Inserts invisible content to force page creation
+\clearpage
 
 \end{document}
+
