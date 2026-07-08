@@ -2161,15 +2161,15 @@ Durante lo svolgimento del progetto di stage sono stati completati tutti gli obi
 %     \item \textbf{Orchestrazione e Ticketing "Zero-Touch":} L'integrazione con la piattaforma cloud aziendale Interacta è pienamente operativa. L'implementazione di un'architettura Server-to-Server basata su token crittografici JWT (RS512) garantisce l'apertura e la risoluzione automatica e sicura dei ticket, azzerando il carico di lavoro manuale per gli operatori della centrale operativa.
 % \end{itemize}
 
-\subsection*{Implementazioni Aggiuntive (Plusvalore del Progetto)}
-Oltre a soddisfare pienamente i requisiti iniziali, il progetto ha introdotto funzionalità analitiche non previste originariamente, spostando il focus dal semplice "monitoraggio" alla "Business Intelligence" applicata alle infrastrutture, un aspetto centrale nel percorso di Ingegneria delle Tecnologie per l'Impresa Digitale (ITID).
+% \subsection*{Implementazioni Aggiuntive (Plusvalore del Progetto)}
+% Oltre a soddisfare pienamente i requisiti iniziali, il progetto ha introdotto funzionalità analitiche non previste originariamente, spostando il focus dal semplice "monitoraggio" alla "Business Intelligence" applicata alle infrastrutture, un aspetto centrale nel percorso di Ingegneria delle Tecnologie per l'Impresa Digitale (ITID).
 
-Nello specifico, il sistema è stato esteso con un motore di calcolo KPI sviluppato in Python (sfruttando la libreria Pandas). Questa implementazione aggiuntiva preleva gli storici degli allarmi (esportati asincronamente in CSV) ed estrae metriche di livello enterprise, quali:
-\begin{itemize}
-    \item Il calcolo automatico del \textbf{Mean Time To Resolution (MTTR)} per valutare l'efficienza degli interventi sul territorio.
-    \item L'identificazione degli host soggetti a \textbf{Flapping}, permettendo al management aziendale di Secoval di attuare politiche di manutenzione predittiva su hardware degradato o su ponti radio LTE instabili.
-\end{itemize}
-Infine, l'orchestrazione nativa tramite Crontab e la spedizione automatizzata di questi report via SMTP ha fornito all'azienda uno strumento decisionale proattivo, confermando l'efficacia dell'architettura ingegnerizzata durante il tirocinio.
+% Nello specifico, il sistema è stato esteso con un motore di calcolo KPI sviluppato in Python (sfruttando la libreria Pandas). Questa implementazione aggiuntiva preleva gli storici degli allarmi (esportati asincronamente in CSV) ed estrae metriche di livello enterprise, quali:
+% \begin{itemize}
+%     \item Il calcolo automatico del \textbf{Mean Time To Resolution (MTTR)} per valutare l'efficienza degli interventi sul territorio.
+%     \item L'identificazione degli host soggetti a \textbf{Flapping}, permettendo al management aziendale di Secoval di attuare politiche di manutenzione predittiva su hardware degradato o su ponti radio LTE instabili.
+% \end{itemize}
+% Infine, l'orchestrazione nativa tramite Crontab e la spedizione automatizzata di questi report via SMTP ha fornito all'azienda uno strumento decisionale proattivo, confermando l'efficacia dell'architettura ingegnerizzata durante il tirocinio.
 % Citazioni e Bibliografia:
 
 %     Scientifiche/Metodologiche: Testi o pubblicazioni sul paradigma delle smart city e sull'importanza dell'Internet of Things (IoT) per la gestione del territorio pubblico. Eventuali riferimenti al PMBOK (Project Management Body of Knowledge) per la definizione, misurazione e chiusura formale dei requisiti di progetto (scope management).
@@ -2181,11 +2181,32 @@ Infine, l'orchestrazione nativa tramite Crontab e la spedizione automatizzata di
 %     Tabelle: Una tabella "As-Is" vs "To-Be" (Prima del tirocinio vs Dopo il tirocinio). Colonne: Funzionalità (es. Inserimento Host, Rilevazione Guasti, Apertura Ticket), Metodo Precedente (Manuale, Ping, Chiamata telefonica), Metodo Implementato (Automazione API, Listener L7 Python, JWT API Interacta).
 
 %     Immagini: Questo è il momento di mostrare il risultato finale. Inserisci uno o due screenshot puliti della Geomap di Zabbix popolata con i sensori, o della dashboard principale che mostra i trigger e gli host group di Secoval.
-\section{Limiti del sistema e Sviluppi Futuri}
+\section{Limiti del sistema e sviluppi futuri}
 
-Sebbene l'architettura implementata abbia raggiunto gli obiettivi prefissati, riducendo drasticamente il carico di lavoro manuale per la gestione dell'infrastruttura smart city, la messa in produzione ha fatto emergere alcuni limiti intrinseci. Parte di questi limiti derivano da scelte implementative necessarie per rispettare le tempistiche del tirocinio, generando quello che in ingegneria del software viene definito \textit{debito tecnico}.
+Sebbene l'architettura implementata abbia raggiunto gli obiettivi prefissati, e quindi ha ridotto il carico di lavoro manuale per la gestione dell'infrastruttura, sono consapevole che rimangano alcuni aspetti critici sia a livello implementativo che architetturale.
+Spesso dovuti a inesperienza e limiti temporali.
 
-Un'analisi critica del sistema, documentata anche nelle linee guida interne redatte per i tecnici aziendali, ha permesso di isolare le seguenti aree di miglioramento e di delineare i relativi sviluppi futuri.
+Dal punto di vista imlementativo manca un sistema di controlla di versione per il codice. Purtroppo in Secoval non è comune gestire codice e l'importanza di sistemi come git e github non è stata oggetto di discussione. In futuro inserire il codice in una repository github potrebbe essere un buono strumento per garantire la tracciabilità e la resilienza del codice.
+
+Inoltre manca un sistema di manuntenzione dell'ambiente Python,
+le librerie installate non sono tracciate oltre che nella documentazione da me redatta e fornita a Secoval.
+
+Dal punto di vista del sstema nel complesso manca una sezione di trubleshooting: nella documentazione appena citata sono presenti i fixes più comuni a cui mi sono rivolto durante l'implementazione e che pensavo possano esser utili in futuro, ma non è stata fatta una analisi dei tool e delle procedure necessarie in caso di guasti al sistema.
+
+
+
+
+
+% riducendo drasticamente il carico di lavoro manuale per la gestione dell'infrastruttura smart city, la messa in produzione ha fatto emergere alcuni limiti intrinseci. Parte di questi limiti derivano da scelte implementative necessarie per rispettare le tempistiche del tirocinio, generando quello che in ingegneria del software viene definito \textit{debito tecnico}.
+
+
+
+
+
+
+
+
+% Un'analisi critica del sistema, documentata anche nelle linee guida interne redatte per i tecnici aziendali, ha permesso di isolare le seguenti aree di miglioramento e di delineare i relativi sviluppi futuri.
 
 \subsection*{Limiti Architetturali e di Sicurezza}
 \begin{itemize}
