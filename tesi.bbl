@@ -48,6 +48,35 @@
       \verb https://ubuntu.com/download/server
       \endverb
     \endentry
+    \entry{hikvision_isapi_main}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=3402b89abc58152af993de87d28107ba}{%
+           family={{Hikvision Digital Technology}},
+           familyi={H\bibinitperiod}}}%
+      }
+      \strng{namehash}{3402b89abc58152af993de87d28107ba}
+      \strng{fullhash}{3402b89abc58152af993de87d28107ba}
+      \strng{bibnamehash}{3402b89abc58152af993de87d28107ba}
+      \strng{authorbibnamehash}{3402b89abc58152af993de87d28107ba}
+      \strng{authornamehash}{3402b89abc58152af993de87d28107ba}
+      \strng{authorfullhash}{3402b89abc58152af993de87d28107ba}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 8 Luglio 2026}
+      \field{title}{Intelligent Security API (ISAPI) Developer Documentation}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://tpp.hikvision.com/download/ISAPI_OTAP
+      \endverb
+      \verb{url}
+      \verb https://tpp.hikvision.com/download/ISAPI_OTAP
+      \endverb
+    \endentry
     \entry{Interacta}{manual}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=95da935e2a82bfb5cc23fde6167fde52}{%
@@ -75,6 +104,128 @@
       \endverb
       \verb{url}
       \verb https://www.interacta.space/chi-siamo/
+      \endverb
+    \endentry
+    \entry{rfc7519}{misc}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=6cbc149988b97e090d3545b31dd51116}{%
+           family={{Internet Engineering Task Force (IETF)}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{6cbc149988b97e090d3545b31dd51116}
+      \strng{fullhash}{6cbc149988b97e090d3545b31dd51116}
+      \strng{bibnamehash}{6cbc149988b97e090d3545b31dd51116}
+      \strng{authorbibnamehash}{6cbc149988b97e090d3545b31dd51116}
+      \strng{authornamehash}{6cbc149988b97e090d3545b31dd51116}
+      \strng{authorfullhash}{6cbc149988b97e090d3545b31dd51116}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 8 Luglio 2026}
+      \field{title}{RFC 7519: JSON Web Token (JWT)}
+      \field{year}{2015}
+      \verb{urlraw}
+      \verb https://datatracker.ietf.org/doc/html/rfc7519
+      \endverb
+      \verb{url}
+      \verb https://datatracker.ietf.org/doc/html/rfc7519
+      \endverb
+    \endentry
+    \entry{man_crontab}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=a40070697728cad9d8549b53d95f49d4}{%
+           family={{Linux man-pages project}},
+           familyi={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{fullhash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{bibnamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authorbibnamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authornamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authorfullhash}{a40070697728cad9d8549b53d95f49d4}
+      \field{extraname}{1}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradate}{1}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 8 Luglio 2026}
+      \field{title}{crontab - Linux manual page}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://man7.org/linux/man-pages/man5/crontab.5.html
+      \endverb
+      \verb{url}
+      \verb https://man7.org/linux/man-pages/man5/crontab.5.html
+      \endverb
+    \endentry
+    \entry{man_logrotate}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=a40070697728cad9d8549b53d95f49d4}{%
+           family={{Linux man-pages project}},
+           familyi={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{fullhash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{bibnamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authorbibnamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authornamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authorfullhash}{a40070697728cad9d8549b53d95f49d4}
+      \field{extraname}{2}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradate}{2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 8 Luglio 2026}
+      \field{title}{logrotate - Linux manual page}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://man7.org/linux/man-pages/man8/logrotate.8.html
+      \endverb
+      \verb{url}
+      \verb https://man7.org/linux/man-pages/man8/logrotate.8.html
+      \endverb
+    \endentry
+    \entry{man_systemd}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=a40070697728cad9d8549b53d95f49d4}{%
+           family={{Linux man-pages project}},
+           familyi={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{fullhash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{bibnamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authorbibnamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authornamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authorfullhash}{a40070697728cad9d8549b53d95f49d4}
+      \field{extraname}{3}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradate}{3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 8 Luglio 2026}
+      \field{title}{systemd, init - Linux manual page}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://man7.org/linux/man-pages/man1/init.1.html
+      \endverb
+      \verb{url}
+      \verb https://man7.org/linux/man-pages/man1/init.1.html
       \endverb
     \endentry
     \entry{OpenStreetMap}{manual}{}
@@ -142,6 +293,37 @@
       \verb https://www.paessler.com/prtg/prtg-network-monitor#pricing
       \endverb
     \endentry
+    \entry{pypi_org}{misc}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=c7b5508dc5e59a2846d22617276cc27c}{%
+           family={{Python Software Foundation}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{fullhash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{bibnamehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{authorbibnamehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{authornamehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{authorfullhash}{c7b5508dc5e59a2846d22617276cc27c}
+      \field{extraname}{1}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradate}{1}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 8 Luglio 2026}
+      \field{title}{PyPI - The Python Package Index}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://pypi.org/
+      \endverb
+      \verb{url}
+      \verb https://pypi.org/
+      \endverb
+    \endentry
     \entry{PythonSoftwareFoundation}{manual}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=c7b5508dc5e59a2846d22617276cc27c}{%
@@ -154,8 +336,10 @@
       \strng{authorbibnamehash}{c7b5508dc5e59a2846d22617276cc27c}
       \strng{authornamehash}{c7b5508dc5e59a2846d22617276cc27c}
       \strng{authorfullhash}{c7b5508dc5e59a2846d22617276cc27c}
+      \field{extraname}{2}
       \field{sortinit}{P}
       \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradate}{2}
       \field{extradatescope}{labelyear}
       \field{labeldatesource}{}
       \true{uniqueprimaryauthor}
@@ -307,6 +491,35 @@
       \verb https://ubuntu.com/download/server
       \endverb
     \endentry
+    \entry{hikvision_isapi_main}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=3402b89abc58152af993de87d28107ba}{%
+           family={{Hikvision Digital Technology}},
+           familyi={H\bibinitperiod}}}%
+      }
+      \strng{namehash}{3402b89abc58152af993de87d28107ba}
+      \strng{fullhash}{3402b89abc58152af993de87d28107ba}
+      \strng{bibnamehash}{3402b89abc58152af993de87d28107ba}
+      \strng{authorbibnamehash}{3402b89abc58152af993de87d28107ba}
+      \strng{authornamehash}{3402b89abc58152af993de87d28107ba}
+      \strng{authorfullhash}{3402b89abc58152af993de87d28107ba}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 8 Luglio 2026}
+      \field{title}{Intelligent Security API (ISAPI) Developer Documentation}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://tpp.hikvision.com/download/ISAPI_OTAP
+      \endverb
+      \verb{url}
+      \verb https://tpp.hikvision.com/download/ISAPI_OTAP
+      \endverb
+    \endentry
     \entry{Interacta}{manual}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=95da935e2a82bfb5cc23fde6167fde52}{%
@@ -334,6 +547,128 @@
       \endverb
       \verb{url}
       \verb https://www.interacta.space/chi-siamo/
+      \endverb
+    \endentry
+    \entry{rfc7519}{misc}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=6cbc149988b97e090d3545b31dd51116}{%
+           family={{Internet Engineering Task Force (IETF)}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{6cbc149988b97e090d3545b31dd51116}
+      \strng{fullhash}{6cbc149988b97e090d3545b31dd51116}
+      \strng{bibnamehash}{6cbc149988b97e090d3545b31dd51116}
+      \strng{authorbibnamehash}{6cbc149988b97e090d3545b31dd51116}
+      \strng{authornamehash}{6cbc149988b97e090d3545b31dd51116}
+      \strng{authorfullhash}{6cbc149988b97e090d3545b31dd51116}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 8 Luglio 2026}
+      \field{title}{RFC 7519: JSON Web Token (JWT)}
+      \field{year}{2015}
+      \verb{urlraw}
+      \verb https://datatracker.ietf.org/doc/html/rfc7519
+      \endverb
+      \verb{url}
+      \verb https://datatracker.ietf.org/doc/html/rfc7519
+      \endverb
+    \endentry
+    \entry{man_crontab}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=a40070697728cad9d8549b53d95f49d4}{%
+           family={{Linux man-pages project}},
+           familyi={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{fullhash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{bibnamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authorbibnamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authornamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authorfullhash}{a40070697728cad9d8549b53d95f49d4}
+      \field{extraname}{1}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradate}{1}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 8 Luglio 2026}
+      \field{title}{crontab - Linux manual page}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://man7.org/linux/man-pages/man5/crontab.5.html
+      \endverb
+      \verb{url}
+      \verb https://man7.org/linux/man-pages/man5/crontab.5.html
+      \endverb
+    \endentry
+    \entry{man_logrotate}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=a40070697728cad9d8549b53d95f49d4}{%
+           family={{Linux man-pages project}},
+           familyi={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{fullhash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{bibnamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authorbibnamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authornamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authorfullhash}{a40070697728cad9d8549b53d95f49d4}
+      \field{extraname}{2}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradate}{2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 8 Luglio 2026}
+      \field{title}{logrotate - Linux manual page}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://man7.org/linux/man-pages/man8/logrotate.8.html
+      \endverb
+      \verb{url}
+      \verb https://man7.org/linux/man-pages/man8/logrotate.8.html
+      \endverb
+    \endentry
+    \entry{man_systemd}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=a40070697728cad9d8549b53d95f49d4}{%
+           family={{Linux man-pages project}},
+           familyi={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{fullhash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{bibnamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authorbibnamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authornamehash}{a40070697728cad9d8549b53d95f49d4}
+      \strng{authorfullhash}{a40070697728cad9d8549b53d95f49d4}
+      \field{extraname}{3}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradate}{3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 8 Luglio 2026}
+      \field{title}{systemd, init - Linux manual page}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://man7.org/linux/man-pages/man1/init.1.html
+      \endverb
+      \verb{url}
+      \verb https://man7.org/linux/man-pages/man1/init.1.html
       \endverb
     \endentry
     \entry{OpenStreetMap}{manual}{}
@@ -401,6 +736,37 @@
       \verb https://www.paessler.com/prtg/prtg-network-monitor#pricing
       \endverb
     \endentry
+    \entry{pypi_org}{misc}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=c7b5508dc5e59a2846d22617276cc27c}{%
+           family={{Python Software Foundation}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{fullhash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{bibnamehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{authorbibnamehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{authornamehash}{c7b5508dc5e59a2846d22617276cc27c}
+      \strng{authorfullhash}{c7b5508dc5e59a2846d22617276cc27c}
+      \field{extraname}{1}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradate}{1}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 8 Luglio 2026}
+      \field{title}{PyPI - The Python Package Index}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://pypi.org/
+      \endverb
+      \verb{url}
+      \verb https://pypi.org/
+      \endverb
+    \endentry
     \entry{PythonSoftwareFoundation}{manual}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=c7b5508dc5e59a2846d22617276cc27c}{%
@@ -413,8 +779,10 @@
       \strng{authorbibnamehash}{c7b5508dc5e59a2846d22617276cc27c}
       \strng{authornamehash}{c7b5508dc5e59a2846d22617276cc27c}
       \strng{authorfullhash}{c7b5508dc5e59a2846d22617276cc27c}
+      \field{extraname}{2}
       \field{sortinit}{P}
       \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradate}{2}
       \field{extradatescope}{labelyear}
       \field{labeldatesource}{}
       \true{uniqueprimaryauthor}

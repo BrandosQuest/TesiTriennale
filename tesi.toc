@@ -13,7 +13,7 @@
 \contentsline {section}{\numberline {2.1}Ubuntu Server}{13}{section.2.1}%
 \contentsline {section}{\numberline {2.2}Zabbix 7.0 LTS}{14}{section.2.2}%
 \contentsline {section}{\numberline {2.3}Python, Venv e i package pip utilizzati}{15}{section.2.3}%
-\contentsline {section}{\numberline {2.4}Interacta e JSON Web Token (JWT)}{16}{section.2.4}%
+\contentsline {section}{\numberline {2.4}Interacta}{16}{section.2.4}%
 \contentsline {chapter}{\numberline {3}Architettura e configurazione}{17}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Setup della macchina virtuale Ubuntu e gestione dei dati}{17}{section.3.1}%
 \contentsline {subsection}{\numberline {3.1.1}Setup della VM Ubuntu}{17}{subsection.3.1.1}%
@@ -45,14 +45,14 @@
 \contentsline {chapter}{\numberline {5}Integrazione con il sistema di ticketing Interacta}{30}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Scopo e architettura dell'integrazione}{30}{section.5.1}%
 \contentsline {subsection}{\numberline {5.1.1}Autenticazione Server-to-Server}{31}{subsection.5.1.1}%
-\contentsline {section}{\numberline {5.2}Generazione e firma del token JWT}{31}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Struttura del Token e scelta dell'algoritmo}{31}{subsection.5.2.1}%
+\contentsline {section}{\numberline {5.2}Generazione e firma del token JWT}{32}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Struttura del Token e scelta dell'algoritmo}{32}{subsection.5.2.1}%
 \contentsline {subsection}{\numberline {5.2.2}Implementazione in Python}{32}{subsection.5.2.2}%
 \contentsline {section}{\numberline {5.3}Apertura o chiusura del ticket}{33}{section.5.3}%
-\contentsline {chapter}{\numberline {6}Conclusioni}{35}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Raggiungimento degli obiettivi}{35}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Limiti del sistema e sviluppi futuri}{36}{section.6.2}%
-\contentsline {section}{\numberline {6.3}Valutazione Personale}{36}{section.6.3}%
-\contentsline {chapter}{Glossario}{37}{section.6.3}%
-\contentsline {chapter}{Bibliografia}{39}{chapter*.9}%
-\contentsline {chapter}{Ringraziamenti}{40}{chapter*.10}%
+\contentsline {chapter}{\numberline {6}Conclusioni}{36}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Raggiungimento degli obiettivi}{36}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Limiti del sistema e sviluppi futuri}{37}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Valutazione Personale}{37}{section.6.3}%
+\contentsline {chapter}{Glossario}{38}{section.6.3}%
+\contentsline {chapter}{Bibliografia}{40}{chapter*.9}%
+\contentsline {chapter}{Ringraziamenti}{41}{chapter*.10}%
