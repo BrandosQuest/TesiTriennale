@@ -12,7 +12,6 @@
 \contentsline {chapter}{\numberline {2}Tecnologie utilizzate}{13}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Ubuntu Server}{13}{section.2.1}%
 \contentsline {section}{\numberline {2.2}Zabbix 7.0 LTS}{14}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Terminologia parziale per Zabbix}{15}{subsection.2.2.1}%
 \contentsline {section}{\numberline {2.3}Python, Venv e i package pip utilizzati}{15}{section.2.3}%
 \contentsline {section}{\numberline {2.4}Interacta e JSON Web Token (JWT)}{16}{section.2.4}%
 \contentsline {chapter}{\numberline {3}Architettura e configurazione}{17}{chapter.3}%

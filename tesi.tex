@@ -96,7 +96,7 @@
 % ====================================================================
 % FRONTESPIZIO
 % ====================================================================
-% DA CONTROLLARE: mettere a capitolo qualcosa sui kpi e report. sistemare glossario, sistemare foto, aggiungere fonti, correggere testo con mamma.
+% DA CONTROLLARE: . sistemare glossario, sistemare foto, aggiungere fonti, correggere testo con mamma, togliere elenchi.
 % \include{chapters/frontespizioBrandoCalderara}
 \includepdf[pages=1]{Frontespizio/frontespizioBrandoCalderaraUploaded.pdf}
 % \begin{titlepage}
@@ -215,9 +215,9 @@ Secoval srl è una società a capitale interamente pubblico, partecipata dalla C
 
 Le principali aree di operatività dell'azienda includono:
 \begin{itemize}
-    \item \textbf{Infrastrutture IT e cloud:} gestione di data center, servizi cloud, sicurezza informatica e interoperabilità per gli enti pubblici.
-    \item \textbf{Sistemi informativi territoriali:} sviluppo di reti (inclusa la fibra ottica), digitalizzazione del catasto e cartografia.
-    \item \textbf{Servizi sovracomunali e gestionali:} gestione dei tributi locali, supporto amministrativo e al personale degli enti.
+    \item[] le infrastrutture IT e cloud per la gestione di data center, servizi cloud, sicurezza informatica e interoperabilità per gli enti pubblici,
+    \item[] i sistemi informativi territoriali che comprendono lo sviluppo di reti (inclusa la fibra ottica), la digitalizzazione del catasto e la cartografia,
+    \item[] i servizi sovracomunali e gestionali per la gestione dei tributi locali ed il supporto amministrativo e al personale degli enti.
 \end{itemize}
 \begin{figure}[H]
     \centering
@@ -321,9 +321,9 @@ L'infrastruttura monitorata è eterogenea e distribuita sul territorio. I dispos
 
 Il progetto formativo mira a trasformare l'infrastruttura di rete (videosorveglianza, Wi-Fi pubblico) che serve 31 Comuni in un sistema smart city che possa essere monitorato e possa scalare facilmente, lavorando su tre pilastri:
 \begin{itemize}
-    \item Sviluppo e miglioramento del monitoraggio di rete.
-    \item Integrazione degli apparati (telecamere, switch, AP) con la Cartografia GIS per creare uno strumento di gestione georeferenziato.
-    \item Integrazione con la piattaforma cloud di ticketing aziendale Interacta, garantendo la sicurezza delle comunicazioni machine-to-machine.
+    \item[] Sviluppo e miglioramento del monitoraggio di rete.
+    \item[] Integrazione degli apparati (telecamere, switch, AP) con la Cartografia GIS per creare uno strumento di gestione georeferenziato.
+    \item[] Integrazione con la piattaforma cloud di ticketing aziendale Interacta, garantendo la sicurezza delle comunicazioni machine-to-machine.
 \end{itemize}
 \begin{figure}[H]
     \centering
@@ -345,12 +345,12 @@ Il progetto formativo mira a trasformare l'infrastruttura di rete (videosorvegli
 \subsection{Classificazione dei requisiti}
 L'analisi del contesto applicativo e dei vincoli imposti dall'infrastruttura e dall'azienda ha portato alla definizione dei seguenti requisiti tecnici e funzionali.
 
-\textbf{Requisiti}
+Requisiti:
 \begin{itemize}
-    \item \textbf{Associazione metadati:} attraverso un Configuration Management Database in formato Excel, il sistema deve associare agli host, identificati con gli indirizzi IP, metadati specifici (ID Host, ID Palo).
-    \item \textbf{Gestione degli eventi TVCC:} il monitoraggio deve intercettare logiche di allarme provenienti dalle telecamere, come il \textit{Video Tampering} e il \textit{Motion Detection}, mediante l'ascolto continuo degli stream ISAPI  e visualizzarli nel frontend di Zabbix.
-    \item \textbf{Automazione del ticketing (Interacta):} al verificarsi di un disservizio o al suo rientro, il sistema deve interfacciarsi con le API REST del cloud aziendale Interacta per gestire l'apertura e la risoluzione automatica dei ticket. La comunicazione machine-to-machine deve supportare qualche tipo di autenticazione.
-    \item \textbf{Elaborazione KPI:} il sistema deve estrarre informazioni e metriche riguardo gli host, per offrire anche una visione d'insieme sullo stato del sistema.
+    \item[] \textbf{Associazione metadati:} attraverso un Configuration Management Database in formato Excel, il sistema deve associare agli host, identificati con gli indirizzi IP, metadati specifici (ID Host, ID Palo).
+    \item[] \textbf{Gestione degli eventi TVCC:} il monitoraggio deve intercettare logiche di allarme provenienti dalle telecamere, come il \textit{Video Tampering} e il \textit{Motion Detection}, mediante l'ascolto continuo degli stream ISAPI  e visualizzarli nel frontend di Zabbix.
+    \item[] \textbf{Automazione del ticketing (Interacta):} al verificarsi di un disservizio o al suo rientro, il sistema deve interfacciarsi con le API REST del cloud aziendale Interacta per gestire l'apertura e la risoluzione automatica dei ticket. La comunicazione machine-to-machine deve supportare qualche tipo di autenticazione.
+    \item[] \textbf{Elaborazione KPI:} il sistema deve estrarre informazioni e metriche riguardo gli host, per offrire anche una visione d'insieme sullo stato del sistema.
 \end{itemize}
 
 \begin{figure}[H]
@@ -455,33 +455,35 @@ Per questo progetto è stata adottata la versione 7.0 LTS (Long Term Support) \p
     \item \textbf{API JSON-RPC:} l’API web di Zabbix, un'interfaccia strutturata che consente il controllo totale della piattaforma via codice. È stata utilizzata per popolare l'Host Inventory leggendo i metadati dal CMDB aziendale.
     \item \textbf{Custom AlertScripts:} la capacità di lanciare eseguibili esterni (Python, Bash...) al verificarsi di un evento. Questo modulo è stato impiegato per integrare Zabbix con la piattaforma cloud Interacta, e per creare un sistema di logging del sistema.
 \end{itemize}
-\subsection{Terminologia parziale per Zabbix}
-Per facilitare la lettura e la comprensione di questo elaborato a personale non strettamente sistemistico,
-di seguito vengono definiti i termini tecnici principali, riguardo Zabbix, utilizzati nel progetto ripresi dal glossario.
 
-% Unlike itemize (bullets) or enumerate (numbers),
-%the description environment allows for custom, text-based labels for each
-\begin{description}
-    % \item[Zabbix:] è una piattaforma software open-source per il monitoraggio proattivo
-    %       di infrastrutture IT, reti, server, macchine virtuali e servizi cloud.
-    %       Consente di raccogliere, visualizzare e analizzare metriche in tempo reale
-    %       (come utilizzo CPU, RAM, rete e spazio disco), inviando avvisi immediati in caso di anomalie.
-    \item[Host:] qualsiasi dispositivo fisico o virtuale monitorato dal sistema.
-          Nel nostro caso, una telecamera, uno switch, un Access Point o un router.
-    \item[Item:] la singola metrica o il singolo dato raccolto da un Host.
-          Esempi di item sono: la risposta di un comando ping a un host o il tempo di risposta,
-          la risposta ricevuta da un comando, il valore di un sensore fisico o virtuale.
-    \item[Trigger:] una regola logica associata a un Item.
-          Es. la telecamera non risponde al ping per 3 minuti, il Trigger "scatta" e genera un allarme (Problem).
-    \item[Action:] l'azione automatica che il sistema intraprende quando qualche evento soddisfa alcune condizioni.
-          Può essere relativa ai trigger o alla scoperta di un nuovo host.
-    \item[Template:] un modello preconfigurato che contiene un insieme logico di
-          Item, Trigger e regole. Viene applicato a più dispositivi per evitare di configurarli manualmente.
-    \item[Macro:] variabili integrate in Zabbix (scritte tra parentesi graffe,
-          es. \texttt{\{HOST.NAME\}}) che permettono di inserire dinamicamente il nome,
-          l'IP o altri dati all'interno di svariati campi, per esempio le mail di allarme.
+Per facilitare la lettura e la comprensione di questo elaborato si consiglia la lettura delle voci del glossario riguardanti Zabbix. Identificate da: "(Zabbix)".
+% \subsection{Terminologia parziale per Zabbix}
+% Per facilitare la lettura e la comprensione di questo elaborato a personale non strettamente sistemistico,
+% di seguito vengono definiti i termini tecnici principali, riguardo Zabbix, utilizzati nel progetto ripresi dal glossario.
 
-\end{description}
+% % Unlike itemize (bullets) or enumerate (numbers),
+% %the description environment allows for custom, text-based labels for each
+% \begin{description}
+%     % \item[Zabbix:] è una piattaforma software open-source per il monitoraggio proattivo
+%     %       di infrastrutture IT, reti, server, macchine virtuali e servizi cloud.
+%     %       Consente di raccogliere, visualizzare e analizzare metriche in tempo reale
+%     %       (come utilizzo CPU, RAM, rete e spazio disco), inviando avvisi immediati in caso di anomalie.
+%     \item[Host:] qualsiasi dispositivo fisico o virtuale monitorato dal sistema.
+%           Nel nostro caso, una telecamera, uno switch, un Access Point o un router.
+%     \item[Item:] la singola metrica o il singolo dato raccolto da un Host.
+%           Esempi di item sono: la risposta di un comando ping a un host o il tempo di risposta,
+%           la risposta ricevuta da un comando, il valore di un sensore fisico o virtuale.
+%     \item[Trigger:] una regola logica associata a un Item.
+%           Es. la telecamera non risponde al ping per 3 minuti, il Trigger "scatta" e genera un allarme (Problem).
+%     \item[Action:] l'azione automatica che il sistema intraprende quando qualche evento soddisfa alcune condizioni.
+%           Può essere relativa ai trigger o alla scoperta di un nuovo host.
+%     \item[Template:] un modello preconfigurato che contiene un insieme logico di
+%           Item, Trigger e regole. Viene applicato a più dispositivi per evitare di configurarli manualmente.
+%     \item[Macro:] variabili integrate in Zabbix (scritte tra parentesi graffe,
+%           es. \texttt{\{HOST.NAME\}}) che permettono di inserire dinamicamente il nome,
+%           l'IP o altri dati all'interno di svariati campi, per esempio le mail di allarme.
+
+%\end{description}
 % Immagini e Tabelle:
 
 %     Immagine (Diagramma Architetturale Zabbix): Inserisci uno schema a blocchi che mostri i componenti core (Zabbix Server, Database, Frontend) e come interagiscono con l'esterno tramite API, Zabbix Sender e Zabbix Agent. Dimostra la comprensione dell'architettura di sistema.
@@ -988,16 +990,16 @@ All'interno del widget \emph{GeoMap}, nativamente disponibile nelle dashboard di
 \section{Reportistica e KPI}
 L'implementazione di un sistema di monitoraggio centralizzato vista fino ad ora genera parallelamente dei dati. Per trasformare questa raccolta di allarmi in informazioni utili al
 management aziendale, è necessario estrarre e analizzare le serie temporali.
-Poiché Zabbix non supporta nativamente l'invio programmato di file arbitrari o analisi testuali complesse via email, è stata progettata un sistema per il salvataggio dei dati relativi agli eventi rilevati da Zabbix e un sistema per la generazione di report automatici.
+Poiché Zabbix non supporta nativamente l'invio programmato di file arbitrari o analisi testuali complesse via email, è stata progettato un sistema per il salvataggio dei dati relativi agli eventi rilevati da Zabbix e un sistema per la generazione di report automatici.
 
 
 \subsection{Esportazione dati evento tramite custom AlertScript}
-Per ottenere l'esportazione degli eventi e dei relativi metadati degli host cinvolti, si è deciso di sfruttare il sistema di \textit{Media Types} di Zabbix. Si è intrapresa questa strada invece di una interrogazione diretta del database MySQL di Zabbix per via dei vincoli temporali del tirocinio e per avere flessibilità di elaborazione diretta dei dati tramite le librerie Python.
+Per ottenere l'esportazione degli eventi e dei relativi metadati degli host coinvolti, si è deciso di sfruttare il sistema di \textit{Media Types} di Zabbix. Si è intrapresa questa strada invece di una interrogazione diretta del database MySQL di Zabbix per via dei vincoli temporali del tirocinio e per avere flessibilità di elaborazione diretta dei dati tramite le librerie Python.
 Solitamente, un Media Type definisce il canale di consegna di una notifica (es. Email, SMS o Telegram). Nel nostro caso, è stato creato un Media Type personalizzato di tipo \textbf{Script}.
 
 A questo Media Type è stata agganciata un'\textit{Action} configurata per scattare ogni volta che si verifica un problema sulla rete smart city. Invece di inviare una mail, Zabbix esegue lo script Bash \texttt{ScriptCustomExportProblemsToCSV.sh} depositato sulla macchina virtuale Ubuntu.
 
-Zabbix passa allo script una stringa contenente tutte le \textbf{Macro} necessarie per l'analisi, i metadati relativi all'host coinvolto. Alcuni parametri in ingresso includono:
+Zabbix passa allo script una stringa contenente tutte le \textbf{Macro} necessarie per l'analisi: i metadati relativi all'host coinvolto. Alcuni parametri in ingresso includono:
 \begin{itemize}
     \item \texttt{\{EVENT.ID\}}: identificativo univoco dell'allarme.
     \item \texttt{\{EVENT.DATE\}} e \texttt{\{EVENT.TIME\}}: timestamp di inizio del disservizio.
@@ -1305,7 +1307,7 @@ Nel report sono presenti:
 % \chapter{Implementazione: Controlli Attivi ed Eventi TVCC}
 \chapter{Rilevamento manomissioni TVCC}
 %Sistema di rilevazione delle manomissioni e dell'oscuramento e come si integra in Zabbix e i suoi avvisi
-Essendo le telecamere di sicurezza oggetto del progetto abbastanza moderne è stato valutato come utile l'utilizzo dei sistemi di
+Essendo le telecamere di sicurezza oggetto del progetto abbastanza moderne, è stato valutato come utile l'utilizzo dei sistemi di
 intelligenza artificiale implementati a bordo per rilevare diversi tipi di eventi che accadono alla singola telecamera.
 Tra questi troviamo la possibilità di rilevare l'oscuramento dell'obiettivo della telecamera.
 Per sfruttare questa funzionalità è stato creato un sistema di raccoglimento e invio automatico di avvisi, integrandolo con Zabbix.
@@ -2530,9 +2532,9 @@ Il passaggio dallo studio universitario alla pratica in azienda mi ha posto di f
 
 Ho toccato con mano come l'eterogeneità di questi sistemi renda molto complesso orchestrare il monitoraggio e richieda ad ogni passaggio dei compromessi tecnici e implementativi.
 
-Inoltre, il dialogo con il personale di Interacta, riguardo gli endpoint necessari per il corretto funzionamento del sistema di ticketing, è stato istruttivo, nel senso che ho realizzato come la creazione di sistemi, anche software, è per la maggior parte discussione e confronto e la parte di interazione tra persone è ancora più importante per l'efficacie realizzazione di qualsiasi progetto.
+Inoltre, il dialogo con il personale di Interacta, riguardo gli endpoint necessari per il corretto funzionamento del sistema di ticketing, è stato istruttivo. Ho realizzato come la creazione di sistemi, anche software, sia per la maggior parte discussione e confronto. La parte di interazione tra persone è molto importante per l'efficacie realizzazione di qualsiasi progetto.
 
-Infine, sono stato soddisfatto di aver condotto in prima persona l'intero ciclo di vita di questo progetto. È gratificante aver rilasciato un sistema attualmente in produzione e utile nell'immediato. Questa esperienza aziendale mi lascia con una consapevolezza delle mie capacità e sicuramente meno timore nell'affrontare nuove sfide. DA CONTROLLARE come imminente percorso di studi magistrale in ambito informatico.
+Infine, sono stato soddisfatto di aver condotto in prima persona l'intero ciclo di vita di questo progetto. È gratificante aver rilasciato un sistema attualmente in produzione e utile nell'immediato. Questa esperienza aziendale mi lascia con una consapevolezza delle mie capacità e sicuramente meno timore nell'affrontare nuove sfide.
 
 % l'impostazione errata dei permessi su un file \textit{PEM} o la mancata gestione di un descrittore in ambiente server possano causare \textit{silent failures} bloccanti, rendendo invisibile il disservizio.
 
