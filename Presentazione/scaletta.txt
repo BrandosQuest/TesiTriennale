@@ -18,10 +18,12 @@ Si occupa di supportare la trasformazione digitale dei Comuni, com-
 presi quelli più periferici, fornendo servizi amministrativi, informatici e gestionali.
 (Infrastrutture IT e cloud, Sistemi informativi territoriali, Servizi sovracomunali e gestionali)
 
-Secoval ha la necessità di gestire una rete eterogenea distribuita sul territorio, comprendente: telecamere per la videosorveglianza, access poits per il wifi pubblico, lettori targa e di switch di supporto oltre che alcuni device(host) delle precedenti categorie che si avvalgono della connettività LTE(long term evolution).
+Secoval ha la necessità di gestire una rete eterogenea distribuita sul territorio, comprendente: telecamere per la videosorveglianza, access points per il wifi pubblico, lettori targa e di switch di supporto oltre che alcuni device(host) delle precedenti categorie che si avvalgono della connettività LTE(long term evolution).
 Questi device sono indicizzati su delle specifiche sottoreti IPv4 in base alla loro natura e al comune di appartenenza; tranne le sottoreti LTE che divise per comune, contengono ogni tipo di device se esso fa uso di connettività LTE e non cablata.
 
-Il problema di Secoval legato a questa premessa è l'assenza di uno strumento centralizzato per rilevare guasti o manomissioni, per il monitoraggio, e per tracciare le operazioni di manutenzione. Di conseguenza gli obiettivi del mio tirocinio sono stati lo sviluppo del monitoraggio di rete, integrazione con un sistema GIS e connessione al servizio di ticketing aziendale
+SLIDE 3
+
+Il problema di Secoval legato a questa premessa è l'assenza di uno strumento centralizzato per rilevare guasti o manomissioni, per il monitoraggio, e per tracciare le operazioni di manutenzione. Di conseguenza gli obiettivi del mio tirocinio sono stati lo sviluppo del monitoraggio di rete, integrazione con un sistema GIS(geographic information sistem) e connessione al servizio di ticketing aziendale
 
 
 /*
