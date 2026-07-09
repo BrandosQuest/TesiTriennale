@@ -38,14 +38,14 @@ Il mio tirocinio aveva come principale obiettivo creare questo strumento, e succ
 
 
 
-
+Slide 4
 Per monitorare la rete e rilevare i guasti mi sono appoggiato al software open source zabbix:  è una piattaforma software open-source per il monitoraggio di infra-strutture IT, reti, server, macchine virtuali e servizi cloud. Consente di raccogliere, visualizzare e analizzare metriche in tempo reale (come utilizzo CPU, RAM, rete e spazio disco), inviando avvisi immediati in caso di anomalie. Esso mi ha permesso di avviare un processo di autodiscovery sulle reti da monitorare per trovare gli host e inserirli nel sistema.
 Questi host erano già presenti negli archivi di secoval con i loro ID e informazioni attinenti alla loro posizione geografica con il campo IDpalo e le coordinate geografiche.
 Queste informazioni erano presenti in 2 diversi file excel che attraverso script python l'utilizzo della libreria pandas e openxls e zabbix API ho potuto associarle ai rispettivi host. questo ha permesso di inizia a ottenere degi "problem" degi avvisi significativi con associata la tipiologia di host e la posizione geografica. Inoltre in zabbix, appoggiandosi all'iniziativa open souce Open streeetmap è possibile visualizzare una mappa degli host che possa funzionare come GIS, é stata adottata come soluzione definitiva dato che implementava già le caratteritiche richieste dell'azienda: trovare gli host con problemi e visualizzarne le caratteristiche.
 
 
 
-
+SLIDE 6
 Da questo momento in poi il sistema ha cominciato a acere un output significativo attraverso il tplate di monitoraggio incluso in zabbix ICMP ping(Internet Control Message Protocol) è un protocollo di livello di rete utilizzato dai dispositivi (come router e computer) per diagnosticare problemi di comunicazione e inviare messaggi di stato). questo template viene assegnato automaticament agli host ed dopo opportune modifiche di tempistiche per la sua attivazione(l'azienda richeide tempistiche lasce come 1h di attesa prima di lanciare un problema) esso permette di attivare su quell'host un problem che contiene il riferimento all'host ed ai suoi metadati.
 
 spesso gli host ritornano online dopo manutenzioni ecc ecc e questo permette alla dashboard di liberarsi ma il sitema di memorizzazione in zabbix degli host impedisce di costruire un sistema per raccogliere trend e dati sui guasti passati. per questo ad ogni passaggio di stato di un host da problem a ok e eda ok a problem viene attibvato un media tipye di tispo script che sulla macchina ubuntu salva il contentuto di questo evento, orario e problem id e host coinvolto in un file CSV.  questo permette di costuire dei report giornalieri e anche dei report mesili e su misura. Per esempio dei report giornalieri con: il totale dei problemi rilevati il giorno precedente, come si dividono nelle 4 tipologie di sottoreti, i problemi non ancora risoltosi automaticamente che necessitano di attenzione, gli host con oscillazioni, e gli allarmi di oscurazione degli obiettivi.
@@ -56,7 +56,7 @@ Uso un file CSV perchè: vincoli di tempo del tirocinio e con la flessibilità d
 
 
 
-
+SLIDE 7
 Le telecamere del sistema sono abbastanza moderne ed hanno a bosrdo dei sistemi di intelligenza artificiale come il motion detectio e il tamper detection. specialmente l'ultimo è interessante per secoval per sapere quando una telecamera è stata oscurata volontariamente o onvolontariamente, da una bomboletta di vernicie o da foglie o detriti.
 Per implementare questo mi sono affiato alla comunicazione HTTP tra la telecamere e e un middleware costruito su misura. Per supprtare questo le telecamere devono sapere che devono avere acceso il loro servizio di tamper detection e la comunicazione stream al servizio di monitoraggio. questo lo ho ottenuto tramite un polling ogni oora delle configurazioni in formato XML ad ogni telecamera sul sistema.
 Successivamente lo script middleware utilizza http per aprire una connessione HTTP persistente (Stream) verso l’endpoint ISAPI delle telecamere (/ISAPI/Event/notification/alertStream). In questo flusso continuo, la telecamera invia frammenti in formato XML ogni volta che accade qualcosa.
@@ -66,7 +66,7 @@ Zabbix, progettato specificamente per inviare dati ad alte prestazioni a Zabbix.
 
 
 
-
+SLIDE 9
 L'ultimo passaggio è stato l'integrazione con il sistema di ticketing aziendale Interacata. In azienda il desiderio era di avere un sistema integrato con quello che viene già utilizzato per gestire i ticket tecnici, in modo che vengano tracciati e che tutto rimanga documentato. 
 Il sistema di basa sull'utilizzo di custom media types di tipo script in Zabix. Esso come nel caso delle informazioni sui vari problemi è in grado di eseguire script sulla macchina che hosta Zabbix passandogli gli argomenti definiti a priori tramite macro, nel nostro caso in secoval si sono definiti utili questi argomenti: 
 "status"
@@ -82,7 +82,7 @@ Il sistema di basa sull'utilizzo di custom media types di tipo script in Zabix. 
 Lo status si divide in "PROBLEM" e "RESOLVED" e questo permette di distinguere per un determinato "problem_ID" se bisogna aprire o chiudere un ticket.
 
 
-
+SLIDE 10
 L'autenticazione server to server tra la macchina di zabbix e il server interacta si sviluppa utilizzando JWT Assertion(Json Web Token) firmata con algoritmo RS512 utilizzando
 una chiave privata fornita in formato JSON. 
 Lo script python che ho svipuppato utilizza il modulo "cryptography" e costruisce un file json con header e pauload poi firmato con RSA.
@@ -141,3 +141,25 @@ Come si svolge l'autenticazione tra il servizio di Interacta e la macchina Ubunt
 
 SLIDE: 10
 Ringraziamenti e saluti finali
+
+
+
+
+Obiettivi della tesi
+
+Nome in file in cartella in pdf: 
+LASCIARE TITOLO IN BANDA IN FORNDO
+
+SLIDE 2 TOGLIERE FIGURA LTE
+2 MODALITÀ DI CONNESSIONE
+
+Collegare meglio il sitemadi ticketing: non solo umani.
+
+
+capacià-->fnzione, feature
+
+chiarire gis
+
+ping non va 
+
+get http e 
