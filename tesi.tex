@@ -258,7 +258,7 @@ Il funzionamento della piattaforma si basa su due metodi per l'acquisizione dei 
 Per questo progetto è stata adottata la versione 7.0 LTS (Long Term Support) \parencite{zabbix7_Docs}. La scelta di una release LTS garantisce stabilità. Utili dal punto di vista delle attività del tirocinio questa versione include:
 
 \begin{itemize}
-    \item \textbf{API JSON-RPC:} l’API web di Zabbix, un'interfaccia strutturata che consente il controllo totale della piattaforma via codice. È stata utilizzata per popolare l'Host Inventory leggendo i metadati dal CMDB aziendale.
+    \item \textbf{API JSON-RPC:} l’API web di Zabbix, un'interfaccia strutturata che consente il controllo totale della piattaforma via codice. È stata utilizzata per popolare l'Host Inventory leggendo i metadati dalle configurazioni aziendali.
     \item \textbf{Custom AlertScripts:} la capacità di lanciare eseguibili esterni (Python, Bash...) al verificarsi di un evento. Questo modulo è stato impiegato per integrare Zabbix con la piattaforma cloud Interacta, e per creare un sistema di logging del sistema.
 \end{itemize}
 
@@ -280,7 +280,7 @@ L'esecuzione degli script all'interno del server Linux si è basata su \texttt{v
 
 La gestione dei pacchetti e delle librerie è stata effettuata tramite \texttt{pip} (Package Installer for Python). Di seguito si riportano alcune librerie impiegate per lo sviluppo dei moduli del tirocinio \parencite{pypi_org}:
 \begin{itemize}
-    \item \textbf{\texttt{pandas} (e \texttt{openpyxl}):} sono librerie molto diffuse per l'analisi e la gestione dei dati. Nel tirocinio sono state utilizzate per leggere e filtrare i file Excel aziendali (i CMDB) contenenti l'elenco degli apparati. Grazie a queste librerie, il sistema è riuscito a estrarre dai file informazioni per configurare i dispositivi su Zabbix senza alcun inserimento manuale.
+    \item \textbf{\texttt{pandas} (e \texttt{openpyxl}):} sono librerie molto diffuse per l'analisi e la gestione dei dati. Nel tirocinio sono state utilizzate per leggere e filtrare i file Excel aziendali contenenti l'elenco degli apparati. Grazie a queste librerie, il sistema è riuscito a estrarre dai file informazioni per configurare i dispositivi su Zabbix senza alcun inserimento manuale.
     \item \textbf{\texttt{pyzabbix}:} è una libreria creata appositamente per facilitare la comunicazione tra Python e Zabbix. Invece di dover costruire richieste HTTP in formato JSON-RPC, questa libreria fa da "traduttore" semplificando il codice. Nel progetto è stata il motore della configurazione dei dispositivi. Ha permesso agli script di autenticarsi sul server Zabbix tramite API token e di lanciare comandi per creare, aggiornare i dispositivi/host.
     \item \textbf{\texttt{requests}:} è una libreria progettata per inviare richieste HTTP. In questo progetto è servita per inviare i dati verso la piattaforma cloud Interacta.
     \item \textbf{\texttt{PyJWT} e \texttt{cryptography}:} sono librerie dedicate alla sicurezza informatica e alla crittografia. Sono state utilizzate per gestire l'autenticazione tra il server Linux e Interacta. %Nello specifico, hanno permesso di generare e firmare in modo sicuro i token di accesso (JWT) tramite l'algoritmo asimmetrico RS512. Questo passaggio era obbligatorio per ottenere l'autorizzazione a creare i ticket sulla piattaforma.
@@ -961,6 +961,7 @@ i protocolli e i concetti architetturali utilizzati nel progetto.
     \item[\hypertarget{glo:api}API (Application Programming Interface):] un'interfaccia o "ponte" software che permette a due sistemi o applicazioni diverse (es. script Python e Zabbix) di parlarsi, passarsi comandi e scambiarsi dati in modo sicuro e automatizzato.
     \item[\hypertarget{glo:apijsonrpc}API JSON-RPC :] (Zabbix) l'API web di Zabbix si basa integralmente sul protocollo JSON-RPC. Qualsiasi operazione eseguibile dall'interfaccia grafica (creazione host, assegnazione template, update dell'inventario) è esposta tramite questo protocollo. Es. il popolamento dell'Host Inventory tramite script Python.
     \item[Asyncio:] modulo nativo di Python per la scrittura di codice concorrente e asincrono single-thread.
+    \item[Base64URL:] variante della codifica Base64 progettata per essere sicura all'interno degli URL. Sostituisce i caratteri potenzialmente problematici, evitando ambiguità nella trasmissione web dei token JWT.
     \item[Bash:] interprete di comandi testuale predefinito nei sistemi operativi Unix e Linux, per interagire con il sistema operativo ed eseguire script.
     \item[\hypertarget{glo:comunicazioneasincrona}Comunicazione asincrona:] la comunicazione asincrona non richiede la presenza contemporanea degli interlocutori (es. email, ticket o messaggi su Slack e Dropbox, protocollo MQTT). Consente di gestire i messaggi senza interruzioni e di gestire il proprio tempo.
     \item[\hypertarget{glo:comunicazionesincrona}Comunicazione sincrona:] la comunicazione sincrona avviene in tempo reale (es. chiamate, riunioni su Panopto o Zoom, protocollo HTTP). Le decisioni e la gestione dei messaggi devono essere rapide.
@@ -981,19 +982,24 @@ i protocolli e i concetti architetturali utilizzati nel progetto.
     \item[JWT (JSON Web Token):] standard aperto per la trasmissione sicura di informazioni tra due parti come oggetto JSON \parencite{JWT}.
     \item[KPI (Key Performance Indicator):] metriche quantificabili utilizzate per misurare l'efficacia e i progressi di un'azienda. Consentono di valutare le prestazioni e prendere decisioni basate sui dati.
     \item[Logrotate:] utility di sistema Linux progettata per amministrare sistemi che generano un gran numero di file di log, ruotandoli e comprimendoli \parencite{man_logrotate}.
+    \item[LTE (Long Term Evolution):] standard di telecomunicazioni per la trasmissione dati su reti mobili. Nel progetto viene impiegato per fornire connettività ad apparati situati in aree remote.
     \item[Machine-to-Machine:] paradigma di comunicazione in cui dispositivi hardware, sensori o server che scambiano informazioni e avviano azioni in modo autonomo, senza intervento umano.
     \item[\hypertarget{glo:macro}Macro:] (Zabbix) variabili integrate in Zabbix (scritte tra parentesi graffe, es. \\\texttt{\{HOST.NAME\}}) che permettono di inserire dinamicamente il nome, l'IP o altri dati all'interno di svariati campi, per esempio le mail di allarme.
     \item[Middleware:] componente software che funge da intermediario tra applicazioni, sistemi operativi o protocolli di rete diversi, traducendo e facilitando lo scambio di dati.
     \item[Polling:] processo di interrogazione continua e ciclica con cui un sistema verifica lo stato di dispositivi periferici. Nel caso del monitoraggio da parte di Zabbix il server centrale interroga ciclicamente e a intervalli regolari i dispositivi periferici per ottenerne lo stato operativo.
+    \item[RSA (Rivest-Shamir-Adleman):] algoritmo di crittografia asimmetrica, basato sull'utilizzo di una coppia di chiavi asimmetriche (una pubblica e una privata).
     \item[RS512:] algoritmo di crittografia asimmetrica; RS512 utilizza RSA combinato con la funzione di hash SHA-512 per la firma digitale.
     \item[SMTP (Simple Mail Transfer Protocol):] protocollo standard impiegato per la trasmissione di messaggi di posta elettronica tra server.
     \item[\hypertarget{glo:snmp}SNMP (Simple Network Management Protocol):] il linguaggio standard universale utilizzato dai dispositivi di rete per comunicare il proprio stato di salute e la propria configurazione a un server di monitoraggio centrale.
+    \item[SSH (Secure Shell):] protocollo di rete crittografico di livello applicativo. Permette di stabilire una sessione remota tramite interfaccia a riga di comando.
     \item[\hypertarget{glo:template}Template:] (Zabbix) un modello preconfigurato che contiene un insieme logico di Item, Trigger e regole. Viene applicato a più dispositivi per evitare di configurarli manualmente.
     \item[Trapping:] concettualmente simile all'interrupt, dove un segnale che avvisa il nodo centrale del verificarsi di un evento prioritario, sospendendo temporaneamente la normale esecuzione. Nel caso del monitoraggio da parte di Zabbix è il dispositivo periferico (o uno script) a inviare i dati di allarme al server centrale al verificarsi di un evento.
     \item[\hypertarget{glo:trigger}Trigger:] (Zabbix) una regola logica associata a un Item. Es. la telecamera non risponde al ping per 3 minuti, il Trigger "scatta" e genera un allarme (Problem).
     \item[Troubleshooting:] processo logico in cui si ricerca, identifica e risolve un problema all'interno di un sistema informatico o altro.
     \item[TVCC (TeleVisione a Circuito Chiuso):] sistema di telecamere per la videosorveglianza.
     \item[\hypertarget{glo:Zabbix}Zabbix:] è una piattaforma software open-source per il monitoraggio proattivo di infrastrutture IT, reti, server, macchine virtuali e servizi cloud. Consente di raccogliere, visualizzare e analizzare metriche in tempo reale (come utilizzo CPU, RAM, rete e spazio disco), inviando avvisi immediati in caso di anomalie.
+    \item[VLAN (Virtual Local Area Network):] rete virtuale che permette di suddividere una singola rete fisica in più sottoreti logiche indipendenti. Il suo utilizzo consente di raggruppare host e dispositivi fisicamente separati sul territorio come se fossero collegati alla medesima infrastruttura di rete locale.
+    \item[VM (Virtual Machine):] macchina virtuale, ovvero l'emulazione software di un computer fisico che esegue un proprio sistema operativo in un ambiente isolato dalle risorse sottostanti.
     \item[Zabbix Sender:] utility a riga di comando utilizzata per inviare dati o eventi direttamente al server Zabbix.
 
           %     \item[Base64URL:] Variante della codifica Base64, progettata specificamente per essere "URL-safe" e sicura per i nomi dei file, sostituendo i caratteri `+` e `/` (problematici nelle URL) con `-` e `\_`, e rimuovendo i caratteri di padding `=`. DA CONTROLLARE e capire cosa è
@@ -1011,6 +1017,18 @@ i protocolli e i concetti architetturali utilizzati nel progetto.
 %     \item[Crittografia Asimmetrica:] Sistema crittografico che impiega una coppia di chiavi distinte (una pubblica per la verifica/cifratura e una privata per la firma/decifratura) per garantire la sicurezza delle comunicazioni.
 %     \item[Demone (Daemon):] Programma eseguito costantemente in background nei sistemi operativi Unix-like, progettato per fornire servizi di sistema o applicativi (come l'ascolto di eventi di rete).
 %     \item[REST (Representational State Transfer):] Stile architetturale per lo sviluppo di API nei sistemi distribuiti, basato sull'utilizzo standardizzato dei metodi del protocollo HTTP (GET, POST, PUT, DELETE).
+
+
+% \item[Base64URL:] variante della codifica Base64 progettata per essere sicura all'interno degli URL (URL-safe). Sostituisce i caratteri standard '+' e '/' con '-' e '_' ed elimina il padding finale ('='), evitando ambiguità nella trasmissione web dei token JWT.
+
+% \item[ITSM (IT Service Management):] insieme di policy, processi e procedure volti a progettare, erogare, gestire e migliorare l'uso delle tecnologie informatiche in azienda. Interviene operativamente in aree come la gestione degli incidenti e dei ticket (es. tramite la piattaforma Interacta).
+
+% ca.
+
+% \item[REST (Representational State Transfer):] stile architetturale per sistemi software distribuiti che definisce un set di vincoli per la creazione di servizi web. Un'API REST si basa tipicamente sul protocollo HTTP per lo scambio di risorse (spesso in formato JSON) tramite metodi standard (GET, POST) in modo completamente \textit{stateless}.
+
+
+
 
 
 \clearpage
