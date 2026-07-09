@@ -77,6 +77,35 @@
       \verb https://tpp.hikvision.com/download/ISAPI_OTAP
       \endverb
     \endentry
+    \entry{JWT}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=8156eae38e17275f0d4e90ae1051c2ab}{%
+           family={{IETF}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{fullhash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{bibnamehash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{authorbibnamehash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{authornamehash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{authorfullhash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 29 Giugno 2026}
+      \field{title}{JSON Web Token (JWT)}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://datatracker.ietf.org/doc/html/rfc7519
+      \endverb
+      \verb{url}
+      \verb https://datatracker.ietf.org/doc/html/rfc7519
+      \endverb
+    \endentry
     \entry{Interacta}{manual}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=95da935e2a82bfb5cc23fde6167fde52}{%
@@ -429,6 +458,35 @@
       \endverb
       \verb{url}
       \verb https://trasparenza.secoval.it/archiviofile/secoval/OrganigrammaCompleto9.pdf
+      \endverb
+    \endentry
+    \entry{git_scm}{misc}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=08dcdf017b3d6948ed6f89b9a7f8fe94}{%
+           family={{The Git Development Community}},
+           familyi={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{08dcdf017b3d6948ed6f89b9a7f8fe94}
+      \strng{fullhash}{08dcdf017b3d6948ed6f89b9a7f8fe94}
+      \strng{bibnamehash}{08dcdf017b3d6948ed6f89b9a7f8fe94}
+      \strng{authorbibnamehash}{08dcdf017b3d6948ed6f89b9a7f8fe94}
+      \strng{authornamehash}{08dcdf017b3d6948ed6f89b9a7f8fe94}
+      \strng{authorfullhash}{08dcdf017b3d6948ed6f89b9a7f8fe94}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 9 Luglio 2026}
+      \field{title}{Git}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://git-scm.com/
+      \endverb
+      \verb{url}
+      \verb https://git-scm.com/
       \endverb
     \endentry
     \entry{zabbix7_Docs}{manual}{}
@@ -520,6 +578,35 @@
       \verb https://tpp.hikvision.com/download/ISAPI_OTAP
       \endverb
     \endentry
+    \entry{JWT}{manual}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=8156eae38e17275f0d4e90ae1051c2ab}{%
+           family={{IETF}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{fullhash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{bibnamehash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{authorbibnamehash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{authornamehash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \strng{authorfullhash}{8156eae38e17275f0d4e90ae1051c2ab}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 29 Giugno 2026}
+      \field{title}{JSON Web Token (JWT)}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://datatracker.ietf.org/doc/html/rfc7519
+      \endverb
+      \verb{url}
+      \verb https://datatracker.ietf.org/doc/html/rfc7519
+      \endverb
+    \endentry
     \entry{Interacta}{manual}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=95da935e2a82bfb5cc23fde6167fde52}{%
@@ -872,6 +959,35 @@
       \endverb
       \verb{url}
       \verb https://trasparenza.secoval.it/archiviofile/secoval/OrganigrammaCompleto9.pdf
+      \endverb
+    \endentry
+    \entry{git_scm}{misc}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=08dcdf017b3d6948ed6f89b9a7f8fe94}{%
+           family={{The Git Development Community}},
+           familyi={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{08dcdf017b3d6948ed6f89b9a7f8fe94}
+      \strng{fullhash}{08dcdf017b3d6948ed6f89b9a7f8fe94}
+      \strng{bibnamehash}{08dcdf017b3d6948ed6f89b9a7f8fe94}
+      \strng{authorbibnamehash}{08dcdf017b3d6948ed6f89b9a7f8fe94}
+      \strng{authornamehash}{08dcdf017b3d6948ed6f89b9a7f8fe94}
+      \strng{authorfullhash}{08dcdf017b3d6948ed6f89b9a7f8fe94}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Ultimo accesso: 9 Luglio 2026}
+      \field{title}{Git}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://git-scm.com/
+      \endverb
+      \verb{url}
+      \verb https://git-scm.com/
       \endverb
     \endentry
     \entry{zabbix7_Docs}{manual}{}

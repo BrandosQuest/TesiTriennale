@@ -3076,6 +3076,11 @@
     <bcf:citekey order="16" intorder="1">man_systemd</bcf:citekey>
     <bcf:citekey order="17" intorder="1">man_logrotate</bcf:citekey>
     <bcf:citekey order="18" intorder="1">rfc7519</bcf:citekey>
+    <bcf:citekey order="19" intorder="1">git_scm</bcf:citekey>
+    <bcf:citekey order="20" intorder="1">man_crontab</bcf:citekey>
+    <bcf:citekey order="21" intorder="1">git_scm</bcf:citekey>
+    <bcf:citekey order="22" intorder="1">JWT</bcf:citekey>
+    <bcf:citekey order="23" intorder="1">man_logrotate</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">

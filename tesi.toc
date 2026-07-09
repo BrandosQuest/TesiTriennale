@@ -53,6 +53,6 @@
 \contentsline {section}{\numberline {6.1}Raggiungimento degli obiettivi}{36}{section.6.1}%
 \contentsline {section}{\numberline {6.2}Limiti del sistema e sviluppi futuri}{37}{section.6.2}%
 \contentsline {section}{\numberline {6.3}Valutazione Personale}{37}{section.6.3}%
-\contentsline {chapter}{Glossario}{38}{section.6.3}%
-\contentsline {chapter}{Bibliografia}{40}{chapter*.9}%
-\contentsline {chapter}{Ringraziamenti}{41}{chapter*.10}%
+\contentsline {chapter}{Glossario}{38}{section*.9}%
+\contentsline {chapter}{Bibliografia}{41}{section*.11}%
+\contentsline {chapter}{Ringraziamenti}{42}{section*.13}%
