@@ -104,13 +104,13 @@
 \clearpage
 \chapter*{Sommario}
 \addcontentsline{toc}{chapter}{Sommario}
-Il presente documento descrive il lavoro svolto durante il periodo di stage curricolare,  della durata di circa duecentoventicinque ore, dal laureando Brando Calderara presso l'azienda Secoval Srl. Il progetto ha avuto come obiettivo principale la realizzazione di un sistema di monitoraggio centralizzato e automatizzato per le infrastrutture smart city del territorio della Comunità Montana di Valle Sabbia, superando i limiti dei precedenti sistemi.
+Il presente documento descrive il lavoro svolto durante il periodo di stage curricolare presso l'azienda Secoval Srl e durante il successivo approfondimento in sede di stesura dell'elaborato dal laureando Brando Calderara. Il progetto ha avuto come obiettivo principale la realizzazione di un sistema di monitoraggio centralizzato e automatizzato per le infrastrutture smart city del territorio della Comunità Montana di Valle Sabbia, superando i limiti dei precedenti sistemi.
 
-Per l'implementazione del sistema è stata adottata la piattaforma open-source Zabbix che è stata estesa tramite l'integrazione con script locali. In primo luogo il sistema fornisce la capacità di discovery dei device, il popolamento dei loro attributi con informazioni attinenti e l'importante funzione di monitoraggio della presenza attiva sulla rete di ogniuno di essi. In secondo luogo, per le telecamere di videosorveglianza, è stato sviluppato un sitema asincrono per la ricezione di allarmi relativi a manomissioni volontarie o involontarie.
+Per l'implementazione del sistema è stata adottata la piattaforma open-source Zabbix che è stata estesa tramite l'integrazione con script locali. In primo luogo il sistema fornisce la capacità di discovery dei device, il popolamento dei loro attributi con informazioni attinenti e l'importante funzione di monitoraggio della presenza attiva sulla rete di ognuno di essi. In secondo luogo, per le telecamere di videosorveglianza, è stato sviluppato un sistema asincrono per la ricezione di allarmi relativi a manomissioni volontarie o involontarie.
 
-Infine per garantire l'integrazione con i processi e i flussi aziendali già presenti il sitema è stato integrato con la piattaforma di ticketing aziendale, in modo che ogni intervento di manutenzione possa essere tracciato nello stesso paradigma usato in precedenza dagli operatori di Secoval.
+Infine per garantire l'integrazione con i processi e i flussi aziendali già presenti il sistema è stato integrato con la piattaforma di ticketing aziendale, in modo che ogni intervento di manutenzione possa essere tracciato nello stesso paradigma usato in precedenza dagli operatori di Secoval.
 
-Il risultato del progetto è un infrastruttura funzionante, già rilasciata in ambiente di produzione, che permette di avere una visone unificata dello stato delle infrastrutture smart city del territorio e dei tempi di risposta ai disservizi di rete significativamente ridotti.
+Il risultato del progetto è un'infrastruttura funzionante, già rilasciata in ambiente di produzione, che permette di avere una visione unificata dello stato delle infrastrutture smart city del territorio e dei tempi di risposta ai disservizi di rete significativamente ridotti.
 
 \clearpage
 \tableofcontents
@@ -156,8 +156,10 @@ Nel contesto tecnologico delle smart city, Secoval gestisce apparati tra cui tel
 Il progetto svolto durante il tirocinio si inserisce direttamente in questo scenario operativo, con l'obiettivo di superare la gestione manuale implementando un'architettura automatizzata e centralizzata basata su Zabbix, in modo che si realizzi un sistema di monitoraggio solido per la rete di apparati di Secoval, abbastanza vasta e appena installata quindi instabile.
 Il lavoro ha previsto l'automazione del discovery e dell'assegnazione dei metadati degli apparati tramite fogli Excel, l'integrazione con i flussi di allarme nativi dei dispositivi periferici (come gli eventi ISAPI Hikvision) e la comunicazione sincrona e crittografata con la piattaforma cloud di ticketing aziendale Interacta per la gestione asincrona dei guasti da parte degli operatori.
 
-\section{Il progetto di stage}
-Il progetto di stage ha come obiettivo la progettazione e l'implementazione di un'architettura di monitoraggio centralizzata basata su Zabbix 7.0. Esso sarà destinato alla gestione di una delle infrastrutture di rete per smart city che Secoval si trova a gestire. L'esigenza primaria è migliorare e superare i limiti dei sistemi di monitoraggio precedenti, come PRTG (Paessler Router Traffic Grapher), software proprietario con un sostanziale costo per la gestione di reti di certe dimensioni \parencite{PaesslerPricing} e con un'elevata gestione manuale nella implementazione precedente al tirocinio.
+\section{Il contesto dello stage e della tesi}
+Il progetto di stage ha avuto come obiettivo la progettazione e l'implementazione di un'architettura di monitoraggio centralizzata basata su Zabbix 7.0. Esso è destinato alla gestione di una delle infrastrutture di rete per smart city che Secoval gestisce. L'esigenza primaria era migliorare e superare i limiti dei sistemi di monitoraggio precedenti, come PRTG (Paessler Router Traffic Grapher), software proprietario con un sostanziale costo per la gestione di reti di certe dimensioni \parencite{PaesslerPricing} e con un'elevata gestione manuale nella implementazione precedente al tirocinio.
+
+Il successivo lavoro di tesi ha permesso di studiare l'astrazione dell'architettura, studiare l'autenticazione con JWT verso la piattaforma di ticketing aziendale e sviluppare gli accorgimenti sul codice necessari per la messa in produzione.
 
 L'infrastruttura monitorata è eterogenea e distribuita sul territorio. I dispositivi principali comprendono e si dividono in:
 \begin{itemize}
@@ -175,7 +177,7 @@ L'infrastruttura monitorata è eterogenea e distribuita sul territorio. I dispos
 % A completamento dell'infrastruttura, sono stati integrati strumenti per l'analisi dei dati operativi. Le serie storiche degli allarmi vengono esportate su file system in formato testuale (CSV) ed elaborate da un motore di analisi Python per estrarre Key Performance Indicators (KPI), tra cui il \textit{Mean Time To Resolution} (MTTR) e l'incidenza di anomalie hardware (flapping). L'orchestrazione di questi flussi di esportazione, l'invio della reportistica e la rotazione sicura dei file di log avvengono a livello di sistema operativo Linux sfruttando utilità native come Crontab e Logrotate.
 
 \section{Obiettivi e analisi dei requisiti}
-Il progetto formativo mira a trasformare l'infrastruttura di rete (videosorveglianza, Wi-Fi pubblico) che serve 31 Comuni in un sistema smart city che possa essere monitorato e possa scalare facilmente, lavorando su tre pilastri:
+Il progetto formativo ha mirato a trasformare l'infrastruttura di rete (videosorveglianza, Wi-Fi pubblico) che serve 31 Comuni in un sistema smart city monitorabile e facilmente scalabile, lavorando su tre pilastri:
 \begin{itemize}
     \item[] Sviluppo e miglioramento del monitoraggio di rete.
     \item[] Integrazione degli apparati (telecamere, switch, AP) con la Cartografia GIS per creare uno strumento di gestione georeferenziato.
@@ -226,7 +228,7 @@ Requisiti:
     \label{fig:ubuntu_logo}
 \end{figure}
 
-L' infrastruttura di monitoraggio è stata messa in produzione su una macchina virtuale con sistema operativo Ubuntu Server\parencite{UbuntuServer}. Il sistema operativo mette a disposizione strumenti nativi utili per automatizzare il lavoro in background, rendendo il sitema più robusto e autonomo senza la necessità di appoggiarsi a software di terze parti.
+L' infrastruttura di monitoraggio è stata messa in produzione su una macchina virtuale con sistema operativo Ubuntu Server\parencite{UbuntuServer}. Il sistema operativo mette a disposizione strumenti nativi utili per automatizzare il lavoro in background, rendendo il sistema più robusto e autonomo senza la necessità di appoggiarsi a software di terze parti.
 
 Per orchestrare i flussi di dati e i vari script, il progetto ha sfruttato intensivamente tre componenti e tool di Ubuntu. Il primo è \textbf{Crontab} \parencite{man_crontab}, lo schedulatore di Linux che permette di eseguire comandi a orari o intervalli prestabiliti. È stato utilizzato per gestire le operazioni periodiche. Ad esempio, la generazione e l'invio del report delle statistiche via email prima dell'inizio del turno aziendale.
 
@@ -375,7 +377,7 @@ I compiti svolti da questo script sono stati:
 \section{I fogli di calcolo aziendali}
 Una volta scoperti gli host e memorizzati nel database di Zabbix essi sono operativamente funzionanti, ma non contengono alcuna informazione che li riguarda.
 Molte delle loro caratteristiche, come nome e l'ID del palo a cui sono montati, non
-sono rilevabili dallo stumento software Zabbix perchè non sono state memorizzati sui singoli host.
+sono rilevabili dallo stumento software Zabbix perchè non sono stati memorizzati sui singoli host.
 
 Per abilitare un'architettura di monitoraggio automatizzata, è stato necessario identificare una \textbf{sorgente della verità}, ovvero un'entità a cui il sistema potesse attingere per allineare il suo stato con lo stato fisico degli asset sul territorio.
 
@@ -442,23 +444,23 @@ Il sistema opera secondo una logica basata su due fasi:
 \section{Implementazione dell'aggiornamento degli host}
 
 Ogni host in Zabbix viene identificato con un attributo "name" che contiene l'IP con cui è stato scoperto.
-Inoltre possiede anche un attributo "visible name" che lo rappresenta nel sistema. L'obiettivo è andare a estrarre
+Inoltre possiede anche un attributo "visible name" che lo rappresenta nel sistema. L'obiettivo era andare a estrarre
 dal file Excel degli asset l'informazione del loro identificativo aziendale, da inserire nell'attributo "visible name"
 e l'informazione sull'id del palo su cui sono montati, da inserire le campo "location" del loro attributo
 "inventory" (ogni host possiede un ampio elenco di campi da compilare nell'attributo "inventory").
 
-Oltre a queste informazioni, per ogni host è necessario associare anche le coordinate geografiche del palo su cui sono montati.
+Oltre a queste informazioni, per ogni host era necessario associare anche le coordinate geografiche del palo su cui sono montati.
 % Nel file Excel delle coordinate geografiche: viene associata all'IDpalo anche le coordinate geografica.
 % Quindi per ogni host con uno specifico IDpalo gli si deve associare anche le coordinate geografiche.
 
 Siccome la quasi totalità delle sottoreti al momento del mio tirocinio
-presenta numerosi host con svariati problemi, che impediscono al sistema di scoprirli tramite
-ping, risulta impossibile assegnare i loro metadati in una sola volta.
-Quindi, mano a mano che essi andranno online, verranno scoperti dal sistema che dovrà associare
+presentava numerosi host con svariati problemi, che impedivano al sistema di scoprirli tramite
+ping, è risultato impossibile assegnare i loro metadati in una sola volta.
+Quindi, mano a mano che essi diventano online, vengono scoperti dal sistema che provvede ad associare
 a essi le informazioni contenute nei file Excel. Proprio come per gli host scoperti inizialmente.
 
 Questo implica che l'assegnazione di questi dati deve essere fatta periodicamente,
-con un periodo congruo. Per questo ho scelto di utilizzare script python, eseguiti periodicamente
+con un periodo congruo. Per questo motivo si è scelto di utilizzare script python, eseguiti periodicamente
 dal servizio \texttt{crontab} \parencite{man_crontab} presente nativamente in Ubuntu. Il periodo scelto è di un'ora, in modo da non sovraccaricare il server Ubuntu ma di rendere possibile agli operatori vedere i cambiamenti nella stessa giornata lavorativa.
 
 Nella pratica vengono utilizzati degli script python eseguiti nella macchina virtuale che
@@ -486,7 +488,7 @@ ma vengono reindirizzati dai job crontab in uno specifico file di log:
 \lstinline|cron_log.log|, ogni scrittura nel file è preceduta dal timestamp e dallo script che la genera.
 
 Per evitare di memorizzare questi dati all'infinito e generare un file di testo gigantesco,
-ho utilizzato il sistema \textbf{Logrotate} \parencite{man_logrotate}, una utility Linux il cui scopo è la rotazione,
+è stato utilizzato il sistema \textbf{Logrotate} \parencite{man_logrotate}, una utility Linux il cui scopo è la rotazione,
 compressione e rimozione di file di log automatici.
 
 In questo caso il file contenente le configurazioni per il job logrotate del file \lstinline|cron_log.log| è accessibile nel file: \inlinecode{/etc/logrotate.d/zabbix_scripts}.
@@ -538,7 +540,7 @@ All'interno del widget \emph{GeoMap}, nativamente disponibile nelle dashboard di
 \section{Reportistica e KPI}
 L'implementazione di un sistema di monitoraggio centralizzato vista fino ad ora genera parallelamente dei dati. Per trasformare questa raccolta di allarmi in informazioni utili al
 management aziendale, è necessario estrarre e analizzare le serie temporali.
-Poiché Zabbix non supporta nativamente l'invio programmato di file arbitrari o analisi testuali complesse via email, è stata progettato un sistema per il salvataggio dei dati relativi agli eventi rilevati da Zabbix e un sistema per la generazione di report automatici.
+Poiché Zabbix non supporta nativamente l'invio programmato di file arbitrari o analisi testuali complesse via email, è stato progettato un sistema per il salvataggio dei dati relativi agli eventi rilevati da Zabbix e un sistema per la generazione di report automatici.
 
 
 \subsection{Esportazione dati evento tramite custom AlertScript}
@@ -573,7 +575,7 @@ echo "\"$1\",\"$2\",\"$3\",\"$4\",\"$5\",\"$6\",\"$7\",\"$8\",\"$9\",\"${10}\",\
 \end{lstlisting}
 
 \subsection{Elaborazione dati e report}
-Per estrarre significato dai dati immagazzinati che sia utile al team di manutenzione e alla direzione aziendale ho implementato ed eseguito tramite \textbf{Crontab} due diversi tipi di report inviati via mail.
+Per estrarre significato dai dati immagazzinati che sia utile al team di manutenzione e alla direzione aziendale sono stati implementati ed eseguiti tramite \textbf{Crontab} due diversi tipi di report inviati via mail.
 
 \subsubsection{Report giornaliero}
 Il primo è un report giornaliero in cui ogni mattina vengono analizzate le entrate delle 24 ore precedenti. Le informazioni vegono divise in quattro sezioni che anranno a comporre il corpo dell'email:
@@ -661,7 +663,7 @@ o l'oscuramento della telecamera (Tampering/Shelter alarm).
 Lo script si collega tramite API token a Zabbix e, utilizzando la libreria pyzabbix,
 estrae tutti gli host e ne salva l'indirizzo IP solo
 se l'host in questione è una telecamera di marca Hikvision.
-Questo rende il sistema altamente scalabile: se aggiungi una nuova telecamera su Zabbix,
+Questo rende il sistema altamente scalabile: se si aggiunge una nuova telecamera su Zabbix,
 il riavvio successivo dello script la includerà automaticamente.
 
 Per ogni telecamera trovata, viene avviato un "task" indipendente grazie alla libreria asyncio.
@@ -716,7 +718,7 @@ L'obiettivo dell'integrazione è automatizzare l'apertura di un ticket di assist
 nel momento in cui un trigger di Zabbix entra in stato \texttt{PROBLEM},
 e chiuderlo in automatico quando lo stato torna a \texttt{RESOLVED}.
 
-L'architettura si basa di uno \textbf{script Python} operante in \\\texttt{/usr/lib/zabbix/alertscripts/}, incaricato di elaborare i dati e comunicare con le API di Interacta. I dati necessari vengono inoltrati a esso sotto forma di arguments da un \textbf{Media Type} di tipo "Script" configurato su Zabbix. L'\textbf{autenticazione} \textit{Server-to-Server} verso le API di Interacta viene eseuita tramite Service Account (Service Account Authentication è un metodo che consente ad applicazioni, script o macchine virtuali di verificare in modo sicuro la propria identità e interagire con API o servizi cloud senza intervento umano) e firma crittografica asimmetrica (RSA).
+L'architettura si basa su uno \textbf{script Python} operante in \\\texttt{/usr/lib/zabbix/alertscripts/}, incaricato di elaborare i dati e comunicare con le API di Interacta. I dati necessari vengono inoltrati a esso sotto forma di arguments da un \textbf{Media Type} di tipo "Script" configurato su Zabbix. L'\textbf{autenticazione} \textit{Server-to-Server} verso le API di Interacta viene eseuita tramite Service Account (Service Account Authentication è un metodo che consente ad applicazioni, script o macchine virtuali di verificare in modo sicuro la propria identità e interagire con API o servizi cloud senza intervento umano) e firma crittografica asimmetrica (RSA).
 
 I ticket creati non devono essere generici, ma devono contenere metadati utili per i tecnici sul campo (es. l'indirizzo IP, l'ID dell'Host, l'ID del Palo fisico e la descrizione problema).
 Se il problema rientra autonomamente, Zabbix deve comunicare a Interacta di risolvere il ticket, evitando alle squadre tecniche uscite a vuoto.
@@ -736,7 +738,7 @@ La documentazione fornita da Interacta e le linee guida consigliano l'adozione d
 firmata con algoritmo \textbf{RS512} utilizzando una chiave privata fornita in formato JSON.
 
 La scelta di questo framework permette di evitare che ci siano \textbf{ credenziali fisse in transito} tramite la generazione di un token JWT "usa e getta" per ogni singolo ticket e singola chiamata HTTPS.
-Inoltre permette di garantire lì'integrità, l'autenticazione e il non ripudio delle richieste HTTPS inviate dal sistema.
+Inoltre permette di garantire l'integrità, l'autenticazione e il non ripudio delle richieste HTTPS inviate dal sistema.
 
 \section{Generazione e firma del token JWT}
 
@@ -920,16 +922,16 @@ Durante lo svolgimento del progetto di stage sono stati completati tutti gli obi
 
 \section{Limiti del sistema e sviluppi futuri}
 
-Sebbene l'architettura implementata abbia raggiunto gli obiettivi prefissati, e quindi ha ridotto il carico di lavoro manuale per la gestione dell'infrastruttura, sono consapevole che rimangano alcuni aspetti critici sia a livello implementativo che architetturale.
+Sebbene l'architettura implementata abbia raggiunto gli obiettivi prefissati, e quindi abbia ridotto il carico di lavoro manuale per la gestione dell'infrastruttura, sono consapevole che rimangano alcuni aspetti critici sia a livello implementativo che architetturale.
 Spesso dovuti a inesperienza e a limiti temporali.
 
 Dal punto di vista implementativo manca un sistema di controllo di versione per il codice. Purtroppo in Secoval non è comune gestire codice e l'importanza di sistemi come git \parencite{git_scm} e github non è stata oggetto di discussione. In futuro inserire il codice in una repository github potrebbe essere un buono strumento per garantire la tracciabilità e la resilienza del codice.
 %DA CONTROLLARE inserire fonti con collegamenti git e github
 
 Inoltre non è presente un sistema di manuntenzione dell'ambiente Python.
-Le librerie installate non sono tracciate attraverso un file standard \textit{equirements.txt} sono indicato solamente nella documentazione da me redatta e fornita a Secoval.
+Le librerie installate non sono tracciate attraverso un file standard \textit{equirements.txt} sono indicate solamente nella documentazione da me redatta e fornita a Secoval.
 
-Il sistema è privo una sezione di troubleshooting: nella documentazione appena citata sono presenti i fixes più comuni a cui mi sono rivolto durante l'implementazione e che pensavo potessero esser utili in futuro. Al momento non è stata fatta una analisi dei tool e delle procedure necessarie in caso di guasti al sistema.
+Il sistema è privo di una sezione di troubleshooting: nella documentazione appena citata sono presenti i fix più comuni a cui mi sono rivolto durante l'implementazione e che pensavo potessero esser utili in futuro. Al momento non è stata fatta una analisi dei tool e delle procedure necessarie in caso di guasti al sistema.
 
 \section{Valutazione Personale}
 
@@ -941,6 +943,8 @@ Il passaggio dallo studio universitario alla pratica in azienda mi ha posto di f
 Ho toccato con mano come l'eterogeneità di questi sistemi renda molto complesso orchestrare il monitoraggio e richieda ad ogni passaggio dei compromessi tecnici e implementativi.
 
 Inoltre, il dialogo con il personale di Interacta, riguardo gli endpoint necessari per il corretto funzionamento del sistema di ticketing, è stato istruttivo. Ho realizzato come la creazione di sistemi, anche software, sia per la maggior parte discussione e confronto. La parte di interazione tra persone è molto importante per l'efficace realizzazione di qualsiasi progetto.
+
+La stesura di questo elaborato, rispetto all'ambiente aziendale concentrato su logiche operative, mi ha permesso di valutare l'intero sistema in modo più critico, approfondire la documentazione e i protocolli e trasformare questa esperienza in un bagaglio di conoscenze e competenze reali.
 
 Infine, sono stato soddisfatto di aver condotto in prima persona l'intero ciclo di vita di questo progetto. È gratificante aver rilasciato un sistema attualmente in produzione e utile nell'immediato. Questa esperienza aziendale mi lascia con una consapevolezza delle mie capacità e sicuramente meno timore nell'affrontare nuove sfide.
 
