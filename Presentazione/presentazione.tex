@@ -1,5 +1,7 @@
 \documentclass[aspectratio=169]{beamer} 
 \usepackage{tabularx}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
 
 \usetheme{metropolis} 
 % 1. Aggiunge la barra di progresso sotto i titoli delle slide
@@ -33,7 +35,16 @@ automatizzata basata su Zabbix}
 \institute[UniBs]{
     Ingegneria delle Tecnologie per l'Impresa Digitale
 }
-
+% --- Configurazione Footer Beamer ---
+\setbeamertemplate{footline}{
+  % Crea un box largo quanto la slide, con il colore UniBsBlue
+  \begin{beamercolorbox}[wd=\paperwidth, ht=2.5ex, dp=1.2ex, leftskip=0.5cm, rightskip=0.5cm]{}
+   \textcolor{gray}{\tiny Monitoraggio, manutenzione e
+sicurezza per smart city: dalla gestione
+manuale ad un’architettura
+automatizzata basata su Zabbix \hfill \insertframenumber{} / \inserttotalframenumber}
+  \end{beamercolorbox}
+}
 % - slide 2: metti una figura che rappresenti la rete di Secovan in basso a sinistra
 % - slide 3: metti una figura da clipart che rappresenti un sistema di monitoraggio ec
 % - slide 8: aumenta la dimensione del font 2X
@@ -42,6 +53,7 @@ automatizzata basata su Zabbix}
 
 % Slide 1
 \begin{frame}
+    \thispagestyle{empty}
     \titlepage
 \end{frame}
 % Slide 2
@@ -94,7 +106,7 @@ automatizzata basata su Zabbix}
             telecamere, lettori targa, access point e switch\\
             \vspace{0.7cm}
             \centering
-            \includegraphics[width=0.8\linewidth]{clipart/SecovalNetworks.png}
+            \includegraphics[width=0.9\linewidth]{clipart/SecovalNetworks.png}
             % - slide 2: metti una figura che rappresenti la rete di Secovan in basso a sinistra
         \end{column}
         \begin{column}[T]{0.4\textwidth}
@@ -114,9 +126,13 @@ automatizzata basata su Zabbix}
     \begin{columns}[T]
         \begin{column}{0.5\textwidth}
             \vspace{1.2cm}
-            \begin{exampleblock}{Obiettivo del tirocinio}
-                Sviluppo del monitoraggio di rete, integrazione con un sistema GIS e connessione al servizio di ticketing aziendale.\\Stesura tesi%Documentazione del processo per successiva tesi
+            \begin{exampleblock}{Risoluzione - stesura tesi}%obiettivo progetto in azienda, in collaborazione in azienda, risoluzione(stesura tesi)
+                Sviluppo del monitoraggio di rete, integrazione con un sistema GIS e connessione al servizio di ticketing aziendale.
+                %Soluzione del problema e tesura tesi%Documentazione del processo per successiva tesi
             \end{exampleblock}
+            % \begin{exampleblock}{finally}%obiettivo progetto in azienda
+            %     Soluzione del problema e tesura tesi%Documentazione del processo per successiva tesi
+            % \end{exampleblock}
         \end{column}
         \begin{column}[T]{0.5\textwidth}
             % Use native Beamer columns to create the indent safely
@@ -136,7 +152,7 @@ automatizzata basata su Zabbix}
 \begin{frame}{Zabbix}
     \begin{columns}[T]
         \begin{column}{0.7\textwidth}
-            \hspace*{0.3cm}Software Open-Source per il monitoraggio IT, con capacità \\\hspace*{0.3cm}di \textit{Auto-discovery} della rete e gestione degli eventi
+            \hspace*{0.3cm}Software Open-Source per il monitoraggio IT, con funzione \\\hspace*{0.3cm}di \textit{auto-discovery} della rete e gestione degli eventi
         \end{column}
         \begin{column}{0.3\textwidth}
             \includegraphics[width=0.6\linewidth]{Zabbix_Logo.png}
@@ -192,8 +208,8 @@ automatizzata basata su Zabbix}
         \vspace{0.5cm}
         Questo abilita:
         \begin{itemize}
-            \item \textbf{Report giornalieri}
-            \item \textbf{Report mensili}
+            \item \textbf{Report giornalieri}: singoli host con problematiche da risolvere...%host con problem da risolvere%riepilogo con totale problemi, risolti automaticamente, non risolti, distribuziooone nelle sottoreti, host di problemi non risolti, host instabili, host con oscuramento
+            \item \textbf{Report mensili}: top 10 host problematici, distribuzione oraria...%n host attivi, num problemi, num resolved, analisi sottoreti,, analisi temporale per fascia oraria e settimanale. top ten host problematici
         \end{itemize}
     \end{block}
 \end{frame}

@@ -144,22 +144,27 @@ Ringraziamenti e saluti finali
 
 
 
-
-Obiettivi della tesi
+---------------------------------------------------
+Obiettivi della tesi ---
 
 Nome in file in cartella in pdf: 
-LASCIARE TITOLO IN BANDA IN FORNDO
 
-SLIDE 2 TOGLIERE FIGURA LTE
-2 MODALITÀ DI CONNESSIONE
+LASCIARE TITOLO IN BANDA IN FORNDO---
+
+SLIDE 2 TOGLIERE FIGURA LTE---
 
 Collegare meglio il sitemadi ticketing: non solo umani.
 
 
-capacià-->fnzione, feature
+capacià-->fnzione, feature ---
 
 chiarire gis
 
 ping non va 
 
 get http e 
+
+
+report giornalieri emensili 
+
+progetto fatto in collaborazione con l'azienda, non in tirocinio 
