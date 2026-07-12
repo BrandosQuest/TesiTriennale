@@ -165,6 +165,6 @@ ping non va
 get http e 
 
 
-report giornalieri emensili 
+report giornalieri emensili ---
 
 progetto fatto in collaborazione con l'azienda, non in tirocinio 
