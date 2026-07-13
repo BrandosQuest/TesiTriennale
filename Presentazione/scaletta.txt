@@ -168,3 +168,72 @@ get http e
 report giornalieri emensili ---
 
 progetto fatto in collaborazione con l'azienda, non in tirocinio 
+
+
+
+
+
+
+
+
+
+
+
+Monitoraggio, manutenzione e sicurezza per smart city:
+dalla gestione manuale ad un’architettura automatizzata
+basata su Zabbix
+
+2 **Introduzione e Contesto Aziendale**
+Buongiorno a tutti, . Oggi vi parlo di cosa ho sviluppato durante progetto in collaborazione con l'azienda e la mia elaborazione di tesi riguardo il monitoraggio, la manutenzione e la sicurezza per le Smart City, passando dalla gestione manuale a un'architettura automatizzata basata su Zabbix.
+
+L'azienda che mi ha ospitato è Secoval, una realtà bresciana che opera sul territorio della Comunità Montana di Valle Sabbia. È un'azienda partecipata da 40 comuni che compongono la Comunità Montana e offre loro servizi di supporto tecnico, supporto al catasto e gestione delle imposte. I vari comuni si sono uniti per sfruttare l'economia di scala, sviluppando un'azienda singola per gestire tutte queste necessità.
+
+Oltre a questo, Secoval gestisce un'infrastruttura di Smart City distribuita sul territorio. Questa infrastruttura comprende diversi dispositivi, tra cui telecamere, lettori targa (assimilabili alle telecamere), access point e switch. Questi dispositivi sono catalogati nelle 4 sottoreti che vedete a destra per ogni comune. LA sottorete LTE  comprende sempre le stesse tipologie di device, ma che utilizzano la connettività LTE poiché i dispositivi sono montati in luoghi non raggiungibili dalla connettività cablata.
+
+3 **Il Problema e gli Obiettivi**
+in Secoval, il problema principale riscontrato per la gestione di queste reti eterogenee era la mancanza di uno strumento centralizzato per rilevare i guasti e le manomissioni. 
+
+Gli obiettivi e le attività che mi sono stati assegnati per risolvere il problema sono:
+* Sviluppare un sistema di monitoraggio.
+* Integrare i dati rilevati dal sistema sui vari device in un sistema GIS (Geographic Information System), per associare le informazioni a una mappa ed avere la capacità di avere una visione d'insieme dello stato dell'ìinfrastruttura.
+* Integrare il tutto con i servizi di ticketing aziendale, che quindi non supporteranno soltanto le richieste delle persone fisiche, ma anche la comunicazione con i servizi automatici di gestione hardware.
+
+4 **La Scelta di Zabbix e le API**
+Lo strumento scelto per sviluppare questo sistema è Zabbix. Zabbix è una piattaforma software open-source per il monitoraggio dalle infra-strutture IT ai servizi cloud. Consente di raccogliere e analizzare metriche in tempo reale, inviando avvisi immediati in caso di anomalie. 
+
+Una funzione molto apprezzata di Zabbix è l'auto-discovery: attraverso il comando di ping lanciato su una determinata sottorete IPv4 o IPv6, il sistema trova gli host presenti e li registra. Host è il termine usato in zabbix per riferirsi ad un singolo device.
+
+Purtroppo, dopo essere scoperti da zabbix questi host non sono associati a dei metadati utili (come nome, modello, marca, comune di installazione o coordinate geografiche).
+Per risolvere questo problema, ho utilizzato lo strumento Zabbix API che è un interfaccia di comunicazione verso il servizio zabbix dasata sul protocollo HTTP. essa permette di compiere da codice le stesse azioni prermesse dall'interfaccia grafica. Questo sistema ha permesso di aggiornare i device con i metadati aziendali. 
+Grazie a questa associazione, i report generati da Zabbix producono messaggi di alert con un reale significato utile: non si limitano all'indirizzo IP, ma includono il comune di installazione, il modello, la marca (per distinguere telecamere, access point e switch), il palo fisico su cui sono montati e le coordinate geografiche.
+inoltre questo ha permesso l'integrazione con un sistema GIs.
+
+5 **Integrazione GIS**
+Come vedete da questa schermata di esempio, è stato scielto il sistema GIS interno a Zabbix, in quanto offriva tutte le funzionalità necessarie a Secoval. Sulla mappa è possibile visualizzare gli host sul territorio attraverso dei waypoint cliccabili, sono raggruppati sui singoli pali dove sono montati, e potete vedereil numero di host sui singoli pali. il colore dei waypoint comunica anche lo stato degli host.
+
+6 ** e Rilevamento Guasti (Polling)**
+Ora vediamo il funzionamento di zabbix: come fa a  a capire se un host è online o offline? Lo fa attraverso l'interrogazione in *polling* con comando ping, interrogando l'host ogni minuto o ogni ora. Questo permette di individuare problemi di connettività o alimentazione e di aprire in zabbix gli eventi di problem e di resolved.
+Purtroppo i metadati dell'host che ha generato il problema non sono completamente associati al'evento in zabbix, la soluzione a questo problema è stao implementare un sistema di logging: a ogni cambiamento di stato dell'host, un'azione in Zabbix registra i metadati e li invia alla macchina virtuale dove zabbix è in esecuzione,, memorizzandoli in un file CSV. Questo consente un'elaborazione successiva per generare:
+
+* **Report giornalieri** per i tecnici (per individuare gli allarmi attivi a cui prestare attenzione.
+* **Report mensili** per la direzione (per valutare lo stato di salute generale dell'infrastruttura, le distribuzioni dei problemi per fascie orarie durante il mese).
+
+7 **Rilevamento Manomissioni (Tamper Detection) ed Event-Driven**
+Un'ulteriore funzionalità implementata è il rilevamento delle manomissioni. Le telecamere dispongono di un'intelligenza artificiale a bordo che rileva oscuramenti (dovuti a vernice, coperture, o fattori accidentali come foglie o bandiere).
+
+Gli avvisi provenienti da questi dispositivi verso Zabbix non seguono più il paradigma del polling, ma sono *event-driven*. Dopo avere aperto una connessione http stream verso le telecamere Uno script Python analizza gli avvisi in arrivo e inoltra l'informazione dell'allarme a Zabbi. L'invio avviene tramite "Zabbix sender" (uno strumento a riga di comando, sviluppato dai manutentori di zabbix), che trasferisce le informazioni a dei *trapper items* dedicati, contenitori di una singola metrica misurata in zabbix.
+
+8 **panoramica**
+Ora passiamo ad una panoramica del sitstema. A sinistra potete vedere il blocco rappresentante gli host montanti sul territorio, che comunicano tramite http stream gli avvisi di oscurametno, oltre a essere interrogati tramite ping dal software zabbix. verso destra invecde si può notare un altro flusso di informazioni, esso punta alla piattaforma di ticketing aziendale. ora approfondirò  questo ultimo aspetto.
+
+9 **Integrazione col Ticketing Aziendale e Sicurezza**
+come ho appena detto l'infrastruttura comunica con Interacta, il cloud aziendale utilizzato per il ticketing e la documentazione dei processi e la conservazione del know how aziendale. L'biettivo è che quando un host peede connettività i tecnici vengano avvisati ed ogni intervento di manutenzione venga documentato nel contesto di quel ticket, rispettando le rnormali procedure aziendali.
+dop che un potenziale evento viene registrato da zabbix,  Zabbix avvia uno script esterno che elabora i metadati dell'host in questione e apre o chiude il ticket (a seconda che sia una segnalazione di problema o di risoluzione), identificandolo con un "Problem ID" univoco.
+
+
+10 **autenticazione**
+infine parlerò dellì'autenticazione tra il server e il cloud di Interacta. questa è un autenticazione di di tipo *server-to-server* (senza intervento umano) ed è garantita tramite JSON Web Token Assertion. L'algoritmo utilizzato è l'RS512, che prevede una firma RSA e un hash SHA512.
+qui vediamo una linea di codice esemplificativa,  Il token firmato è coposto dalla concatenazione del messaggio json in chiaro e la sua firma. questo garantisce garantisce l'integrità, l'autenticazione e il non ripudio. Ma confidenzialità della comunicazione, invece, è demandata al canale HTTPS e ai protocolli crittografici del Transport Layer Security (TLS).
+
+11 **finale**
+perfetto, siamo giunti al termine, della presentrazione. ringrazio il mio relatore francesco gringoli per il supporto sempre presente. Ringrazio l'azienda che mi ha ospitato anchese oggi nessuno è non è qui presente, ringrazio la mia famiglia e infine ringrazio la commissione e il presidente.
