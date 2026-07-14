@@ -2,6 +2,8 @@
 \usepackage{tabularx}
 \usepackage{fancyhdr}
 \usepackage{xcolor}
+\usepackage{amssymb} % Necessario per il comando \checkmark
+\definecolor{DarkGreen}{RGB}{34, 139, 34} % Un verde elegante per le spunte
 
 \usetheme{metropolis} 
 % 1. Aggiunge la barra di progresso sotto i titoli delle slide
@@ -307,15 +309,32 @@ automatizzata basata su Zabbix \hfill \insertframenumber{} / \inserttotalframenu
     \textit{Nota:} RS512 garantisce integrità, autenticazione e non ripudio. La confidenzialità del payload è demandata al canale di comunicazione \textit{HTTPS (TLS)}
 \end{frame}
 % Slide 10
-\begin{frame}[plain]
+\begin{frame}{Conclusioni}
+    % Usiamo una minipage per contenere la larghezza della lista. 
+    % % Così le spunte non finiranno ai bordi estremi dello schermo.
+    % \begin{columns}
+    %     \begin{column}{0.\textwidth}
+    \begin{block}{Funzionalità}
+        \begin{itemize}
+            \setlength{\itemsep}{1.2em} % Aumenta il respiro tra gli elementi
+            \item Sistema di monitoraggio di rete\hfill \textcolor{DarkGreen}{\checkmark}\hspace{1.2cm} \vspace{-0.3cm}
+            \item GIS integrato \hfill \textcolor{DarkGreen}{\checkmark} \hspace{1.2cm}\vspace{-0.3cm}
+            \item Connessione al servizio di ticketing \hfill \textcolor{DarkGreen}{\checkmark}\hspace{1.2cm} \vspace{0cm}
+        \end{itemize}
+    \end{block}
+    %     \end{column}
+    %     \begin{column}{0.5\textwidth}
+
+    %     \end{column}
+    % \end{columns}
+
     \centering
     \vspace{1cm}
 
     {\Large \textbf{Grazie per l'attenzione}}
 
-    \vspace{0.5cm}
     \rule{0.5\textwidth}{1pt}
-    \vspace{0.5cm}
+
 
     {\large Discussione elaborato finale\\Brando Calderara}
 
